@@ -108,7 +108,7 @@ RUN \
 RUN \
   cd ~/yuma123-git && \
   autoreconf -i -f && \
-  ./configure --disable-shared --enable-static LDFLAGS="-lncurses" CFLAGS='-lreadline -lncurses -O2' CXXFLAGS='-O2' --prefix=/root/usrapp && \  
+  ./configure --enable-shared --enable-static LDFLAGS="-lncurses" CFLAGS='-lreadline -lncurses -O2' CXXFLAGS='-O2' --prefix=/root/usrapp && \  
   make -j4 && \
   make install
 
