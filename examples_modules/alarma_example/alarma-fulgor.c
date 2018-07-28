@@ -1,3 +1,14 @@
+  #include <sys/wait.h>
+  #include <unistd.h>
+  #include <sys/stat.h>
+  #include <time.h>
+  #include <signal.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <pthread.h>
+
+
+
   #include <xmlstring.h>
   #include <string.h>
   #include "procdefs.h"
@@ -31,8 +42,10 @@
   /* put your static variables here */
 
   static boolean alarma_enabled;
-
-
+  volatile pthread_t alarma_tid;
+  static unsigned int hora_alarma;
+  static unsigned int minuto_alarma;
+  static unsigned int segundo_alarma;
 
   /********************************************************************
   * FUNCTION y_alarma_fulgor_init_static_vars
@@ -51,7 +64,9 @@
 
     /* init your static variables here */
     alarma_enabled = FALSE;
-
+    hora_alarma = 0;
+    minuto_alarma = 0;
+    segundo_alarma = 0;
 
   } /* y_alarma_fulgor_init_static_vars */
 
@@ -80,6 +95,8 @@
     status_t res = NO_ERR;
     val_value_t *errorval = (curval) ? curval : newval;
 
+
+     
     if (LOGDEBUG) {
       log_debug("\nEnter alarma_fulgor_alarma_fulgor_horas_edit callback for %s phase",
         agt_cbtype_name(cbtyp));
@@ -94,6 +111,7 @@
       break;
     case AGT_CB_COMMIT:
       /* device instrumentation done here */
+      hora_alarma = VAL_UINT8(newval);
       switch (editop) {
       case OP_EDITOP_LOAD:
         break;
@@ -171,6 +189,7 @@
       break;
     case AGT_CB_COMMIT:
       /* device instrumentation done here */
+    minuto_alarma = VAL_UINT8(newval);
       switch (editop) {
       case OP_EDITOP_LOAD:
         break;
@@ -248,6 +267,7 @@
       break;
     case AGT_CB_COMMIT:
       /* device instrumentation done here */
+    segundo_alarma = VAL_UINT8(newval);
       switch (editop) {
       case OP_EDITOP_LOAD:
         break;
@@ -678,6 +698,40 @@
   } /* y_alarma_fulgor_alarma_fulgor_activate_validate */
 
 
+
+    static void *
+oven_thread(void *arg)
+{
+    int rc;
+    rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    unsigned int hora;
+    unsigned int minuto;
+    unsigned int segundo;
+    while (alarma_tid) {
+        time_t rawtime;
+        struct tm *info;
+        char buffer[80];
+        time( &rawtime );
+        info = localtime( &rawtime );
+        strftime(buffer,80,"%x - %I:%M%p", info);
+        hora=info->tm_hour;
+        minuto=info->tm_min;
+        segundo=info->tm_sec;
+        if(hora==hora_alarma && minuto==minuto_alarma && segundo==segundo_alarma)
+        {   
+            y_alarma_fulgor_alarma_fulgor_sonido_send((const xmlChar *)"hola?");
+            sleep(0.9);
+            alarma_tid=0;
+            return NULL; 
+        }
+        sleep(0.9);
+    }
+    return NULL;
+}
+
+
+
+
   /********************************************************************
   * FUNCTION y_alarma_fulgor_alarma_fulgor_activate_invoke
   * 
@@ -721,6 +775,13 @@
 
     if (xmlStrEqual(comando,(const xmlChar *)"activar")) {
       log_debug("\n******ALARMA ACTIVADA******");
+
+      if (alarma_tid == 0) {
+       
+        pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
+
+        } 
+
     }
     
     return res;
