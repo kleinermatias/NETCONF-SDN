@@ -66,7 +66,7 @@ module cli-mxp {
               "Potencia de salida de EDFA.";
             type decimal64 {
                 fraction-digits 2;
-                range "4.0 .. 6.0";
+                range "4 .. 6";
             }
         }
     }
