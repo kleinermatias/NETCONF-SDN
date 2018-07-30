@@ -48,7 +48,7 @@ static val_value_t *mux_config_val;
 /* put your static variables here */
 Monitor *pt_monitor_struct;
 int shmfd;
-float edfa_output_power;
+float edfa_output_power_conf;
 volatile pthread_t alarma_tid;
 
 
@@ -62,7 +62,7 @@ oven_thread(void *arg)
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     while (alarma_tid) {
-        if(edfa_output_power > 5.00)
+        if(pt_monitor_struct->edfa_struct.edfa_output_power > 5.00)
         {   
             y_cli_mxp_mux_notify_send((const xmlChar *)"hola?");
         }
@@ -148,7 +148,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_config_val = NULL;
 
   /* init your static variables here */
-  edfa_output_power=0.0;
+  edfa_output_power_conf=0.0;
 } /* y_cli_mxp_init_static_vars */
 
 
@@ -729,7 +729,7 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
-    edfa_output_power = VAL_DEC64(newval);
+    edfa_output_power_conf = VAL_DEC64(newval);
 
     switch (editop) {
     case OP_EDITOP_LOAD:
