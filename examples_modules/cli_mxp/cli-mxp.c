@@ -1167,9 +1167,15 @@ static status_t y_cli_mxp_mux_apply_invoke (
   }
 
   else if (xmlStrEqual(comando,(const xmlChar *)"cambios")) {
-    char command[50];
-    strcpy( command, "settings --potencia 5" );
-    int system(command);
+    char str[80];
+    char buff[80];
+
+    ftoa(edfa_output_power_conf, buff, 2);
+
+    strcpy (str,"settings ");
+    strcat (str,"--potencia ");
+    strcat (str,buff);
+    int system(str);
   }
 
   else{
