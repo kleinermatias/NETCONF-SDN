@@ -41,14 +41,6 @@
 #include "xml_util.h"
 #include "cli-mxp.h"
 
-/* mux includes */
-#include "../../mxp40G/lib/hl_configs/definitions.h"
-#include <sys/mman.h>
-#include <sys/stat.h>        /* For mode constants */
-#include <fcntl.h>
-#include<stdio.h>
-#include<math.h>
-
 /* module static variables */
 static ncx_module_t *cli_mxp_mod;
 static obj_template_t *mux_config_obj;
@@ -57,10 +49,18 @@ static obj_template_t *mux_apply_obj;
 static obj_template_t *mux_notify_obj;
 static val_value_t *mux_config_val;
 
+/* mux includes */
+#include "../../mxp40G/lib/hl_configs/definitions.h"
+#include <sys/mman.h>
+#include <sys/stat.h>   /* For mode constants */
+#include <fcntl.h>
+#include<stdio.h>
+#include<math.h>
+
+
 /* put your static variables here */
 Monitor *pt_monitor_struct;
 int shmfd;
-
 
 
 // reverses a string 'str' of length 'len'
@@ -123,6 +123,8 @@ void ftoa(float n, char *res, int afterpoint)
         intToStr((int)fpart, res + i + 1, afterpoint);
     }
 }
+
+
 
 /********************************************************************
 * FUNCTION y_cli_mxp_init_static_vars
@@ -684,6 +686,83 @@ static status_t cli_mxp_mux_config_cd_compensacion_edit (
 
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_config_edfa_output_power_config_edit
+* 
+* Edit database object callback
+* Path: /mux-config/edfa_output_power_config
+* Add object instrumentation in COMMIT phase.
+* 
+* INPUTS:
+*     see agt/agt_cb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  agt_cbtyp_t cbtyp,
+  op_editop_t editop,
+  val_value_t *newval,
+  val_value_t *curval)
+{
+  status_t res = NO_ERR;
+  val_value_t *errorval = (curval) ? curval : newval;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_config_edfa_output_power_config_edit callback for %s phase",
+      agt_cbtype_name(cbtyp));
+  }
+
+  switch (cbtyp) {
+  case AGT_CB_VALIDATE:
+    /* description-stmt validation here */
+    break;
+  case AGT_CB_APPLY:
+    /* database manipulation done here */
+    break;
+  case AGT_CB_COMMIT:
+    /* device instrumentation done here */
+    switch (editop) {
+    case OP_EDITOP_LOAD:
+      break;
+    case OP_EDITOP_MERGE:
+      break;
+    case OP_EDITOP_REPLACE:
+      break;
+    case OP_EDITOP_CREATE:
+      break;
+    case OP_EDITOP_DELETE:
+      break;
+    default:
+      res = SET_ERROR(ERR_INTERNAL_VAL);
+    }
+    break;
+  case AGT_CB_ROLLBACK:
+    /* undo device instrumentation here */
+    break;
+  default:
+    res = SET_ERROR(ERR_INTERNAL_VAL);
+  }
+
+  if (res != NO_ERR) {
+    agt_record_error(
+      scb,
+      &msg->mhdr,
+      NCX_LAYER_CONTENT,
+      res,
+      NULL,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval);
+  }
+  return res;
+
+} /* cli_mxp_mux_config_edfa_output_power_config_edit */
+
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_config_edit
 * 
 * Edit database object callback
@@ -765,10 +844,10 @@ static status_t cli_mxp_mux_config_edit (
 } /* cli_mxp_mux_config_edit */
 
 /********************************************************************
-* FUNCTION cli_mxp_mux_state_fpga_temperature_get
+* FUNCTION cli_mxp_mux_state_fpga_temperature_state_get
 * 
 * Get database object callback
-* Path: /mux-state/fpga_temperature
+* Path: /mux-state/fpga_temperature_state
 * Fill in 'dstval' contents
 * 
 * INPUTS:
@@ -777,7 +856,7 @@ static status_t cli_mxp_mux_config_edit (
 * RETURNS:
 *     error status
 ********************************************************************/
-static status_t cli_mxp_mux_state_fpga_temperature_get (
+static status_t cli_mxp_mux_state_fpga_temperature_state_get (
   ses_cb_t *scb,
   getcb_mode_t cbmode,
   const val_value_t *virval,
@@ -787,7 +866,7 @@ static status_t cli_mxp_mux_state_fpga_temperature_get (
   const xmlChar *fpga_temperatures;
 
   if (LOGDEBUG) {
-    log_debug("\nEnter cli_mxp_mux_state_fpga_temperature_get callback");
+    log_debug("\nEnter cli_mxp_mux_state_fpga_temperature_state_get callback");
   }
 
 
@@ -801,8 +880,8 @@ static status_t cli_mxp_mux_state_fpga_temperature_get (
     return ERR_NCX_OPERATION_NOT_SUPPORTED;
   }
 
+  /* set the fpga_temperature_state var here, change zero */
 
-  
 
   char buff[20];
 
@@ -818,13 +897,13 @@ static status_t cli_mxp_mux_state_fpga_temperature_get (
 
   return res;
 
-} /* cli_mxp_mux_state_fpga_temperature_get */
+} /* cli_mxp_mux_state_fpga_temperature_state_get */
 
 /********************************************************************
-* FUNCTION cli_mxp_mux_state_board_temperature_get
+* FUNCTION cli_mxp_mux_state_board_humidity_state_get
 * 
 * Get database object callback
-* Path: /mux-state/board_temperature
+* Path: /mux-state/board_humidity_state
 * Fill in 'dstval' contents
 * 
 * INPUTS:
@@ -833,17 +912,17 @@ static status_t cli_mxp_mux_state_fpga_temperature_get (
 * RETURNS:
 *     error status
 ********************************************************************/
-static status_t cli_mxp_mux_state_board_temperature_get (
+static status_t cli_mxp_mux_state_board_humidity_state_get (
   ses_cb_t *scb,
   getcb_mode_t cbmode,
   const val_value_t *virval,
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *board_temperature;
+  int16 board_humidity_state;
 
   if (LOGDEBUG) {
-    log_debug("\nEnter cli_mxp_mux_state_board_temperature_get callback");
+    log_debug("\nEnter cli_mxp_mux_state_board_humidity_state_get callback");
   }
 
 
@@ -857,24 +936,19 @@ static status_t cli_mxp_mux_state_board_temperature_get (
     return ERR_NCX_OPERATION_NOT_SUPPORTED;
   }
 
-  /* set the board_temperature var here, change zero */
-  board_temperature = (const xmlChar *)"10";
-  
+  /* set the board_humidity_state var here, change zero */
+  board_humidity_state = 0;
+  VAL_INT16(dstval) = board_humidity_state;
 
-  res = val_set_simval_obj(
-    dstval,
-    dstval->obj,
-    board_temperature);
-  
   return res;
 
-} /* cli_mxp_mux_state_board_temperature_get */
+} /* cli_mxp_mux_state_board_humidity_state_get */
 
 /********************************************************************
-* FUNCTION cli_mxp_mux_state_board_humidity_get
+* FUNCTION cli_mxp_mux_state_edfa_output_power_state_get
 * 
 * Get database object callback
-* Path: /mux-state/board_humidity
+* Path: /mux-state/edfa_output_power_state
 * Fill in 'dstval' contents
 * 
 * INPUTS:
@@ -883,17 +957,17 @@ static status_t cli_mxp_mux_state_board_temperature_get (
 * RETURNS:
 *     error status
 ********************************************************************/
-static status_t cli_mxp_mux_state_board_humidity_get (
+static status_t cli_mxp_mux_state_edfa_output_power_state_get (
   ses_cb_t *scb,
   getcb_mode_t cbmode,
   const val_value_t *virval,
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *board_humidity;
+  int64 edfa_output_power_state;
 
   if (LOGDEBUG) {
-    log_debug("\nEnter cli_mxp_mux_state_board_humidity_get callback");
+    log_debug("\nEnter cli_mxp_mux_state_edfa_output_power_state_get callback");
   }
 
 
@@ -907,16 +981,16 @@ static status_t cli_mxp_mux_state_board_humidity_get (
     return ERR_NCX_OPERATION_NOT_SUPPORTED;
   }
 
-  /* set the board_humidity var here, change zero */
-  board_humidity = (const xmlChar *)"0";
+  /* set the edfa_output_power_state var here, change zero */
+  edfa_output_power_state = (const xmlChar *)"0.0";
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
-    board_humidity);
+    edfa_output_power_state);
 
   return res;
 
-} /* cli_mxp_mux_state_board_humidity_get */
+} /* cli_mxp_mux_state_edfa_output_power_state_get */
 
 
 /********************************************************************
@@ -941,11 +1015,11 @@ static status_t
     return res;
   }
 
-  /* add /mux-state/fpga_temperature */
+  /* add /mux-state/fpga_temperature_state */
   childval = agt_make_virtual_leaf(
     parentval->obj,
-    y_cli_mxp_N_fpga_temperature,
-    cli_mxp_mux_state_fpga_temperature_get,
+    y_cli_mxp_N_fpga_temperature_state,
+    cli_mxp_mux_state_fpga_temperature_state_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);
@@ -953,11 +1027,11 @@ static status_t
     return res;
   }
 
-  /* add /mux-state/board_temperature */
+  /* add /mux-state/board_humidity_state */
   childval = agt_make_virtual_leaf(
     parentval->obj,
-    y_cli_mxp_N_board_temperature,
-    cli_mxp_mux_state_board_temperature_get,
+    y_cli_mxp_N_board_humidity_state,
+    cli_mxp_mux_state_board_humidity_state_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);
@@ -965,11 +1039,11 @@ static status_t
     return res;
   }
 
-  /* add /mux-state/board_humidity */
+  /* add /mux-state/edfa_output_power_state */
   childval = agt_make_virtual_leaf(
     parentval->obj,
-    y_cli_mxp_N_board_humidity,
-    cli_mxp_mux_state_board_humidity_get,
+    y_cli_mxp_N_edfa_output_power_state,
+    cli_mxp_mux_state_edfa_output_power_state_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);
@@ -1262,6 +1336,15 @@ status_t y_cli_mxp_init (
     return res;
   }
 
+  res = agt_cb_register_callback(
+    y_cli_mxp_M_cli_mxp,
+    (const xmlChar *)"/mux-config/edfa_output_power_config",
+    y_cli_mxp_R_cli_mxp,
+    cli_mxp_mux_config_edfa_output_power_config_edit);
+  if (res != NO_ERR) {
+    return res;
+  }
+
 
   /* put your module initialization code here */
   shmfd = shm_open(SHMOBJ_PATH, O_CREAT | O_RDWR, S_IRWXU | S_IRWXG);
@@ -1281,8 +1364,6 @@ status_t y_cli_mxp_init (
     perror("In mmap()");
     exit(1);
   }
-
-
 
   return res;
 } /* y_cli_mxp_init */
@@ -1361,14 +1442,17 @@ void y_cli_mxp_cleanup (void)
     y_cli_mxp_M_cli_mxp,
     (const xmlChar *)"/mux-config/cd_compensacion");
 
+  agt_cb_unregister_callbacks(
+    y_cli_mxp_M_cli_mxp,
+    (const xmlChar *)"/mux-config/edfa_output_power_config");
 
-  /* put your cleanup code here */
+    /* put your cleanup code here */
   
   if (close(shmfd) != 0)
       {
         printf("Error closing the SHM \n");
       }
-
+  
 } /* y_cli_mxp_cleanup */
 
 /* END cli_mxp.c */

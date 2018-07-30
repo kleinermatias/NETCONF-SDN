@@ -60,6 +60,14 @@ module cli-mxp {
               "cd_compensacion especifica la compensación de dispersion cromática.";
             type string;
         }
+
+        leaf edfa_output_power_config {
+            description
+              "Potencia de salida de EDFA.";
+            type decimal64 {
+                fraction-digits 2;
+            }
+        }
     }
 
 
@@ -68,21 +76,23 @@ module cli-mxp {
 
         config false;
 
-        leaf fpga_temperature {
-            description "Ultimo valor entrada";
+        leaf fpga_temperature_state {
+            description "Temperatura de la FPGA";
             type decimal64 {
                 fraction-digits 2;
             }
         }
 
-        leaf board_temperature {
-            description "Ultimo valor salida";
+        leaf board_humidity_state {
+            description "Humedad de la placa";
             type int16;
         }
 
-        leaf board_humidity {
-            description "Ultimo valor salida";
-            type int16;
+        leaf edfa_output_power_state {
+            description "Potencia de salida EDFA";
+            type decimal64 {
+                fraction-digits 2;
+            }
         }
 
     }

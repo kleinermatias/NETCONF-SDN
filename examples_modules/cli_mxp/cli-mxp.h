@@ -36,13 +36,14 @@ extern "C" {
 #define y_cli_mxp_M_cli_mxp (const xmlChar *)"cli-mxp"
 #define y_cli_mxp_R_cli_mxp (const xmlChar *)"2018-06-24"
 
-#define y_cli_mxp_N_board_humidity (const xmlChar *)"board_humidity"
-#define y_cli_mxp_N_board_temperature (const xmlChar *)"board_temperature"
+#define y_cli_mxp_N_board_humidity_state (const xmlChar *)"board_humidity_state"
 #define y_cli_mxp_N_canal (const xmlChar *)"canal"
 #define y_cli_mxp_N_cd_compensacion (const xmlChar *)"cd_compensacion"
 #define y_cli_mxp_N_comando (const xmlChar *)"comando"
 #define y_cli_mxp_N_configuracion (const xmlChar *)"configuracion"
-#define y_cli_mxp_N_fpga_temperature (const xmlChar *)"fpga_temperature"
+#define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
+#define y_cli_mxp_N_edfa_output_power_state (const xmlChar *)"edfa_output_power_state"
+#define y_cli_mxp_N_fpga_temperature_state (const xmlChar *)"fpga_temperature_state"
 #define y_cli_mxp_N_mux_apply (const xmlChar *)"mux-apply"
 #define y_cli_mxp_N_mux_config (const xmlChar *)"mux-config"
 #define y_cli_mxp_N_mux_notify (const xmlChar *)"mux-notify"
@@ -64,13 +65,14 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *canal;
   xmlChar *potencia;
   xmlChar *cd_compensacion;
+  int64 edfa_output_power_config;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */
 typedef struct y_cli_mxp_T_mux_state_ {
-  int64 fpga_temperature;
-  int16 board_temperature;
-  int16 board_humidity;
+  int64 fpga_temperature_state;
+  int16 board_humidity_state;
+  int64 edfa_output_power_state;
 } y_cli_mxp_T_mux_state;
 
 /* container /mux-apply/input */
