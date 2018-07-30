@@ -70,7 +70,9 @@ module cli-mxp {
 
         leaf fpga_temperature {
             description "Ultimo valor entrada";
-            type decimal64;
+            type decimal64 {
+                fraction-digits 2;
+            }
         }
 
         leaf board_temperature {
