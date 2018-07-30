@@ -36,15 +36,40 @@ static val_value_t *mux_config_val;
 #include <fcntl.h>
 #include<stdio.h>
 #include<math.h>
-#include <stdio.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <time.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <pthread.h>
 
 
 /* put your static variables here */
 Monitor *pt_monitor_struct;
 int shmfd;
 float edfa_output_power;
+volatile pthread_t alarma_tid;
 
+
+
+
+
+
+static void *
+oven_thread(void *arg)
+{
+    int rc;
+    rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    while (alarma_tid) {
+        if(edfa_output_power > 5.00)
+        {   
+            y_cli_mxp_mux_notify_send((const xmlChar *)"hola?");
+        }
+        sleep(5);
+    }
+    return NULL;
+}
 
 // reverses a string 'str' of length 'len'
 void reverse(char *str, int len)
