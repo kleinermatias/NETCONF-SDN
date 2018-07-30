@@ -48,7 +48,7 @@ static val_value_t *mux_config_val;
 /* put your static variables here */
 Monitor *pt_monitor_struct;
 int shmfd;
-float edfa_output_power_conf;
+const xmlChar *edfa_output_power_conf;
 volatile pthread_t alarma_tid;
 
 
@@ -729,7 +729,7 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
-    edfa_output_power_conf = VAL_DEC64(newval);
+    edfa_output_power_conf = VAL_STRING(newval);
 
     switch (editop) {
     case OP_EDITOP_LOAD:
@@ -1170,11 +1170,9 @@ static status_t y_cli_mxp_mux_apply_invoke (
     char str[80];
     char buff[80];
 
-    ftoa(edfa_output_power_conf, buff, 2);
-
     strcpy (str,"settings ");
     strcat (str,"--potencia ");
-    strcat (str,buff);
+    strcat (str,edfa_output_power_conf);
     printf("\n COMANDO : %s\n", str);
     system(str);
   }
