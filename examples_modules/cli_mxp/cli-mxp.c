@@ -36,6 +36,8 @@ static val_value_t *mux_config_val;
 #include <fcntl.h>
 #include<stdio.h>
 #include<math.h>
+#include <stdio.h>
+#include <string.h>
 
 
 /* put your static variables here */
@@ -1127,6 +1129,17 @@ static status_t y_cli_mxp_mux_apply_invoke (
 
   /* invoke your device instrumentation code here */
   
+  if (xmlStrEqual(comando,(const xmlChar *)"activar")) {
+      log_debug("\n******ALARMA ACTIVADA******");
+
+      if (alarma_tid == 0) {
+       
+        pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
+
+        } 
+
+  }
+
   return res;
 
 } /* y_cli_mxp_mux_apply_invoke */
