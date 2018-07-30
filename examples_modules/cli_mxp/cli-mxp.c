@@ -42,7 +42,7 @@
 #include "cli-mxp.h"
 
 /* mux includes */
-#include "/home/mkleiner/mxp40G/lib/hl_configs/definitions.h"
+#include "../../mxp40G/lib/hl_configs/definitions.h"
 #include <sys/mman.h>
 #include <sys/stat.h>        /* For mode constants */
 #include <fcntl.h>
@@ -1310,3 +1310,4 @@ void y_cli_mxp_cleanup (void)
 } /* y_cli_mxp_cleanup */
 
 /* END cli_mxp.c */
+

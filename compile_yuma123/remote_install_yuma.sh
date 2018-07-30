@@ -44,7 +44,6 @@ rm -r -f ./$arch/output/tmp/lib/*.la
 rm -r -f ./$arch/output/tmp/lib/*.a
 rm -r -f ./$arch/output/tmp/lib/yuma/*.la
 rm -r -f ./$arch/output/tmp/lib/yuma/*.a
-rm -r -f ./$arch/output/tmp/lib/libxml2.so*
 
 scp -r ./$arch/output/tmp $user@$host:/root/usrapp
 
