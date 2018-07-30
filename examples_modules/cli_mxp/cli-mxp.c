@@ -1175,11 +1175,12 @@ static status_t y_cli_mxp_mux_apply_invoke (
   else{
         if (alarma_tid != 0) {
         /* the oven should be turned off but is on (stop the oven thread) */
-        int rc = pthread_cancel(alarma_tid);
-        rc = pthread_join(alarma_tid, &resp);
-        if (resp == PTHREAD_CANCELED){
-        printf("main(): thread was canceled\n");
-        alarma_tid=0;
+          int rc = pthread_cancel(alarma_tid);
+          rc = pthread_join(alarma_tid, &resp);
+          if (resp == PTHREAD_CANCELED){
+            printf("main(): thread was canceled\n");
+            alarma_tid=0;
+          }
         }
       }
 
