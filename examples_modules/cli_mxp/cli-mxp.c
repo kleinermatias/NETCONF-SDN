@@ -41,6 +41,7 @@ static val_value_t *mux_config_val;
 /* put your static variables here */
 Monitor *pt_monitor_struct;
 int shmfd;
+float edfa_output_power;
 
 
 // reverses a string 'str' of length 'len'
@@ -56,8 +57,8 @@ void reverse(char *str, int len)
     }
 }
 
- // Converts a given integer x to string str[].  d is the number
- // of digits required in output. If d is more than the number
+   // Converts a given integer x to string str[].  d is the number
+   // of digits required in output. If d is more than the number
  // of digits in x, then 0s are added at the beginning.
 int intToStr(int x, char str[], int d)
 {
@@ -120,7 +121,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_config_val = NULL;
 
   /* init your static variables here */
-
+  edfa_output_power=0.0;
 } /* y_cli_mxp_init_static_vars */
 
 
@@ -701,6 +702,8 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
+    edfa_output_power = VAL_DEC64(newval);
+
     switch (editop) {
     case OP_EDITOP_LOAD:
       break;
