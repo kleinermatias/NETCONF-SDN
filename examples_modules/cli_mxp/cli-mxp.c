@@ -1153,17 +1153,36 @@ static status_t y_cli_mxp_mux_apply_invoke (
   (void)methnode;
 
   /* invoke your device instrumentation code here */
-  
-  if (xmlStrEqual(comando,(const xmlChar *)"activar")) {
+  void *resp;
+
+  if (xmlStrEqual(comando,(const xmlChar *)"activar noti")) {
       log_debug("\n******ALARMA ACTIVADA******");
 
       if (alarma_tid == 0) {
        
-        pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
+          pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
 
         } 
 
   }
+
+  if (xmlStrEqual(comando,(const xmlChar *)"aplicar cambios")) {
+    char command[50];
+    strcpy( command, "settings --potencia 5" );
+    int system(command);
+  }
+
+  else{
+        if (alarma_tid != 0) {
+        /* the oven should be turned off but is on (stop the oven thread) */
+        int rc = pthread_cancel(alarma_tid);
+        rc = pthread_join(alarma_tid, &resp);
+        if (resp == PTHREAD_CANCELED){
+        printf("main(): thread was canceled\n");
+        alarma_tid=0;
+        }
+      }
+
 
   return res;
 
