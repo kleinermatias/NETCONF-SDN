@@ -732,7 +732,7 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
     edfa_output_power_conf = VAL_DEC64(newval)/100.00;
 
 
-    
+
     switch (editop) {
     case OP_EDITOP_LOAD:
       break;
@@ -929,7 +929,7 @@ static status_t cli_mxp_mux_state_board_humidity_state_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  int16 board_humidity_state;
+  const xmlChar *board_humidity_state;
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_board_humidity_state_get callback");
@@ -947,7 +947,13 @@ static status_t cli_mxp_mux_state_board_humidity_state_get (
   }
 
   /* set the board_humidity_state var here, change zero */
-  board_humidity_state = 0;
+  /* set the fpga_temperature var here, change zero */
+  board_humidity_state = (const xmlChar *)pt_monitor_struct->general_struct.board_humidity;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    board_humidity_state);
+
 
   return res;
 
