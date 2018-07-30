@@ -1,0 +1,40 @@
+config
+
+	Command description
+
+		This command sets the operating mode of both client and server ports.
+
+        
+	Syntax
+        
+        config [PARAMETERS] 
+        
+        PARAMETER:
+			-p | --port
+			-m | --mode
+			-l | --line
+			-c | --channel
+			-b | --band
+			
+			
+        PARAMETER 			DESCRIPTION
+		
+        port				Select the port to be configured. The available ports are 0,1,2,3
+		
+        mode				Sets the working mode of the selected port (either Ethernet or OTN).
+		
+        line				Indicates that you are configuring the server port.
+		
+		channel				Configure the Laser ITU channel. Possible values ​​are between MIN and MAX.
+		
+		band				Configure the laser ITU band. Passible values are C-band and L-band.
+
+	
+	Examples
+
+		# config --port 1 --mode eth  
+		Configure port 1 in ethernet mode
+
+		#config --line --channel 19000 --band C
+		Configure server port with laser ITU channel values.	
+  							

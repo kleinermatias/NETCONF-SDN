@@ -1,0 +1,138 @@
+---------- Alarms ----------
+
+ (0)_Power B 
+ (1)_Power A 
+ (2)_Fan 1 
+ (3)_Fan 2 
+ (4)_Fan 3 
+ (5)_Fan 4 
+ (6)_Fan 5 
+ (7)_XFP 1 Presence
+ (8)_XFP 1 Loss
+ (9)_XFP 1 Ready
+(10)_XFP 1 Interrupt 
+(11)_XFP 2 Presence 
+(12)_XFP 2 Loss 
+(13)_XFP 2 Ready 
+(14)_XFP 2 Interrupt 
+(15)_XFP 3 Presence 
+(16)_XFP 3 Loss 
+(17)_XFP 3 Ready 
+(18)_XFP 3 Interrupt 
+(19)_XFP 4 Presence 
+(20)_XFP 4 Loss 
+(21)_XFP 4 Ready 
+(22)_XFP 4 Interrupt 
+(23)_XFP 1 Low Tx Power Alarm 
+(24)_XFP 1 High Tx Power Alarm 
+(25)_XFP 1 Low Rx Power Alarm 
+(26)_XFP 1 High Rx Power Alarm 
+(27)_XFP 1 Rx CDR Loss of Lock 
+(28)_XFP 1 Tx CDR Loss of Lock 
+(29)_XFP 1 Laser Fault 
+(30)_XFP 2 Low Tx Power Alarm 
+(31)_XFP 2 High Tx Power Alarm 
+(32)_XFP 2 Low Rx Power Alarm 
+(33)_XFP 2 High Rx Power Alarm 
+(34)_XFP 2 Rx CDR Loss of Lock 
+(35)_XFP 2 Tx CDR Loss of Lock 
+(36)_XFP 2 Laser Fault 
+(37)_XFP 3 Low Tx Power Alarm 
+(38)_XFP 3 High Tx Power Alarm 
+(39)_XFP 3 Low Rx Power Alarm 
+(40)_XFP 3 High Rx Power Alarm 
+(41)_XFP 3 Rx CDR Loss of Lock 
+(42)_XFP 3 Tx CDR Loss of Lock 
+(43)_XFP 3 Laser Fault 
+(44)_XFP 4 Low Tx Power Alarm 
+(45)_XFP 4 High Tx Power Alarm 
+(46)_XFP 4 Low Rx Power Alarm 
+(47)_XFP 4 High Rx Power Alarm 
+(48)_XFP 4 Rx CDR Loss of Lock 
+(49)_XFP 4 Tx CDR Loss of Lock 
+(50)_XFP 4 Laser Fault 
+(51)_EDFA LOS 
+(52)_EDFA LOP 
+(53)_EDFA Amp. stat 
+(54)_Tx/Rx EOL ALM 
+(55)_Tx/Rx Mod TEMP ALM 
+(56)_Tx/Rx TxOOA 
+(57)_Tx/Rx Tx LOF ALM 
+(58)_Tx/Rx Tx DSC ERR 
+(59)_Tx/Rx Ls WAV ALM 
+(60)_Tx/Rx Tx ALM INT 
+(61)_Tx/Rx Ls BIAS ALM 
+(62)_Tx/Rx Ls TEMP ALM 
+(63)_Tx/Rx Tx LOCK ERR 
+(64)_Tx/Rx Ls POW ALM 
+(65)_Tx/Rx Mod BIAS ALM 
+(66)_Tx/Rx LATCHED TxFIFO ERR 
+(67)_Tx/Rx RxALM INT 
+(68)_Tx/Rx Rx POW ALM 
+(69)_Tx/Rx Rx LOS 
+(70)_Tx/Rx Rx LOCK ERR 
+(71)_Tx/Rx RXS 
+(72)_Tx/Rx PRBS ERR DET 
+(73)_Power PSUMMARY 
+(74)_Power P5VANALOG 
+(75)_Power N5V2ANALOG 
+(76)_Power P3P3VANALOG 
+(77)_Power P3P3VDIGITAL 
+(78)_Power LVDIGITAL 
+(79)_Power N5P2VDIGITAL 
+(80)_Misc. Loss 
+(81)_Misc. Interrupt 
+(82)_DSP DSP running 
+(83)_DSP CONVERGED 
+(84)_DSP MSE below threshold 
+(85)_DSP BCD Enabled 
+(86)_DSP Coarse Carrier Lock 
+(87)_DSP Collision 
+(88)_DSP DSP Initialized 
+(89)_DSP Presence of light 
+(90)_DSP Local Oscillator running 
+(91)_DSP Transmit Laser running 
+
+---------- Numeric Values ----------
+
+ (0)_XFP 1 Tx Power [dBm]
+ (1)_XFP 1 Rx Power [dBm]
+ (2)_XFP 1 Temp. [C]
+ (3)_XFP 2 Tx Power [dBm]
+ (4)_XFP 2 Rx Power [dBm]
+ (5)_XFP 2 Temp. [C]
+ (6)_XFP 3 Tx Power [dBm]
+ (7)_XFP 3 Rx Power [dBm]
+ (8)_XFP 3 Temp. [C]
+ (9)_XFP 4 Tx Power [dBm]
+(10)_XFP 4 Rx Power [dBm] 
+(11)_XFP 4 Temp. [C] 
+(12)_T41 Around Temp. [C] 
+(13)_T41 TS0 Temp. [C] 
+(14)_T41 TS1 Temp. [C] 
+(15)_T41 TS2 Temp. [C] 
+(16)_FPGA Temp. [C] 
+(17)_BOARD Temp. [C] 
+(18)_BOARD Humidity [%RH] 
+(19)_EDFA POUT [dBm] 
+(20)_EDFA PIN [dBm] 
+(21)_EDFA Temp. [C] 
+(22)_Misc. Temp. Around 
+(23)_Misc. Temp. Case 
+(24)_Misc. Temp. Tx Laser 
+(25)_Misc. Temp. Rx Laser 
+(26)_Misc. Tx Power [dBm] 
+(27)_Misc. Rx Power [dBm]
+(28)_Misc. Tx Laser ITU Band 
+(29)_Misc. Tx Laser ITU Channel 
+(30)_Misc. Rx Laser ITU Band 
+(31)_Misc. Rx Laser ITU Channel 
+(32)_DSP MSE XI 
+(33)_DSP MSE XQ 
+(34)_DSP MSE YI 
+(35)_DSP MSE YQ 
+(36)_DSP BER Estimate 
+(37)_DSP Min. Bulk CD Compensation [ps/nm] 
+(38)_DSP Max. Bulk CD Compensation [ps/nm] 
+(39)_DSP Step Size [ps/nm] 
+(40)_DSP CD Compensation [ps/nm]

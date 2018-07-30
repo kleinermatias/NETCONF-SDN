@@ -1,0 +1,111 @@
+	#ifndef MONITOR_H_
+#define MONITOR_H_
+
+#include "fan.h"
+//#include "../../lib/xfp/hl_xfp.h"
+#include "qsfp.h"
+#include "gpio.h"
+#include "tmp.h"
+#include "power_supply.h"
+#include "ltc.h"
+#include "led.h"
+//#include "../../lib/edfa/hl_edfa.h"
+//#include "../../lib/txp/hl_txp.h"
+#include "hmd.h"
+#include "i2crw.h"
+#include "cs6041.h"
+#include "utils.h"
+#include "version.h"
+
+#include "stdio.h"
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include <signal.h>
+#include <termios.h>
+#include <fcntl.h>
+#include <getopt.h>
+
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "../../lib/util/util.h"
+
+#include "hl_configs.h"
+
+#include "filelock.h"
+
+size_t SHM_SIZE = sizeof(Monitor);
+
+#define ALL_DEV	0
+#define QSFP	1
+
+#define MONITOR_SLEEP_TIME 3
+#define CANT_ALARMS  92 /* cantidad de alarmas */
+#define CANT_VALUES 41 /*cantidad de valores numericos */
+
+#define XFP_MONITOR 			1
+#define ENV_MONITOR				1
+#define POWER_FAN_MONITOR		1
+#define CS6041_MONITOR			1
+#define	EDFA_MONITOR			1
+#define	MOD_40G_MONITOR			1
+#define FPGA_MONITOR			1
+#define SUMMARY					1
+#define GENERAL					1
+
+#define CONSOLE_OUTPUT			0
+
+#define edfa_overtemp			60.0 // 70ºC - datasheet
+
+/*
+ * From XFP datasheet:
+ * Maximum Temperature = 70 ºC
+ */
+#define XFP_OVERTEMP			60.0
+
+/*
+ * From Oclaro datasheet:
+ * Case Temperature (recommended operating conditions max) = 70 ºC
+ */
+#define TXP_CASE_OVERTEMP		60.0
+#define TXP_TX_LASER_OVERTEMP	60.0
+#define TXP_RX_LASER_OVERTEMP	60.0
+
+/*
+ * From cs6041 datasheet:
+ * Tj (absolute max) = 125 ºC
+ * Tj (recommended operating conditions max) = 110 ºC
+ */
+#define CS6041_OVERTEMP			70.0
+
+#define DEBUG_MONITOR			1
+
+void power_and_fan_status(unsigned int* power_value, unsigned int* fan_value, FILE *file, unsigned int log_file);
+void power_supply_status(unsigned int power_a, unsigned int power_b, FILE *file, unsigned int log_file);
+void fan_status(unsigned int* fan_value, FILE *file, unsigned int log_file);
+void xfp_status(unsigned int* xfp_presence, unsigned int* xfp_rx_loss, unsigned int* xfp_ready, unsigned int* xfp_interrupt, float* xfp_tx_power, float* xfp_rx_power, float* xfp_temperature, unsigned int xfp_interruption_flags[4][7], FILE *file, unsigned int log_file);
+void cs6041_status(float* cs6041_temperature, FILE *file, unsigned int log_file);
+void edfa_status(Edfa *edfa_struct, FILE *file, unsigned int log_file);
+void fpga_status(float* fpga_temperature, FILE *file, unsigned int log_file);
+void board_status(int* board_temperature, int* board_humidity, FILE *file, unsigned int log_file);
+void general_status(float* cs6041_temperature, float* fpga_temperature, int* board_temperature, int* board_humidity, FILE *file, unsigned int log_file);
+void m40g_status(Txp *pt_txp_struct, FILE *file, unsigned int log_file);
+
+unsigned int report_fault_condition(unsigned int status, char *message, char *debug_msg);
+char* format_int_msg(char* ofim, char* msg, int value);
+char* format_float_msg(char* offm, char* msg, float value);
+char* format_status_msg(char* ofsm, char* msg, unsigned int value);
+unsigned int hardware_check(unsigned int device);
+
+unsigned int xfp_protect_action(FILE *file, unsigned int condition, unsigned int xfp_module);
+unsigned int txp_protect_action(FILE *file, unsigned int condition);
+
+void bin_prnt_byte(char x);
+void bin_prnt_int(int x);
+
+void check_status_to_log (char * pre_status, char * current_status, char * title1, char * title2);
+void value_to_log (char * init_value, char * value, char * title1, char * title2);
+void monitor_log_func (unsigned int * wday, unsigned int * global_counter, unsigned int * init_global_counter, unsigned int counter_limit, char * init_value, char * value, char * total_msg, char * initial_tag, char * init_total_msg, char * init_initial_tag, char * title1, char * title2);
+
+#endif /* MONITOR_H_ */

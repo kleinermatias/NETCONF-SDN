@@ -1,0 +1,100 @@
+show
+
+	Command description
+    
+		This command prints configuration and status information of the different 
+        ports of the system.
+
+
+	Syntax
+        
+        show [OPTIONS] <port_type> <port_id>
+        
+        OPTIONS:
+			-o | --optics
+        
+        PORT TYPES:
+            -p | --port
+			-l | --line
+			
+			
+        PARAMETER 			DESCRIPTION
+		
+		port				Select a client port and show information about it. 
+                            The available ports are 0,1,2,3.
+				
+		line				Show the server port parameters.
+		
+		optics				Show the optical parameters of selected the port. 
+
+
+	Examples
+
+		# show --port 1   
+		OTN Status:
+
+			OTN: 
+				LOS  = 0	LOF  = 0	LOM  = 0	BDI  = 0
+				IAE  = 0	BIP  = 0	BEI  = 0	TIM  = @
+
+			ODU:
+				AIS  = 0	BDI  = 0	OCI  = 0	LCK  = 0	
+				BIP  = 0	BEI  = 0	PTIM = @	TIM  = @
+
+
+		Byte Errors = 0
+		One-Bit Errors = 0
+		Zero-Bit Errors = 0
+		Uncorrectable Block Errors = 0
+
+		# show --port 1
+
+		ETH status:
+
+			Loss of Signal: 00	High BER: 00		Loss of Pattern Sync: 0
+			RS Remote Fault: 0	RS Local Fault: 0
+
+			UNKNOWORDS: 0	REMOTEORDS: 0		LOCALORDS: 0
+
+			XGXS Local Fault: 0	XGXS Remote Fault: 0
+
+			RX XGXS CPAT LOCK: 0	RX XGXS ALIGN DET: 0
+
+			RX_SYNCDET3: 0	RX_SYNCDET2: 0		RX_SYNCDET1: 0			RX_SYNCDET0: 0
+
+			RX:
+				Octets: 0		Good (Valid) Octets: 0			Frames: 0
+				Pause Frames: 0		Errored Frames: 0			Jabbers: 0
+				Undersize Frames: 0
+			TX:
+				Octets: 0		Good (Valid) Octets: 0			Frames: 0
+				Pause Frames: 0		Errored Frames: 0
+
+
+		#show --port 2 --optics
+		
+		OTN Status:
+
+			OTN: 
+				LOS  = 0	LOF  = 0	LOM  = 0	BDI  = 0
+				IAE  = 0	BIP  = 0	BEI  = 0	TIM  = @
+
+			ODU:
+				AIS  = 0	BDI  = 0	OCI  = 0	LCK  = 0	
+				BIP  = 0	BEI  = 0	PTIM = @	TIM  = @
+
+
+			Byte Errors = 0
+			One-Bit Errors = 0
+			Zero-Bit Errors = 0
+			Uncorrectable Block Errors = 0
+		
+		Optics Status: 
+
+			Optical Compatibility: 10GBASE-LR 
+			Wavelength: 
+			TX Power:  
+			RX Power:  
+			RX LOS:  
+
+

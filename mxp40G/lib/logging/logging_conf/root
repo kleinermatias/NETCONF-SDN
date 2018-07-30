@@ -1,0 +1,2 @@
+1 0 * * * sh /var/log/check_dir_size.sh >> /var/log/out_crontab 2>&1
+1 0 * * * sh /var/log/compress_logs.sh >> /var/log/out_crontab 2>&1

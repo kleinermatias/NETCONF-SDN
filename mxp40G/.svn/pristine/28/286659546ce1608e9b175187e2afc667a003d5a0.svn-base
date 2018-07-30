@@ -1,0 +1,89 @@
+#!/bin/ash
+
+ERR_USAGE="USAGE: logs [-wec] \n
+        -w: Include warning messages \n
+        -e: Include error messages \n
+        -c: Include critical messages"
+
+OPTARGS="wec"
+
+FLAG_WARN=1
+FLAG_ERR=1
+FLAG_CRIT=1
+
+
+ARGS=$(getopt -o $OPTARGS -- "$@")
+if [ $? -ne 0 ]; then
+    echo -e $ERR_USAGE
+    exit 1
+fi
+
+eval set -- "$ARGS"
+
+while true; do
+    case $1 in
+        -w)
+            shift;
+            FLAG_WARN=0;
+            ;;
+        -e)
+            shift;
+            FLAG_ERR=0;
+            ;;
+        -c)
+            shift;
+            FLAG_CRIT=0
+            ;;
+        --)
+            shift;
+            break;
+            ;;
+    esac
+done
+
+
+if [ $FLAG_WARN == 1 ] && \
+   [ $FLAG_ERR == 1 ] && \
+   [ $FLAG_CRIT == 1 ]; then
+   echo "Bye"
+   exit 0
+fi
+
+GREP_FILTER=""
+
+if [ $FLAG_WARN == 0 ]; then
+    
+    echo
+    echo "Printing warning messages."
+    echo
+
+    GREP_FILTER="warn"
+    if [ $FLAG_ERR == 0 ] || [ $FLAG_CRIT == 0 ]; then
+        GREP_FILTER=$GREP_FILTER"\|"
+    fi
+fi
+
+if [ $FLAG_ERR == 0 ]; then
+    
+    echo
+    echo "Printing error messages."
+    echo
+
+    GREP_FILTER=$GREP_FILTER"err"
+    if [ $FLAG_CRIT == 0 ]; then
+        GREP_FILTER=$GREP_FILTER"\|"
+    fi
+fi
+
+if [ $FLAG_CRIT == 0 ]; then
+    
+    echo
+    echo "Printing critical messages."
+    echo
+
+    GREP_FILTER=$GREP_FILTER"crit"
+fi
+
+
+grep $GREP_FILTER /var/log/syslog | more
+

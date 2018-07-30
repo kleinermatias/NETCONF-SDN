@@ -1,0 +1,117 @@
+include Makefile.common
+
+MXP_IP=172.16.0.39
+
+all: logging hmd xfp edfa txp tmp qsfp led fan power_supply clk t41 rtc silabs cs6041 utils hl_configs mxml util
+#	$(MAKE) -C app/cli/
+#	$(MAKE) -C app/mond
+#	$(MAKE) -C app/hwcheck
+	$(MAKE) -C app/bringup
+	$(MAKE) -C app/configs
+
+util: logging util
+	$(MAKE) -C lib/util
+	
+t41:
+	$(MAKE) -C lib/CS6041_Release_5.13/T41 CC=$(CC)
+	
+clk: i2c gpio
+	$(MAKE) -C lib/clk
+
+led: gpio
+	$(MAKE) -C lib/led 
+	
+qsfp: i2c bitman gpio ltc
+	$(MAKE) -C lib/qsfp 
+
+tmp: bitman i2c gpio
+	$(MAKE) -C lib/tmp 
+	
+txp: i2c
+	$(MAKE) -C lib/txp
+	
+rtc: i2c
+	$(MAKE) -C lib/rtc 
+	
+logging: logging
+	$(MAKE) -C lib/logging
+		
+edfa: gpio ltc
+	$(MAKE) -C lib/edfa 
+	
+xfp: bitman gpio i2c ltc
+	$(MAKE) -C lib/xfp
+
+hmd: bitman i2c gpio
+	$(MAKE) -C lib/hmd
+	
+fan: gpio
+	$(MAKE) -C lib/fan 
+
+power_supply: gpio
+	$(MAKE) -C lib/power_supply 
+
+ltc: gpio
+	$(MAKE) -C lib/ltc 
+
+i2c: bitman
+	$(MAKE) -C lib/i2c
+
+gpio:
+	$(MAKE) -C lib/gpio 
+
+bitman:
+	$(MAKE) -C lib/bitman
+
+silabs: i2c gpio clk
+	$(MAKE) -C lib/silabs
+		
+cs6041: gpio
+	$(MAKE) -C lib/cs6041
+	
+utils:
+	$(MAKE) -C lib/utils
+	
+hl_configs:
+	$(MAKE) -C lib/hl_configs
+	
+mxml:
+	$(MAKE) -C lib/mxml-2.9
+
+clean:
+	$(MAKE) -C lib/bitman clean
+	$(MAKE) -C lib/gpio clean
+	$(MAKE) -C lib/i2c clean
+	$(MAKE) -C lib/hmd clean
+	$(MAKE) -C lib/util clean
+	$(MAKE) -C lib/edfa clean
+	$(MAKE) -C lib/xfp clean
+	$(MAKE) -C lib/fan clean
+	$(MAKE) -C lib/logging clean
+	$(MAKE) -C lib/power_supply clean
+	$(MAKE) -C lib/ltc clean
+	$(MAKE) -C lib/txp clean
+	$(MAKE) -C lib/txp/comm clean
+	$(MAKE) -C lib/tmp clean
+	$(MAKE) -C lib/qsfp clean
+	$(MAKE) -C lib/led clean
+	$(MAKE) -C lib/clk clean
+	$(MAKE) -C lib/silabs clean
+	$(MAKE) -C lib/cs6041 clean
+	$(MAKE) -C lib/utils clean
+	$(MAKE) -C lib/hl_configs clean
+	$(MAKE) -C app/cli/ clean
+	$(MAKE) -C app/mond clean
+	$(MAKE) -C app/hwcheck clean
+	$(MAKE) -C app/bringup clean
+	$(MAKE) -C app/configs clean
+	$(MAKE) -C lib/mxml-2.9 clean
+
+cleanall: clean
+	$(MAKE) -C lib/CS6041_Release_5.13/T41 clean
+
+install:
+	scp bin/* root@$(MXP_IP):/opt/bin
+
+config:
+	scp app/mond/mond.conf root@$(MXP_IP):/etc/mxp

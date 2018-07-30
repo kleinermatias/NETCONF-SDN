@@ -1,0 +1,4 @@
+syslog-ng.conf -> /etc
+root -> /var/spool/cron/crontabs
+compress_logs.sh -> /var/log/
+check_dir_size.sh -> /var/log/

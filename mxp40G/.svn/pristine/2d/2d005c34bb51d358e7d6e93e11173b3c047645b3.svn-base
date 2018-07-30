@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# run mib2c tool
+# author: pmartinez
+
+MIB2C_DIR=~/workspace/mxp_head/lib/net-snmp-5.7.3/local
+MIBDIRS=~/workspace/mxp_head/lib/net-snmp-5.7.3/mibs
+export MIBDIRS
+
+# Set environment for the new MIB file
+# env MIBS="+FTNC-MIB"
+# env MIBS="+UCD-SNMP-MIB"
+# Or use the special value "all" to have the tools load all available
+# MIBs (which may slow them down, particularly if you have a large
+# number of MIB file
+export MIBS=ALL
+echo "MIBDIRS:" $MIBDIRS
+
+#~/workspace/mxp_head/lib/net-snmp-5.7.3/local/mib2c -c mib2c.mfd.conf edfaTable
+
+MIB_TABLE=edfaTable
+
+cd ${MIB2C_DIR}
+pwd
+./mib2c -c mib2c.mfd.conf ${MIB_TABLE}
+
+# pmartinez@rumi ~/scripts/net-snmp-5.7.3/bin $ ./snmptranslate -m +UCD-SNMP-MIB -IR -On UCD-SNMP-MIB::Float
+# Unknown object identifier: UCD-SNMP-MIB::Float
+# pmartinez@rumi ~/scripts/net-snmp-5.7.3/bin $ ./snmptranslate -m +UCD-SNMP-MIB -IR -On Float
+# Unknown object identifier: Float
+# pmartinez@rumi ~/scripts/net-snmp-5.7.3/bin $ ./snmptranslate -m +UCD-SNMP-MIB -IR -On versionDate
+# .1.3.6.1.4.1.2021.100.3
+
+mkdir -p files_${MIB_TABLE}
+mv ${MIB_TABLE}* files_${MIB_TABLE}
+
+# Now, go and merge files in files_${MIB_TABLE} with files in agent/mibgroup
+# Then, compile agent: see script buildagent
+
+
+MIB_NOTIFICATION=mxpNotificationMIB
+
+# run mib2c to generate templates for NOTIFICATIONS
+#./mib2c -c mib2c.notify.conf mxpNotificationMIB
+./mib2c -c mib2c.notify.conf ${MIB_NOTIFICATION}

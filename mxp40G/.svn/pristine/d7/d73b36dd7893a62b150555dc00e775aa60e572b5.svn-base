@@ -1,0 +1,896 @@
+1: T41 - False - 0x0
+  2: mpif - False - 0x0
+    3: mpif - True - 0x0
+  4: glb_misc - False - 0x300
+    5: glb_misc - True - 0x300
+  6: dm - False - 0x3D0
+    7: dm - True - 0x3D0
+  8: pdcal - False - 0x3E0
+    9: pdcal - True - 0x3E0
+  10: frac_div - False - 0x400
+    11: common - True - 0x400
+    12: cfg[0..15] - True - 0x410
+      cfg[0] - 0x410
+      cfg[1] - 0x420
+      cfg[2] - 0x430
+      cfg[3] - 0x440
+      cfg[4] - 0x450
+      cfg[5] - 0x460
+      cfg[6] - 0x470
+      cfg[7] - 0x480
+      cfg[8] - 0x490
+      cfg[9] - 0x4A0
+      cfg[10] - 0x4B0
+      cfg[11] - 0x4C0
+      cfg[12] - 0x4D0
+      cfg[13] - 0x4E0
+      cfg[14] - 0x4F0
+      cfg[15] - 0x500
+  13: SYNCDSYNCRX[0..7] - False - 0x600
+    SYNCDSYNCRX[0] - 0x600
+    SYNCDSYNCRX[1] - 0x640
+    SYNCDSYNCRX[2] - 0x680
+    SYNCDSYNCRX[3] - 0x6C0
+    SYNCDSYNCRX[4] - 0x700
+    SYNCDSYNCRX[5] - 0x740
+    SYNCDSYNCRX[6] - 0x780
+    SYNCDSYNCRX[7] - 0x7C0
+    14: cfgrx[0..7] - True - 0x600
+      cfgrx[0] - 0x600
+      cfgrx[1] - 0x640
+      cfgrx[2] - 0x680
+      cfgrx[3] - 0x6C0
+      cfgrx[4] - 0x700
+      cfgrx[5] - 0x740
+      cfgrx[6] - 0x780
+      cfgrx[7] - 0x7C0
+    15: cfgmonrx[0..7] - True - 0x620
+      cfgmonrx[0] - 0x620
+      cfgmonrx[1] - 0x660
+      cfgmonrx[2] - 0x6A0
+      cfgmonrx[3] - 0x6E0
+      cfgmonrx[4] - 0x720
+      cfgmonrx[5] - 0x760
+      cfgmonrx[6] - 0x7A0
+      cfgmonrx[7] - 0x7E0
+  16: SYNCDSYNCTX[0..7] - False - 0x800
+    SYNCDSYNCTX[0] - 0x800
+    SYNCDSYNCTX[1] - 0x840
+    SYNCDSYNCTX[2] - 0x880
+    SYNCDSYNCTX[3] - 0x8C0
+    SYNCDSYNCTX[4] - 0x900
+    SYNCDSYNCTX[5] - 0x940
+    SYNCDSYNCTX[6] - 0x980
+    SYNCDSYNCTX[7] - 0x9C0
+    17: cfgtx[0..7] - True - 0x800
+      cfgtx[0] - 0x800
+      cfgtx[1] - 0x840
+      cfgtx[2] - 0x880
+      cfgtx[3] - 0x8C0
+      cfgtx[4] - 0x900
+      cfgtx[5] - 0x940
+      cfgtx[6] - 0x980
+      cfgtx[7] - 0x9C0
+    18: cfgmontx[0..7] - True - 0x820
+      cfgmontx[0] - 0x820
+      cfgmontx[1] - 0x860
+      cfgmontx[2] - 0x8A0
+      cfgmontx[3] - 0x8E0
+      cfgmontx[4] - 0x920
+      cfgmontx[5] - 0x960
+      cfgmontx[6] - 0x9A0
+      cfgmontx[7] - 0x9E0
+  19: gpllx1_sds[0..16] - False - 0xA00
+    gpllx1_sds[0] - 0xA00
+    gpllx1_sds[1] - 0xA40
+    gpllx1_sds[2] - 0xA80
+    gpllx1_sds[3] - 0xAC0
+    gpllx1_sds[4] - 0xB00
+    gpllx1_sds[5] - 0xB40
+    gpllx1_sds[6] - 0xB80
+    gpllx1_sds[7] - 0xBC0
+    gpllx1_sds[8] - 0xC00
+    gpllx1_sds[9] - 0xC40
+    gpllx1_sds[10] - 0xC80
+    gpllx1_sds[11] - 0xCC0
+    gpllx1_sds[12] - 0xD00
+    gpllx1_sds[13] - 0xD40
+    gpllx1_sds[14] - 0xD80
+    gpllx1_sds[15] - 0xDC0
+    gpllx1_sds[16] - 0xE00
+    20: gpllx1_sds_common[0..16] - True - 0xA00
+      gpllx1_sds_common[0] - 0xA00
+      gpllx1_sds_common[1] - 0xA40
+      gpllx1_sds_common[2] - 0xA80
+      gpllx1_sds_common[3] - 0xAC0
+      gpllx1_sds_common[4] - 0xB00
+      gpllx1_sds_common[5] - 0xB40
+      gpllx1_sds_common[6] - 0xB80
+      gpllx1_sds_common[7] - 0xBC0
+      gpllx1_sds_common[8] - 0xC00
+      gpllx1_sds_common[9] - 0xC40
+      gpllx1_sds_common[10] - 0xC80
+      gpllx1_sds_common[11] - 0xCC0
+      gpllx1_sds_common[12] - 0xD00
+      gpllx1_sds_common[13] - 0xD40
+      gpllx1_sds_common[14] - 0xD80
+      gpllx1_sds_common[15] - 0xDC0
+      gpllx1_sds_common[16] - 0xE00
+  21: spoh - False - 0xFC0
+    22: spoh - True - 0xFC0
+  23: HSIF[0..1] - False - 0x1000
+    HSIF[0] - 0x1000
+    HSIF[1] - 0x2000
+    24: protocol[0..1] - True - 0x1000
+      protocol[0] - 0x1000
+      protocol[1] - 0x2000
+    25: mr_slc0[0..1] - False - 0x1080
+      mr_slc0[0] - 0x1080
+      mr_slc0[1] - 0x2080
+      26: mr10x4_sds[0..1] - False - 0x1080
+        mr10x4_sds[0] - 0x1080
+        mr10x4_sds[1] - 0x2080
+        27: mr10x4_sds_common[0..1] - True - 0x1080
+          mr10x4_sds_common[0] - 0x1080
+          mr10x4_sds_common[1] - 0x2080
+    28: mr_slc1[0..1] - False - 0x1280
+      mr_slc1[0] - 0x1280
+      mr_slc1[1] - 0x2280
+      29: mr10x5_sds[0..1] - False - 0x1280
+        mr10x5_sds[0] - 0x1280
+        mr10x5_sds[1] - 0x2280
+        30: mr10x5_sds_common[0..1] - True - 0x1280
+          mr10x5_sds_common[0] - 0x1280
+          mr10x5_sds_common[1] - 0x2280
+    31: mr_slc2[0..1] - False - 0x1480
+      mr_slc2[0] - 0x1480
+      mr_slc2[1] - 0x2480
+      32: mr10x4_sds[0..1] - False - 0x1480
+        mr10x4_sds[0] - 0x1480
+        mr10x4_sds[1] - 0x2480
+        33: mr10x4_sds_common[0..1] - True - 0x1480
+          mr10x4_sds_common[0] - 0x1480
+          mr10x4_sds_common[1] - 0x2480
+    34: mr_slc3[0..1] - False - 0x1680
+      mr_slc3[0] - 0x1680
+      mr_slc3[1] - 0x2680
+      35: mr10x5_sds[0..1] - False - 0x1680
+        mr10x5_sds[0] - 0x1680
+        mr10x5_sds[1] - 0x2680
+        36: mr10x5_sds_common[0..1] - True - 0x1680
+          mr10x5_sds_common[0] - 0x1680
+          mr10x5_sds_common[1] - 0x2680
+    37: sfi5[0..1] - False - 0x1880
+      sfi5[0] - 0x1880
+      sfi5[1] - 0x2880
+      38: sfi5[0..1] - True - 0x1880
+        sfi5[0] - 0x1880
+        sfi5[1] - 0x2880
+    39: sfi42[0..1] - False - 0x1900
+      sfi42[0] - 0x1900
+      sfi42[1] - 0x2900
+      40: sfi42[0..1] - True - 0x1900
+        sfi42[0] - 0x1900
+        sfi42[1] - 0x2900
+  41: xfi32x1_sds[0..3] - False - 0x3000
+    xfi32x1_sds[0] - 0x3000
+    xfi32x1_sds[1] - 0x3400
+    xfi32x1_sds[2] - 0x3800
+    xfi32x1_sds[3] - 0x3C00
+    42: xfi32x1_sds_common[0..3] - True - 0x3000
+      xfi32x1_sds_common[0] - 0x3000
+      xfi32x1_sds_common[1] - 0x3400
+      xfi32x1_sds_common[2] - 0x3800
+      xfi32x1_sds_common[3] - 0x3C00
+    43: sds_dsp[0..3] - False - 0x3200
+      sds_dsp[0] - 0x3200
+      sds_dsp[1] - 0x3600
+      sds_dsp[2] - 0x3A00
+      sds_dsp[3] - 0x3E00
+      44: mseq[0..3] - True - 0x3200
+        mseq[0] - 0x3200
+        mseq[1] - 0x3600
+        mseq[2] - 0x3A00
+        mseq[3] - 0x3E00
+      45: dsp[0..3] - True - 0x32D0
+        dsp[0] - 0x32D0
+        dsp[1] - 0x36D0
+        dsp[2] - 0x3AD0
+        dsp[3] - 0x3ED0
+      46: agc[0..3] - True - 0x33A0
+        agc[0] - 0x33A0
+        agc[1] - 0x37A0
+        agc[2] - 0x3BA0
+        agc[3] - 0x3FA0
+      47: serdes[0..3] - True - 0x33D0
+        serdes[0] - 0x33D0
+        serdes[1] - 0x37D0
+        serdes[2] - 0x3BD0
+        serdes[3] - 0x3FD0
+  48: XCON - False - 0x4000
+    49: glb - True - 0x4000
+    50: es[0..7] - False - 0x4080
+      es[0] - 0x4080
+      es[1] - 0x40C0
+      es[2] - 0x4100
+      es[3] - 0x4140
+      es[4] - 0x4180
+      es[5] - 0x41C0
+      es[6] - 0x4200
+      es[7] - 0x4240
+      51: es[0..7] - True - 0x4080
+        es[0] - 0x4080
+        es[1] - 0x40C0
+        es[2] - 0x4100
+        es[3] - 0x4140
+        es[4] - 0x4180
+        es[5] - 0x41C0
+        es[6] - 0x4200
+        es[7] - 0x4240
+    52: sadeco[0..1] - True - 0x4400
+      sadeco[0] - 0x4400
+      sadeco[1] - 0x4440
+    53: cbert[0..7] - False - 0x4500
+      cbert[0] - 0x4500
+      cbert[1] - 0x4540
+      cbert[2] - 0x4580
+      cbert[3] - 0x45C0
+      cbert[4] - 0x4600
+      cbert[5] - 0x4640
+      cbert[6] - 0x4680
+      cbert[7] - 0x46C0
+      54: cbert[0..7] - True - 0x4500
+        cbert[0] - 0x4500
+        cbert[1] - 0x4540
+        cbert[2] - 0x4580
+        cbert[3] - 0x45C0
+        cbert[4] - 0x4600
+        cbert[5] - 0x4640
+        cbert[6] - 0x4680
+        cbert[7] - 0x46C0
+    55: pbert_rx[0..7] - True - 0x4700
+      pbert_rx[0] - 0x4700
+      pbert_rx[1] - 0x4720
+      pbert_rx[2] - 0x4740
+      pbert_rx[3] - 0x4760
+      pbert_rx[4] - 0x4780
+      pbert_rx[5] - 0x47A0
+      pbert_rx[6] - 0x47C0
+      pbert_rx[7] - 0x47E0
+    56: pbert_tx[0..7] - True - 0x4800
+      pbert_tx[0] - 0x4800
+      pbert_tx[1] - 0x4820
+      pbert_tx[2] - 0x4840
+      pbert_tx[3] - 0x4860
+      pbert_tx[4] - 0x4880
+      pbert_tx[5] - 0x48A0
+      pbert_tx[6] - 0x48C0
+      pbert_tx[7] - 0x48E0
+  57: GFEC40g[0..1] - False - 0x5000
+    GFEC40g[0] - 0x5000
+    GFEC40g[1] - 0x5040
+    58: FRX40[0..1] - True - 0x5000
+      FRX40[0] - 0x5000
+      FRX40[1] - 0x5040
+    59: FTX40[0..1] - True - 0x5030
+      FTX40[0] - 0x5030
+      FTX40[1] - 0x5070
+  60: GFEC10g[0..2] - False - 0x5C00
+    GFEC10g[0] - 0x5C00
+    GFEC10g[1] - 0x5C40
+    GFEC10g[2] - 0x5C80
+    61: FRX[0..2] - True - 0x5C00
+      FRX[0] - 0x5C00
+      FRX[1] - 0x5C40
+      FRX[2] - 0x5C80
+    62: FTX[0..2] - True - 0x5C30
+      FTX[0] - 0x5C30
+      FTX[1] - 0x5C70
+      FTX[2] - 0x5CB0
+  63: UFEC[0..3] - False - 0x6000
+    UFEC[0] - 0x6000
+    UFEC[1] - 0x6400
+    UFEC[2] - 0x6800
+    UFEC[3] - 0x6C00
+    64: URX[0..3] - True - 0x6000
+      URX[0] - 0x6000
+      URX[1] - 0x6400
+      URX[2] - 0x6800
+      URX[3] - 0x6C00
+    65: UTX[0..3] - True - 0x6110
+      UTX[0] - 0x6110
+      UTX[1] - 0x6510
+      UTX[2] - 0x6910
+      UTX[3] - 0x6D10
+    66: BERGEN[0..3] - True - 0x6160
+      BERGEN[0] - 0x6160
+      BERGEN[1] - 0x6560
+      BERGEN[2] - 0x6960
+      BERGEN[3] - 0x6D60
+  67: n40g[0..1] - False - 0x7000
+    n40g[0] - 0x7000
+    n40g[1] - 0x8000
+    68: gbl4x[0..1] - True - 0x7000
+      gbl4x[0] - 0x7000
+      gbl4x[1] - 0x8000
+    69: ogmpr4x[0..1] - True - 0x7080
+      ogmpr4x[0] - 0x7080
+      ogmpr4x[1] - 0x8080
+    70: gblr4x[0..1] - True - 0x7100
+      gblr4x[0] - 0x7100
+      gblr4x[1] - 0x8100
+    71: otnr4x[0..1] - True - 0x7180
+      otnr4x[0] - 0x7180
+      otnr4x[1] - 0x8180
+    72: sdfr[0..1] - False - 0x7200
+      sdfr[0] - 0x7200
+      sdfr[1] - 0x8200
+      73: sdfr[0..1] - True - 0x7200
+        sdfr[0] - 0x7200
+        sdfr[1] - 0x8200
+    74: gblt4x[0..1] - True - 0x7280
+      gblt4x[0] - 0x7280
+      gblt4x[1] - 0x8280
+    75: otnt4x[0..1] - True - 0x7300
+      otnt4x[0] - 0x7300
+      otnt4x[1] - 0x8300
+    76: st4x[0..1] - True - 0x7380
+      st4x[0] - 0x7380
+      st4x[1] - 0x8380
+    77: oohr[0..1] - False - 0x7400
+      oohr[0] - 0x7400
+      oohr[1] - 0x8400
+      78: oohr[0..1] - True - 0x7400
+        oohr[0] - 0x7400
+        oohr[1] - 0x8400
+    79: mldrx[0..1] - False - 0x7600
+      mldrx[0] - 0x7600
+      mldrx[1] - 0x8600
+      80: mldr[0..1] - True - 0x7600
+        mldr[0] - 0x7600
+        mldr[1] - 0x8600
+      81: mld_es[0..1] - True - 0x7640
+        mld_es[0] - 0x7640
+        mld_es[1] - 0x8640
+      82: sadeco[0..1] - False - 0x7740
+        sadeco[0] - 0x7740
+        sadeco[1] - 0x8740
+        83: sadeco[0..1] - True - 0x7740
+          sadeco[0] - 0x7740
+          sadeco[1] - 0x8740
+    84: ogmpt4x[0..1] - True - 0x7780
+      ogmpt4x[0] - 0x7780
+      ogmpt4x[1] - 0x8780
+    85: otnsm[0..1] - False - 0x7800
+      otnsm[0] - 0x7800
+      otnsm[1] - 0x8800
+      86: otnsm[0..1] - True - 0x7800
+        otnsm[0] - 0x7800
+        otnsm[1] - 0x8800
+  87: ohpp[0..1] - False - 0x9000
+    ohpp[0] - 0x9000
+    ohpp[1] - 0xD000
+    88: DOE[0..1] - True - 0x9000
+      DOE[0] - 0x9000
+      DOE[1] - 0xD000
+    89: DOI[0..1] - True - 0x9100
+      DOI[0] - 0x9100
+      DOI[1] - 0xD100
+    90: SFU[0..1] - True - 0x9200
+      SFU[0] - 0x9200
+      SFU[1] - 0xD200
+    91: SFC[0..1] - True - 0x9400
+      SFC[0] - 0x9400
+      SFC[1] - 0xD400
+  92: n10g[0..7] - False - 0x11000
+    n10g[0] - 0x11000
+    n10g[1] - 0x12000
+    n10g[2] - 0x13000
+    n10g[3] - 0x14000
+    n10g[4] - 0x15000
+    n10g[5] - 0x16000
+    n10g[6] - 0x17000
+    n10g[7] - 0x18000
+    93: gbl[0..7] - True - 0x11000
+      gbl[0] - 0x11000
+      gbl[1] - 0x12000
+      gbl[2] - 0x13000
+      gbl[3] - 0x14000
+      gbl[4] - 0x15000
+      gbl[5] - 0x16000
+      gbl[6] - 0x17000
+      gbl[7] - 0x18000
+    94: gblr[0..7] - True - 0x11080
+      gblr[0] - 0x11080
+      gblr[1] - 0x12080
+      gblr[2] - 0x13080
+      gblr[3] - 0x14080
+      gblr[4] - 0x15080
+      gblr[5] - 0x16080
+      gblr[6] - 0x17080
+      gblr[7] - 0x18080
+    95: otnr[0..7] - True - 0x11100
+      otnr[0] - 0x11100
+      otnr[1] - 0x12100
+      otnr[2] - 0x13100
+      otnr[3] - 0x14100
+      otnr[4] - 0x15100
+      otnr[5] - 0x16100
+      otnr[6] - 0x17100
+      otnr[7] - 0x18100
+    96: ogmpr[0..7] - True - 0x11140
+      ogmpr[0] - 0x11140
+      ogmpr[1] - 0x12140
+      ogmpr[2] - 0x13140
+      ogmpr[3] - 0x14140
+      ogmpr[4] - 0x15140
+      ogmpr[5] - 0x16140
+      ogmpr[6] - 0x17140
+      ogmpr[7] - 0x18140
+    97: sdfr[0..7] - False - 0x11180
+      sdfr[0] - 0x11180
+      sdfr[1] - 0x12180
+      sdfr[2] - 0x13180
+      sdfr[3] - 0x14180
+      sdfr[4] - 0x15180
+      sdfr[5] - 0x16180
+      sdfr[6] - 0x17180
+      sdfr[7] - 0x18180
+      98: sdfr[0..7] - True - 0x11180
+        sdfr[0] - 0x11180
+        sdfr[1] - 0x12180
+        sdfr[2] - 0x13180
+        sdfr[3] - 0x14180
+        sdfr[4] - 0x15180
+        sdfr[5] - 0x16180
+        sdfr[6] - 0x17180
+        sdfr[7] - 0x18180
+    99: gblt[0..7] - True - 0x11200
+      gblt[0] - 0x11200
+      gblt[1] - 0x12200
+      gblt[2] - 0x13200
+      gblt[3] - 0x14200
+      gblt[4] - 0x15200
+      gblt[5] - 0x16200
+      gblt[6] - 0x17200
+      gblt[7] - 0x18200
+    100: otnt[0..7] - True - 0x11280
+      otnt[0] - 0x11280
+      otnt[1] - 0x12280
+      otnt[2] - 0x13280
+      otnt[3] - 0x14280
+      otnt[4] - 0x15280
+      otnt[5] - 0x16280
+      otnt[6] - 0x17280
+      otnt[7] - 0x18280
+    101: sohr[0..7] - True - 0x11300
+      sohr[0] - 0x11300
+      sohr[1] - 0x12300
+      sohr[2] - 0x13300
+      sohr[3] - 0x14300
+      sohr[4] - 0x15300
+      sohr[5] - 0x16300
+      sohr[6] - 0x17300
+      sohr[7] - 0x18300
+    102: sofr[0..7] - True - 0x11500
+      sofr[0] - 0x11500
+      sofr[1] - 0x12500
+      sofr[2] - 0x13500
+      sofr[3] - 0x14500
+      sofr[4] - 0x15500
+      sofr[5] - 0x16500
+      sofr[6] - 0x17500
+      sofr[7] - 0x18500
+    103: pohr[0..7] - True - 0x11580
+      pohr[0] - 0x11580
+      pohr[1] - 0x12580
+      pohr[2] - 0x13580
+      pohr[3] - 0x14580
+      pohr[4] - 0x15580
+      pohr[5] - 0x16580
+      pohr[6] - 0x17580
+      pohr[7] - 0x18580
+    104: otnsm[0..7] - False - 0x11600
+      otnsm[0] - 0x11600
+      otnsm[1] - 0x12600
+      otnsm[2] - 0x13600
+      otnsm[3] - 0x14600
+      otnsm[4] - 0x15600
+      otnsm[5] - 0x16600
+      otnsm[6] - 0x17600
+      otnsm[7] - 0x18600
+      105: otnsm[0..7] - True - 0x11600
+        otnsm[0] - 0x11600
+        otnsm[1] - 0x12600
+        otnsm[2] - 0x13600
+        otnsm[3] - 0x14600
+        otnsm[4] - 0x15600
+        otnsm[5] - 0x16600
+        otnsm[6] - 0x17600
+        otnsm[7] - 0x18600
+    106: oohr[0..7] - False - 0x11C00
+      oohr[0] - 0x11C00
+      oohr[1] - 0x12C00
+      oohr[2] - 0x13C00
+      oohr[3] - 0x14C00
+      oohr[4] - 0x15C00
+      oohr[5] - 0x16C00
+      oohr[6] - 0x17C00
+      oohr[7] - 0x18C00
+      107: oohr[0..7] - True - 0x11C00
+        oohr[0] - 0x11C00
+        oohr[1] - 0x12C00
+        oohr[2] - 0x13C00
+        oohr[3] - 0x14C00
+        oohr[4] - 0x15C00
+        oohr[5] - 0x16C00
+        oohr[6] - 0x17C00
+        oohr[7] - 0x18C00
+    108: soht[0..7] - True - 0x11E00
+      soht[0] - 0x11E00
+      soht[1] - 0x12E00
+      soht[2] - 0x13E00
+      soht[3] - 0x14E00
+      soht[4] - 0x15E00
+      soht[5] - 0x16E00
+      soht[6] - 0x17E00
+      soht[7] - 0x18E00
+  109: pp10g[0..7] - False - 0x19000
+    pp10g[0] - 0x19000
+    pp10g[1] - 0x19400
+    pp10g[2] - 0x19800
+    pp10g[3] - 0x19C00
+    pp10g[4] - 0x1A000
+    pp10g[5] - 0x1A400
+    pp10g[6] - 0x1A800
+    pp10g[7] - 0x1AC00
+    110: pcs[0..7] - False - 0x19000
+      pcs[0] - 0x19000
+      pcs[1] - 0x19400
+      pcs[2] - 0x19800
+      pcs[3] - 0x19C00
+      pcs[4] - 0x1A000
+      pcs[5] - 0x1A400
+      pcs[6] - 0x1A800
+      pcs[7] - 0x1AC00
+      111: tx[0..7] - True - 0x19000
+        tx[0] - 0x19000
+        tx[1] - 0x19400
+        tx[2] - 0x19800
+        tx[3] - 0x19C00
+        tx[4] - 0x1A000
+        tx[5] - 0x1A400
+        tx[6] - 0x1A800
+        tx[7] - 0x1AC00
+      112: rx[0..7] - True - 0x19020
+        rx[0] - 0x19020
+        rx[1] - 0x19420
+        rx[2] - 0x19820
+        rx[3] - 0x19C20
+        rx[4] - 0x1A020
+        rx[5] - 0x1A420
+        rx[6] - 0x1A820
+        rx[7] - 0x1AC20
+    113: rs[0..7] - False - 0x19040
+      rs[0] - 0x19040
+      rs[1] - 0x19440
+      rs[2] - 0x19840
+      rs[3] - 0x19C40
+      rs[4] - 0x1A040
+      rs[5] - 0x1A440
+      rs[6] - 0x1A840
+      rs[7] - 0x1AC40
+      114: tx[0..7] - True - 0x19040
+        tx[0] - 0x19040
+        tx[1] - 0x19440
+        tx[2] - 0x19840
+        tx[3] - 0x19C40
+        tx[4] - 0x1A040
+        tx[5] - 0x1A440
+        tx[6] - 0x1A840
+        tx[7] - 0x1AC40
+      115: rx[0..7] - True - 0x19060
+        rx[0] - 0x19060
+        rx[1] - 0x19460
+        rx[2] - 0x19860
+        rx[3] - 0x19C60
+        rx[4] - 0x1A060
+        rx[5] - 0x1A460
+        rx[6] - 0x1A860
+        rx[7] - 0x1AC60
+    116: mac[0..7] - False - 0x19080
+      mac[0] - 0x19080
+      mac[1] - 0x19480
+      mac[2] - 0x19880
+      mac[3] - 0x19C80
+      mac[4] - 0x1A080
+      mac[5] - 0x1A480
+      mac[6] - 0x1A880
+      mac[7] - 0x1AC80
+      117: rx[0..7] - True - 0x19080
+        rx[0] - 0x19080
+        rx[1] - 0x19480
+        rx[2] - 0x19880
+        rx[3] - 0x19C80
+        rx[4] - 0x1A080
+        rx[5] - 0x1A480
+        rx[6] - 0x1A880
+        rx[7] - 0x1AC80
+      118: tx[0..7] - True - 0x190C0
+        tx[0] - 0x190C0
+        tx[1] - 0x194C0
+        tx[2] - 0x198C0
+        tx[3] - 0x19CC0
+        tx[4] - 0x1A0C0
+        tx[5] - 0x1A4C0
+        tx[6] - 0x1A8C0
+        tx[7] - 0x1ACC0
+    119: misc[0..7] - True - 0x19100
+      misc[0] - 0x19100
+      misc[1] - 0x19500
+      misc[2] - 0x19900
+      misc[3] - 0x19D00
+      misc[4] - 0x1A100
+      misc[5] - 0x1A500
+      misc[6] - 0x1A900
+      misc[7] - 0x1AD00
+    120: basex[0..7] - False - 0x19120
+      basex[0] - 0x19120
+      basex[1] - 0x19520
+      basex[2] - 0x19920
+      basex[3] - 0x19D20
+      basex[4] - 0x1A120
+      basex[5] - 0x1A520
+      basex[6] - 0x1A920
+      basex[7] - 0x1AD20
+      121: xaui_rx[0..7] - True - 0x19120
+        xaui_rx[0] - 0x19120
+        xaui_rx[1] - 0x19520
+        xaui_rx[2] - 0x19920
+        xaui_rx[3] - 0x19D20
+        xaui_rx[4] - 0x1A120
+        xaui_rx[5] - 0x1A520
+        xaui_rx[6] - 0x1A920
+        xaui_rx[7] - 0x1AD20
+      122: xaui_tx[0..7] - True - 0x19140
+        xaui_tx[0] - 0x19140
+        xaui_tx[1] - 0x19540
+        xaui_tx[2] - 0x19940
+        xaui_tx[3] - 0x19D40
+        xaui_tx[4] - 0x1A140
+        xaui_tx[5] - 0x1A540
+        xaui_tx[6] - 0x1A940
+        xaui_tx[7] - 0x1AD40
+    123: fc[0..7] - False - 0x19160
+      fc[0] - 0x19160
+      fc[1] - 0x19560
+      fc[2] - 0x19960
+      fc[3] - 0x19D60
+      fc[4] - 0x1A160
+      fc[5] - 0x1A560
+      fc[6] - 0x1A960
+      fc[7] - 0x1AD60
+      124: rx[0..7] - True - 0x19160
+        rx[0] - 0x19160
+        rx[1] - 0x19560
+        rx[2] - 0x19960
+        rx[3] - 0x19D60
+        rx[4] - 0x1A160
+        rx[5] - 0x1A560
+        rx[6] - 0x1A960
+        rx[7] - 0x1AD60
+    125: gfp[0..7] - False - 0x19180
+      gfp[0] - 0x19180
+      gfp[1] - 0x19580
+      gfp[2] - 0x19980
+      gfp[3] - 0x19D80
+      gfp[4] - 0x1A180
+      gfp[5] - 0x1A580
+      gfp[6] - 0x1A980
+      gfp[7] - 0x1AD80
+      126: rx[0..7] - True - 0x19180
+        rx[0] - 0x19180
+        rx[1] - 0x19580
+        rx[2] - 0x19980
+        rx[3] - 0x19D80
+        rx[4] - 0x1A180
+        rx[5] - 0x1A580
+        rx[6] - 0x1A980
+        rx[7] - 0x1AD80
+      127: tx[0..7] - True - 0x191A0
+        tx[0] - 0x191A0
+        tx[1] - 0x195A0
+        tx[2] - 0x199A0
+        tx[3] - 0x19DA0
+        tx[4] - 0x1A1A0
+        tx[5] - 0x1A5A0
+        tx[6] - 0x1A9A0
+        tx[7] - 0x1ADA0
+    128: xgadj[0..7] - False - 0x191C0
+      xgadj[0] - 0x191C0
+      xgadj[1] - 0x195C0
+      xgadj[2] - 0x199C0
+      xgadj[3] - 0x19DC0
+      xgadj[4] - 0x1A1C0
+      xgadj[5] - 0x1A5C0
+      xgadj[6] - 0x1A9C0
+      xgadj[7] - 0x1ADC0
+      129: tx[0..7] - True - 0x191C0
+        tx[0] - 0x191C0
+        tx[1] - 0x195C0
+        tx[2] - 0x199C0
+        tx[3] - 0x19DC0
+        tx[4] - 0x1A1C0
+        tx[5] - 0x1A5C0
+        tx[6] - 0x1A9C0
+        tx[7] - 0x1ADC0
+      130: rx[0..7] - True - 0x191E0
+        rx[0] - 0x191E0
+        rx[1] - 0x195E0
+        rx[2] - 0x199E0
+        rx[3] - 0x19DE0
+        rx[4] - 0x1A1E0
+        rx[5] - 0x1A5E0
+        rx[6] - 0x1A9E0
+        rx[7] - 0x1ADE0
+    131: xcode[0..7] - False - 0x19200
+      xcode[0] - 0x19200
+      xcode[1] - 0x19600
+      xcode[2] - 0x19A00
+      xcode[3] - 0x19E00
+      xcode[4] - 0x1A200
+      xcode[5] - 0x1A600
+      xcode[6] - 0x1AA00
+      xcode[7] - 0x1AE00
+      132: rx[0..7] - True - 0x19200
+        rx[0] - 0x19200
+        rx[1] - 0x19600
+        rx[2] - 0x19A00
+        rx[3] - 0x19E00
+        rx[4] - 0x1A200
+        rx[5] - 0x1A600
+        rx[6] - 0x1AA00
+        rx[7] - 0x1AE00
+      133: tx[0..7] - True - 0x19210
+        tx[0] - 0x19210
+        tx[1] - 0x19610
+        tx[2] - 0x19A10
+        tx[3] - 0x19E10
+        tx[4] - 0x1A210
+        tx[5] - 0x1A610
+        tx[6] - 0x1AA10
+        tx[7] - 0x1AE10
+    134: egpcs[0..7] - False - 0x19220
+      egpcs[0] - 0x19220
+      egpcs[1] - 0x19620
+      egpcs[2] - 0x19A20
+      egpcs[3] - 0x19E20
+      egpcs[4] - 0x1A220
+      egpcs[5] - 0x1A620
+      egpcs[6] - 0x1AA20
+      egpcs[7] - 0x1AE20
+      135: rx[0..7] - True - 0x19220
+        rx[0] - 0x19220
+        rx[1] - 0x19620
+        rx[2] - 0x19A20
+        rx[3] - 0x19E20
+        rx[4] - 0x1A220
+        rx[5] - 0x1A620
+        rx[6] - 0x1AA20
+        rx[7] - 0x1AE20
+      136: tx[0..7] - True - 0x19230
+        tx[0] - 0x19230
+        tx[1] - 0x19630
+        tx[2] - 0x19A30
+        tx[3] - 0x19E30
+        tx[4] - 0x1A230
+        tx[5] - 0x1A630
+        tx[6] - 0x1AA30
+        tx[7] - 0x1AE30
+    137: xgpm[0..7] - False - 0x19240
+      xgpm[0] - 0x19240
+      xgpm[1] - 0x19640
+      xgpm[2] - 0x19A40
+      xgpm[3] - 0x19E40
+      xgpm[4] - 0x1A240
+      xgpm[5] - 0x1A640
+      xgpm[6] - 0x1AA40
+      xgpm[7] - 0x1AE40
+      138: pm[0..7] - True - 0x19240
+        pm[0] - 0x19240
+        pm[1] - 0x19640
+        pm[2] - 0x19A40
+        pm[3] - 0x19E40
+        pm[4] - 0x1A240
+        pm[5] - 0x1A640
+        pm[6] - 0x1AA40
+        pm[7] - 0x1AE40
+    139: mon10b[0..7] - False - 0x19260
+      mon10b[0] - 0x19260
+      mon10b[1] - 0x19660
+      mon10b[2] - 0x19A60
+      mon10b[3] - 0x19E60
+      mon10b[4] - 0x1A260
+      mon10b[5] - 0x1A660
+      mon10b[6] - 0x1AA60
+      mon10b[7] - 0x1AE60
+      140: rx[0..7] - True - 0x19260
+        rx[0] - 0x19260
+        rx[1] - 0x19660
+        rx[2] - 0x19A60
+        rx[3] - 0x19E60
+        rx[4] - 0x1A260
+        rx[5] - 0x1A660
+        rx[6] - 0x1AA60
+        rx[7] - 0x1AE60
+    141: ber10b[0..7] - False - 0x19270
+      ber10b[0] - 0x19270
+      ber10b[1] - 0x19670
+      ber10b[2] - 0x19A70
+      ber10b[3] - 0x19E70
+      ber10b[4] - 0x1A270
+      ber10b[5] - 0x1A670
+      ber10b[6] - 0x1AA70
+      ber10b[7] - 0x1AE70
+      142: rx[0..7] - True - 0x19270
+        rx[0] - 0x19270
+        rx[1] - 0x19670
+        rx[2] - 0x19A70
+        rx[3] - 0x19E70
+        rx[4] - 0x1A270
+        rx[5] - 0x1A670
+        rx[6] - 0x1AA70
+        rx[7] - 0x1AE70
+  143: pp40g[0..1] - False - 0x1B000
+    pp40g[0] - 0x1B000
+    pp40g[1] - 0x1B100
+    144: misc[0..1] - True - 0x1B000
+      misc[0] - 0x1B000
+      misc[1] - 0x1B100
+    145: misc_rx[0..1] - True - 0x1B020
+      misc_rx[0] - 0x1B020
+      misc_rx[1] - 0x1B120
+    146: lif_rx[0..1] - True - 0x1B030
+      lif_rx[0] - 0x1B030
+      lif_rx[1] - 0x1B130
+    147: pcs_rx[0..1] - True - 0x1B040
+      pcs_rx[0] - 0x1B040
+      pcs_rx[1] - 0x1B140
+    148: rs_rx[0..1] - True - 0x1B060
+      rs_rx[0] - 0x1B060
+      rs_rx[1] - 0x1B160
+    149: mac_rx[0..1] - True - 0x1B070
+      mac_rx[0] - 0x1B070
+      mac_rx[1] - 0x1B170
+    150: misc_tx[0..1] - True - 0x1B090
+      misc_tx[0] - 0x1B090
+      misc_tx[1] - 0x1B190
+    151: pcs_tx[0..1] - True - 0x1B0A0
+      pcs_tx[0] - 0x1B0A0
+      pcs_tx[1] - 0x1B1A0
+    152: pbert40g_tx[0..1] - True - 0x1B0D0
+      pbert40g_tx[0] - 0x1B0D0
+      pbert40g_tx[1] - 0x1B1D0
+    153: pm[0..1] - True - 0x1B0F0
+      pm[0] - 0x1B0F0
+      pm[1] - 0x1B1F0
+  154: cfp32x1_sds[0..3] - False - 0x1B200
+    cfp32x1_sds[0] - 0x1B200
+    cfp32x1_sds[1] - 0x1B280
+    cfp32x1_sds[2] - 0x1B300
+    cfp32x1_sds[3] - 0x1B380
+    155: cfp32x1_sds_common[0..3] - True - 0x1B200
+      cfp32x1_sds_common[0] - 0x1B200
+      cfp32x1_sds_common[1] - 0x1B280
+      cfp32x1_sds_common[2] - 0x1B300
+      cfp32x1_sds_common[3] - 0x1B380
+  156: xfi_cupll[0..3] - False - 0x1B400
+    xfi_cupll[0] - 0x1B400
+    xfi_cupll[1] - 0x1B440
+    xfi_cupll[2] - 0x1B480
+    xfi_cupll[3] - 0x1B4C0
+    157: xfi_cupll[0..3] - True - 0x1B400
+      xfi_cupll[0] - 0x1B400
+      xfi_cupll[1] - 0x1B440
+      xfi_cupll[2] - 0x1B480
+      xfi_cupll[3] - 0x1B4C0

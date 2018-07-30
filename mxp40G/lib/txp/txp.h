@@ -1,0 +1,1021 @@
+/**
+ * \file
+ * \brief TXP API header.
+ * 
+ */
+#ifndef _TXP_H
+#define _TXP_H
+
+/**
+ * I2C Module address
+ */
+#define TXP_ADDRESS 0x40
+/**
+ * I2C Módule Bus.
+ */
+#define TXP_BUS 0x07
+
+/**
+ * Oclaro module address.
+ */
+#define OCLARO_ADDRESS 0x40
+/**
+ * I2C module bus address.
+ */
+#define OCLARO_BUS 0x07
+
+/**
+ * Status Mask.
+ */
+#define TXP_STS_MASK 0x7F
+/**
+ * CPN Mask.
+ */
+#define TXP_CPN_MASK 0x80
+/**
+ * Minimum Data Size to send.
+ */
+#define TXP_MIN_FRAME_SIZE 3
+/**
+ * Maximum Data Size to send.
+ */
+#define TXP_MAX_DATA_SIZE 18
+/**
+ * Maximum Data Frame to send.
+ */
+#define TXP_MAX_FRAME_SIZE 21
+
+
+// Macro to check chromatic dispesion compensation
+#define CHECK_CD_COMPENSATION(min_bulk_cd_comp, max_bulk_cd_comp) (((min_bulk_cd_comp <= max_bulk_cd_comp) && (min_bulk_cd_comp >= -55000) && (min_bulk_cd_comp <= 55000) && (max_bulk_cd_comp >= -55000) && (max_bulk_cd_comp <= 55000)) ? 1 : 0)
+
+#define CD_COMPENSATION_RANGE_ERROR "Error. The minimum or maximum chromatic dispersion value is out of range. Range: -55000 ps/nm to 55000 ps/nm.\n"
+
+// Macro to check tx/rx laser itu channel
+#define CHECK_CHANNEL(value) ((value >= -2 && value <= 97) ? 1 : 0)
+
+#define CHANNEL_RANGE_ERROR "Error. The value of the itu channel of the laser is out of range. Range: -2 to 97.\n"
+
+/**
+ * Enumeration
+ */
+typedef enum e_status {
+    
+    /**Command executed*/
+    ok           = 0x00,
+    
+    /**The command code is either not supported or is a protected one accessed without having entered the protected mode.*/
+    unknown_cmd  = 0x01,
+    
+    /**The length of the command message (host to module) is not consistent with the value indicated by the Length Byte or the length of the entire frame is longer/shorter than the MSA protocol range.*/
+    frame_error  = 0x02,
+    
+    /**At least one parameter of the command is out of range.*/
+    out_of_range = 0x03,
+    
+    /**The command timing is out of range.*/
+    time_out     = 0x04,
+    
+    /**The command check byte is not consistent with the value indicated by the Check Byte.*/
+    check_error  = 0x05,
+    
+    /**The module has started working on the received command (this status only applies for long delay commands; the module is to be re-asked later to check the command completion).*/
+    module_busy  = 0x07,
+    
+    /**The module is not able to execute the command because the previous one is still in progress.*/
+    still_proc   = 0x08,
+    
+    /** The module is not able to execute the command according to current conditions.*/
+    cmd_no_exc   = 0x09,
+    
+    /**The command is legal and the module attempted to execute it, but was unable to reach a successful outcome */
+    cmd_failed   = 0x0A,
+    
+    /**Invalid response, 0xFF indistinguishable from no response.*/
+    invalid      = 0x7F
+} status_tt;
+
+/**TX command register*/
+struct tx_command_register
+{
+        /**0 for framed PRBS mode \n 1 for normal operation.*/
+	unsigned char prbsen:1;
+    
+    /**selects framed PRBS pattern length:*/
+    /**<pre> \n Pat1 | Pat0 | Pattern  \n 0       0       2^7 \n 0       1       2^15 \n 1       0       2^23 \n 1       1       2^31 </pre>  */
+	unsigned char prbspat0:1;
+    
+    /**selects framed PRBS pattern length.*/
+    /**<pre> \n Pat1 | Pat0 | Pattern  \n 0       0       2^7 \n 0       1       2^15 \n 1       0       2^23 \n 1       1       2^31 </pre>  */
+	unsigned char prbspat1:1;
+    
+    /**enables Tx SFI-5 deskew algorithm: \n 0 for disable \n 1 for enable.*/
+	unsigned char txdeskewen:1;
+    
+	unsigned char FFU1:4;
+    /**selects TxTxDCK frequency: \n 0 for TxDCK = fedata/4 \n 1 for TxDCK = fedata.*/
+	unsigned char txdcksel:1;
+    
+    /**Selects line timing mode: \n 0 for line timing \n 1 for normal operation.*/
+	unsigned char txlinetimsel:1;
+    
+    /**enables line loopback: \n 0 for enable line loopback \n 1 for normal operation.*/
+	unsigned char txlloopenb:1;
+    
+    /**Mux system Reset: \n 0 for Reset \n 1 for normal operation.*/
+	unsigned char txreset:1;
+    
+    /**Mux FIFO Reset: \n 0 for Reset \n 1 for normal operation.*/
+	unsigned char txfifores:1;
+    
+    /**Automatic Mux FIFO Reset: \n 0 for auto reset on error enabled \n 1 for auto reset not enabled.*/
+	unsigned char autotxfifores:1;
+    
+    /**Self-Clearing Mux system reset: \n 0 for Reset \n 1 for normal operation.*/
+	unsigned char sctxreset:1;
+    
+    /**0 for Mute, \n 1 for normal operation.*/
+	unsigned char txmutemonclk:1;
+    
+    /**Laser enabled or disabled: \n 0 for normal operation \n 1 for laser disable*/
+	unsigned char lsenable:1;
+    
+    /**Rate selection of system: All entry is ignored.*/
+	unsigned char txratesel0:1;
+    
+    /**Rate selection of system: All entry is ignored.*/
+	unsigned char txratesel1:1;
+    
+    /**selects TxREFCLK: \n 0 for TXREFCLK = fedata/4 \n 1 for TXREFCLK = fedata*/
+	unsigned char txrefsel:1;
+
+	unsigned char TxSRCCKSEL:1;
+
+	unsigned char FFU2:3;
+};
+
+union tx_command_reg_union
+{
+	unsigned char data[3];
+	struct tx_command_register fields;
+};
+
+union temperature_40g_monitor_union
+{
+	int temperature_40g;
+	unsigned char temperature_40g_data[4];
+};
+
+union ber_estimate
+{
+	float data;
+	unsigned char fields[4];
+};
+
+union char_int_union
+{
+	int value_int;
+	unsigned char value_char[4];
+};
+
+/**TX Command Register 2 */
+struct tx_commandregister_2
+{
+	unsigned char TXPLLENABLE:1;
+	unsigned char TXSLOWRAMP:1;
+	unsigned char FFU1:1;
+	unsigned char OTUFRAMED:1;
+	unsigned char DQPSK:1;
+	unsigned char SFI5MAPPING:3;
+	unsigned char PRBSEXT:2;
+	unsigned char PRBSFRAME:1;
+	unsigned char FFU2:1;
+	unsigned char TxAlarmShutdown:2;
+	unsigned char FFU3:2;
+	unsigned char FFU4:1;
+	unsigned char ModulatorBiasSelector:1;
+	unsigned char None:6;
+	unsigned char FFU5:8;
+};
+
+union tx_command_reg2_union
+{
+	unsigned char data[4];
+	struct tx_commandregister_2 fields;
+};
+
+struct power_rails
+{
+	unsigned char data[12];
+	unsigned short voltage_3v3;
+	unsigned short current_3v3;
+	unsigned short voltage_5v;
+	unsigned short current_5v;
+	unsigned short voltage_n5v2;
+	unsigned short current_n5v2;
+};
+
+/**RX Command Register 2 */
+struct rx_commandregister_2
+{
+	unsigned char RXPLLENABLE:1;
+	unsigned char USERFRAMING:2;
+	unsigned char OTUFRAMED:1;
+	unsigned char DQPSK:1;
+	unsigned char SFI5MAPPING:3;
+	unsigned char PRBSEXT:2;
+	unsigned char PRBSFRAME:1;
+	unsigned char FFU1:1;
+	unsigned char ORT:1;
+	unsigned char LOS_GO_INHIBIT:1;
+	unsigned char DQPSK_Slicer_Dec_Mode:1;
+	unsigned char AUTORXRESET:1;
+	unsigned char FFU2:1;
+	unsigned char PMD_C0_MODE_ENABLE:1;
+	unsigned char FFU3:1;
+	unsigned char Rapid_Automatic_RX_Reset:1;
+	unsigned char FFU4:4;
+	unsigned char FFU5:8;
+
+};
+
+union rx_command_reg2_union
+{
+	unsigned char data[4];
+	struct rx_commandregister_2 fields;
+};
+
+/**RX command register*/
+struct rx_commandregister
+{
+	unsigned char FFU1:8;
+	/**Mutes the RxDout[0:15]: \n 0 for Mute \n 1 for normal operation.*/
+	unsigned char rxmute:1;
+    /**diagnostic client loopback: \n 0 for diagnostic loopback \n 1 for normal operation.*/
+	unsigned char rxdloopenb:1;
+    /**Self-Clearing DeMux system reset: \n 0 for Reset \n 1 for normal operation.*/
+	unsigned char scrxreset:1;
+    /**enables PRBS checker: \n 0 for PRBS mode \n 1 for normal operation.*/
+	unsigned char prbsen:1;
+    /**selects framed PRBS pattern length:*/
+    /**<pre> \n Pat1 | Pat0 | Pattern  \n 0       0       2^7 \n 0       1       2^15 \n 1       0       2^23 \n 1       1       2^31 </pre>  */
+	unsigned char prbspat0:1;
+    /**selects framed PRBS pattern length:*/
+    /**<pre> \n Pat1 | Pat0 | Pattern  \n 0       0       2^7 \n 0       1       2^15 \n 1       0       2^23 \n 1       1       2^31 </pre>  */
+	unsigned char prbspat1:1;
+    /**Rate selection of system:*/
+     /**<pre> \n rxratesel0 | rxratesel1 | MSA Nominal Bit-Rate [Gbps] | PLL Locking Bit-Rate Range [Gbps] 
+      *       \n      0           0                   FFU                          >45.4  
+      *       \n      0           1                   44.6                     [44.8 - 45.4]   
+      *       \n      1           0                   43.1                     [43.0 - 44.8]  
+      *       \n      1           1                   39.8                     Unused for PLL </pre> */
+	unsigned char FFU2:2;
+	unsigned char rxratesel0:1;
+     /**Rate selection of system:*/
+     /**<pre> \n rxratesel0 | rxratesel1 | MSA Nominal Bit-Rate [Gbps] | PLL Locking Bit-Rate Range [Gbps] 
+      *       \n      0           0                   FFU                          >45.4  
+      *       \n      0           1                   44.6                     [44.8 - 45.4]   
+      *       \n      1           0                   43.1                     [43.0 - 44.8]  
+      *       \n      1           1                   39.8                     Unused for PLL </pre> */
+	unsigned char rxratesel1:1;
+        /**selects RxREFCLK frequency: \n 0 for RXREFCLK = fedata/4 \n 1 for RXREFCLK = fedata*/
+	unsigned char rxrefsel:1;
+    /**Locks RxDCK to RxREFCLK: \n 0 locks RXDCK to RXREFCLK \n 1 for normal operation*/
+	unsigned char rxlckref:1;
+    /**selects RxMONCLK frequency: \n 0 for RXMONCLK = fedata/4 \n 1 for RXMONCLK = fedata*/
+	unsigned char rxmonclksel:1;
+        /**DeMux system reset: \n  0 for Reset \n 1 for normal operation.*/
+	unsigned char rxreset:1;
+    /** (mutes the RxDCLK \n 0 for RxDCK mute \n 1 for normal operation*/
+	unsigned char rxmuterxdck:1;
+        /**mutes the RxMONCLK: \n 0 for RxMONCLK mute \n 1 for normal operation*/
+	unsigned char rxmutemonclk:1;
+};
+
+union rx_command_reg_union
+{
+	unsigned char data[3];
+	struct rx_commandregister fields;
+};
+
+/**TX Alarm Status Register*/
+struct tx_alarm
+{
+	unsigned char data_1:8;
+    /**Laser end of life alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char eolalm:1;
+    
+    /**Modulator Temperature Alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char modtempalm:1;
+    
+    
+    /**SFI-5 DESKEW alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char txooa:1;
+    
+    
+    /**Loss of Frame alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char txlofalm:1;
+    
+    
+    /**Latching SFI-5 DESKEW channel error, cleared on read: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char txdscerr:1;
+    
+    
+    /**Laser Wavelength Alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char lswavalm:1;
+    
+    unsigned char ffu:2;
+    
+    /**Tx Summary alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char txalmint:1;
+    
+    
+    /**Laser bias current alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char lsbiasalm:1;
+    
+    
+    /**Laser temperature alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char lstempalm:1;
+    
+    
+    /**Loss of TxPLL lock indicator: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char txlockerr:1;
+    
+    unsigned char reserved:1;
+    
+    /**Laser power alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char lspowalm:1;
+    
+    
+    /**Modulator bias alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char modbiasalm:1;
+    
+    
+    /**Historical Mux FIFO error indicator: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char latchedtxfifoerr:1;
+
+};
+
+union tx_alarm_status
+{
+	unsigned char data[3];
+	struct tx_alarm fields;
+};
+
+/**RX Alarm Status Register*/
+struct rx_alarm
+{
+	unsigned char data_1:8;
+
+	/**RX summary alarm, with exception to PRBSERRDET: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char rxalmint:1;
+    
+    /**Loss average optical power alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char rxpowalm:1;
+    
+    /**Loss AC (modulated) power alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char rxlos:1;
+    
+    /**Loss of RxPLL lock indicator: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char rxlockerr:1;
+    
+    /**SFI-5 DEMUX status: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char rxs:1;
+    
+    /**An error was detected by the PRBS error checker: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char prbserrdet:1;
+
+    unsigned char ffu:2;
+
+};
+
+union rx_alarm_status
+{
+	unsigned char data[2];
+	struct rx_alarm fields;
+};
+
+/**Power Supply Alarm Register*/
+struct power_alarm
+{
+    /**Power summary alarm: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char psummary:1;
+    
+    /**+5V analog: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char p5vanalog:1;
+    
+    /**–5.2V analog: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char n5v2analog:1;
+    
+    /**+3.3V analog: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char p3p3vanalog:1;
+    
+    /**+3.3V digital: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char p3p3vdigital:1;
+    
+    /**+1.8V digital: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char lvdigital:1;
+    
+    /**-5.2V digital: \n 0 for alarm since last read, \n 1 for no alarm since last read or if not implemented.*/
+    unsigned char n5p2vdigital:1;
+
+    unsigned char ffu:1;
+
+};
+
+union power_alarm_status
+{
+	unsigned char data[1];
+	struct power_alarm fields;
+};
+
+struct mean_squared_error_data
+{
+	int mse_yq:16;
+	int mse_yi:16;
+	int mse_xq:16;
+	int mse_xi:16;
+};
+
+union mean_squared_error
+{
+	unsigned char data[8];
+	struct mean_squared_error_data fields;
+};
+
+/**Rx Interrupt Alarm Mask Register*/
+typedef struct{
+    
+    /**Loss average optical power alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char rxpowalm;
+    
+    /**Loss AC (modulated) power alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char rxlos;
+    
+    /**Loss of RxPLL lock indicator: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char rxlockerr;
+    
+    /**SFI-5 DEMUX status: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char rxs;
+    
+    /**an error was detected by the PRBS error checker: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char prbserrdet;
+
+} rx_interrupt_alarm_mask_t;    
+
+/**Tx Interrupt Alarm Mask Register*/
+typedef struct{
+    
+    /**Laser end of life alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char eolalm;
+    
+    /**Modulator Temperature Alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char modtempalm;
+    
+    /**SFI-5 DESKEW alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char txooa;
+    
+    /**Loss of Frame alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char txlofaslm;
+    
+    /**Latching SFI-5 DESKEW channel error, cleared on read: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char txdscerr;
+    
+    /**Laser Wavelength Alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char lswavalm; 
+    
+    /**Laser bias current alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char lsbiasalm; 
+    
+    /**Laser temperature alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char lstempalm; 
+    
+    /**Loss of TxPLL lock indicator: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char txlockerr; 
+    
+    /**Laser power alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char lspowalm; 
+    
+    /**Modulator bias alarm: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char modbiasalm; 
+    
+    /**Historical Mux FIFO error indicator: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char txfifoerr;
+
+} tx_interrupt_alarm_mask_t;    
+
+/**Power Supply Alarm Mask Register*/
+typedef struct{
+    
+    /**+5V analog: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char p5vanalog;
+    
+    /**–5.2V analog: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char n5v2analog;
+    
+    /**+3.3V analog: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char p3p3vanalog;
+    
+    /**+3.3V digital: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char p3p3vdigital; 
+    
+    /**+1.8V digital: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char lvdigital;
+    
+    /**–5.2V digital: \n 0 for alarm enabled \n 1 for alarm disabled (masked)*/
+    unsigned char n5p2vdigital;
+
+} power_supply_alarm_t;  
+
+
+/**Summary Alarm Register*/
+typedef struct{
+    
+    /**Tx summary alarm: Mirror of command 0x80, Data 3, Bit 0*/
+    unsigned char txalm;
+    
+    /**Rx summary alarm: Mirror of command 0x80, Data 2, Bit 0*/
+    unsigned char rxalm;
+    
+    /**Power summary alarm: Mirror of command 0x80, Data 1, Bit 0*/
+    unsigned char psummary;
+    
+} summary_alarm_t;
+
+/**Laser ITU Channel*/
+struct laser_itu
+{
+    /**ITU channel number*/
+    unsigned int channel_fractional:4;
+    signed int channel_integer:12;
+
+    /**Band: \n 0x43 = C-Band \n 0x4C = L-Band \n 0x53 = S-Band */
+    unsigned char band:8;
+
+    float channel;
+};
+
+union laser_itu_channel
+{
+	unsigned char data[3];
+	struct laser_itu fields;
+};
+
+/**Date Register*/
+typedef struct{
+    
+    /** Century*/
+    int century;
+    /** Year*/
+    int year;
+    /** Month*/
+    int month;
+    /** Day*/
+    int day;
+    
+} date_t;
+
+/**Edition and Mode Register*/
+typedef struct{
+    
+    /**Edition compatibility*/
+    unsigned char edition;
+    
+    /**Operational capability*/
+    unsigned char capability;
+    
+    /**Present operational mode*/
+    unsigned char operating;
+    
+} edn_cap_opr_t;
+
+/** Revision Code Register*/
+typedef struct{
+    
+    /**Hardware Revision*/
+    unsigned char hw_revision[8];
+    /**Software Revision*/
+    unsigned char sw_revision[8];
+    
+} revision_codes_t;
+
+
+typedef struct{
+    
+    /**Minimum Rx OSNR Estimation*/
+    unsigned short osnr_min;
+    
+    /**Current Rx OSNR Estimation*/
+    unsigned short osnr_cur;
+    
+    /**Maximum Rx OSNR Estimation*/
+    unsigned short osnr_max;
+    
+    /**Minimum DGD*/
+    unsigned short dgd_min;
+    
+    /**Current DGD*/
+    unsigned short dgd_cur;
+    
+    /**MAximum DGD*/
+    unsigned short dgd_max;
+    
+    /**Minimum Chromatic Dispersion*/
+    unsigned short cd_min;
+    
+    /**Current Chromatic Dispersion*/
+    unsigned short cd_cur;
+    
+    /**Maximum Chromatic Dispersion*/
+    unsigned short cd_max;
+    
+} estimation_t;
+
+static const char *status_alarm_rx_tx[] = {"alarm active", "normal"};
+
+int txp_reset_time(void);
+
+/*!
+ * \brief  This function generates the checksum.
+ * 
+ * \param[in] cmd value to send.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_cmd_chk_byte(unsigned char *cmd);
+
+/*!
+ * \brief  This function checks the received command checksum. 
+ * 
+ * \param[in] reply received value.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_reply_chk_byte(unsigned char *reply);
+
+/*!
+ * \brief  This function send and receive command of the JDSU  through I2C protocol.
+ * 
+ * \param[in] cmd Command to send.
+ * 
+ * \param[out] reply Received value.
+ * 
+ * \param[in] reply_len Reply Length.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_send_cmd(unsigned char *cmd, 
+                 unsigned char *reply,
+                 unsigned short reply_len);
+
+int txp_read_tx_command_register(union tx_command_reg_union *tx_command_reg);
+int txp_set_tx_command_register(union tx_command_reg_union *tx_command_reg);
+
+int txp_read_rx_command_register(union rx_command_reg_union *rx_command_reg);
+int txp_set_rx_command_register(union rx_command_reg_union *rx_command_reg);
+
+int txp_read_tx_command_register2(union tx_command_reg2_union *tx_command_reg2);
+int txp_set_tx_command_register2(union tx_command_reg2_union *tx_command_register_2);
+
+int txp_read_rx_command_register2(union rx_command_reg2_union *rx_command_reg2);
+int txp_set_rx_command_register2(union rx_command_reg2_union *rx_command_reg2);
+
+int txp_read_power_rail_monitor (struct power_rails *power_values);
+
+int txp_read_receiver_itu_channel(union laser_itu_channel *laser);
+
+int txp_read_laser_itu_channel_spacing(float *spacing);
+
+int txp_set_laser_itu_channel(float channel);
+
+/*!
+ * \brief This functions gets the laser wavelength setting.
+ * 
+ * \param[out] data Laser ITU channel value is written to this variable.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_read_laser_itu_channel(union laser_itu_channel *laser_itu);
+
+
+int txp_read_tx_alarm_status_register(union tx_alarm_status *tx_alarm);
+
+/*!
+ * \brief This function gets a RX alarm status.
+ * 
+ * \param[out] data Rx Alarm Status Register value is written to this variable.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_read_rx_alarm_status_register(union rx_alarm_status *rx_alarm);
+
+/*!
+ * \brief This function gets a power supply alarm status.
+ * 
+ * \param[out] data Power Supply Alarm Status gister value is written to this variable.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_read_power_supply_alarm_status_register(union power_alarm_status *power_alarm);
+
+int txp_read_mean_squared_error(union mean_squared_error *mse);
+
+int txp_read_first_laser_itu_channel(union laser_itu_channel);
+
+/*!
+ * \brief This function gets a last laser ITU channel.
+ * 
+ * \param[out] data  Laser ITU channel is written to this variable.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_read_last_laser_itu_channel(union laser_itu_channel);
+
+int txp_set_receive_itu_channel(float channel);
+
+int txp_set_receiver_laser_output_power(int power);
+
+int txp_read_receive_laser_temperature_monitor(int *temp);
+
+int txp_read_receive_prbs_error_counter(int *error);
+
+int txp_read_transmit_prbs_error_counter(int *error);
+
+int txp_set_rxpowalm_threshold(int threshold);
+
+int txp_set_over_temperature_shutdown_threshold(int upper, int lower);
+
+int txp_sfi51_loopback(int enable);
+
+int txp_read_unit_part_number(unsigned char *part_number);
+
+int txp_read_unit_serial_number (unsigned char *serial_number);
+
+/*
+ * \brief			This function send a command to Oclaro module.
+ * \param[in]		cmd - Command to send.
+ * 					*request_data - Pointer to Command Parameters Field.
+ * 					request_data_length - Command Parameters Field Length.
+ * \return			This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_trans_request(unsigned char cmd, unsigned char *request_data, int request_data_length);
+
+/*
+ * \brief			This function gets a reply from Oclaro module.
+ * \param[in]		*reply_data - Pointer to Data Reply.
+ * 					reply_data_length - Reply Data Length.
+ * \return			This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_trans_reply(unsigned char *reply_data, int reply_data_length);
+
+/*
+ * \brief			This function computes the check byte to send a frame.
+ * \param[in]		*data - The check byte is written to this variable.
+ * \return			This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_cmd_check_byte(unsigned char *data);
+
+/*
+ * \brief			This function reads the optical transmit laser power.
+ * \param[in]		*power - The value returned is written to this variable.
+ * \return			This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_read_transmit_laser_power_monitor(float *power);
+
+/*
+ * \brief			This function reads the optical receive laser power.
+ * \param[in]		*power - The value returned is written to this variable.
+ * \return			This function returns -1 if an error occurs, 0 otherwise.
+ */
+int txp_read_receiver_laser_power_monitor(float *power);
+
+/**PRBS ERROR COUNTERS (SCMD) */
+struct error_prbs_counters
+{
+	unsigned char DATA1:8;
+	unsigned char Egress_PRBS_sync:1;
+	unsigned char Reserved_1:2;
+	unsigned char Latched_error_detect_1:1;
+	unsigned char Reserved_2:4;
+	unsigned char DATA3:8;
+	unsigned char DATA4:8;
+	unsigned char DATA5:8;
+	unsigned char Ingress_PRBS_sync:1;
+	unsigned char Reserved_3:2;
+	unsigned char Latched_error_detect_2:1;
+	unsigned char Reserved_4:4;
+	unsigned char DATA7:8;
+	unsigned char DATA8:8;
+	unsigned char DATA9:8;
+	unsigned char DATA10:8;
+	unsigned char DATA11:8;
+	unsigned char DATA12:8;
+	unsigned char DATA13:8;
+	unsigned char DATA14:8;
+	unsigned char DATA15:8;
+	unsigned char DATA16:8;
+	unsigned char DATA17:8;
+	unsigned char DATA18:8;
+	unsigned long long bit_count;
+	unsigned long long bit_error;
+	unsigned long long bit_error_ones;
+};
+
+union error_prbs_counters_union
+{
+	unsigned char data[18];
+	struct error_prbs_counters fields;
+
+};
+
+/**DSP STATUS*/
+struct dsp_status
+{
+	unsigned char GO:1;
+	unsigned char CONVERGED:1;
+	unsigned char MSEBLTHR:1;
+	unsigned char BCDEN:1;
+	unsigned char LOCK:1;
+	unsigned char COLLISION:1;
+	unsigned char DSPINIT:1;
+	unsigned char RES:1;
+	unsigned char POL:1;
+	unsigned char OSC:1;
+	unsigned char TXLASER:1;
+	unsigned char FFU1:5;
+	unsigned char FFU2:8;
+	unsigned char FFU3:8;
+};
+
+union dsp_status_union
+{
+	unsigned char data[4];
+	struct dsp_status fields;
+};
+
+struct bulk_cd_compensation_data
+{
+	signed long long cd_bulk:24;
+	unsigned long long step_size:16;
+	signed long long maximum_compensation:24;
+	signed long long minimum_compensation:24;
+};
+
+union bulk_cd_compensation
+{
+	unsigned char data[12];
+	struct bulk_cd_compensation_data fields;
+};
+
+
+int txp_read_prbs_error_counters (unsigned char sel, union error_prbs_counters_union *error_prbs_counters);
+
+int txp_read_dsp_status(union dsp_status_union *dspstat);
+
+
+int txp_reply_check_byte(unsigned char *data);
+
+
+/*
+ * Date				05/05/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ *
+ * \brief			This function gets the receiver PRBS error checker count.
+ *
+ * \param[in]		*data - Pointer to data struct.
+ *
+ */
+int txp_read_error_checker_error_count(unsigned short *checker_error_count);
+
+/*
+ * Date				01/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ *
+ * \brief			This function gets the Transponder temperature.
+ *
+ * \param[in]		*temp - Pointer to temperature.
+ *
+ */
+int txp_read_transponder_temperature_monitor(float *temp);
+
+/*
+ * Date				14/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ *
+ * \brief			This function gets the Transponder transmit laser temperature.
+ *
+ * \param[in]		*temp - Pointer to temperature.
+ *
+ */
+int txp_read_transmit_laser_transponder_temperature_monitor(float *temp);
+
+/*
+ * Date				14/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ *
+ * \brief			This function gets the Transponder receive laser temperature.
+ *
+ * \param[in]		*temp - Pointer to temperature.
+ *
+ */
+int txp_read_receive_laser_transponder_temperature_monitor(float *temp);
+
+/**
+ * Date				15/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ * \brief  Gets Loss status through GPIO ports.
+ *
+ * \param[in] status loss status is written in this variable.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ *
+ */
+int txp_read_loss_input_alarm(int *status);
+
+/**
+ * Date				15/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ * \brief  Gets Interrupt status through GPIO ports.
+ *
+ * \param[in] status interrupt status is written in this variable.
+ *
+ * \return This function returns -1 if an error occurs, 0 otherwise.
+ *
+ */
+int txp_read_interrupt_input_alarm(int *status);
+
+/**
+ * Date				15/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ * \brief  Print RX Alarm Status Register.
+ *
+ * \param[in] *rx_alarm union rx_alarm_status.
+ *
+ * \return
+ *
+ */
+void txp_print_rx_alarm_status_register(union rx_alarm_status *rx_alarm);
+
+/**
+ * Date				15/07/2015
+ * Initial Rev		Giraudo Nicolás
+ * Rev:
+ * \brief  Print TX Alarm Status Register.
+ *
+ * \param[in] *tx_alarm union tx_alarm_status.
+ *
+ * \return
+ *
+ */
+void txp_print_tx_alarm_status_register(union tx_alarm_status *tx_alarm);
+
+int txp_read_fine_cd_compensation(int* fine_cd);
+
+int txp_read_bulk_cd_compensation(union bulk_cd_compensation *bulk_cd);
+
+int txp_set_bulk_cd_compensation(int minimum_compesation, int maximum_compesation, unsigned int step_size);
+
+int txp_enter_protected_mode(void);
+
+int txp_enter_vendor_protected_mode(void);
+
+int txp_exit_protected_mode(void);
+
+int txp_reg_reset(void);
+
+int txp_mod_reset(void);
+
+/**
+ * \brief reset - Performs a hardware reset of OClaro 40G module and its registers.
+*/
+void txp_reset (void);
+
+void txp_hw_sel_line_timing_mode(unsigned int mode);
+
+//void hl_config_40g_otu3(int line_loopback, int dloop, int lsen);
+//
+//int hl_set_tx_rx_laser_itu_channel(float channel);
+//
+//int hl_set_bulk_cd_compensation(int min_bulk_cd_comp, int max_bulk_cd_comp);
+//
+//int hl_get_estimated_chromatic_dispersion(int* estimated_cd);
+//
+//int hl_get_chromatic_dispersion(float* cd);
+
+int txp_read_ber_estimate(float *value);
+
+void txp_enable_debug(int enable);
+
+unsigned int txp_status(unsigned char sts, char *msg);
+
+void txp_full_transaction (unsigned char cmd, unsigned char *request_data, int request_data_length, unsigned char *reply_data, int reply_data_length);
+
+
+#endif /* _TXP_H */

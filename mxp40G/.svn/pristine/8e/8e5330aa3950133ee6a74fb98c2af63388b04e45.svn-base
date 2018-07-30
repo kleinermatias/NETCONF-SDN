@@ -1,0 +1,3819 @@
+FTNC-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, enterprises, Integer32, NOTIFICATION-TYPE
+        FROM SNMPv2-SMI
+        
+    OBJECT-GROUP, MODULE-COMPLIANCE, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF;
+
+fotonica MODULE-IDENTITY
+    LAST-UPDATED    "201603010000Z"
+    ORGANIZATION    "Fulgor"
+    CONTACT-INFO    "ftnccontact@fundacionfulgor.org.ar"
+    DESCRIPTION     "Fundacion Fulgor"
+
+    REVISION        "201603010000Z"
+    DESCRIPTION     "Initial revision."
+::= { enterprises 43484 }
+
+projects OBJECT IDENTIFIER ::= {fotonica 1 }
+
+mxp OBJECT IDENTIFIER ::= {projects 1 }
+
+-- MXP Configuration MIB
+
+mxpConfigMIB OBJECT IDENTIFIER ::= { mxp 1 }
+
+mxpConfigMIBConformance OBJECT IDENTIFIER ::= { mxpConfigMIB 1 }
+
+mxpConfigMIBCompliances   OBJECT IDENTIFIER ::= { mxpConfigMIBConformance 1 }
+
+mxpConfigMIBGroups OBJECT IDENTIFIER ::= { mxpConfigMIBConformance 2 }
+
+mxpConfigMIBObjects OBJECT IDENTIFIER ::= { mxpConfigMIB 2 }
+
+
+mxpConfigCompliance MODULE-COMPLIANCE
+    STATUS  current
+    DESCRIPTION
+            "The compliance statement for config entities which
+            implement this MIB module."
+    MODULE  -- this module
+        MANDATORY-GROUPS { powerGroup, fanGroup, xfp1Group, xfp2Group, xfp3Group, xfp4Group, envGroup, edfaGroup, txpAlrmTxGroup, txpAlrmRxGroup, txpPowSupplyAlrmGroup, txpTempGroup, txpPowerGroup, txpChannelGroup, txpBandGroup, txpPhyspadGroup, txpDSPStatusGroup, txpDSPErrorsGroup, txpDSPCompensationGroup }
+
+    ::= { mxpConfigMIBCompliances 1 }
+
+powerTable OBJECT-TYPE
+	SYNTAX	SEQUENCE OF PowerEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION	"A table containing information on Power supply."
+::= { mxpConfigMIBObjects 1 }
+
+powerEntry OBJECT-TYPE
+	SYNTAX	PowerEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the power table."
+	INDEX	{ powerIndex }
+::= { powerTable 1 }
+
+PowerEntry ::= SEQUENCE { powerIndex OCTET STRING, powera OCTET STRING, powerb OCTET STRING }
+
+powerIndex OBJECT-TYPE
+    SYNTAX     OCTET STRING (SIZE(1..32))
+    MAX-ACCESS not-accessible
+    STATUS     current
+    DESCRIPTION
+            "The auxiliary variable used for identifying instances
+            of the columnar objects in the powerTable."
+    ::= { powerEntry 1 }
+
+powera OBJECT-TYPE
+	SYNTAX      OCTET STRING
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Power supply A status"
+::= { powerEntry 2 }
+
+powerb OBJECT-TYPE
+	SYNTAX      OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Power supply B status"
+::= { powerEntry 3 }
+
+powerGroup OBJECT-GROUP
+    OBJECTS { powera, powerb }
+    STATUS  current
+    DESCRIPTION
+        "The powerGroup group groups objects power."
+    ::= { mxpConfigMIBGroups 1 }
+
+
+
+fanTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF FanEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Fan."
+::= { mxpConfigMIBObjects 2 }
+
+fanEntry OBJECT-TYPE
+	SYNTAX	FanEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the fan table."
+	INDEX	{ fanIndex }
+::= { fanTable  1 }
+
+FanEntry ::= SEQUENCE { fanIndex OCTET STRING, fan1 OCTET STRING, fan2 OCTET STRING, fan3 OCTET STRING, fan4 OCTET STRING, fan5 OCTET STRING }
+
+fanIndex OBJECT-TYPE
+	SYNTAX	OCTET STRING (SIZE(1..32))
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the fanTable"
+::= { fanEntry 1 }
+
+fan1 OBJECT-TYPE
+	SYNTAX      OCTET STRING
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Fan 1 status"
+::= { fanEntry 2 }
+
+fan2 OBJECT-TYPE
+	SYNTAX      OCTET STRING
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Fan 2 status"
+::= { fanEntry 3 }
+
+fan3 OBJECT-TYPE
+	SYNTAX      OCTET STRING
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Fan 3 status"
+::= { fanEntry 4 }
+
+fan4 OBJECT-TYPE
+	SYNTAX      OCTET STRING
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Fan 4 status"
+::= { fanEntry 5 }
+
+fan5 OBJECT-TYPE
+	SYNTAX      OCTET STRING
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Fan 5 status"
+::= { fanEntry 6 }
+
+fanGroup OBJECT-GROUP
+    OBJECTS { fan1, fan2, fan3, fan4, fan5 }
+    STATUS  current
+    DESCRIPTION
+        "The fanGroup group groups objects fan."
+    ::= { mxpConfigMIBGroups 2 }
+
+
+
+xfp1Table OBJECT-TYPE
+	SYNTAX	SEQUENCE OF Xfp1Entry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "A table containing information on xfp1."
+::= { mxpConfigMIBObjects 3 }
+
+xfp1Entry OBJECT-TYPE
+	SYNTAX Xfp1Entry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the xfp1 table."
+	INDEX	{ xfp1Index }
+::= { xfp1Table 1 }
+
+Xfp1Entry ::= SEQUENCE { xfp1Index OCTET STRING, xfp1Pres OCTET STRING, xfp1Loss OCTET STRING, xfp1Rdy OCTET STRING, xfp1Int OCTET STRING, xfp1TxPow OCTET STRING, xfp1RxPow OCTET STRING, xfp1Temp OCTET STRING, xfp1LowTxPow OCTET STRING, xfp1HighTxPow OCTET STRING, xfp1LowRxPow OCTET STRING, xfp1HighRxPow OCTET STRING, xfp1RxCdrLol OCTET STRING, xfp1TxCdrLol OCTET STRING, xfp1LasFault OCTET STRING }
+
+xfp1Index OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { xfp1Entry 1 }
+
+xfp1Pres OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Presence"
+::= { xfp1Entry 2 }
+
+xfp1Loss OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Loss of Signal Indicator"
+::= { xfp1Entry 3 }
+
+xfp1Rdy OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Ready"
+::= { xfp1Entry 4 }
+
+xfp1Int OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Interruption signal"
+::= { xfp1Entry 5 }
+
+xfp1TxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 TX Power"
+::= { xfp1Entry 6 }
+
+xfp1RxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 RX Power"
+::= { xfp1Entry 7 }
+
+xfp1Temp OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Temperature"
+::= { xfp1Entry 8 }
+
+xfp1LowTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Low TX Power Alarm"
+::= { xfp1Entry 9 }
+
+xfp1HighTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 High TX Power Alarm"
+::= { xfp1Entry 10 }
+
+xfp1LowRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 High RX Power Alarm"
+::= { xfp1Entry 11 }
+
+xfp1HighRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 High RX Power Alarm"
+::= { xfp1Entry 12 }
+
+xfp1RxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 RX Loss of Lock Alarm"
+::= { xfp1Entry 13 }
+
+xfp1TxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 TX Loss of Lock Alarm"
+::= { xfp1Entry 14 }
+
+xfp1LasFault OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP1 Laser Fault Alarm"
+::= { xfp1Entry 15 }
+
+xfp1Group OBJECT-GROUP
+    OBJECTS { xfp1Pres, xfp1Loss, xfp1Rdy, xfp1Int, xfp1TxPow, xfp1RxPow, xfp1Temp, xfp1LowTxPow, xfp1HighTxPow, xfp1LowRxPow, xfp1HighRxPow, xfp1RxCdrLol, xfp1TxCdrLol, xfp1LasFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp1Group group groups objects of xfp1."
+    ::= { mxpConfigMIBGroups 3 }
+
+
+
+xfp2Table OBJECT-TYPE
+	SYNTAX	SEQUENCE OF Xfp2Entry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "A table containing information on xfp2."
+::= { mxpConfigMIBObjects 4 }
+
+xfp2Entry OBJECT-TYPE
+	SYNTAX Xfp2Entry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the xfp2 table."
+	INDEX	{ xfp2Index }
+::= { xfp2Table 1 }
+
+Xfp2Entry ::= SEQUENCE { xfp2Index OCTET STRING, xfp2Pres OCTET STRING, xfp2Loss OCTET STRING, xfp2Rdy OCTET STRING, xfp2Int OCTET STRING, xfp2TxPow OCTET STRING, xfp2RxPow OCTET STRING, xfp2Temp OCTET STRING, xfp2LowTxPow OCTET STRING, xfp2HighTxPow OCTET STRING, xfp2LowRxPow OCTET STRING, xfp2HighRxPow OCTET STRING, xfp2RxCdrLol OCTET STRING, xfp2TxCdrLol OCTET STRING, xfp2LasFault OCTET STRING }
+
+xfp2Index OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { xfp2Entry 1 }
+
+xfp2Pres OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 Presence"
+::= { xfp2Entry 2 }
+
+xfp2Loss OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 Loss of Signal Indicator"
+::= { xfp2Entry 3 }
+
+xfp2Rdy OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 Ready"
+::= { xfp2Entry 4 }
+
+xfp2Int OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 Interruption signal"
+::= { xfp2Entry 5 }
+
+xfp2TxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 TX Power"
+::= { xfp2Entry 6 }
+
+xfp2RxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 RX Power"
+::= { xfp2Entry 7 }
+
+xfp2Temp OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2Temperature"
+::= { xfp2Entry 8 }
+
+xfp2LowTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 Low TX Power Alarm"
+::= { xfp2Entry 9 }
+
+xfp2HighTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 High TX Power Alarm"
+::= { xfp2Entry 10 }
+
+xfp2LowRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 High RX Power Alarm"
+::= { xfp2Entry 11 }
+
+xfp2HighRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 High RX Power Alarm"
+::= { xfp2Entry 12 }
+
+xfp2RxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 RX Loss of Lock Alarm"
+::= { xfp2Entry 13 }
+
+xfp2TxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 TX Loss of Lock Alarm"
+::= { xfp2Entry 14 }
+
+xfp2LasFault OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP2 Laser Fault Alarm"
+::= { xfp2Entry 15 }
+
+xfp2Group OBJECT-GROUP
+    OBJECTS { xfp2Pres, xfp2Loss, xfp2Rdy, xfp2Int, xfp2TxPow, xfp2RxPow, xfp2Temp, xfp2LowTxPow, xfp2HighTxPow, xfp2LowRxPow, xfp2HighRxPow, xfp2RxCdrLol, xfp2TxCdrLol, xfp2LasFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp2Group group groups objects of xfp2."
+    ::= { mxpConfigMIBGroups 4 }
+
+
+
+xfp3Table OBJECT-TYPE
+	SYNTAX	SEQUENCE OF Xfp3Entry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "A table containing information on xfp3."
+::= { mxpConfigMIBObjects 5 }
+
+xfp3Entry OBJECT-TYPE
+	SYNTAX Xfp3Entry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the xfp3 table."
+	INDEX	{ xfp3Index }
+::= { xfp3Table 1 }
+
+Xfp3Entry ::= SEQUENCE { xfp3Index OCTET STRING, xfp3Pres OCTET STRING, xfp3Loss OCTET STRING, xfp3Rdy OCTET STRING, xfp3Int OCTET STRING, xfp3TxPow OCTET STRING, xfp3RxPow OCTET STRING, xfp3Temp OCTET STRING, xfp3LowTxPow OCTET STRING, xfp3HighTxPow OCTET STRING, xfp3LowRxPow OCTET STRING, xfp3HighRxPow OCTET STRING, xfp3RxCdrLol OCTET STRING, xfp3TxCdrLol OCTET STRING, xfp3LasFault OCTET STRING }
+
+xfp3Index OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { xfp3Entry 1 }
+
+xfp3Pres OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Presence"
+::= { xfp3Entry 2 }
+
+xfp3Loss OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Loss of Signal Indicator"
+::= { xfp3Entry 3 }
+
+xfp3Rdy OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Ready"
+::= { xfp3Entry 4 }
+
+xfp3Int OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Interruption signal"
+::= { xfp3Entry 5 }
+
+xfp3TxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 TX Power"
+::= { xfp3Entry 6 }
+
+xfp3RxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 RX Power"
+::= { xfp3Entry 7 }
+
+xfp3Temp OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Temperature"
+::= { xfp3Entry 8 }
+
+xfp3LowTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Low TX Power Alarm"
+::= { xfp3Entry 9 }
+
+xfp3HighTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 High TX Power Alarm"
+::= { xfp3Entry 10 }
+
+xfp3LowRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 High RX Power Alarm"
+::= { xfp3Entry 11 }
+
+xfp3HighRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 High RX Power Alarm"
+::= { xfp3Entry 12 }
+
+xfp3RxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 RX Loss of Lock Alarm"
+::= { xfp3Entry 13 }
+
+xfp3TxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 TX Loss of Lock Alarm"
+::= { xfp3Entry 14 }
+
+xfp3LasFault OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP3 Laser Fault Alarm"
+::= { xfp3Entry 15 }
+
+xfp3Group OBJECT-GROUP
+    OBJECTS { xfp3Pres, xfp3Loss, xfp3Rdy, xfp3Int, xfp3TxPow, xfp3RxPow, xfp3Temp, xfp3LowTxPow, xfp3HighTxPow, xfp3LowRxPow, xfp3HighRxPow, xfp3RxCdrLol, xfp3TxCdrLol, xfp3LasFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp3Group group groups objects of xfp3."
+    ::= { mxpConfigMIBGroups 5 }
+
+
+
+xfp4Table OBJECT-TYPE
+	SYNTAX	SEQUENCE OF Xfp4Entry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "A table containing information on xfp4."
+::= { mxpConfigMIBObjects 6 }
+
+xfp4Entry OBJECT-TYPE
+	SYNTAX Xfp4Entry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the xfp4 table."
+	INDEX	{ xfp4Index }
+::= { xfp4Table 1 }
+
+Xfp4Entry ::= SEQUENCE { xfp4Index OCTET STRING, xfp4Pres OCTET STRING, xfp4Loss OCTET STRING, xfp4Rdy OCTET STRING, xfp4Int OCTET STRING, xfp4TxPow OCTET STRING, xfp4RxPow OCTET STRING, xfp4Temp OCTET STRING, xfp4LowTxPow OCTET STRING, xfp4HighTxPow OCTET STRING, xfp4LowRxPow OCTET STRING, xfp4HighRxPow OCTET STRING, xfp4RxCdrLol OCTET STRING, xfp4TxCdrLol OCTET STRING, xfp4LasFault OCTET STRING }
+
+xfp4Index OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { xfp4Entry 1 }
+
+xfp4Pres OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Presence"
+::= { xfp4Entry 2 }
+
+xfp4Loss OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Loss of Signal Indicator"
+::= { xfp4Entry 3 }
+
+xfp4Rdy OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Ready"
+::= { xfp4Entry 4 }
+
+xfp4Int OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Interruption signal"
+::= { xfp4Entry 5 }
+
+xfp4TxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 TX Power"
+::= { xfp4Entry 6 }
+
+xfp4RxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 RX Power"
+::= { xfp4Entry 7 }
+
+xfp4Temp OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Temperature"
+::= { xfp4Entry 8 }
+
+xfp4LowTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Low TX Power Alarm"
+::= { xfp4Entry 9 }
+
+xfp4HighTxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 High TX Power Alarm"
+::= { xfp4Entry 10 }
+
+xfp4LowRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 High RX Power Alarm"
+::= { xfp4Entry 11 }
+
+xfp4HighRxPow OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 High RX Power Alarm"
+::= { xfp4Entry 12 }
+
+xfp4RxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 RX Loss of Lock Alarm"
+::= { xfp4Entry 13 }
+
+xfp4TxCdrLol OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 TX Loss of Lock Alarm"
+::= { xfp4Entry 14 }
+
+xfp4LasFault OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "XFP4 Laser Fault Alarm"
+::= { xfp4Entry 15 }
+
+xfp4Group OBJECT-GROUP
+    OBJECTS { xfp4Pres, xfp4Loss, xfp4Rdy, xfp4Int, xfp4TxPow, xfp4RxPow, xfp4Temp, xfp4LowTxPow, xfp4HighTxPow, xfp4LowRxPow, xfp4HighRxPow, xfp4RxCdrLol, xfp4TxCdrLol, xfp4LasFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp4Group group groups objects of xfp4."
+    ::= { mxpConfigMIBGroups 6 }
+
+
+
+mxpEnvTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF MxpEnvEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Environment."
+::= { mxpConfigMIBObjects 7 }
+
+mxpEnvEntry OBJECT-TYPE
+	SYNTAX MxpEnvEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the environment table."
+	INDEX { mxpEnvIndex }
+::= { mxpEnvTable  1 }
+
+MxpEnvEntry ::= SEQUENCE { mxpEnvIndex OCTET STRING, mxpTempT41Around OCTET STRING, mxpTempT41TS0 OCTET STRING, mxpTempT41TS1 OCTET STRING, mxpTempT41TS2 OCTET STRING, mxpTempFPGA OCTET STRING, mxpTempBOARD OCTET STRING, mxpTempEdfa OCTET STRING, mxpHumedity OCTET STRING }
+
+mxpEnvIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { mxpEnvEntry 1 }
+
+mxpTempT41Around OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Temperature around cs6041"
+::= { mxpEnvEntry 2 }
+
+mxpTempT41TS0 OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Temperature cs6041 TS0"
+::= { mxpEnvEntry 3 }
+
+mxpTempT41TS1 OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Temperature cs6041 TS1"
+::= { mxpEnvEntry 4 }
+
+mxpTempT41TS2 OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Temperature cs6041 TS2"
+::= { mxpEnvEntry 5 }
+
+mxpTempFPGA OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Temperature FPGA"
+::= { mxpEnvEntry 6 }
+
+mxpTempBOARD OBJECT-TYPE
+	SYNTAX OCTET STRING
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Temperature BOARD"
+::= { mxpEnvEntry 7 }
+
+mxpTempEdfa OBJECT-TYPE
+	SYNTAX      OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Temperature edfa"
+::= { mxpEnvEntry 8 }
+
+mxpHumedity OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Muxponder humidity."
+::= { mxpEnvEntry 9 }
+
+envGroup OBJECT-GROUP
+    OBJECTS { mxpTempT41Around, mxpTempT41TS0, mxpTempT41TS1, mxpTempT41TS2, mxpTempFPGA, mxpTempBOARD, mxpTempEdfa, mxpHumedity }
+    STATUS  current
+    DESCRIPTION
+        "The envGroup group groups objects environment."
+    ::= { mxpConfigMIBGroups 7 }
+
+
+
+edfaTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF EdfaEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on EDFA."
+::= { mxpConfigMIBObjects 8 }
+
+edfaEntry OBJECT-TYPE
+	SYNTAX EdfaEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the EDFA table."
+	INDEX { edfaIndex }
+::= { edfaTable  1 }
+
+EdfaEntry ::= SEQUENCE { edfaIndex OCTET STRING, edfaPout OCTET STRING, edfaPin OCTET STRING, edfaLos OCTET STRING, edfaLop OCTET STRING, edfaAmpStat OCTET STRING }
+
+edfaIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { edfaEntry 1 }
+
+edfaPout OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "edfa output power"
+::= { edfaEntry 2 }
+
+edfaPin OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "edfa input power"
+::= { edfaEntry 3 }
+
+edfaLos OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "edfa loss of input power alarm"
+::= { edfaEntry 4 }
+
+edfaLop OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "edfa loss of output power/gain alarm"
+::= { edfaEntry 5 }
+
+edfaAmpStat OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "EDAF amplifier status"
+::= { edfaEntry 6 }
+
+edfaGroup OBJECT-GROUP
+    OBJECTS { edfaPout, edfaPin, edfaLos, edfaLop, edfaAmpStat }
+    STATUS  current
+    DESCRIPTION
+        "The edfaGroup group groups objects of edfa."
+    ::= { mxpConfigMIBGroups 8 }
+
+
+
+txp OBJECT IDENTIFIER ::= { mxpConfigMIBObjects 9 }
+
+txpAlrm OBJECT IDENTIFIER ::= { txp 1 }
+
+txpAlrmTxTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpAlrmTxEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Alarm TX of TXP."
+::= { txpAlrm 1 }
+
+txpAlrmTxEntry OBJECT-TYPE
+	SYNTAX TxpAlrmTxEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the TXP Alarm table."
+	INDEX { txpAlrmTxIndex }
+::= { txpAlrmTxTable  1 }
+
+TxpAlrmTxEntry ::= SEQUENCE { txpAlrmTxIndex OCTET STRING, txpEOLALM OCTET STRING, txpModTEMPALM OCTET STRING, txpTxOOA OCTET STRING, txpTxLOFALM OCTET STRING, txpTxDSCERR OCTET STRING, txpLsWAVALM OCTET STRING, txpTxALMINT OCTET STRING, txpLsBIASALM OCTET STRING, txpLsTEMPALM OCTET STRING, txpTxLOCKERR OCTET STRING, txpLsPOWALM OCTET STRING, txpModBIASALM OCTET STRING, txpLATCHEDTxFIFOERR OCTET STRING }
+
+txpAlrmTxIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpAlrmTxEntry 1 }
+
+txpEOLALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter laser end of life alarm."
+::= { txpAlrmTxEntry 2 }
+
+txpModTEMPALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter modulator Temperature Alarm."
+::= { txpAlrmTxEntry 3 }
+
+txpTxOOA OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter SFI-5 Deskew alarm"
+::= { txpAlrmTxEntry 4 }
+
+txpTxLOFALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter loss of Frame alarm."
+::= { txpAlrmTxEntry 5 }
+
+txpTxDSCERR OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter latching SFI-5 DESKEW Channel error."
+::= { txpAlrmTxEntry 6 }
+
+txpLsWAVALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter laser Wavelength Alarm."
+::= { txpAlrmTxEntry 7 }
+
+txpTxALMINT OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter Tx summary alarm."
+::= { txpAlrmTxEntry 8 }
+
+txpLsBIASALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter laser bias current alarm."
+::= { txpAlrmTxEntry 9 }
+
+txpLsTEMPALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter laser Temperature alarm."
+::= { txpAlrmTxEntry 10 }
+
+txpTxLOCKERR OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter loss of TxPLL lock indicator."
+::= { txpAlrmTxEntry 11 }
+
+txpLsPOWALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter laser power alarm."
+::= { txpAlrmTxEntry 12 }
+
+txpModBIASALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Line transmiter modulator bias alarm."
+::= { txpAlrmTxEntry 13 }
+
+txpLATCHEDTxFIFOERR OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line transmiter historical Mux FIFO error indicator."
+::= { txpAlrmTxEntry 14 }
+
+txpAlrmTxGroup OBJECT-GROUP
+    OBJECTS { txpEOLALM, txpModTEMPALM, txpTxOOA, txpTxLOFALM, txpTxDSCERR, txpLsWAVALM, txpTxALMINT, txpLsBIASALM, txpLsTEMPALM, txpTxLOCKERR, txpLsPOWALM, txpModBIASALM, txpLATCHEDTxFIFOERR }
+    STATUS  current
+    DESCRIPTION
+        "The txpAlrmTxGroup group groups objects of TXP Alarm Tx."
+    ::= { mxpConfigMIBGroups 9 }
+
+
+
+txpAlrmRxTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpAlrmRxEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Alarm RX of TXP."
+::= { txpAlrm 2 }
+
+txpAlrmRxEntry OBJECT-TYPE
+	SYNTAX TxpAlrmRxEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the TXP Alarm table."
+	INDEX { txpAlrmRxIndex }
+::= { txpAlrmRxTable 1 }
+
+TxpAlrmRxEntry ::= SEQUENCE { txpAlrmRxIndex OCTET STRING, txpRxALMINT OCTET STRING, txpRxPOWALM OCTET STRING, txpRxLOS OCTET STRING, txpRxLOCKERR OCTET STRING, txpRXS OCTET STRING, txpPRBSERRDET OCTET STRING }
+
+txpAlrmRxIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpAlrmRxEntry 1 }
+
+txpRxALMINT OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line receiver Rx summary alarm."
+::= { txpAlrmRxEntry 2 }
+
+txpRxPOWALM OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line receiver loss average optical power alarm."
+::= { txpAlrmRxEntry 3 }
+
+txpRxLOS OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line receiver loss AC (modulated) power alarm."
+::= { txpAlrmRxEntry 4 }
+
+txpRxLOCKERR OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line receiver loss of RxPLL lock indicator."
+::= { txpAlrmRxEntry 5 }
+
+txpRXS OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line receiver SFI-5 DEMUX status."
+::= { txpAlrmRxEntry 6 }
+
+txpPRBSERRDET OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line receiver PRBSERRDET (an error was detected by the PRBS error checker)."
+::= { txpAlrmRxEntry 7 }
+
+txpAlrmRxGroup OBJECT-GROUP
+    OBJECTS { txpRxALMINT, txpRxPOWALM, txpRxLOS, txpRxLOCKERR, txpRXS, txpPRBSERRDET }
+    STATUS  current
+    DESCRIPTION
+        "The txpAlrmRxGroup group groups objects of TXP Alarm Rx."
+    ::= { mxpConfigMIBGroups 10 }
+
+
+
+txpPowSupplyAlrmTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpPowSupplyAlrmEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Power Supply Alarm of TXP."
+::= { txpAlrm 3 }
+
+txpPowSupplyAlrmEntry OBJECT-TYPE
+	SYNTAX TxpPowSupplyAlrmEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the TXP Alarm table."
+	INDEX { txpPowSupplyAlrmIndex }
+::= { txpPowSupplyAlrmTable 1 }
+
+TxpPowSupplyAlrmEntry ::= SEQUENCE { txpPowSupplyAlrmIndex OCTET STRING, txpPSUMMARY OCTET STRING, txpP5VANALOG OCTET STRING, txpN5V2ANALOG OCTET STRING, txpP3P3VANALOG OCTET STRING, txpP3P3VDIGITAL OCTET STRING, txpLVDIGITAL OCTET STRING, txpN5P2VDIGITAL OCTET STRING }
+
+txpPowSupplyAlrmIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpPowSupplyAlrmEntry 1 }
+
+txpPSUMMARY OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G Power summary alarm."
+::= { txpPowSupplyAlrmEntry 2 }
+
+txpP5VANALOG OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G +5V analog alarm."
+::= { txpPowSupplyAlrmEntry 3 }
+
+txpN5V2ANALOG OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G -5,2V analog alarm."
+::= { txpPowSupplyAlrmEntry 4 }
+
+txpP3P3VANALOG OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Txp40G +3,3V analog alarm."
+::= { txpPowSupplyAlrmEntry 5 }
+
+txpP3P3VDIGITAL OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Txp40G +3,3V analog alarm."
+::= { txpPowSupplyAlrmEntry 6 }
+
+txpLVDIGITAL OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G low voltage digital."
+::= { txpPowSupplyAlrmEntry 7 }
+
+txpN5P2VDIGITAL OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G -5,2V digital alarm."
+::= { txpPowSupplyAlrmEntry 8 }
+
+txpPowSupplyAlrmGroup OBJECT-GROUP
+    OBJECTS { txpPSUMMARY, txpP5VANALOG, txpN5V2ANALOG, txpP3P3VANALOG, txpP3P3VDIGITAL, txpLVDIGITAL, txpN5P2VDIGITAL }
+    STATUS  current
+    DESCRIPTION
+        "The txpPowSupplyAlrmGroup group groups objects of TXP Power Supply Alrm."
+    ::= { mxpConfigMIBGroups 11 }
+
+
+
+txpMiscellaneous OBJECT IDENTIFIER ::= { txp 2 }
+
+txpTempTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpTempEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Temperature TXP."
+::= { txpMiscellaneous 1 }
+
+txpTempEntry OBJECT-TYPE
+	SYNTAX TxpTempEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the Temperature TXP."
+	INDEX { txpTempIndex }
+::= { txpTempTable  1 }
+
+TxpTempEntry ::= SEQUENCE { txpTempIndex OCTET STRING, txpTempAround OCTET STRING, txpTempCase OCTET STRING, txpTempTxLaser OCTET STRING, txpTempRxLaser OCTET STRING }
+
+txpTempIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpTempEntry 1 }
+
+txpTempAround OBJECT-TYPE
+	SYNTAX      OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Temperature around txp40G."
+::= { txpTempEntry 2 }
+
+txpTempCase OBJECT-TYPE
+	SYNTAX      OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Temperature case txp40G."
+::= { txpTempEntry 3 }
+
+txpTempTxLaser OBJECT-TYPE
+	SYNTAX      OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Temperature Tx laser txp40G."
+::= { txpTempEntry 4 }
+
+txpTempRxLaser OBJECT-TYPE
+	SYNTAX      OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "Temperature Rx laser txp40G."
+::= { txpTempEntry 5 }
+
+txpTempGroup OBJECT-GROUP
+    OBJECTS { txpTempAround, txpTempCase, txpTempTxLaser, txpTempRxLaser }
+    STATUS  current
+    DESCRIPTION
+        "The txpTempGroup group groups objects of TXP Temperature Alrm."
+    ::= { mxpConfigMIBGroups 12 }
+
+
+
+txpPowerTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpPowerEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Power TXP."
+::= { txpMiscellaneous 2 }
+
+txpPowerEntry OBJECT-TYPE
+	SYNTAX TxpPowerEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the Power TXP."
+	INDEX { txpPowerIndex }
+::= { txpPowerTable  1 }
+
+TxpPowerEntry ::= SEQUENCE { txpPowerIndex OCTET STRING, txpTxPower OCTET STRING, txpRxPower OCTET STRING }
+
+txpPowerIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpPowerEntry 1 }
+
+txpTxPower OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line Tx power."
+::= { txpPowerEntry 2 }
+
+txpRxPower OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "Line Rx power."
+::= { txpPowerEntry 3 }
+
+txpPowerGroup OBJECT-GROUP
+    OBJECTS { txpTxPower, txpRxPower }
+    STATUS  current
+    DESCRIPTION
+        "The txpPowerGroup group groups objects of TXP Power."
+    ::= { mxpConfigMIBGroups 13 }
+
+
+
+txpChannelTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpChannelEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Channel TXP."
+::= { txpMiscellaneous 3 }
+
+txpChannelEntry OBJECT-TYPE
+	SYNTAX TxpChannelEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the Channel TXP."
+	INDEX { txpChannelIndex }
+::= { txpChannelTable  1 }
+
+TxpChannelEntry ::= SEQUENCE { txpChannelIndex OCTET STRING, txpTxLaserITUChannel OCTET STRING, txpRxLaserITUChannel OCTET STRING }
+
+txpChannelIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpChannelEntry 1 }
+
+txpTxLaserITUChannel OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G Tx laser ITU Channel."
+::= { txpChannelEntry 2 }
+
+txpRxLaserITUChannel OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G Rx laser ITU Channel."
+::= { txpChannelEntry 3 }
+
+txpChannelGroup OBJECT-GROUP
+    OBJECTS { txpTxLaserITUChannel, txpRxLaserITUChannel }
+    STATUS  current
+    DESCRIPTION
+        "The txpChannelGroup group groups objects of TXP Channel."
+    ::= { mxpConfigMIBGroups 14 }
+
+
+
+txpBandTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpBandEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on Band TXP."
+::= { txpMiscellaneous 4 }
+
+txpBandEntry OBJECT-TYPE
+	SYNTAX TxpBandEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the Band TXP."
+	INDEX { txpBandIndex }
+::= { txpBandTable  1 }
+
+TxpBandEntry ::= SEQUENCE { txpBandIndex OCTET STRING, txpTxLaserITUBand OCTET STRING, txpRxLaserITUBand OCTET STRING }
+
+txpBandIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpBandEntry 1 }
+
+txpTxLaserITUBand OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G Tx laser ITU Band."
+::= { txpBandEntry 2 }
+
+txpRxLaserITUBand OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G Rx laser ITU Band."
+::= { txpBandEntry 3 }
+
+txpBandGroup OBJECT-GROUP
+    OBJECTS { txpTxLaserITUBand, txpRxLaserITUBand }
+    STATUS  current
+    DESCRIPTION
+        "The txpBandGroup group groups objects of TXP Band."
+    ::= { mxpConfigMIBGroups 15 }
+
+
+txpPhyspadTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpPhyspadEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on physical pad."
+::= { txpMiscellaneous 5 }
+
+txpPhyspadEntry OBJECT-TYPE
+	SYNTAX TxpPhyspadEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the physical pad."
+	INDEX { txpPhyspadIndex }
+::= { txpPhyspadTable  1 }
+
+TxpPhyspadEntry ::= SEQUENCE { txpPhyspadIndex OCTET STRING, txpLoss OCTET STRING, txpInterrupt OCTET STRING }
+
+txpPhyspadIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpPhyspadEntry 1 }
+
+txpLoss OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G pin loss input alarm."
+::= { txpPhyspadEntry 2 }
+
+txpInterrupt OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G pin interrupt alarm."
+::= { txpPhyspadEntry 3 }
+
+txpPhyspadGroup OBJECT-GROUP
+    OBJECTS { txpLoss, txpInterrupt }
+    STATUS  current
+    DESCRIPTION
+        "The txpPhyspadGroup group groups objects of TXP Physical Pad."
+    ::= { mxpConfigMIBGroups 16 }
+    
+
+
+txpDSP OBJECT IDENTIFIER ::= { txp 3 }
+
+txpDSPStatusTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpDSPStatusEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on TXP DSP Status."
+::= { txpDSP 1 }
+
+txpDSPStatusEntry OBJECT-TYPE
+	SYNTAX TxpDSPStatusEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the TXP DSP Status."
+	INDEX { txpDSPStatusIndex }
+::= { txpDSPStatusTable 1 }
+
+TxpDSPStatusEntry ::= SEQUENCE { txpDSPStatusIndex OCTET STRING, dsprunning OCTET STRING, converged OCTET STRING, msebelowThreshold OCTET STRING, bcdEnable OCTET STRING, coarseCarrierLock OCTET STRING, collision OCTET STRING, dspInitialized OCTET STRING, presenceOfLight OCTET STRING, localOscillatorRunning OCTET STRING, transmitLaserRunning OCTET STRING }
+
+txpDSPStatusIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpDSPStatusEntry 1 }
+
+dsprunning OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP running."
+::= { txpDSPStatusEntry 2 }
+
+converged OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Converged algorithms."
+::= { txpDSPStatusEntry 3 }
+
+msebelowThreshold OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "txp40G DSP MSE below threshold"
+::= { txpDSPStatusEntry 4 }
+
+bcdEnable OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP enable."
+::= { txpDSPStatusEntry 5 }
+
+coarseCarrierLock OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Coarse Carrier Lock."
+::= { txpDSPStatusEntry 6 }
+
+collision OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Collision."
+::= { txpDSPStatusEntry 7 }
+
+dspInitialized OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Initialized."
+::= { txpDSPStatusEntry 8 }
+
+presenceOfLight OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Presence Of Light."
+::= { txpDSPStatusEntry 9 }
+
+localOscillatorRunning OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Local oscillator running."
+::= { txpDSPStatusEntry 10 }
+
+transmitLaserRunning OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Transmit laser running."
+::= { txpDSPStatusEntry 11 }
+
+txpDSPStatusGroup OBJECT-GROUP
+    OBJECTS { dsprunning, converged, msebelowThreshold, bcdEnable, coarseCarrierLock, collision, dspInitialized, presenceOfLight, localOscillatorRunning, transmitLaserRunning }
+    STATUS  current
+    DESCRIPTION
+        "The txpDSPStatusGroup group groups objects of TXP DSP Status."
+    ::= { mxpConfigMIBGroups 17 }
+
+
+
+txpDSPErrorsTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpDSPErrorsEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on TXP DSP Error."
+::= { txpDSP 2 }
+
+txpDSPErrorsEntry OBJECT-TYPE
+	SYNTAX TxpDSPErrorsEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the TXP DSP Error."
+	INDEX { txpDSPErrorsIndex }
+::= { txpDSPErrorsTable 1 }
+
+TxpDSPErrorsEntry ::= SEQUENCE { txpDSPErrorsIndex OCTET STRING, msexi OCTET STRING, msexq OCTET STRING, mseyi OCTET STRING, mseyq OCTET STRING, berestimate OCTET STRING }
+
+txpDSPErrorsIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpDSPErrorsEntry 1 }
+
+msexi OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Mean Squared Error XI channel."
+::= { txpDSPErrorsEntry 2 }
+
+msexq OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Mean Squared Error XQ channel."
+::= { txpDSPErrorsEntry 3 }
+
+mseyi OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Mean Squared Error YI channel."
+::= { txpDSPErrorsEntry 4 }
+
+mseyq OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Mean Squared Error YQ channel."
+::= { txpDSPErrorsEntry 5 }
+
+berestimate OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP BER Estimate."
+::= { txpDSPErrorsEntry 6 }
+
+txpDSPErrorsGroup OBJECT-GROUP
+    OBJECTS { msexi, msexq, mseyi, mseyq, berestimate }
+    STATUS  current
+    DESCRIPTION
+        "The txpDSPErrorsGroup group groups objects of TXP DSP Errors."
+    ::= { mxpConfigMIBGroups 18 }
+
+
+
+txpDSPCompensationTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpDSPCompensationEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on TXP DSP Compensation."
+::= { txpDSP 3 }
+
+txpDSPCompensationEntry OBJECT-TYPE
+	SYNTAX TxpDSPCompensationEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "An entry of the TXP DSP Compensation."
+	INDEX { txpDSPCompensationIndex }
+::= { txpDSPCompensationTable 1 }
+
+TxpDSPCompensationEntry ::= SEQUENCE { txpDSPCompensationIndex OCTET STRING, minBulkCDCompensation OCTET STRING, maxBulkCDCompensation OCTET STRING, stepSize OCTET STRING, cdCompensation OCTET STRING }
+
+txpDSPCompensationIndex OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(1..32))
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "Reference Index for each observed process."
+::= { txpDSPCompensationEntry 1 }
+
+minBulkCDCompensation OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Minimum bulk CD Compensation."
+::= { txpDSPCompensationEntry 2 }
+
+maxBulkCDCompensation OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Maximum bulk CD Compensation."
+::= { txpDSPCompensationEntry 3 }
+
+stepSize OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Bulk CD step size."
+::= { txpDSPCompensationEntry 4 }
+
+cdCompensation OBJECT-TYPE
+	SYNTAX OCTET STRING 
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION "txp40G DSP Chromatic Dispersion Compensation."
+::= { txpDSPCompensationEntry 5 }
+
+txpDSPCompensationGroup OBJECT-GROUP
+    OBJECTS { minBulkCDCompensation, maxBulkCDCompensation, stepSize, cdCompensation }
+    STATUS  current
+    DESCRIPTION
+        "The txpDSPCompensationGroup group groups objects of TXP DSP Compensation."
+    ::= { mxpConfigMIBGroups 19 }
+
+
+
+-- MXP Notifications MIB
+
+mxpNotificationMIB OBJECT IDENTIFIER ::= { mxp 2 }
+
+mxpNotifyMIBConformance   OBJECT IDENTIFIER ::= { mxpNotificationMIB 1 }
+
+mxpNotifyMIBCompliances   OBJECT IDENTIFIER ::= { mxpNotifyMIBConformance 1 }
+
+mxpNotifyGroups             OBJECT IDENTIFIER ::= { mxpNotifyMIBConformance 2 }
+mxpNotificationGroups       OBJECT IDENTIFIER ::= { mxpNotifyMIBConformance 3 }
+mxpMIBNotifications         OBJECT IDENTIFIER ::= { mxpNotificationMIB 2 }
+mxpMIBNotificationPrefix    OBJECT IDENTIFIER ::= { mxpMIBNotifications 0 }
+mxpMIBNotifyObjects         OBJECT IDENTIFIER ::= { mxpMIBNotifications 1 }
+
+mxpNotifyCompliance MODULE-COMPLIANCE
+    STATUS  current
+    DESCRIPTION
+            "The compliance statement for notify entities which
+            implement this MIB module."
+    MODULE  -- this module
+        MANDATORY-GROUPS {  edfaNotifyGroup, edfaNotificationGroup,
+                            txpNotifyGroup, txpNotificationGroup,
+                            xfp1NotifyGroup, xfp1NotificationGroup,
+                            xfp2NotifyGroup, xfp2NotificationGroup,
+                            xfp3NotifyGroup, xfp3NotificationGroup,
+                            xfp4NotifyGroup, xfp4NotificationGroup
+                            }
+
+    ::= { mxpNotifyMIBCompliances 1 }
+
+--
+-- Table for edfa
+--
+
+edfaNotifyTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF EdfaNotifyEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on EDFA notification."
+::= { mxpMIBNotifyObjects 1 }
+
+edfaNotifyEntry OBJECT-TYPE
+	SYNTAX	EdfaNotifyEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the EDFA notification table."
+	INDEX	{ edfaNotifyIndex }
+::= { edfaNotifyTable  1 }
+
+EdfaNotifyEntry ::= SEQUENCE { edfaNotifyIndex Integer32, edfaNotifyAmpStatus Integer32, edfaNotifyInputPower Integer32, edfaNotifyLop Integer32, 
+ edfaNotifyLos Integer32, edfaNotifyOutPow Integer32, edfaNotifyTemp Integer32}
+
+edfaNotifyIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances of the columnar objects in the edfaNotifyTable."
+::= { edfaNotifyEntry 1 }
+
+edfaNotifyAmpStatus OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "EDFA Amp. Status alarm Notify."
+::= { edfaNotifyEntry 2 }
+
+edfaNotifyAmpStatusNotification NOTIFICATION-TYPE
+    OBJECTS { edfaNotifyAmpStatus }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Amp. status alarm Notify."
+::= { mxpMIBNotificationPrefix 1 }
+
+edfaNotifyInputPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "EDFA Input Power alarm Notify."
+::= { edfaNotifyEntry 3 }
+
+edfaNotifyInputPowerNotification NOTIFICATION-TYPE
+    OBJECTS { edfaNotifyInputPower }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Input Power alarm Notify."
+::= { mxpMIBNotificationPrefix 2 }
+
+edfaNotifyLop OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "EDFA LOP alarm Notify."
+::= { edfaNotifyEntry 4 }
+
+edfaNotifyLopNotification NOTIFICATION-TYPE
+    OBJECTS { edfaNotifyLop }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LOP alarm Notify."
+::= { mxpMIBNotificationPrefix 3 }
+
+edfaNotifyLos OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "EDFA LOS alarm Notify."
+::= { edfaNotifyEntry 5 }
+
+edfaNotifyLosNotification NOTIFICATION-TYPE
+    OBJECTS { edfaNotifyLos }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LOS alarm Notify."
+::= { mxpMIBNotificationPrefix 4 }
+
+edfaNotifyOutPow OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "EDFA Output Power alarm Notify."
+::= { edfaNotifyEntry 6 }
+
+edfaNotifyOutPowNotification NOTIFICATION-TYPE
+    OBJECTS { edfaNotifyOutPow }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Output Power alarm Notify."
+::= { mxpMIBNotificationPrefix 5 }
+
+edfaNotifyTemp OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "EDFA Temperature alarm Notify."
+::= { edfaNotifyEntry 7 }
+
+edfaNotifyTempNotification NOTIFICATION-TYPE
+    OBJECTS { edfaNotifyTemp }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Temperature alarm Notify."
+::= { mxpMIBNotificationPrefix 6 }
+
+edfaNotifyGroup OBJECT-GROUP
+    OBJECTS { edfaNotifyAmpStatus, edfaNotifyInputPower, edfaNotifyLop, edfaNotifyLos, edfaNotifyOutPow, edfaNotifyTemp }
+    STATUS  current
+    DESCRIPTION
+        "The edfaNotifyGroup, groups objects of EDFA."
+    ::= { mxpNotifyGroups 1 }
+
+edfaNotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS { edfaNotifyAmpStatusNotification, edfaNotifyInputPowerNotification, edfaNotifyLopNotification, edfaNotifyLosNotification, edfaNotifyOutPowNotification, edfaNotifyTempNotification }
+    STATUS  current
+    DESCRIPTION
+        "The edfaNotificationGroup, groups notifications of EDFA."
+    ::= { mxpNotificationGroups 1 }
+
+--
+-- Table for TXP
+--
+
+txpNotifyTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpNotifyEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on TXP."
+::= { mxpMIBNotifyObjects 2 }
+
+txpNotifyEntry OBJECT-TYPE
+	SYNTAX	TxpNotifyEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the TXP notification table."
+	INDEX	{ txpNotifyIndex }
+::= { txpNotifyTable  1 }
+
+TxpNotifyEntry ::= SEQUENCE { txpNotifyIndex Integer32, txpNotifyEol Integer32, txpNotifyModTemp Integer32, txpNotifyTxooa Integer32, txpNotifyTxLof Integer32, 
+ txpNotifyTxDsc Integer32, txpNotifyLsWav Integer32, txpNotifyLsBias Integer32, txpNotifyLsTemp Integer32, txpNotifyTxLock Integer32, txpNotifyLsPow Integer32, 
+ txpNotifyModBias Integer32, txpNotifyLatTxFifo Integer32, txpNotifyRxPow Integer32, txpNotifyRxLos Integer32, txpNotifyRxLock Integer32, txpNotifyRxs Integer32, 
+ txpNotifyPrbsErr Integer32, txpNotifyPsummary Integer32, txpNotifyP5vAnalog Integer32, txpNotifyN5v2Analog Integer32, txpNotifyP3p3vAnalog Integer32, 
+ txpNotifyP3p3vDigital Integer32, txpNotifyLvDigital Integer32, txpNotifyN5p2vDigital Integer32}
+
+txpNotifyIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances of the columnar objects in the txpNotifyTable."
+::= { txpNotifyEntry 1 }
+
+txpNotifyEol OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP Eol alarm Notify."
+::= { txpNotifyEntry 2 }
+
+txpNotifyEolNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyEol }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Eol alarm Notify."
+::= { mxpMIBNotificationPrefix 7 }
+
+txpNotifyModTemp OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP Module Temperature alarm Notify."
+::= { txpNotifyEntry 3 }
+
+txpNotifyModTempNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyModTemp }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Module Temperature alarm Notify."
+::= { mxpMIBNotificationPrefix 8 }
+
+txpNotifyTxooa OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP Txooa alarm Notify."
+::= { txpNotifyEntry 4 }
+
+txpNotifyTxooaNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyTxooa }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Txooa alarm Notify."
+::= { mxpMIBNotificationPrefix 9 }
+
+txpNotifyTxLof OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP Lof alarm Notify."
+::= { txpNotifyEntry 5 }
+
+txpNotifyTxLofNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyTxLof }
+    STATUS current
+    DESCRIPTION "Notification of EDFA TxLof alarm Notify."
+::= { mxpMIBNotificationPrefix 10 }
+
+txpNotifyTxDsc OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP TxDsc alarm Notify."
+::= { txpNotifyEntry 6 }
+
+txpNotifyTxDscNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyTxDsc }
+    STATUS current
+    DESCRIPTION "Notification of EDFA TxDsc alarm Notify."
+::= { mxpMIBNotificationPrefix 11 }
+
+txpNotifyLsWav OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP LsWav alarm Notify."
+::= { txpNotifyEntry 7 }
+
+txpNotifyLsWavNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyLsWav }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LsWav alarm Notify."
+::= { mxpMIBNotificationPrefix 12 }
+
+txpNotifyLsBias OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP LsBias alarm Notify."
+::= { txpNotifyEntry 8 }
+
+txpNotifyLsBiasNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyLsBias }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LsBias alarm Notify."
+::= { mxpMIBNotificationPrefix 13 }
+
+txpNotifyLsTemp OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP LsTemp alarm Notify."
+::= { txpNotifyEntry 9 }
+
+txpNotifyLsTempNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyLsTemp }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LsTemp alarm Notify."
+::= { mxpMIBNotificationPrefix 14 }
+
+txpNotifyTxLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP TxLock alarm Notify."
+::= { txpNotifyEntry 10 }
+
+txpNotifyTxLockNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyTxLock }
+    STATUS current
+    DESCRIPTION "Notification of EDFA TxLock alarm Notify."
+::= { mxpMIBNotificationPrefix 15 }
+
+txpNotifyLsPow OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP LsPow alarm Notify."
+::= { txpNotifyEntry 11 }
+
+txpNotifyLsPowNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyLsPow }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LsPow alarm Notify."
+::= { mxpMIBNotificationPrefix 16 }
+
+txpNotifyModBias OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP ModBias alarm Notify."
+::= { txpNotifyEntry 12 }
+
+txpNotifyModBiasNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyModBias }
+    STATUS current
+    DESCRIPTION "Notification of EDFA ModBias alarm Notify."
+::= { mxpMIBNotificationPrefix 17 }
+
+txpNotifyLatTxFifo OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP LatTxFifo alarm Notify."
+::= { txpNotifyEntry 13 }
+
+txpNotifyLatTxFifoNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyLatTxFifo }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LatTxFifo alarm Notify."
+::= { mxpMIBNotificationPrefix 18 }
+
+txpNotifyRxPow OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP RxPow alarm Notify."
+::= { txpNotifyEntry 14 }
+
+txpNotifyRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyRxPow }
+    STATUS current
+    DESCRIPTION "Notification of EDFA RxPow alarm Notify."
+::= { mxpMIBNotificationPrefix 19 }
+
+txpNotifyRxLos OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP RxLos alarm Notify."
+::= { txpNotifyEntry 15 }
+
+txpNotifyRxLosNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyRxLos }
+    STATUS current
+    DESCRIPTION "Notification of EDFA RxLos alarm Notify."
+::= { mxpMIBNotificationPrefix 20 }
+
+txpNotifyRxLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP RxLock alarm Notify."
+::= { txpNotifyEntry 16 }
+
+txpNotifyRxLockNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyRxLock }
+    STATUS current
+    DESCRIPTION "Notification of EDFA RxLock alarm Notify."
+::= { mxpMIBNotificationPrefix 21 }
+
+txpNotifyRxs OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP Rxs alarm Notify."
+::= { txpNotifyEntry 17 }
+
+txpNotifyRxsNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyRxs }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Rxs alarm Notify."
+::= { mxpMIBNotificationPrefix 22 }
+
+txpNotifyPrbsErr OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP PrbsErr alarm Notify."
+::= { txpNotifyEntry 18 }
+
+txpNotifyPrbsErrNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyPrbsErr }
+    STATUS current
+    DESCRIPTION "Notification of EDFA PrbsErr alarm Notify."
+::= { mxpMIBNotificationPrefix 23 }
+
+txpNotifyPsummary OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP Psummary alarm Notify."
+::= { txpNotifyEntry 19 }
+
+txpNotifyPsummaryNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyPsummary }
+    STATUS current
+    DESCRIPTION "Notification of EDFA Psummary alarm Notify."
+::= { mxpMIBNotificationPrefix 24 }
+
+txpNotifyP5vAnalog OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP P5vAnalog alarm Notify."
+::= { txpNotifyEntry 20 }
+
+txpNotifyP5vAnalogNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyP5vAnalog }
+    STATUS current
+    DESCRIPTION "Notification of EDFA P5vAnalog alarm Notify."
+::= { mxpMIBNotificationPrefix 25 }
+
+txpNotifyN5v2Analog OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP N5v2Analog alarm Notify."
+::= { txpNotifyEntry 21 }
+
+txpNotifyN5v2AnalogNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyN5v2Analog }
+    STATUS current
+    DESCRIPTION "Notification of EDFA N5v2Analog alarm Notify."
+::= { mxpMIBNotificationPrefix 26 }
+
+txpNotifyP3p3vAnalog OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP P3p3vAnalog alarm Notify."
+::= { txpNotifyEntry 22 }
+
+txpNotifyP3p3vAnalogNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyP3p3vAnalog }
+    STATUS current
+    DESCRIPTION "Notification of EDFA P3p3vAnalog alarm Notify."
+::= { mxpMIBNotificationPrefix 27 }
+
+txpNotifyP3p3vDigital OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP P3p3vDigital alarm Notify."
+::= { txpNotifyEntry 23 }
+
+txpNotifyP3p3vDigNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyP3p3vDigital }
+    STATUS current
+    DESCRIPTION "Notification of EDFA P3p3vDigital alarm Notify."
+::= { mxpMIBNotificationPrefix 28 }
+
+txpNotifyLvDigital OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP LvDigital alarm Notify."
+::= { txpNotifyEntry 24 }
+
+txpNotifyLvDigitalNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyLvDigital }
+    STATUS current
+    DESCRIPTION "Notification of EDFA LvDigital alarm Notify."
+::= { mxpMIBNotificationPrefix 29 }
+
+txpNotifyN5p2vDigital OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "TXP N5p2vDigital alarm Notify."
+::= { txpNotifyEntry 25 }
+
+txpNotifyN5p2vDigNotification NOTIFICATION-TYPE
+    OBJECTS { txpNotifyN5p2vDigital }
+    STATUS current
+    DESCRIPTION "Notification of EDFA N5p2vDigital alarm Notify."
+::= { mxpMIBNotificationPrefix 30 }
+
+txpNotifyGroup OBJECT-GROUP
+    OBJECTS { txpNotifyEol, txpNotifyModTemp, txpNotifyTxooa, txpNotifyTxLof, txpNotifyTxDsc, txpNotifyLsWav, txpNotifyLsBias, txpNotifyLsTemp, txpNotifyTxLock, 
+    txpNotifyLsPow, txpNotifyModBias, txpNotifyLatTxFifo, txpNotifyRxPow, txpNotifyRxLos, txpNotifyRxLock, txpNotifyRxs, txpNotifyPrbsErr, txpNotifyPsummary,
+    txpNotifyP5vAnalog, txpNotifyN5v2Analog, txpNotifyP3p3vAnalog, txpNotifyP3p3vDigital , txpNotifyLvDigital, txpNotifyN5p2vDigital}
+    STATUS  current
+    DESCRIPTION
+        "The txpNotifyGroup, groups objects of txp."
+    ::= { mxpNotifyGroups 2 }
+
+txpNotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS {  txpNotifyEolNotification, txpNotifyModTempNotification, txpNotifyTxooaNotification, txpNotifyTxLofNotification, txpNotifyTxDscNotification, txpNotifyLsWavNotification, txpNotifyLsBiasNotification, txpNotifyLsTempNotification, txpNotifyTxLockNotification, txpNotifyLsPowNotification, txpNotifyModBiasNotification,
+txpNotifyLatTxFifoNotification, txpNotifyRxPowNotification, txpNotifyRxLosNotification, txpNotifyRxLockNotification, txpNotifyRxsNotification, txpNotifyPrbsErrNotification, txpNotifyPsummaryNotification, txpNotifyP5vAnalogNotification, txpNotifyN5v2AnalogNotification, txpNotifyP3p3vAnalogNotification, txpNotifyP3p3vDigNotification, txpNotifyLvDigitalNotification, txpNotifyN5p2vDigNotification }
+    STATUS  current
+    DESCRIPTION
+        "The txpNotificationGroup, groups notifications of txp."
+    ::= { mxpNotificationGroups 2 }
+
+--
+-- Table for xfp1Notify
+--
+
+xfp1NotifyTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF XFP1NotifyEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp1Notify."
+::= { mxpMIBNotifyObjects 3 }
+
+xfp1NotifyEntry OBJECT-TYPE
+	SYNTAX	XFP1NotifyEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp1Notify table."
+	INDEX	{ xfp1NotifyIndex }
+::= { xfp1NotifyTable  1 }
+
+XFP1NotifyEntry ::= SEQUENCE { xfp1NotifyIndex Integer32, xfp1NotifyPresence Integer32, xfp1NotifyRxLoss Integer32, xfp1NotifyReady Integer32,
+ xfp1NotifyTxPower Integer32, xfp1NotifyRxPower Integer32, xfp1NotifyTemperature Integer32, xfp1NotifyLowTxPower Integer32, xfp1NotifyHighTxPower Integer32, 
+ xfp1NotifyLowRxPower Integer32, xfp1NotifyHighRxPower Integer32, xfp1NotifyRxCdrLossOfLock Integer32, xfp1NotifyTxCdrLossOfLock Integer32, xfp1NotifyLaserFault Integer32}
+
+xfp1NotifyIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp1NotifyEntry 1 }
+
+xfp1NotifyPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 2 }
+
+xfp1NotifyPresenceNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyPresence }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 Presence Notify."
+::= { mxpMIBNotificationPrefix 31 }
+
+xfp1NotifyRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 3 }
+
+xfp1NotifyRxLossNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyRxLoss }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 RxLoss Notify."
+::= { mxpMIBNotificationPrefix 32 }
+
+xfp1NotifyReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 4 }
+
+xfp1NotifyReadyNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyReady }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 Ready Notify."
+::= { mxpMIBNotificationPrefix 33 }
+
+xfp1NotifyTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 5 }
+
+xfp1NotifyTxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyTxPower }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 TxPower Notify."
+::= { mxpMIBNotificationPrefix 34 }
+
+xfp1NotifyRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 6 }
+
+xfp1NotifyRxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyRxPower }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 Power Notify."
+::= { mxpMIBNotificationPrefix 35 }
+
+xfp1NotifyTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 7 }
+
+xfp1NotifyTempNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyTemperature }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 Temperature Notify."
+::= { mxpMIBNotificationPrefix 36 }
+
+xfp1NotifyLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 8 }
+
+xfp1NotifyLowTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyLowTxPower }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 LowTxPower Notify."
+::= { mxpMIBNotificationPrefix 37 }
+
+xfp1NotifyHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 9 }
+
+xfp1NotifyHighTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyHighTxPower }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 HighTxPower Notify."
+::= { mxpMIBNotificationPrefix 38 }
+
+xfp1NotifyLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 10 }
+
+xfp1NotifyLowRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyLowRxPower }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 LowRxPower Notify."
+::= { mxpMIBNotificationPrefix 39 }
+
+xfp1NotifyHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 11 }
+
+xfp1NotifyHighRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyHighRxPower }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 HighRxPower Notify."
+::= { mxpMIBNotificationPrefix 40 }
+
+xfp1NotifyRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 12 }
+
+xfp1NotifyRxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyRxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 RxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 41 }
+
+xfp1NotifyTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 13 }
+
+xfp1NotifyTxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyTxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 TxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 42 }
+
+xfp1NotifyLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp1NotifyEntry 14 }
+
+xfp1NotifyLaserFaultNotification NOTIFICATION-TYPE
+    OBJECTS { xfp1NotifyLaserFault }
+    STATUS current
+    DESCRIPTION "Notification of XFP1 LaserFault Notify."
+::= { mxpMIBNotificationPrefix 43 }
+
+xfp1NotifyGroup OBJECT-GROUP
+    OBJECTS { xfp1NotifyPresence, xfp1NotifyRxLoss, xfp1NotifyReady, xfp1NotifyTxPower, xfp1NotifyRxPower, 
+    xfp1NotifyTemperature, xfp1NotifyLowTxPower, xfp1NotifyHighTxPower, xfp1NotifyLowRxPower, 
+    xfp1NotifyHighRxPower, xfp1NotifyRxCdrLossOfLock, xfp1NotifyTxCdrLossOfLock, xfp1NotifyLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp1NotifyGroup, groups objects of xfp1Notify."
+    ::= { mxpNotifyGroups 3 }
+
+xfp1NotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS { xfp1NotifyPresenceNotification, xfp1NotifyRxLossNotification, xfp1NotifyReadyNotification, xfp1NotifyTxPowerNotification, xfp1NotifyRxPowerNotification, xfp1NotifyTempNotification, xfp1NotifyLowTxPowNotification, xfp1NotifyHighTxPowNotification, xfp1NotifyLowRxPowNotification, xfp1NotifyHighRxPowNotification, xfp1NotifyRxCdrLOLNotification, xfp1NotifyTxCdrLOLNotification, xfp1NotifyLaserFaultNotification }
+    STATUS  current
+    DESCRIPTION "The xfp1NotificationGroup, groups notifications of XFP1."
+    ::= { mxpNotificationGroups 3 }
+
+--
+-- Table for xfp2Notify
+--
+
+xfp2NotifyTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF XFP2NotifyEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp2Notify."
+::= { mxpMIBNotifyObjects 4 }
+
+xfp2NotifyEntry OBJECT-TYPE
+	SYNTAX	XFP2NotifyEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp2Notify table."
+	INDEX	{ xfp2NotifyIndex }
+::= { xfp2NotifyTable  1 }
+
+XFP2NotifyEntry ::= SEQUENCE { xfp2NotifyIndex Integer32, xfp2NotifyPresence Integer32, xfp2NotifyRxLoss Integer32, xfp2NotifyReady Integer32,
+ xfp2NotifyTxPower Integer32, xfp2NotifyRxPower Integer32, xfp2NotifyTemperature Integer32, xfp2NotifyLowTxPower Integer32, xfp2NotifyHighTxPower Integer32, 
+ xfp2NotifyLowRxPower Integer32, xfp2NotifyHighRxPower Integer32, xfp2NotifyRxCdrLossOfLock Integer32, xfp2NotifyTxCdrLossOfLock Integer32, xfp2NotifyLaserFault Integer32}
+
+xfp2NotifyIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp2NotifyEntry 1 }
+
+xfp2NotifyPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 2 }
+
+xfp2NotifyPresenceNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyPresence }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 Presence Notify."
+::= { mxpMIBNotificationPrefix 44 }
+
+xfp2NotifyRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 3 }
+
+xfp2NotifyRxLossNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyRxLoss }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 RxLoss Notify."
+::= { mxpMIBNotificationPrefix 45 }
+
+xfp2NotifyReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 4 }
+
+xfp2NotifyReadyNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyReady }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 Ready Notify."
+::= { mxpMIBNotificationPrefix 46 }
+
+xfp2NotifyTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 5 }
+
+xfp2NotifyTxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 TxPower Notify."
+::= { mxpMIBNotificationPrefix 47 }
+
+xfp2NotifyRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 6 }
+
+xfp2NotifyRxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 Power Notify."
+::= { mxpMIBNotificationPrefix 48 }
+
+xfp2NotifyTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 7 }
+
+xfp2NotifyTempNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyTemperature }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 Temperature Notify."
+::= { mxpMIBNotificationPrefix 49 }
+
+xfp2NotifyLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 8 }
+
+xfp2NotifyLowTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyLowTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 LowTxPower Notify."
+::= { mxpMIBNotificationPrefix 50 }
+
+xfp2NotifyHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 9 }
+
+xfp2NotifyHighTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyHighTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 HighTxPower Notify."
+::= { mxpMIBNotificationPrefix 51 }
+
+xfp2NotifyLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 10 }
+
+xfp2NotifyLowRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyLowRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 LowRxPower Notify."
+::= { mxpMIBNotificationPrefix 52 }
+
+xfp2NotifyHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 11 }
+
+xfp2NotifyHighRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyHighRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 HighRxPower Notify."
+::= { mxpMIBNotificationPrefix 53 }
+
+xfp2NotifyRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 12 }
+
+xfp2NotifyRxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyRxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 RxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 54 }
+
+xfp2NotifyTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 13 }
+
+xfp2NotifyTxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyTxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 TxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 55 }
+
+xfp2NotifyLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp2NotifyEntry 14 }
+
+xfp2NotifyLaserFaultNotification NOTIFICATION-TYPE
+    OBJECTS { xfp2NotifyLaserFault }
+    STATUS current
+    DESCRIPTION "Notification of xfp2 LaserFault Notify."
+::= { mxpMIBNotificationPrefix 56 }
+
+xfp2NotifyGroup OBJECT-GROUP
+    OBJECTS { xfp2NotifyPresence, xfp2NotifyRxLoss, xfp2NotifyReady, xfp2NotifyTxPower, xfp2NotifyRxPower, 
+    xfp2NotifyTemperature, xfp2NotifyLowTxPower, xfp2NotifyHighTxPower, xfp2NotifyLowRxPower, 
+    xfp2NotifyHighRxPower, xfp2NotifyRxCdrLossOfLock, xfp2NotifyTxCdrLossOfLock, xfp2NotifyLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp2NotifyGroup, groups objects of xfp2Notify."
+    ::= { mxpNotifyGroups 4 }
+
+xfp2NotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS { xfp2NotifyPresenceNotification, xfp2NotifyRxLossNotification, xfp2NotifyReadyNotification, xfp2NotifyTxPowerNotification, xfp2NotifyRxPowerNotification, xfp2NotifyTempNotification, xfp2NotifyLowTxPowNotification, xfp2NotifyHighTxPowNotification, xfp2NotifyLowRxPowNotification, xfp2NotifyHighRxPowNotification, xfp2NotifyRxCdrLOLNotification, xfp2NotifyTxCdrLOLNotification, xfp2NotifyLaserFaultNotification }
+    STATUS  current
+    DESCRIPTION "The xfp2NotificationGroup, groups notifications of xfp2."
+    ::= { mxpNotificationGroups 4 }
+
+--
+-- Table for xfp3Notify
+--
+
+xfp3NotifyTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF XFP3NotifyEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp3Notify."
+::= { mxpMIBNotifyObjects 5 }
+
+xfp3NotifyEntry OBJECT-TYPE
+	SYNTAX	XFP3NotifyEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp3Notify table."
+	INDEX	{ xfp3NotifyIndex }
+::= { xfp3NotifyTable  1 }
+
+XFP3NotifyEntry ::= SEQUENCE { xfp3NotifyIndex Integer32, xfp3NotifyPresence Integer32, xfp3NotifyRxLoss Integer32, xfp3NotifyReady Integer32,
+ xfp3NotifyTxPower Integer32, xfp3NotifyRxPower Integer32, xfp3NotifyTemperature Integer32, xfp3NotifyLowTxPower Integer32, xfp3NotifyHighTxPower Integer32, 
+ xfp3NotifyLowRxPower Integer32, xfp3NotifyHighRxPower Integer32, xfp3NotifyRxCdrLossOfLock Integer32, xfp3NotifyTxCdrLossOfLock Integer32, xfp3NotifyLaserFault Integer32}
+
+xfp3NotifyIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp3NotifyEntry 1 }
+
+xfp3NotifyPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 2 }
+
+xfp3NotifyPresenceNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyPresence }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 Presence Notify."
+::= { mxpMIBNotificationPrefix 57 }
+
+xfp3NotifyRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 3 }
+
+xfp3NotifyRxLossNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyRxLoss }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 RxLoss Notify."
+::= { mxpMIBNotificationPrefix 58 }
+
+xfp3NotifyReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 4 }
+
+xfp3NotifyReadyNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyReady }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 Ready Notify."
+::= { mxpMIBNotificationPrefix 59 }
+
+xfp3NotifyTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 5 }
+
+xfp3NotifyTxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 TxPower Notify."
+::= { mxpMIBNotificationPrefix 60 }
+
+xfp3NotifyRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 6 }
+
+xfp3NotifyRxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 Power Notify."
+::= { mxpMIBNotificationPrefix 61 }
+
+xfp3NotifyTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 7 }
+
+xfp3NotifyTempNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyTemperature }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 Temperature Notify."
+::= { mxpMIBNotificationPrefix 62 }
+
+xfp3NotifyLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 8 }
+
+xfp3NotifyLowTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyLowTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 LowTxPower Notify."
+::= { mxpMIBNotificationPrefix 63 }
+
+xfp3NotifyHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 9 }
+
+xfp3NotifyHighTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyHighTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 HighTxPower Notify."
+::= { mxpMIBNotificationPrefix 64 }
+
+xfp3NotifyLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 10 }
+
+xfp3NotifyLowRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyLowRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 LowRxPower Notify."
+::= { mxpMIBNotificationPrefix 65 }
+
+xfp3NotifyHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 11 }
+
+xfp3NotifyHighRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyHighRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 HighRxPower Notify."
+::= { mxpMIBNotificationPrefix 66 }
+
+xfp3NotifyRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 12 }
+
+xfp3NotifyRxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyRxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 RxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 67 }
+
+xfp3NotifyTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 13 }
+
+xfp3NotifyTxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyTxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 TxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 68 }
+
+xfp3NotifyLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp3NotifyEntry 14 }
+
+xfp3NotifyLaserFaultNotification NOTIFICATION-TYPE
+    OBJECTS { xfp3NotifyLaserFault }
+    STATUS current
+    DESCRIPTION "Notification of xfp3 LaserFault Notify."
+::= { mxpMIBNotificationPrefix 69 }
+
+xfp3NotifyGroup OBJECT-GROUP
+    OBJECTS { xfp3NotifyPresence, xfp3NotifyRxLoss, xfp3NotifyReady, xfp3NotifyTxPower, xfp3NotifyRxPower, 
+    xfp3NotifyTemperature, xfp3NotifyLowTxPower, xfp3NotifyHighTxPower, xfp3NotifyLowRxPower, 
+    xfp3NotifyHighRxPower, xfp3NotifyRxCdrLossOfLock, xfp3NotifyTxCdrLossOfLock, xfp3NotifyLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp3NotifyGroup, groups objects of xfp3Notify."
+    ::= { mxpNotifyGroups 5 }
+
+xfp3NotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS { xfp3NotifyPresenceNotification, xfp3NotifyRxLossNotification, xfp3NotifyReadyNotification, xfp3NotifyTxPowerNotification, xfp3NotifyRxPowerNotification, xfp3NotifyTempNotification, xfp3NotifyLowTxPowNotification, xfp3NotifyHighTxPowNotification, xfp3NotifyLowRxPowNotification, xfp3NotifyHighRxPowNotification, xfp3NotifyRxCdrLOLNotification, xfp3NotifyTxCdrLOLNotification, xfp3NotifyLaserFaultNotification }
+    STATUS  current
+    DESCRIPTION "The xfp3NotificationGroup, groups notifications of xfp3."
+    ::= { mxpNotificationGroups 5 }
+
+--
+-- Table for xfp4Notify
+--
+
+xfp4NotifyTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF XFP4NotifyEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp4Notify."
+::= { mxpMIBNotifyObjects 6 }
+
+xfp4NotifyEntry OBJECT-TYPE
+	SYNTAX	XFP4NotifyEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp4Notify table."
+	INDEX	{ xfp4NotifyIndex }
+::= { xfp4NotifyTable  1 }
+
+XFP4NotifyEntry ::= SEQUENCE { xfp4NotifyIndex Integer32, xfp4NotifyPresence Integer32, xfp4NotifyRxLoss Integer32, xfp4NotifyReady Integer32,
+ xfp4NotifyTxPower Integer32, xfp4NotifyRxPower Integer32, xfp4NotifyTemperature Integer32, xfp4NotifyLowTxPower Integer32, xfp4NotifyHighTxPower Integer32, 
+ xfp4NotifyLowRxPower Integer32, xfp4NotifyHighRxPower Integer32, xfp4NotifyRxCdrLossOfLock Integer32, xfp4NotifyTxCdrLossOfLock Integer32, xfp4NotifyLaserFault Integer32}
+
+xfp4NotifyIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp4NotifyEntry 1 }
+
+xfp4NotifyPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 2 }
+
+xfp4NotifyPresenceNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyPresence }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 Presence Notify."
+::= { mxpMIBNotificationPrefix 70 }
+
+xfp4NotifyRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 3 }
+
+xfp4NotifyRxLossNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyRxLoss }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 RxLoss Notify."
+::= { mxpMIBNotificationPrefix 71 }
+
+xfp4NotifyReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 4 }
+
+xfp4NotifyReadyNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyReady }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 Ready Notify."
+::= { mxpMIBNotificationPrefix 72 }
+
+xfp4NotifyTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 5 }
+
+xfp4NotifyTxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 TxPower Notify."
+::= { mxpMIBNotificationPrefix 73 }
+
+xfp4NotifyRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 6 }
+
+xfp4NotifyRxPowerNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 Power Notify."
+::= { mxpMIBNotificationPrefix 74 }
+
+xfp4NotifyTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 7 }
+
+xfp4NotifyTempNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyTemperature }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 Temperature Notify."
+::= { mxpMIBNotificationPrefix 75 }
+
+xfp4NotifyLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 8 }
+
+xfp4NotifyLowTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyLowTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 LowTxPower Notify."
+::= { mxpMIBNotificationPrefix 76 }
+
+xfp4NotifyHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 9 }
+
+xfp4NotifyHighTxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyHighTxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 HighTxPower Notify."
+::= { mxpMIBNotificationPrefix 77 }
+
+xfp4NotifyLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 10 }
+
+xfp4NotifyLowRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyLowRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 LowRxPower Notify."
+::= { mxpMIBNotificationPrefix 78 }
+
+xfp4NotifyHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 11 }
+
+xfp4NotifyHighRxPowNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyHighRxPower }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 HighRxPower Notify."
+::= { mxpMIBNotificationPrefix 79 }
+
+xfp4NotifyRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 12 }
+
+xfp4NotifyRxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyRxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 RxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 80 }
+
+xfp4NotifyTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 13 }
+
+xfp4NotifyTxCdrLOLNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyTxCdrLossOfLock }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 TxCdrLossOfLock Notify."
+::= { mxpMIBNotificationPrefix 81 }
+
+xfp4NotifyLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm Notify"
+::= { xfp4NotifyEntry 14 }
+
+xfp4NotifyLaserFaultNotification NOTIFICATION-TYPE
+    OBJECTS { xfp4NotifyLaserFault }
+    STATUS current
+    DESCRIPTION "Notification of xfp4 LaserFault Notify."
+::= { mxpMIBNotificationPrefix 82 }
+
+xfp4NotifyGroup OBJECT-GROUP
+    OBJECTS { xfp4NotifyPresence, xfp4NotifyRxLoss, xfp4NotifyReady, xfp4NotifyTxPower, xfp4NotifyRxPower, 
+    xfp4NotifyTemperature, xfp4NotifyLowTxPower, xfp4NotifyHighTxPower, xfp4NotifyLowRxPower, 
+    xfp4NotifyHighRxPower, xfp4NotifyRxCdrLossOfLock, xfp4NotifyTxCdrLossOfLock, xfp4NotifyLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp4NotifyGroup, groups objects of xfp4Notify."
+    ::= { mxpNotifyGroups 6 }
+
+xfp4NotificationGroup NOTIFICATION-GROUP
+    NOTIFICATIONS { xfp4NotifyPresenceNotification, xfp4NotifyRxLossNotification, xfp4NotifyReadyNotification, xfp4NotifyTxPowerNotification, xfp4NotifyRxPowerNotification, xfp4NotifyTempNotification, xfp4NotifyLowTxPowNotification, xfp4NotifyHighTxPowNotification, xfp4NotifyLowRxPowNotification, xfp4NotifyHighRxPowNotification, xfp4NotifyRxCdrLOLNotification, xfp4NotifyTxCdrLOLNotification, xfp4NotifyLaserFaultNotification }
+    STATUS  current
+    DESCRIPTION "The xfp4NotificationGroup, groups notifications of xfp4."
+    ::= { mxpNotificationGroups 6 }
+
+-- MXP Severity MIB
+
+mxpSeverityMIB OBJECT IDENTIFIER ::= { mxp 3 }
+
+mxpSeverityMIBConformance OBJECT IDENTIFIER ::= { mxpSeverityMIB 1 }
+
+mxpSeverityMIBCompliances OBJECT IDENTIFIER ::= { mxpSeverityMIBConformance 1 }
+
+mxpSeverityMIBGroups OBJECT IDENTIFIER ::= { mxpSeverityMIB 2 }
+
+edfaAlarms       OBJECT IDENTIFIER ::= { mxpSeverityMIB 3 }
+txpAlarms       OBJECT IDENTIFIER ::= { mxpSeverityMIB 4 }
+xfpAlarms       OBJECT IDENTIFIER ::= { mxpSeverityMIB 5 }
+
+alarmBasicCompliance MODULE-COMPLIANCE
+    STATUS  current
+    DESCRIPTION
+            "The compliance statement for alarm entities which
+            implement this MIB module."
+    MODULE  -- this module
+        MANDATORY-GROUPS { edfaSeverityGroup, txpSeverityGroup, xfp1SeverityGroup, xfp2SeverityGroup, xfp3SeverityGroup, xfp4SeverityGroup}
+
+    ::= { mxpSeverityMIBCompliances 1 }
+
+--
+-- Table for edfa
+--
+edfaSeverityTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF EdfaSeverityEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on edfa."
+::= { edfaAlarms 1 }
+
+edfaSeverityEntry OBJECT-TYPE
+	SYNTAX	EdfaSeverityEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the edfa table."
+	INDEX	{ edfaSeverityIndex }
+::= { edfaSeverityTable  1 }
+
+EdfaSeverityEntry ::= SEQUENCE { edfaSeverityIndex Integer32, edfaSeverityAmpStatus Integer32, edfaSeverityInputPower Integer32, edfaSeverityLop Integer32, 
+ edfaSeverityLos Integer32, edfaSeverityOutputPower Integer32, edfaSeverityTemperature Integer32}
+
+edfaSeverityIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the edfaSeverityTable"
+::= { edfaSeverityEntry 1 }
+
+edfaSeverityAmpStatus OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { edfaSeverityEntry 2 }
+
+edfaSeverityInputPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { edfaSeverityEntry 3 }
+
+edfaSeverityLop OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { edfaSeverityEntry 4 }
+
+edfaSeverityLos OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { edfaSeverityEntry 5 }
+
+edfaSeverityOutputPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { edfaSeverityEntry 6 }
+
+edfaSeverityTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { edfaSeverityEntry 7 }
+
+edfaSeverityGroup OBJECT-GROUP
+    OBJECTS { edfaSeverityAmpStatus, edfaSeverityInputPower, edfaSeverityLop, edfaSeverityLos, edfaSeverityOutputPower, edfaSeverityTemperature }
+    STATUS  current
+    DESCRIPTION
+        "The edfaSeverityGroup, groups objects of edfa."
+    ::= { mxpSeverityMIBGroups 1 }
+
+--
+-- Table for txp
+--
+txpSeverityTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF TxpSeverityEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on txp."
+::= { txpAlarms 1 }
+
+txpSeverityEntry OBJECT-TYPE
+	SYNTAX	TxpSeverityEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the txp table."
+	INDEX	{ txpSeverityIndex }
+::= { txpSeverityTable  1 }
+
+TxpSeverityEntry ::= SEQUENCE { txpSeverityIndex Integer32, txpSeverityEol Integer32, txpSeverityModTemp Integer32, txpSeverityTxooa Integer32, txpSeverityTxLof Integer32, 
+ txpSeverityTxDsc Integer32, txpSeverityLsWav Integer32, txpSeverityLsBias Integer32, txpSeverityLsTemp Integer32, txpSeverityTxLock Integer32, txpSeverityLsPow Integer32, 
+ txpSeverityModBias Integer32, txpSeverityLatchedTxFifo Integer32, txpSeverityRxPow Integer32, txpSeverityRxLos Integer32, txpSeverityRxLock Integer32, txpSeverityRxs Integer32, 
+ txpSeverityPrbsErr Integer32, txpSeverityPsummary Integer32, txpSeverityP5vAnalog Integer32, txpSeverityN5v2Analog Integer32, txpSeverityP3p3vAnalog Integer32, 
+ txpSeverityP3p3vDigital Integer32, txpSeverityLvDigital Integer32, txpSeverityN5p2vDigital Integer32}
+
+txpSeverityIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the txpSeverityTable"
+::= { txpSeverityEntry 1 }
+
+txpSeverityEol OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 2 }
+
+txpSeverityModTemp OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 3 }
+
+txpSeverityTxooa OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 4 }
+
+txpSeverityTxLof OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 5 }
+
+txpSeverityTxDsc OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 6 }
+
+txpSeverityLsWav OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 7 }
+
+txpSeverityLsBias OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 8 }
+
+txpSeverityLsTemp OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 9 }
+
+txpSeverityTxLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 10 }
+
+txpSeverityLsPow OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 11 }
+
+txpSeverityModBias OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 12 }
+
+txpSeverityLatchedTxFifo OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 13 }
+
+txpSeverityRxPow OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 14 }
+
+txpSeverityRxLos OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 15 }
+
+txpSeverityRxLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 16 }
+
+txpSeverityRxs OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 17 }
+
+txpSeverityPrbsErr OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 18 }
+
+txpSeverityPsummary OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 19 }
+
+txpSeverityP5vAnalog OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 20 }
+
+txpSeverityN5v2Analog OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 21 }
+
+txpSeverityP3p3vAnalog OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 22 }
+
+txpSeverityP3p3vDigital OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 23 }
+
+txpSeverityLvDigital OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 24 }
+
+txpSeverityN5p2vDigital OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { txpSeverityEntry 25 }
+
+txpSeverityGroup OBJECT-GROUP
+    OBJECTS { txpSeverityEol, txpSeverityModTemp, txpSeverityTxooa, txpSeverityTxLof, txpSeverityTxDsc, txpSeverityLsWav, txpSeverityLsBias, txpSeverityLsTemp, txpSeverityTxLock, 
+    txpSeverityLsPow, txpSeverityModBias, txpSeverityLatchedTxFifo, txpSeverityRxPow, txpSeverityRxLos, txpSeverityRxLock, txpSeverityRxs, txpSeverityPrbsErr, txpSeverityPsummary,
+    txpSeverityP5vAnalog, txpSeverityN5v2Analog, txpSeverityP3p3vAnalog, txpSeverityP3p3vDigital , txpSeverityLvDigital, txpSeverityN5p2vDigital}
+    STATUS  current
+    DESCRIPTION
+        "The txpSeverityGroup, groups objects of txp."
+    ::= { mxpSeverityMIBGroups 2 }
+
+--
+-- Table for xfp1Severity
+--
+xfp1SeverityTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF Xfp1SeverityEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp1Severity."
+::= { xfpAlarms 1 }
+
+xfp1SeverityEntry OBJECT-TYPE
+	SYNTAX	Xfp1SeverityEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp1Severity table."
+	INDEX	{ xfp1SeverityIndex }
+::= { xfp1SeverityTable  1 }
+
+Xfp1SeverityEntry ::= SEQUENCE { xfp1SeverityIndex Integer32, xfp1SeverityPresence Integer32, xfp1SeverityRxLoss Integer32, xfp1SeverityReady Integer32,
+ xfp1SeverityTxPower Integer32, xfp1SeverityRxPower Integer32, xfp1SeverityTemperature Integer32, xfp1SeverityLowTxPower Integer32, xfp1SeverityHighTxPower Integer32, 
+ xfp1SeverityLowRxPower Integer32, xfp1SeverityHighRxPower Integer32, xfp1SeverityRxCdrLossOfLock Integer32, xfp1SeverityTxCdrLossOfLock Integer32, xfp1SeverityLaserFault Integer32}
+
+xfp1SeverityIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp1SeverityEntry 1 }
+
+xfp1SeverityPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 2 }
+
+xfp1SeverityRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 3 }
+
+xfp1SeverityReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 4 }
+
+xfp1SeverityTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 5 }
+
+xfp1SeverityRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 6 }
+
+xfp1SeverityTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 7 }
+
+xfp1SeverityLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 8 }
+
+xfp1SeverityHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 9 }
+
+xfp1SeverityLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 10 }
+
+xfp1SeverityHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 11 }
+
+xfp1SeverityRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 12 }
+
+xfp1SeverityTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 13 }
+
+xfp1SeverityLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp1SeverityEntry 14 }
+
+xfp1SeverityGroup OBJECT-GROUP
+    OBJECTS { xfp1SeverityPresence, xfp1SeverityRxLoss, xfp1SeverityReady, xfp1SeverityTxPower, xfp1SeverityRxPower, 
+    xfp1SeverityTemperature, xfp1SeverityLowTxPower, xfp1SeverityHighTxPower, xfp1SeverityLowRxPower, 
+    xfp1SeverityHighRxPower, xfp1SeverityRxCdrLossOfLock, xfp1SeverityTxCdrLossOfLock, xfp1SeverityLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp1SeverityGroup, groups objects of xfp1Severity."
+    ::= { mxpSeverityMIBGroups 3 }
+
+--
+-- Table for xfp2Severity
+--
+xfp2SeverityTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF Xfp2SeverityEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp2Severity."
+::= { xfpAlarms 2 }
+
+xfp2SeverityEntry OBJECT-TYPE
+	SYNTAX	Xfp2SeverityEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp2Severity table."
+	INDEX	{ xfp2SeverityIndex }
+::= { xfp2SeverityTable  1 }
+
+Xfp2SeverityEntry ::= SEQUENCE { xfp2SeverityIndex Integer32, xfp2SeverityPresence Integer32, xfp2SeverityRxLoss Integer32, xfp2SeverityReady Integer32,
+ xfp2SeverityTxPower Integer32, xfp2SeverityRxPower Integer32, xfp2SeverityTemperature Integer32, xfp2SeverityLowTxPower Integer32, xfp2SeverityHighTxPower Integer32, 
+ xfp2SeverityLowRxPower Integer32, xfp2SeverityHighRxPower Integer32, xfp2SeverityRxCdrLossOfLock Integer32, xfp2SeverityTxCdrLossOfLock Integer32, xfp2SeverityLaserFault Integer32}
+
+xfp2SeverityIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp2SeverityEntry 1 }
+
+xfp2SeverityPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 2 }
+
+xfp2SeverityRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 3 }
+
+xfp2SeverityReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 4 }
+
+xfp2SeverityTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 5 }
+
+xfp2SeverityRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 6 }
+
+xfp2SeverityTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 7 }
+
+xfp2SeverityLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 8 }
+
+xfp2SeverityHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 9 }
+
+xfp2SeverityLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 10 }
+
+xfp2SeverityHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 11 }
+
+xfp2SeverityRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 12 }
+
+xfp2SeverityTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 13 }
+
+xfp2SeverityLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp2SeverityEntry 14 }
+
+xfp2SeverityGroup OBJECT-GROUP
+    OBJECTS { xfp2SeverityPresence, xfp2SeverityRxLoss, xfp2SeverityReady, xfp2SeverityTxPower, xfp2SeverityRxPower, 
+    xfp2SeverityTemperature, xfp2SeverityLowTxPower, xfp2SeverityHighTxPower, xfp2SeverityLowRxPower, 
+    xfp2SeverityHighRxPower, xfp2SeverityRxCdrLossOfLock, xfp2SeverityTxCdrLossOfLock, xfp2SeverityLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp2SeverityGroup, groups objects of xfp2Severity."
+    ::= { mxpSeverityMIBGroups 4 }
+
+--
+-- Table for xfp3Severity
+--
+xfp3SeverityTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF Xfp3SeverityEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp3Severity."
+::= { xfpAlarms 3 }
+
+xfp3SeverityEntry OBJECT-TYPE
+	SYNTAX	Xfp3SeverityEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp3Severity table."
+	INDEX	{ xfp3SeverityIndex }
+::= { xfp3SeverityTable  1 }
+
+Xfp3SeverityEntry ::= SEQUENCE { xfp3SeverityIndex Integer32, xfp3SeverityPresence Integer32, xfp3SeverityRxLoss Integer32, xfp3SeverityReady Integer32,
+ xfp3SeverityTxPower Integer32, xfp3SeverityRxPower Integer32, xfp3SeverityTemperature Integer32, xfp3SeverityLowTxPower Integer32, xfp3SeverityHighTxPower Integer32, 
+ xfp3SeverityLowRxPower Integer32, xfp3SeverityHighRxPower Integer32, xfp3SeverityRxCdrLossOfLock Integer32, xfp3SeverityTxCdrLossOfLock Integer32, xfp3SeverityLaserFault Integer32}
+
+xfp3SeverityIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp3SeverityEntry 1 }
+
+xfp3SeverityPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 2 }
+
+xfp3SeverityRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 3 }
+
+xfp3SeverityReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 4 }
+
+xfp3SeverityTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 5 }
+
+xfp3SeverityRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 6 }
+
+xfp3SeverityTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 7 }
+
+xfp3SeverityLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 8 }
+
+xfp3SeverityHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 9 }
+
+xfp3SeverityLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 10 }
+
+xfp3SeverityHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 11 }
+
+xfp3SeverityRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 12 }
+
+xfp3SeverityTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 13 }
+
+xfp3SeverityLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp3SeverityEntry 14 }
+
+xfp3SeverityGroup OBJECT-GROUP
+    OBJECTS { xfp3SeverityPresence, xfp3SeverityRxLoss, xfp3SeverityReady, xfp3SeverityTxPower, xfp3SeverityRxPower, 
+    xfp3SeverityTemperature, xfp3SeverityLowTxPower, xfp3SeverityHighTxPower, xfp3SeverityLowRxPower, 
+    xfp3SeverityHighRxPower, xfp3SeverityRxCdrLossOfLock, xfp3SeverityTxCdrLossOfLock, xfp3SeverityLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp3SeverityGroup, groups objects of xfp3Severity."
+    ::= { mxpSeverityMIBGroups 5 }
+
+--
+-- Table for xfp4Severity
+--
+xfp4SeverityTable OBJECT-TYPE
+	SYNTAX SEQUENCE OF Xfp4SeverityEntry
+	MAX-ACCESS not-accessible
+	STATUS current
+	DESCRIPTION "A table containing information on xfp4Severity."
+::= { xfpAlarms 4 }
+
+xfp4SeverityEntry OBJECT-TYPE
+	SYNTAX	Xfp4SeverityEntry
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "An entry of the xfp4Severity table."
+	INDEX	{ xfp4SeverityIndex }
+::= { xfp4SeverityTable  1 }
+
+Xfp4SeverityEntry ::= SEQUENCE { xfp4SeverityIndex Integer32, xfp4SeverityPresence Integer32, xfp4SeverityRxLoss Integer32, xfp4SeverityReady Integer32,
+ xfp4SeverityTxPower Integer32, xfp4SeverityRxPower Integer32, xfp4SeverityTemperature Integer32, xfp4SeverityLowTxPower Integer32, xfp4SeverityHighTxPower Integer32, 
+ xfp4SeverityLowRxPower Integer32, xfp4SeverityHighRxPower Integer32, xfp4SeverityRxCdrLossOfLock Integer32, xfp4SeverityTxCdrLossOfLock Integer32, xfp4SeverityLaserFault Integer32}
+
+xfp4SeverityIndex OBJECT-TYPE
+	SYNTAX	Integer32 (0..65535)
+	MAX-ACCESS	not-accessible
+	STATUS	current
+	DESCRIPTION "The auxiliary variable used for identifying instances
+            of the columnar objects in the xfpTable"
+::= { xfp4SeverityEntry 1 }
+
+xfp4SeverityPresence OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 2 }
+
+xfp4SeverityRxLoss OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 3 }
+
+xfp4SeverityReady OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 4 }
+
+xfp4SeverityTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 5 }
+
+xfp4SeverityRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 6 }
+
+xfp4SeverityTemperature OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 7 }
+
+xfp4SeverityLowTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 8 }
+
+xfp4SeverityHighTxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 9 }
+
+xfp4SeverityLowRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 10 }
+
+xfp4SeverityHighRxPower OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 11 }
+
+xfp4SeverityRxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 12 }
+
+xfp4SeverityTxCdrLossOfLock OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 13 }
+
+xfp4SeverityLaserFault OBJECT-TYPE
+	SYNTAX      Integer32
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "alarm severity"
+::= { xfp4SeverityEntry 14 }
+
+xfp4SeverityGroup OBJECT-GROUP
+    OBJECTS { xfp4SeverityPresence, xfp4SeverityRxLoss, xfp4SeverityReady, xfp4SeverityTxPower, xfp4SeverityRxPower, 
+    xfp4SeverityTemperature, xfp4SeverityLowTxPower, xfp4SeverityHighTxPower, xfp4SeverityLowRxPower, 
+    xfp4SeverityHighRxPower, xfp4SeverityRxCdrLossOfLock, xfp4SeverityTxCdrLossOfLock, xfp4SeverityLaserFault }
+    STATUS  current
+    DESCRIPTION
+        "The xfp4SeverityGroup, groups objects of xfp4Severity."
+    ::= { mxpSeverityMIBGroups 6 }
+
+
+END

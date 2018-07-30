@@ -1,0 +1,7 @@
+CC = /home/pmartinez/toolchain-mmu/x86-linux2/bin/nios2-linux-gnu-gcc
+
+API_CFLAGS  := -Wstrict-prototypes -Wshadow -Wpointer-arith -Wcast-qual \
+         -Wcast-align -Wwrite-strings -Wnested-externs -Winline \
+         -W -Wundef -Wmissing-prototypes 
+
+.PHONY: clean cleanall

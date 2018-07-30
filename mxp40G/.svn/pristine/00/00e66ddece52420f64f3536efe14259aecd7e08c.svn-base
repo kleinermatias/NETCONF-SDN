@@ -1,0 +1,122 @@
+# Text File    !!! DEPRECATED with release 5.4           !!! 
+#              !!! REPLACED by ./cupll_profiles_calc.txt !!!
+#              !!! See full.pl revision 1.159            !!!
+# Table: Cleanup PLL Profiles for 10G Traffic
+# 
+# How to read and modify the data is explained below.
+
+<args>
+<cn0> |<<<<<<<<<<<<<<<<<<<<< Description of Profile >>>>>>>>>>>>>>>>>>>>>>>>|
+<cn1> |---Profile------|       Traffic  K   TxClk    CuPLL System Clock  Clk cs_uint16    cs_uint32     cs_uint16    cs_uint16      cs_uint16  cs_uint16  cs_uint16 cs_uint16   cs_uint16  cs_uint16  cs_uint16   cs_uint16   cs_uint16  cs_uint16  cs_uint16   cs_uint16   cs_uint16   cs_uint16   cs_uint16   cs_uint16  cs_uint16  cs_uint16 cs_uint16   cs_uint16   cs_uint16   cs_uint16    </cn1>
+<cn2>  Id          Name        Type     Val Source   Source        Freq  Sch preloadfint  preloadffrac  pdoffset     holdovercount  k1fscale   k1fshift   z1fscale  z1fshift    p1fscale   p1fshift   p2fscale    p2fshift    p3fscale   p3fshift   k1sscale    k1sshift    z1sscale    z1sshift    p1sscale    p1sshift   p2sscale   p2sshift  p3sscale    p3sshift    resetcount  sdmode       </cn2>
+       1; rxdiv_clk_311;       oc192;   64; rxdiv;      ;     311040000;   ; 0x0020;      0x01D71528;   0x00000320;  0x16;          0x15;      0x01;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x02;      0x1b;       0x08;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # Your comments here
+       2; rxdiv_clk_622;       oc192;   64; rxdiv;      ;     622080000;   ; 0x0020;      0x01D71528;   0x00000320;  0x16;          0x15;      0x01;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x02;      0x1b;       0x08;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # 622 is divided down to 311
+       3; rxdiv_clk_400;       oc192;   64; rxdiv;      ;     400000000;   ; 0x0018;      0xe219652b;   0x00000320;  0x16;          0x17;      0x01;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x0d;      0x1e;       0x08;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # Your comments here
+       4; rxdiv_clk_200;       oc192;   64; rxdiv;      ;     200000000;   ; 0x0031;      0xc432ca57;   0x00000320;  0x16;          0x17;      0x00;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x0d;      0x1e;       0x07;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # Your comments here
+
+      11; fixed_clk_311;       oc192;   64; fixed;      ;     311040000;   ; 0x0020;      0x00000000;   0x00000320;  0x16;          0x1e;      0x01;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x0d;      0x13;       0x07;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # Your comments here
+
+      12; fixed_clk_622;       oc192;   64; fixed;      ;     622080000;   ; 0x0020;      0x01D71528;   0x00000320;  0x16;          0x15;      0x01;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x02;      0x1b;       0x08;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # 622 is divided down to 311
+      13; fixed_clk_400;       oc192;   64; fixed;      ;     400000000;   ; 0x0018;      0xe219652b;   0x00000320;  0x16;          0x17;      0x01;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x0d;      0x1e;       0x08;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # Your comments here
+      14; fixed_clk_200;       oc192;   64; fixed;      ;     200000000;   ; 0x0031;      0xc432ca57;   0x00000320;  0x16;          0x17;      0x00;      0x14;     0x0b;       0x10;      0x05;      0x11;       0x02;       0x11;      0x0d;      0x1e;       0x07;       0x1a;       0x15;       0x15;       0x0c;      0x15;      0x09;     0x15;       0x09;       4;          3;           # Your comments here
+       1; rxdiv_clk_311;       otu2;    64; rxdiv;      ;     311040000;   ; 0x0022;      0x6e2d5e2a;   0x00000320;  0x16;          0x10;      0x00;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x03;      0x15;       0x07;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+       2; rxdiv_clk_622;       otu2;    64; rxdiv;      ;     622080000;   ; 0x0022;      0x6e2d5e2a;   0x00000320;  0x16;          0x10;      0x00;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x03;      0x15;       0x07;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # 622 is divided down to 311
+       3; rxdiv_clk_400;       otu2;    64; rxdiv;      ;     400000000;   ; 0x001a;      0xc5e779f7;   0x00000320;  0x16;          0x19;      0x01;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x0e;      0x10;       0x07;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+       4; rxdiv_clk_200;       otu2;    64; rxdiv;      ;     200000000;   ; 0x0035;      0x8bcef3ee;   0x00000320;  0x16;          0x19;      0x00;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x0e;      0x10;       0x06;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      11; fixed_clk_311;       otu2;    64; fixed;      ;     311040000;   ; 0x0022;      0x6e2d5e2a;   0x00000320;  0x16;          0x10;      0x00;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x03;      0x15;       0x07;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      12; fixed_clk_622;       otu2;    64; fixed;      ;     622080000;   ; 0x0022;      0x6e2d5e2a;   0x00000320;  0x16;          0x10;      0x00;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x03;      0x15;       0x07;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # 622 is divided down to 311
+      13; fixed_clk_400;       otu2;    64; fixed;      ;     400000000;   ; 0x001a;      0xc5e779f7;   0x00000320;  0x16;          0x19;      0x01;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x0e;      0x10;       0x07;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      14; fixed_clk_200;       otu2;    64; fixed;      ;     200000000;   ; 0x0035;      0x8bcef3ee;   0x00000320;  0x16;          0x19;      0x00;      0x13;     0x0b;       0x1e;      0x06;      0x1f;       0x03;       0x1f;      0x0e;      0x10;       0x06;       0x18;       0x15;       0x13;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+       1; rxdiv_clk_311;       otu2e;   64; rxdiv;      ;     311040000;   ; 0x0023;      0xac494ab6;   0x00000320;  0x16;          0x11;      0x00;      0x12;     0x0b;       0x1d;      0x06;      0x1e;       0x03;       0x1e;      0x0e;      0x15;       0x07;       0x17;       0x15;       0x13;       0x0c;      0x13;      0x09;     0x13;       0x09;       4;          3;           # Your comments here
+       2; rxdiv_clk_622;       otu2e;   64; rxdiv;      ;     622080000;   ; 0x0023;      0xac494ab6;   0x00000320;  0x16;          0x11;      0x00;      0x12;     0x0b;       0x1d;      0x06;      0x1e;       0x03;       0x1e;      0x0e;      0x15;       0x07;       0x17;       0x15;       0x13;       0x0c;      0x13;      0x09;     0x13;       0x09;       4;          3;           # 622 is divided down to 311
+       3; rxdiv_clk_400;       otu2e;   64; rxdiv;      ;     400000000;   ; 0x001b;      0xbd440d0a;   0x00000320;  0x16;          0x1a;      0x01;      0x12;     0x0b;       0x1d;      0x06;      0x1e;       0x03;       0x1e;      0x0e;      0x11;       0x07;       0x17;       0x15;       0x13;       0x0c;      0x13;      0x09;     0x13;       0x09;       4;          3;           # Your comments here
+       4; rxdiv_clk_200;       otu2e;   64; rxdiv;      ;     200000000;   ; 0x0037;      0x7a881a15;   0x00000320;  0x16;          0x1a;      0x00;      0x12;     0x0b;       0x1d;      0x06;      0x1e;       0x03;       0x1e;      0x0e;      0x11;       0x06;       0x17;       0x15;       0x13;       0x0c;      0x13;      0x09;     0x13;       0x09;       4;          3;           # Your comments here
+       1; rxdiv_clk_311;       10ge7_1; 64; rxdiv;      ;     311040000;   ; 0x0021;      0x2880ca45;   0x00000320;  0x16;          0x1f;      0x01;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x14;       0x07;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+       2; rxdiv_clk_622;       10ge7_1; 64; rxdiv;      ;     622080000;   ; 0x0021;      0x2880ca45;   0x00000320;  0x16;          0x1f;      0x01;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x14;       0x07;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+       3; rxdiv_clk_400;       10ge7_1; 64; rxdiv;      ;     400000000;   ; 0x0019;      0xc8a8f5c2;   0x00000320;  0x16;          0x18;      0x01;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x1f;       0x08;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+       4; rxdiv_clk_200;       10ge7_1; 64; rxdiv;      ;     200000000;   ; 0x0033;      0x9151eb85;   0x00000320;  0x16;          0x18;      0x00;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x1f;       0x07;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      11; fixed_clk_311;       10ge7_3; 64; fixed;      ;     311040000;   ; 0x0021;      0x2880ca45;   0x00000320;  0x16;          0x1f;      0x01;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x14;       0x07;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      12; fixed_clk_622;       10ge7_3; 64; fixed;      ;     622080000;   ; 0x0021;      0x2880ca45;   0x00000320;  0x16;          0x1f;      0x01;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x14;       0x07;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      13; fixed_clk_400;       10ge7_3; 64; fixed;      ;     400000000;   ; 0x0019;      0xc8a8f5c2;   0x00000320;  0x16;          0x18;      0x01;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x1f;       0x08;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+      14; fixed_clk_200;       10ge7_3; 64; fixed;      ;     200000000;   ; 0x0033;      0x9151eb85;   0x00000320;  0x16;          0x18;      0x00;      0x14;     0x0b;       0x1f;      0x06;      0x20;       0x03;       0x10;      0x0d;      0x1f;       0x07;       0x19;       0x15;       0x14;       0x0c;      0x14;      0x09;     0x14;       0x09;       4;          3;           # Your comments here
+</args>                                         |       |
+#                                               |       Ignored for now because selected for both line and client by "-auxclk" on full.pl command line
+#                                               For 5.2 can be 'rxdiv' or 'fixed'
+
+
+# DATA FORMAT
+# ===========
+#   Table Structure
+#   ---------------
+#   Profile data has several keys. To find the correct profile, the profile id or name specified on
+#   the full.pl commandline must match, as well as line or client traffic type and k_value. 
+#      Note: The profile name or ID were originally going to be the only lookup key, but it was found
+#            that many of the profiles register values are different based on other inputs, so new
+#            keys were created. As an unfortunate result, many different profiles can have the same
+#            "name" and "ID". 
+#            
+#            Each profile ID and Name defines a unique set of Tx Clock source, CUPLL system clock
+#            source and rate, and clock scheme (for 40G XFI and MR).
+#
+#   Profile data is contained in the "<args>" section. The args section contains two header rows,
+#   <cn1> and <cn2>, and all of the profile rows. The <cn1> row can be used for readibility, ie, for
+#   column headings that take two rows. Or it can be used to specify a C type. For now, this row is
+#   ignored by the profile reader.
+#   
+#   The <cn2> row contains the names of the arguments that follow. These should be the same as the
+#   argument names used in the C API functions, but there are some exceptions. More on that later.
+#
+#   Each profile is contained on one row (no wrapping). The profile argument values are entered in the
+#   same order as their names appear in the <cn2> row. Column alignment is not necessary for parsing, but
+#   recommended for readibility.
+#
+#   Argument Names
+#   --------------
+#   The <cn2> row (2nd column name row) is parsed for argument names. The names must be one word,
+#   where a word consists of letters, numbers, and underscores "_". The words may be space or tab
+#   delimited. For readibility the <cn2> row may be terminated by any non-word character, but it is
+#   not necessary. Text notes can be added for the row following any non-word character (e.g.,
+#   following the pseudo-xml closing tag </cn2>.
+#
+#   Do not change any of the <cn2> row under the banner "|<<<< Description of Profile >>>>|". These
+#   are altered by the profile reader to make or match machine-useable variable names.
+#
+#   Argument Values
+#   ---------------
+#   Argument values must be one word consisting of letters, numbers, and underscores "_". Each argument
+#   must be followed by a semicolon (;). Blank argument values are marked with a semicolon.
+#   The profile reader will only allow blank argument values for arguments in the "optional" list in
+#   this file. There MUST be one argument value for every argument name in row <cn2>.
+#
+# ADDING or CHANGING PROFILES
+# ===========================
+#   o Each profile can have an ID or a name, or both. The ID or Name is entered on the full.pl
+#     command line.
+#   o Each profile's ID and Name must be identically unique. E.g., Profile name "Abby" must be the
+#     only profile name that uses profile index "12", and index 12 can be the only index
+#     for any profile named "Abby".
+#   o Rows can be added using existing rows as a model.
+#     - columns do not have to align,
+#     - Argument values should be in the same lexical position as their argument name in <cn2>.
+#     - Blank argument values must be denoted with a lone semicolon (;)
+#   o Columns can be added or deleted, but the same change must be made to all profile rows and the
+#     <cn2> row.
+#   o The reader only allows blank profile values for a few columns.
+#
+# Arguments
+# =========
+#   TxClk Source:  For 5.2 this can be 
+#     - rxdiv  -  recovered clock routed over signals rxdiv(A) or rxdiv(B)
+#     - fixed  -  system reference clock via a TX FracDiv.
+#   Clk Sch: Clock Scheme (40G configs only)
+#     - ms     -  Master clock. A single TxRef is broadcast to each 10G stream (default)
+#     - ds     -  Distributed.  XFI: Each 10G stream has its own source for TxRef
+#                               Multi-Rate: Each pair of MR SerDes has its own source for TxRef
+
+                                 
+<ctypes>
+  cs_uint8
+  cs_uint16
+  cs_uint32
+  cs_uint64
+</ctypes>

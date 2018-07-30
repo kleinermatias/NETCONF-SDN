@@ -1,0 +1,1309 @@
+\documentclass[a4paper,11pt]{artiphy}
+\pagestyle{headings}
+\usepackage[spanish]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}%[pdftex]
+\usepackage{graphicx, wrapfig}
+\usepackage{fancyhdr}
+\usepackage{anysize}
+\usepackage{verbatim}
+\usepackage{colortbl}
+\usepackage{ltablex}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black,breaklinks]{hyperref}
+\marginsize{2.cm}{2.cm}{2.cm}{1.cm}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{lscape}
+\graphicspath{{figuras/}}
+\renewcommand{\tablename}{Tabla}
+\renewcommand\spanishtablename{Tabla}
+\usepackage{pdfpages}
+
+\usepackage{eso-pic}
+\usepackage{everyshi}
+
+\title{\vspace{2.5cm} \textbf{Muxponder CLI Document}}\author{\large{\textbf{Fulgor Fundation}}}
+\date{1 September 2014} 
+
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+
+\vfill
+}}}
+
+\begin{document}
+\AddToShipoutPicture{\BackgroundPic}
+\maketitle
+
+\textit{\textbf{Document Number 460001}}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| c | c | c | c |}
+\hline
+\hline
+\multicolumn{1}{|>{\columncolor[rgb]{0.623529,0.77255,0.9098}}c|}{\textbf{Date}} & \multicolumn{1}{|>{\columncolor[rgb]{0.623529,0.77255,0.9098}}c|}{\textbf{Originator}} & \multicolumn{1}{|>{\columncolor[rgb]{0.623529,0.77255,0.9098}}c|}{\textbf{Description}} & \multicolumn{1}{|>{\columncolor[rgb]{0.623529,0.77255,0.9098}}c|}{\textbf{Review}}\\ \hline
+1 September 2014 & J.V. & CLI Documentation initial review. & 1.0\\ \hline
+25 September 2014 & R.A. & Add section 6.1 and 7.1.8. & 1.1\\ \hline
+10 October 2014 & N.G. & Add section 7.5 CS6041 power & 1.2\\ \hline
+21 October 2014 & N.G. & Add section 7.6 RTC & 1.3\\ \hline
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{System Access}
+\label{System Access}
+In order to access the muxponder CLI, it is necessary to have access to an SSH client, a Telnet client or direct physical access through an RS-232 interface. In Windows, these are all provided by a free software called PuTTY (though there are plenty of applications that can achieve this type of connectivity). In Linux, there are several tools freely available as well, and usually come as part of a standard Linux distribution.
+
+\subsection{Windows}
+\label{Windows}
+This section covers the muxponder CLI access steps in a MS Windows environment.
+
+\subsubsection{PuTTY}
+\label{PuTTY}
+As mentioned before, there is a freely available tool called PuTTY that provides client functionality for all three types of connectivity (i.e. SSH, Telnet and RS-232).\\
+
+To download PuTTY, follow this link:\\
+
+\url{http://www.putty.org/}\\
+
+The downloaded file is a portable standalone executable, so there's no need to perform any installation process. Simply double-click on the downloaded file and PuTTY will automatically start.\\
+
+Once started, the Figure~\ref{fig:putty_configuration} should be appear.\\
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{putty_configuration.eps}
+  \caption{PuTTY main screen.}
+  \label{fig:putty_configuration}
+\end{figure}
+
+
+Note that there are several connection types, including the ones mentioned before. These are listed in the \textbf{\textit{Connection type}} field.
+
+\subsubsection{Local Access}
+\label{Local Access}
+
+This section shows how to locally access the muxponder CLI through an RS-232 interface.\\
+
+The first step to gain local access is to select the \textbf{\textit{Serial}} connection type in the \textbf{\textit{Connection type}} field as depicted by the 
+Figure~\ref{fig:putty_configuration_serial}. After this is done, the connection needs to be configured accordingly through the \textbf{\textit{Category}} menu. Once the previous steps are completed, you will be presented with a screen that allows you to configure the serial connection parameters. Make sure that the connection is configured exactly as shown in same figure. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=1\textwidth]{putty_configuration_serial.eps}
+  \caption{Serial connection selection and configuration parameters.}
+  \label{fig:putty_configuration_serial}
+\end{figure}
+
+After all the parameters are properly configured, hit the \textbf{\textit{Open}} button at the bottom of the window to start the connection.\\
+
+If you start the Muxponder after making the connection, you should see an output similar to the one in the Figure~\ref{fig:serial_output}.\\
+
+It is important to mention that the serial connection is established from the client point of view without any interaction from the Muxponder. The latter will send bytes through the RS-232 channel regardless whether there is a client listening on the other end or not. This means that there is no need to start the muxponder or wait for it to fully boot before establishing the connection. This also means that if no output is shown in the console, you can hit the \textbf{\textit{Enter}} key to start interacting with the Muxponder and seeing output through the console.\\
+
+To gain admin access to the CLI, enter \textbf{\textit{admin}} in the \textbf{\textit{mxp login}} field, and then input the password previously provided to you.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{serial_output.eps}
+  \caption{Serial output.}
+  \label{fig:serial_output}
+\end{figure}
+
+\subsubsection{Remote Access via SSH}
+\label{Remote Access via SSH}
+
+Unlike the local serial connection, there are some previous steps needed to be taken before establishing a remote connection to the Muxponder.
+
+\begin{itemize}
+	\item Ensure the Muxponder is powered on and has fully booted.
+	\item Get information on the IP address assigned to the Muxponder. Since the equipment is programmed to request an IP address through DHCP, this information can be obtained through the DHCP line logs. Another method to get this information is locally through the ifconfig command, as shown in the Figure~\ref{fig:ip_configuration}.
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{ip_configuration.eps}
+  \caption{IP address information shown in ifconfig output.}
+  \label{fig:ip_configuration}
+\end{figure}
+
+Once the IP address information is available to the administrator, it can be used to configure the SSH connection in PuTTY. First, make sure you select the \textbf{\textit{SSH}} connection type before entering any information. After the connection type is selected, enter \textbf{\textit{admin@<IP address>}} in the \textbf{\textit{Host Name}} (or IP address) field, as shown in the  Figure~\ref{fig:putty_configuration_ssh}.\\
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{putty_configuration_ssh.eps}
+  \caption{SSH configuration parameters setup.}
+  \label{fig:putty_configuration_ssh}
+\end{figure}
+
+After the parameters are entered, hit the \textbf{\textit{Open}} button below. This will start an SSH connection attempt to the Muxponder. After successful connection, a password prompt will appear, as shown in the Figure~\ref{fig:ssh_output}. Enter the previously provided password for the \textbf{\textit{admin}} user, and hit the \textbf{\textit{Enter}} key. If the login is successful, you will be presented with the CLI prompt, which will be similar to the one presented in the same figure.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{ssh_output.eps}
+  \caption{SSH password prompt for the admin user.}
+  \label{fig:ssh_output}
+\end{figure}
+
+\subsubsection{Remote Access via Telnet}
+\label{Remote Access via Telnet}
+
+Unlike the local serial connection, there are some previous steps needed to be taken before establishing a remote connection to the Muxponder.
+
+\begin{itemize}
+	\item Ensure the Muxponder is powered on and has fully booted.
+	\item Get information on the IP address assigned to the Muxponder. Since the equipment is programmed to request an IP address through DHCP, this information can be obtained through the DHCP line logs. Another method to get this information is locally through the ifconfig command, as shown in the Figure~\ref{fig:ip_configuration}.
+\end{itemize}
+
+Once the IP address information is available to the administrator, it can be used to configure the Telnet connection in PuTTY. First, make sure you select the \textbf{\textit{Telnet}} connection type before entering any information. After the connection type is selected, enter \textbf{\textit{admin@<IP address>}} in the \textbf{\textit{Host Name}} (or IP address) field, as shown in the  Figure~\ref{fig:putty_configuration_telnet}.\\
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{putty_configuration_telnet.eps}
+  \caption{Telnet configuration parameters setup.}
+  \label{fig:putty_configuration_telnet}
+\end{figure}
+
+After the parameters are entered, hit the \textbf{\textit{Open}} button below. This will start a Telnet connection attempt to the Muxponder. After successful connection, a credentials prompt will appear, as shown in the Figure~\ref{fig:telnet_output}. Enter \textit{\textbf{\textit{admin}}} in the login input field, and the previously provided password for the admin user. If the login was successful, the CLI prompt will appear, and an output similar to the one in the same figure.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{telnet_output.eps}
+  \caption{CLI prompt for the admin user via Telnet.}
+  \label{fig:telnet_output}
+\end{figure}
+
+\newpage
+
+\section{System reboot}
+\label{System reboot}
+
+Once we are connected the Muxponder, only just run the \textbf{\textit{reboot}} command, as shown in the Figure~\ref{fig:uClinux_reboot}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{uClinux_reboot.eps}
+  \caption{uClinux reboot.}
+  \label{fig:uClinux_reboot}
+\end{figure}
+
+\section{Enable/Disable Client Laser}
+\label{Enable/Disable Client Laser}
+
+\section{Enable/Disable Line Laser}
+\label{Enable/Disable Line Laser}
+
+\section{Report Module Manufacturer's info and Type}
+\label{Report Module Manufacturer's info and Type}
+
+\section{Typical Configurations}
+\label{Typical Configurations}
+
+This section is intended to provide an insight of the configuration use cases for the different communication modes of the Muxponder. These can be summarized as:
+
+\begin{itemize}
+	\item 4x10GbE client sources into an OTU-3 frame encapsulation.
+	\item 4xOTU-2 client sources into an OTU-3 frame encapsulation.
+	\item 1x40GbE client source into and OTU-3 frame encapsulation.
+\end{itemize}	
+
+The commands needed to setup the Muxponder for each of these configuration modes will be explained in the following sections.
+
+\subsection{4x10GbE/OTU-3}
+\label{4x10GbE/OTU-3}
+
+This configuration mode involves the four XFP optical interfaces from the client side, and the optical interface from the line side.\\
+
+In order to start configuring each of the ports/interfaces, we need to enable them. This is accomplished by the \textbf{\textit{config --status}} command, with the \textbf{\textit{up}} argument. Please refer to the proper section for further command information.\\
+
+To enable the client-side interfaces, the command to use is \textbf{\textit{config --status --port}}, as following:
+
+\begin{verbatim}
+mxp>> config --status up --port 0
+mxp>> config --status up --port 1
+mxp>> config --status up --port 2
+mxp>> config --status up --port 3
+\end{verbatim}
+
+Once we enable the client-side interfaces, we can proceed with the enabling of the line-side interfaces. This is done with the command \textbf{\textit{config --status --line}}, as following:
+
+\begin{verbatim}
+mxp>> config --status up --line
+\end{verbatim}
+
+To verify the status of both client and line interfaces, the \textbf{\textit{show --status}} command can be used (with the \textbf{\textit{--port}} and \textbf{\textit{--line}} options, respectively):
+
+\begin{verbatim}
+mxp>> show --status --port 2
+Port 2:
+    Link Status: UP
+    Temperature: 37.449219 C
+    Current laser power:
+        TX: 5.197000 mW
+        RX: 0.001000 mW
+
+mxp>> show --status --line
+Line:
+    Link Status: UP
+    Laser Temperature XX C
+    Current laser power output: YY W
+\end{verbatim}
+
+After enabling the interfaces, the administrator needs to configure the client-side communication in \textbf{\textit{eth}} mode, using the \textbf{\textit{config --mode --port}} command:
+
+\begin{verbatim}
+mxp>> config --port 0 --mode eth
+mxp>> config --port 1 --mode eth
+mxp>> config --port 2 --mode eth
+mxp>> config --port 3 --mode eth
+\end{verbatim}
+
+The line-side interface on the other hand, will always work in OTU-3 mode, so the only configuration parameters to be set in this interface are the channel and the band. These can take the following values:\\
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|l|c|r||}
+    \hline
+    \multicolumn{1}{|>{\columncolor[rgb]{0.623529,0.77255,0.9098}}c|}{\textbf{Parameter}} &
+    \multicolumn{1}{|>{\columncolor[rgb]{0.623529,0.77255,0.9098}}c|}{\textbf{Range}} \\ \hline
+    \textbf{Channel} & [XXX, YYY] \\ \hline
+    \textbf{Band} & {'C', 'L'} \\ \hline
+  \end{tabular}
+  \caption{line-side interface configuration parameters.}
+\end{table}
+
+The commands used to configure these parameters are config --channelrx and ..., respectively. The configuration of the line-side interface depends on the specific communication requirements. For example, if the need is for a 1310 nm wavelength in band L, then the command to configure the interface would be:
+
+\begin{verbatim}
+mxp>> config --channel 1310 --line
+\end{verbatim}
+
+With those commands, the 4x10GbE to OTU-3 will be successfully configured.
+
+\subsection{4xOTU-2/OTU-3}
+\label{4xOTU-2/OTU-3}
+
+The configuration procedure for this mode is exactly the same as the one described in section 
+4x10GbE/OTU-3, exept for the \textbf{\textit{config --mode --port}} command. Instead of providing the \textbf{\textit{eth}} mode as an argument for this command, the correct argument would be \textbf{\textit{otn}}, like the following script:
+
+\begin{verbatim}
+mxp>> config --port 0 --mode otn
+mxp>> config --port 1 --mode otn
+mxp>> config --port 2 --mode otn
+mxp>> config --port 3 --mode otn
+\end{verbatim}
+
+\subsection{1x40GbE/OTU-3}
+\label{1x40GbE/OTU-3}
+
+Mode still under development.
+
+\section{Commands Details}
+\label{Commands Details}
+
+After adding an application in \textbf{\textit{/opt/bin}}, if we want the admin user to run the application, we must create a symbolic link in the folder \textbf{\textit{/opt/home/admin}}:
+
+\begin{verbatim}
+root:/opt/home/admin> ln -s /opt/bin/aplication_to_run aplication_to_run
+\end{verbatim}
+
+\subsection{show}
+\label{show}
+
+\textbf{\textit{Description}}\\
+
+This command is used to output all the muxponder relevant information to the output console. By relevant information, we mean information that is useful to the equipment administrator.\\
+
+The command must be accompanied with certain options in order to request specific status information. These options include both the type of information required and the entity for which the information applies (it can be either an interface or general equipment information).\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show [OPTIONS] [--<port_type> [<port_id>]]
+\end{verbatim}
+
+If no option (i.e. \textbf{\textit{OPTIONS}} field) is specified, then the command will provide general information about the interface. In order to do this, the command needs an interface ID as a parameter.\\
+
+The \textbf{\textit{OPTIONS}} field refers to the possibility of indicating the type of information the command will output. The valid options are the following:
+
+\begin{itemize}
+	\item \textbf{\textit{-\hspace{0.01cm}-optics}}: The command will print additional information regarding client-side optics parameters like Tx/Rx laser power, optical compatibility, wavelength and Rx LOS (loss of signal). The specific client-side interface ID must be specified.
+	\item \textbf{\textit{-\hspace{0.01cm}-info}}: This will print general information about the device (e.g. serial number, type, brand, etc.).
+	\item \textbf{\textit{-\hspace{0.01cm}-cond}}: This will print general physical information about the full enclosure ambient conditions, such as fan status, temperature and humidity sensing information, etc.
+	\item \textbf{\textit{-\hspace{0.01cm}-status}}: Used to obtain general status information on a certain interface. This information includes link status (i.e. up/down status), interface temperature and power, etc.
+\end{itemize}
+
+\subsubsection{show -\hspace{0.01cm}-port}
+
+\textbf{\textit{Description}}\\
+
+This command instructs the CLI to print transmission status information about any of the client-side interfaces. Depending on whether the interfaces is configured to work as Ethernet or OTN, the information will vary.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --port <port_id>
+\end{verbatim}
+
+As mentioned before, the \textbf{\textit{<port\_id>}} field ranges from 0 to 3, to uniquely identify one of the 4 client-side optical interfaces.\\
+
+\textbf{\textit{Example}}\\
+
+In this case, we execute the command for the first client-side port. Please note that the output shows both OTN and Ethernet status information. The administrator must disregard the information that does not apply to the current port setup (e.g. the first part of the status information should not be considered if the port is configured to work under Ethernet).
+
+\begin{verbatim}
+mxp>> show --port 0
+
+OTN Status:
+
+OTN:
+        LOS  = 0        LOF  = 0        LOM  = 0        BDI  = 0
+        IAE  = 0        BIP  = 0        BEI  = 0        TIM  = @
+
+ODU:
+        AIS  = 0        BDI  = 0        OCI  = 0        LCK  = 0
+        BIP  = 0        BEI  = 0        PTIM = @        TIM  = @
+
+
+ETH status:
+
+Loss of Signal: 0       High BER: 0             Loss of Pattern Sync: 0
+RS Remote Fault: 0      RS Local Fault: 0
+
+Unknown ORDS: 0 Remote ORDS: 0          Local ORDS: 0
+
+XGXS Local Fault: 0     XGXS Remote Fault: 0
+
+RX XGXS CPAT LOCK: 0    RX XGXS ALIGN DET: 0
+
+RX_SYNCDET3: 0  RX_SYNCDET2: 0          RX_SYNCDET1: 0                  RX_SYNCDET0: 0
+
+RX:
+        Octets: 0               Good (Valid) Octets: 0                  Frames: 0
+        Pause Frames: 0         Errored Frames: 0                       Jabbers: 0
+        Undersize Frames: 0
+TX:
+        Octets: 0               Good (Valid) Octets: 0                  Frames: 0
+        Pause Frames: 0         Errored Frames: 0
+\end{verbatim}
+
+\textbf{\textit{Parameters description}}\\
+
+Need to specify what each of these parameters mean.
+
+\subsubsection{show -\hspace{0.01cm}-port <port\_id> \hspace{1ex}-\hspace{0.01cm}-optics}
+
+\textbf{\textit{Description}}\\
+
+This command outputs additional optical information about the specified client-side interface. The output is identical to the one provided by the \textbf{\textit{show -\hspace{0.01cm}-port}} command, but with additional optical information at the end of it. This information includes laser power, optical compatibility, wavelength and Rx loss of signal.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --port <port_id> --optics
+\end{verbatim}
+
+As mentioned before, the \textbf{\textit{<port\_id>}} field ranges from 0 to 3, to uniquely identify one of the 4 client-side optical interfaces. Please note the order of the arguments. The interface ID must go before the \textbf{\textit{-\hspace{0.01cm}-optics}} argument.\\
+
+\textbf{\textit{Example}}\\
+
+As seen in the example below, the output provided by the command is identical to the one of the previous command, with an additional field that provides optical status information at the end.
+
+\begin{verbatim}
+mxp>> show --port 0 --optics
+
+OTN Status:
+
+OTN:
+        LOS  = 0        LOF  = 0        LOM  = 0        BDI  = 0
+        IAE  = 0        BIP  = 0        BEI  = 0        TIM  = @
+
+ODU:
+        AIS  = 0        BDI  = 0        OCI  = 0        LCK  = 0
+        BIP  = 0        BEI  = 0        PTIM = @        TIM  = @
+
+
+ETH status:
+
+Loss of Signal: 0       High BER: 0             Loss of Pattern Sync: 0
+RS Remote Fault: 0      RS Local Fault: 0
+
+Unknown ORDS: 0 Remote ORDS: 0          Local ORDS: 0
+
+XGXS Local Fault: 0     XGXS Remote Fault: 0
+
+RX XGXS CPAT LOCK: 0    RX XGXS ALIGN DET: 0
+
+RX_SYNCDET3: 0  RX_SYNCDET2: 0          RX_SYNCDET1: 0                  RX_SYNCDET0: 0
+
+RX:
+        Octets: 0               Good (Valid) Octets: 0                  Frames: 0
+        Pause Frames: 0         Errored Frames: 0                       Jabbers: 0
+        Undersize Frames: 0
+TX:
+        Octets: 0               Good (Valid) Octets: 0                  Frames: 0
+        Pause Frames: 0         Errored Frames: 0
+
+Optics Status:
+
+        Encoding mechanism:     Wavelength: 2 nm
+        TX Power:  -36.99 dBm
+        RX Power:  -36.99 dBm
+        RX LOS:  2
+        BER: 2796638.000000x10E-0.000000
+\end{verbatim}
+
+\textbf{\textit{Parameters description}}\\
+
+Need to specify what each of the optical parameters mean.
+
+\subsubsection{show -\hspace{0.01cm}-line}
+
+\textbf{\textit{Description}}\\
+
+This command instructs the CLI to print transmission status information about line-side interface. Since the interface is always working under OTU-3, the information presented is different from the one relative to the client-side interfaces.
+Together with optical transport information, the command outputs data related to the state of the line transponder.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --line
+\end{verbatim}
+
+Since there's only one line-side interface, the concept of interface ID is irrelevant and is not contemplated in this command.\\
+
+\textbf{\textit{Example}}\\
+
+The list of examples is exhaustive in this case, since there is only one way to execute the command. It does not accept any additional arguments. The administrator must disregard whatever information is not relevant to its purposes.
+
+\begin{verbatim}
+mxp>> show --line
+
+Laser ITU Channel:
+     Band: L-Band
+     Units: 10960
+
+DGD:
+     Current: 0            Minimum: 10924                Maximum: 0
+
+CD:
+     Current: 0            Minimum: 0                Maximum: 1
+
+OSNR:
+     Current: 0            Minimum: 2                Maximum: 24096
+
+Laser Bias Current: 0 µA
+
+Laser Output Power: 0 µW
+
+Laser Temperature: 0 m°C
+
+Receiver Signal Monitor Average Optical Power: 0 nW
+
+Transponder Temperature: 0 m°C
+
+Modulator Bias: 0 mV
+
+DQPSK Encoder: DQPSK
+
+Data mapping: ITU-T G.709
+\end{verbatim}
+
+\textbf{\textit{Parameters description}}\\
+
+Need to specify what each of these parameters mean.
+
+\subsubsection{show -\hspace{0.01cm}-status}
+
+\textbf{\textit{Description}}\\
+
+The \textbf{\textit{show -\hspace{0.01cm}-status}} command offers information that is not directly related to the communication status of the interface for which is intended, but rather provides information about lower level variables such as:
+
+\begin{itemize}
+	\item The link status: up (enabled) or down (disabled).
+	\item Interface temperature.
+	\item Current laser power.
+\end{itemize}
+
+In order for the command to work, the interface ID must be provided. The command can accept both a client-side or a line-side interface ID as an argument.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --status <port_type> [<port_id>]
+\end{verbatim}
+
+The command does not accept any additional argument than the interface ID.
+
+\subsubsection{show -\hspace{0.01cm}-status -\hspace{0.01cm}-port}
+
+\textbf{\textit{Description}}\\
+
+By adding the \textbf{\textit{-\hspace{0.01cm}-port}} argument to the \textbf{\textit{show -\hspace{0.01cm}-status}} command, the administrator will get low level information regarding the link status of the corresponding client-side interface.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --status --port <port_id>
+\end{verbatim}
+
+In this case, the \textbf{\textit{-\hspace{0.01cm}-port}} argument must be accompanied by the specific client-side interface number, which ranges from 0 to 3.\\
+
+\textbf{\textit{Examples}}
+
+\begin{verbatim}
+mxp>> show --status --port 2
+Port 2:
+    Laser Status: UP
+    Temperature: 26.60 C
+    Optical laser power:
+        TX: -2.69 dBm
+        RX: -40.00 dBm (no signal)
+
+mxp>> show --status --port 2
+Port 2:
+    Laser Status: DOWN
+    Temperature: 27.41 C
+    Optical laser power:
+        TX: -inf dBm
+        RX: -40.00 dBm (no signal)
+\end{verbatim}
+
+\subsubsection{show -\hspace{0.01cm}-status -\hspace{0.01cm}-line}
+
+\textbf{\textit{Description}}\\
+
+By adding the \textbf{\textit{-\hspace{0.01cm}-line}} argument to the show -\hspace{0.01cm}-status command, the administrator will get low level information regarding the link status of the line-side interface.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --status --line
+\end{verbatim}
+
+Since there is only one line-side interface, there's no need to provide an interface ID number.\\
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> show --status --line
+Line:
+Error: device 0x80 not responding: Invalid argument
+    Laser Status: DOWN
+Error: device 0x80 not responding: Invalid argument
+    Optical laser power:
+Error: device 0x80 not responding: Invalid argument
+Error: device 0x80 not responding: Invalid argument
+\end{verbatim}
+
+This command is implemented but we haven't a device for testing.
+
+\subsubsection{show -\hspace{0.01cm}-info}
+
+\textbf{\textit{Description}}\\
+
+The \textbf{\textit{-\hspace{0.01cm}-show}} info command provides specific hardware information about the different components of the Muxponder. Information such as serial numbers, types, brands, etc. that can be useful in case the administrator needs to perform some troubleshooting.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --info
+\end{verbatim}
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> show --info
+
+JDSU:
+        Product Identifier Code:
+        Serial Numbers:
+        Part Number:
+        Firmware Revision:
+        Boot Revision:
+        FPGA Revision:
+
+XFP:
+    XFP 0:
+        DEVICE UNAVAILABLE
+    XFP 1:
+        DEVICE UNAVAILABLE
+    XFP 2:
+        XFP Identifier: 6
+        Wavelength: 1310 nm
+        Vendor Name: INNOLIGHT
+        Vendor OUI: 44-7c-7f
+        Vendor Part Number: TR-XX13L-NSN
+        Vendor Revision level: 1A
+        Vendor's manufacturing date code: 13-10-14
+        Vendor Serial Number: INDBI0060015
+    XFP 3:
+        DEVICE UNAVAILABLE
+
+EDFA:
+
+QSFP:
+        DEVICE UNAVAILABLE
+
+T41:
+DevIDCode_SKU =     0 (0x0000)
+ManID         =   498 (0x01F2)
+lsb           =     1 (0x0001)
+RevCode       =     2 (0x0002)
+DevIDCode     =     9 (0x0009)
+(null)
+\end{verbatim}
+
+This command is implemented but we haven't some devices for testing.
+
+\subsubsection{show -\hspace{0.01cm}-cond}
+
+\textbf{\textit{Description}}\\
+
+This command outputs information about the ambient conditions status of the equipment, including the following:
+
+\begin{itemize}
+	\item Fan status.
+	\item Temperature measured by the sensors.
+	\item Humidity measured by the sensors.
+\end{itemize}
+
+This information does not include any kind of alarm produced by the underlying hardware or software. It only outputs the current status of the different sensors.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+show --cond
+\end{verbatim}
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> show --cond
+FAN 1 Status: NO OK
+FAN 2 Status: NO OK
+FAN 3 Status: NO OK
+FAN 4 Status: NO OK
+Error: device 0x9a not responding: Invalid argument
+FPGA Temp: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+JDSU Temp: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+EDFA Temp: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+T41 Temp: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+T41 internal Temp 1: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+T41 internal Temp 2: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+T41 internal Temp 3: 0.00 C
+Error: device 0x9a not responding: Invalid argument
+humidity: 2145848808
+\end{verbatim}
+
+This command is implemented but we haven't some devices for testing.
+
+\subsection{config}
+
+\textbf{\textit{Description}}\\
+
+This command is used to configure or change the current status of the muxponder. The scope of the command actions depends on the arguments that the administrator provides.
+The functionalities that the command contemplates include the following:
+
+\begin{itemize}
+	\item Client-side operation mode (i.e. Ethernet or OTN).
+	\item line-side optical channel.
+	\item line-side band.
+	\item Interface link status.
+\end{itemize}
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config OPTIONS [--<port_type> [<port_id>]]
+\end{verbatim}
+
+The OPTIONS field refers to the possibility of indicating the aspect of the system to configure. Each of the options can be provided with the desired value in order to configure the aspect to which it refers.
+
+\begin{itemize}
+	\item \textbf{\textit{-\hspace{0.01cm}-mode}}: This option refers to the communication mode of the specific interface, which can be either Ethernet or OTN. Since the line-side interface will always be working under OTU-3, this command only works for client-side interfaces.
+	\item \textbf{\textit{-\hspace{0.01cm}-channeltx}}: The optical tx channel of the line-side interface can be configured using this option.
+	\item \textbf{\textit{-\hspace{0.01cm}-channelrx}}: The optical rx channel of the line-side interface can be configured using this option.
+	\item \textbf{\textit{-\hspace{0.01cm}-status}}: In order to enable or disable a specific interface, the \textbf{\textit{config}} command can be provided with this option. The interface ID is mandatory here.
+\end{itemize}
+
+An \textbf{\textit{interface ID}} contains two fields (one of which is optional). The first field indicates the type of the interface, which can be either a \textbf{\textit{port}} (i.e. client-side) or a \textbf{\textit{line}} (i.e. line-side). The former case requires also a numerical identifier to uniquely identify the client interface. The range of this numerical ID goes from 0 to 3.\\
+
+\textbf{\textit{Examples}}\\
+
+\textbf{\textit{-\hspace{0.01cm}-port 0}}\\
+Refers to the first client-side interface.
+
+\textbf{\textit{-\hspace{0.01cm}-port 2}}\\
+Refers to the third client-side interface.
+
+\textbf{\textit{-\hspace{0.01cm}-line}}\\
+Refers to the line-side interface.
+
+\subsubsection{config -\hspace{0.01cm}-port -\hspace{0.01cm}-mode}
+
+\textbf{\textit{Description}}\\
+
+This command is used to configure the link protocol for the client-side interfaces. These can work in 2 modes:
+
+\begin{itemize}
+	\item Ethernet
+	\item OTN
+\end{itemize}
+
+For the moment, all the interfaces will be configured under the same protocol. This means that the interface ID number provided as the argument for the command is redundant and will not be taken into account when actually configuring the ports.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config --port <port_id> --mode <mode>
+\end{verbatim}
+
+As mentioned before, the \textbf{\textit{mode}} field can be either Ethernet or OTN. The specific keywords for the command are, respectively, the following:
+
+\begin{itemize}
+	\item eth
+	\item otu
+\end{itemize}
+
+\textbf{\textit{Examples}}
+
+\begin{verbatim}
+mxp>> config --port 0 --mode otu
+T41 configuration:
+T41 Driver Lab Release:  5.13
+XFI Microcode Release:      126201041732PM
+Driver built on Sep 29 2014 @ 08:50:13
+Device Chip Id = 200903E5
+FF - Scratchpad : OK
+Read scratchpad = AA55
+ten_error_handler: 28689 17
+Dev-0 (Invalid user arg specified) : BIST not done.
+ten_error_handler: 28689 17
+Dev-0 (Invalid user arg specified) : BIST not done.
+FF - Override the default datapath state : OK
+FF - Override the Default Datapath State : OK
+FF - Controls MR SERDES Powerdown : OK
+FF - Config the N40G Block : OK
+ten_error_handler: 28689 17
+Dev-0 (Invalid user arg specified) : BIST not done.
+ten_error_handler: 28721 49
+Driver (Unexpected result) Register access time is 0
+...
+\end{verbatim}
+
+The above command configures the OTN transport mode in the client-side interfaces. Note that the \textbf{\textit{-\hspace{0.01cm}-port 0}} ID is irrelevant for the moment, since the same mode is set for all the client-side interfaces. Nevertheless, the interface ID needs to be provided for the command to work.
+
+\begin{verbatim}
+mxp>> config --port 0 --mode eth
+T41 configuration:
+T41 Driver Lab Release:  5.13
+XFI Microcode Release:      126201041732PM
+Driver built on Sep 29 2014 @ 08:50:13
+Device Chip Id = 200903E5
+FF - Scratchpad : OK
+Read scratchpad = AA55
+ten_error_handler: 28689 17
+Dev-0 (Invalid user arg specified) : BIST not done.
+ten_error_handler: 28689 17
+Dev-0 (Invalid user arg specified) : BIST not done.
+FF - Override the default datapath state : OK
+FF - Override the Default Datapath State : OK
+FF - Controls MR SERDES Powerdown : OK
+FF - Config the N40G Block : OK
+ten_error_handler: 28689 17
+Dev-0 (Invalid user arg specified) : BIST not done.
+ten_error_handler: 28721 49
+Driver (Unexpected result) Register access time is 0
+...
+\end{verbatim}
+
+The above example is similar to the previous one, except that the mode configured in the client-side interfaces is Ethernet.\\
+
+This command is implemented but we haven't the cs6041 chip for testing.
+
+\subsubsection{config -\hspace{0.01cm}-channelrx}
+
+\textbf{\textit{Description}}\\
+
+This command is used to set the RX optical channel of the line-side interface by indicating the wavelength to which it must transmit and receive information.\\
+The possible values of the channel must range between a minimum and a maximum value, expressed in nanometers.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config --line --channelrx <wavelength> 
+\end{verbatim}
+
+Note that the \textbf{\textit{-\hspace{0.01cm}-line}} keyword must be provided as an argument for this command (since its meant to configure the line-side interface) even though it's redundant for the moment.
+The wavelength value must range between XXX and YYY, values that are provided by the internal transponder.\\
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> config --line --channelrx 1528.77
+RX: 1528.77 nm
+RX: 196.10 Thz
+C-Band
+Error: device 0x80 not responding: Invalid argument
+Error(configJdsuChannel): txp_jdsu_set_rx_laser_itu_channel 
+\end{verbatim}
+
+This command is implemented but we haven't the module for testing.
+
+\subsubsection{config -\hspace{0.01cm}-channeltx}
+
+\textbf{\textit{Description}}\\
+
+This command is used to set the TX optical channel of the line-side interface by indicating the wavelength to which it must transmit and receive information.
+The possible values of the channel must range between a minimum and a maximum value, expressed in nanometers.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config --line --channeltx <wavelength>
+\end{verbatim}
+
+Note that the \textbf{\textit{-\hspace{0.01cm}-line}} keyword must be provided as an argument for this command (since its meant to configure the line-side interface) even though it's redundant for the moment.\\
+The wavelength value must range between XXX and YYY, values that are provided by the internal transponder.\\
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> config --line --channeltx 1528.77
+TX: 1528.77 nm
+TX: 196.10 Thz
+Channel number: 1.00
+C-Band
+Error: device 0x80 not responding: Invalid argument
+Error(configJdsuChannel): txp_set_laser_itu_channel
+\end{verbatim}
+
+This command is implemented but we haven't the module for testing.
+
+\subsubsection{config -\hspace{0.01cm}-status}
+
+\textbf{\textit{Description}}\\
+
+This command is mainly used to enable or disable any interface in the muxponder. Hence, the interface ID must be provided, together with the desired status of the interface.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config --status <new_status> --<port_type> [<port_id>]
+\end{verbatim}
+
+The \textbf{\textit{new\_status}} keyword can take up to 2 different values, namely:
+
+\begin{itemize}
+	\item \textbf{\textit{up}}: Used to enable the interface.
+	\item \textbf{\textit{down}}: Used to disable the interface.
+\end{itemize}
+
+The \textbf{\textit{interface ID}} contains two fields (one of which is optional). The first field indicates the type of the interface, which can be either a \textbf{\textit{port}} (i.e. client-side) or a \textbf{\textit{line}} (i.e. line-side). This is represented by the \textbf{\textit{port\_type}} parameter. The former case requires also a numerical identifier to uniquely identify the client interface. The range of this numerical ID goes from 0 to 3. This is represented by the \textbf{\textit{port\_id}} parameter.
+
+\subsubsection{config -\hspace{0.01cm}-status -\hspace{0.01cm}-port}
+
+\textbf{\textit{Description}}\\
+
+This command is mainly used to enable or disable any of the client-side interfaces in the muxponder. Hence, the client-side interface ID number must be provided, together with the desired status of the interface.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config --status <new_status> --port <port_id>
+\end{verbatim}
+
+The \textbf{\textit{new\_status}} keyword can take up to 2 different values, namely:
+
+\begin{itemize}
+	\item \textbf{\textit{up}}: Used to enable the interface.
+	\item \textbf{\textit{down}}: Used to disable the interface.
+\end{itemize}
+
+The interface ID requires a numerical identifier to uniquely identify the client interface. The range of this numerical ID goes from 0 to 3. This is represented by the \textbf{\textit{port\_id}} parameter.\\
+
+\textbf{\textit{Examples}}
+
+\begin{verbatim}
+mxp>> config --status up --port 2
+Port 2 enable
+    Laser Status: UP
+    Temperature: 25.40 C
+    Optical laser power:
+        TX: -2.67 dBm
+        RX: -40.00 dBm (no signal)
+
+mxp>> config --status down --port 2
+Port 2 disable
+    Laser Status: DOWN
+    Temperature: 22.98 C
+    Optical laser power:
+        TX: -inf dBm
+        RX: -40.00 dBm (no signal)
+\end{verbatim}
+
+\subsubsection{config -\hspace{0.01cm}-status -\hspace{0.01cm}-line}
+
+\textbf{\textit{Description}}\\
+
+This command is mainly used to enable or disable the line-side interface in the muxponder. Hence, the line-side interface ID must be provided, together with the desired status of the interface.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+config --status <new_status> --line
+\end{verbatim}
+
+The \textbf{\textit{new\_status}} keyword can take up to 2 different values, namely:
+
+\begin{itemize}
+	\item \textbf{\textit{up}}: Used to enable the interface.
+	\item \textbf{\textit{down}}: Used to disable the interface.
+\end{itemize}
+
+By specifying the \textbf{\textit{-\hspace{0.01cm}-line}} argument, the line-side interface status will be addressed.\\
+
+\textbf{\textit{Examples}}
+
+\begin{verbatim}
+mxp>> config --status up --line
+Error: device 0x80 not responding: Invalid argument
+
+mxp>> config --status down --line
+Error: device 0x80 not responding: Invalid argument
+\end{verbatim}
+
+This command is implemented but we haven't a device for testing.
+
+\subsection{logs}
+\label{logs}
+
+\textbf{\textit{Description}}\\
+
+This command is used to obtain information about all the logs and alarms logged by the system.\\
+
+The command can filter the log messages according 5 different categories:
+
+\begin{itemize}
+	\item \textbf{\textit{-\hspace{0.01cm}-module}}: Filter logs by module.
+	\item \textbf{\textit{-\hspace{0.01cm}-date}}: Filter logs by date.
+	\item \textbf{\textit{-w}}: Include all the warning messages in the command output.
+	\item \textbf{\textit{-e}}: Include all the error messages in the command output.
+	\item \textbf{\textit{-c}}: Include all the critical messages in the command output.
+\end{itemize}
+
+In order to navigate across the command output, you can use the same navigation commands as in the less UNIX command. Please see \url{http://linux.die.net/man/1/less} for further information.\\
+
+Need a table of all the message codes and their meaning. Can be done as an appendix.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+logs --module module gravity --date date
+\end{verbatim}
+
+The \textbf{\textit{module}} field select the module for logs. Either \textbf{\textit{xfp}}, \textbf{\textit{xfp1}}, \textbf{\textit{xfp2}}, \textbf{\textit{xfp3}}, \textbf{\textit{xfp4}}, \textbf{\textit{txp}}, \textbf{\textit{clk}}, \textbf{\textit{edfa}}, \textbf{\textit{gpio}}, \textbf{\textit{i2c}}, \textbf{\textit{bman}}, \textbf{\textit{fan}}, \textbf{\textit{led}}, \textbf{\textit{qsfp}}, \textbf{\textit{ltc}}, \textbf{\textit{tmp}}, \textbf{\textit{rtc}}, \textbf{\textit{kernel}}. \\
+
+The \textbf{\textit{gravity}} field is mandatory, and indicates the messages type to include in the output (they are not mutually exclusive).\\
+
+The \textbf{\textit{date}} field select the date of logs.\\
+
+\textbf{\textit{Examples}}
+
+\begin{verbatim}
+logs --module xfp –-errors 
+
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_power_up(): gpio_write_bit() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_set_data_rate():
+ xfp_get_communication_status() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_set_wavelength():
+xfp_get_communication_status() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ xfp_get_communication_status() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 15 14:00:27 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ xfp_get_communication_status() 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ xfp_get_communication_status() 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ xfp_get_communication_status() 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ reg_address out of range 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ reg_address out of range 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ reg_address out of range 
+Sep 15 14:00:28 mxp XFP[883]: (ID=0) Error in xfp_set_threshold():
+ reg_address out of range 
+Sep 15 14:00:28 mxp XFP[883]: (ID=1) Error in xfp_power_up():
+ gpio_write_bit() 
+Sep 15 14:00:28 mxp XFP[883]: (ID=1) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+\end{verbatim}
+
+\begin{verbatim}
+logs --module xfp --date "Sep 30" 
+
+Sep 30 13:30:59 mxp XFP[956]: (ID=2) Error in xfp_get_int_flag(): i2c_read() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=2) Error in xfp_get_int_flag():
+ reg_address out of range 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_loss_of_signal_status():
+ gpio_read_bit() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_int_flag():
+ xfp_get_communication_status() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_int_flag():
+ xfp_get_communication_status() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_int_flag():
+ xfp_get_communication_status() 
+Sep 30 13:30:59 mxp XFP[956]: (ID=3) Error in xfp_get_int_flag():
+ reg_address out of range 
+Sep 30 13:31:10 mxp XFP[956]: (ID=0) Error in xfp_get_loss_of_signal_status():
+ gpio_read_bit() 
+Sep 30 13:31:11 mxp XFP[956]: (ID=0) Error in xfp_get_communication_status():
+ gpio_read_bit() 
+Sep 30 13:31:11 mxp XFP[956]: (ID=0) Error in xfp_get_int_flag():
+ xfp_get_communication_status()
+\end{verbatim}
+
+\subsection{hwcheck}
+\label{hwcheck}
+
+\textbf{\textit{Description}}\\
+
+This command is used to obtain information about hardware devices availability.
+To check hardware availability this command lo que se realiza es escribir y leer registros del mismo.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+hwcheck
+\end{verbatim}
+
+This command does not receive parameters.\\
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> hwcheck
+[----------] T41
+[ RUN      ] T41
+        T41: T41 Driver Lab Release:  5.11
+        T41: XFI Microcode Release:      126201041732PM
+        T41: Driver built on Aug 25 2014 @ 12:23:40
+[       OK ] T41
+[----------] T41
+[----------] Clock System
+[ RUN      ] Clock System
+Error: device 0xd0 not responding: Invalid argument
+Error: device 0xd0 not responding: Invalid argument
+r_data: 0
+[  FAILED  ] Clock System
+[----------] Clock System
+[----------] EDFA
+[ RUN      ] EDFA
+r_baud: 0
+[  FAILED  ] EDFA
+[----------] EDFA
+[----------] Humidity
+[ RUN      ] Humidity
+r_heater_status: 0
+[  FAILED  ] Humidity
+[----------] Humidity
+[----------] LED
+[ RUN      ] LED
+[       OK ] LED
+[----------] LED
+[----------] Latch
+[ RUN      ] Latch
+r_latch_value: 1
+[       OK ] Latch
+[----------] Latch
+[----------] QSFP
+[ RUN      ] QSFP
+r_page: 0
+[  FAILED  ] QSFP
+[----------] QSFP
+[----------] Temperature
+[ RUN      ] Temperature
+Error: device 0x9a not responding: Invalid argument
+Error: device 0x9a not responding: Invalid argument
+r_reg_value: 0
+[  FAILED  ] Temperature
+[----------] Temperature
+[----------] Transponder
+[ RUN      ] Transponder
+Error: device 0x80 not responding: Invalid argument
+Error: device 0x80 not responding: Invalid argument
+r_data.rxpowalm: 237
+r_data.rxlos: 135
+r_data.rxlockerr: 127
+r_data.rxs: 0
+r_data.prbserrdet: 135
+[  FAILED  ] Transponder
+[----------] Transponder
+[----------] XFP0
+[ RUN      ] XFP0
+first_read_reg: 0
+exp_reg: 1
+second_read_reg: 0
+[  FAILED  ] XFP0
+[----------] XFP0
+[----------] XFP1
+[ RUN      ] XFP1
+first_read_reg: 0
+exp_reg: 1
+second_read_reg: 0
+[  FAILED  ] XFP1
+[----------] XFP1
+[----------] XFP2
+[ RUN      ] XFP2
+first_read_reg: 0
+exp_reg: 1
+second_read_reg: 0
+[  FAILED  ] XFP2
+[----------] XFP2
+[----------] XFP3
+[ RUN      ] XFP3
+first_read_reg: 0
+exp_reg: 1
+second_read_reg: 0
+[  FAILED  ] XFP3
+[----------] XFP3
+\end{verbatim}
+
+This command is implemented but we haven't all devices for testing.
+
+\subsection{CS6041 power}
+
+\textbf{\textit{Description}}\\
+
+This command is used to \textbf{\textit{power on}} or \textbf{\textit{power off}} the CS6041 Transport Processor in the Muxponder. The three supply voltages are ramped up in any order as long the 1.0 V, the 1.8 V, and the 2.5 V. Then the three supply voltages are ramped down inversely.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+cs6041 --power <new_status>
+\end{verbatim}
+
+The \textbf{\textit{new\_status}} keyword can take up to 2 different values, namely:
+
+\begin{itemize}
+	\item \textbf{\textit{up}}: Used to power on the cs6041 chip.
+	\item \textbf{\textit{down}}: Used to power off the cs6041 chip.
+\end{itemize}
+
+\textbf{\textit{Examples}}
+
+\begin{verbatim}
+mxp>> cs6041 --power up
+
+Initializing ON sequence of Cortina cs6041 chip...
+
+ ...ending ON sequence of Cortina cs6041 chip.
+
+Enabling oscillator 400 MHz ...
+
+ ... oscillator 400 MHz enabled.
+\end{verbatim}
+
+\begin{verbatim}
+mxp>> cs6041 --power down
+
+Disabling oscillator 400 MHz ...
+
+ ... oscillator 400 MHz disabled.
+
+Initializing OFF sequence of Cortina cs6041 chip...
+
+ ...ending OFF sequence of Cortina cs6041 chip.
+
+\end{verbatim}
+
+\subsection{RTC}
+
+The Muxponder has a Real Time Clock (RTC) on the board. The same is used to set the system time. You can configure the RTC with a valid time with the \textbf{\textit{setrtc}} command. Then, the Muxponder use the \textbf{\textit{setdate}} command to set the system time.
+
+\subsubsection{setrtc}
+
+\textbf{\textit{Description}}\\
+
+This command is used to configure the RTC of the Muxponder.\\
+
+\textbf{\textit{Syntax}}
+
+\begin{verbatim}
+setrtc [[-y] | [-m] | [-d] | [-h] | [-t] | [-s]]
+\end{verbatim}
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+mxp>> setrtc -y 2014 -m 10 -d 21 -h 09 -t 00 -s 00
+\end{verbatim}
+
+\subsubsection{setdate}
+
+\textbf{\textit{Description}}\\
+
+This command is used by the Muxponder to set the system time. Each time the system turns on, the command is executed getting information from the RTC. You can use the \textbf{\textit{setrtc}} command to set the RTC.\\
+
+\textbf{\textit{Example}}
+
+\begin{verbatim}
+Welcome to
+          ___ _ _
+  _   _  / __\ (_)_ __  _   ___  __
+ | | | |/ /  | | | '_ \| | | \ \/ /
+ | |_| / /___| | | | | | |_| |>  <
+  \__,_\____/|_|_|_| |_|\__,_/_/\_\
+
+                  /\/\ __  ___ __
+                 /    \\ \/ / '_ \
+                / /\/\ \>  <| |_) |
+                \/    \/_/\_\ .__/
+                            |_|
+
+For further information check:
+http://www.photonicsdesign.org.ar/
+
+Tue Oct 21 09:01:32 UTC 2014
+\end{verbatim}
+
+\end{document}

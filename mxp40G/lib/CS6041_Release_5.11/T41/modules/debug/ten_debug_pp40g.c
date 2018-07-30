@@ -1,0 +1,722 @@
+/***********************************************************************/
+/* This file contains information proprietary to Cortina Systems, Inc. */
+/* (Cortina). Any use or disclosure, in whole or in part, of this      */
+/* information to any unauthorized party, for any purposes other than  */
+/* that for which it is provided is expressly prohibited except as     */
+/* authorized by Cortina in writing. Cortina reserves its rights to    */
+/* pursue both civil and criminal penalties for copying or disclosure  */
+/* of this material without authorization. Cortina Systems (R),        */
+/* Cortina (TM) and the Cortina Systems Earth Logo are the trademarks  */
+/* or registered trademarks of Cortina Systems, Inc. and its           */
+/* subsidiaries in the U.S. and other countries. Any other product     */
+/* and company names are the trademarks of their respective owners.    */
+/* Copyright (C) 2006-2013 Cortina Systems, Inc. All rights reserved.  */
+/***********************************************************************/
+/*
+ * ten_debug_pp40g.c
+ *
+ * APIs for debugging pp40g
+ *
+ * $Id: ten_debug_pp40g.c,v 1.6 2013/03/05 16:11:53 jccarlis Exp $
+ *
+ */
+
+#include "tenabo40.h"
+
+/********************************************************************/
+/* $rtn_hdr_start  PP40G DUMP SETTINGS                              */
+/* CATEGORY   : API                                                 */
+/* ACCESS     : Public                                              */
+/* BLOCK      : DEBUG                                               */
+/* CHIP       : Tenabo                                              */
+cs_status ten_debug_pp40g_dump_settings(cs_uint16 module_id)
+/* INPUTS     : o Module Id                                         */
+/* OUTPUTS    : ----                                                */
+/* RETURNS    : CS_OK or CS_ERROR                                   */
+/* DESCRIPTION:                                                     */
+/* Displays current PP40G settings.                                 */
+/* The left column is the current word/bitfield value and the       */
+/* right column is the default value.  An asterisk indicates that   */
+/* the default value of the chip has been changed.                  */
+/*                                                                  */
+/* $rtn_hdr_end                                                     */
+/********************************************************************/
+{  
+  #ifdef INCLUDE_TEN_DEBUG_APIS
+  TEN_pp40g_t *tmp_pp40g, *dft_pp40g;
+  cs_char8 ch1;
+  T41_t *pDev = NULL;
+  
+  TEN_MOD_COMMON_VALIDATE(module_id, pDev, CS_ERROR);
+
+  if (!ten_dev_is_t41(TEN_MOD_ID_TO_DEV_ID(module_id))) {
+    CS_HNDL_ERROR(module_id, ETEN_MOD_INVALID_USER_ARG, ": T41 only feature.");
+    return (CS_ERROR);
+  }
+  
+  tmp_pp40g = (TEN_pp40g_t *)CS_MALLOC(sizeof(TEN_pp40g_t));
+  dft_pp40g = (TEN_pp40g_t *)CS_MALLOC(sizeof(TEN_pp40g_t));
+  
+  /* Bug #38811: Debug APIs need malloc check for Klocwork warning */
+  if ((tmp_pp40g == 0) || (dft_pp40g == 0)) {
+    if (tmp_pp40g) {
+      CS_FREE(tmp_pp40g);
+    }
+    if (dft_pp40g) {
+      CS_FREE(dft_pp40g);
+    }
+    CS_HNDL_ERROR(module_id, ETEN_MOD_INVALID_USER_ARG, ": out of memory.");
+    return (CS_ERROR);
+  }
+  
+  CS_MEMSET((TEN_pp40g_t *)tmp_pp40g, 0, sizeof(TEN_pp40g_t));
+  CS_MEMSET((TEN_pp40g_t *)dft_pp40g, 0, sizeof(TEN_pp40g_t));
+  
+  dft_pp40g->RESET.wrd = TEN_PP40G_MISC_RESET_dft;  
+  dft_pp40g->misc_CLKEN.wrd = TEN_PP40G_MISC_CLKEN_dft;
+  dft_pp40g->BYPASS.wrd = TEN_PP40G_MISC_BYPASS_dft;
+  dft_pp40g->misc_INTSTATUS.wrd = TEN_PP40G_MISC_INTSTATUS_dft;
+  dft_pp40g->misc_INTERRUPT.wrd = TEN_PP40G_MISC_INTERRUPT_dft;
+  dft_pp40g->misc_INTENABLE.wrd = TEN_PP40G_MISC_INTENABLE_dft;
+  dft_pp40g->misc_INTERRUPTZ.wrd = TEN_PP40G_MISC_INTERRUPTZ_dft;
+  dft_pp40g->misc_rx_FUNCEN.wrd = TEN_PP40G_MISC_RX_FUNCEN_dft;
+  dft_pp40g->misc_rx_CLKEN.wrd = TEN_PP40G_MISC_RX_CLKEN_dft;
+  dft_pp40g->misc_rx_INTERRUPT.wrd = TEN_PP40G_MISC_RX_INTERRUPT_dft;
+  dft_pp40g->misc_rx_INTENABLE.wrd = TEN_PP40G_MISC_RX_INTENABLE_dft;
+  dft_pp40g->misc_rx_PATH_CNTRL.wrd = TEN_PP40G_MISC_RX_PATH_CNTRL_dft;
+  dft_pp40g->lif_rx_CNTRL.wrd = TEN_PP40G_LIF_RX_CNTRL_dft;
+  dft_pp40g->lif_rx_INTSTATUS.wrd = TEN_PP40G_LIF_RX_INTSTATUS_dft;
+  dft_pp40g->lif_rx_INTERRUPT.wrd = TEN_PP40G_LIF_RX_INTERRUPT_dft;
+  dft_pp40g->lif_rx_INTENABLE.wrd = TEN_PP40G_LIF_RX_INTENABLE_dft;
+  dft_pp40g->lif_rx_INTERRUPTZ.wrd = TEN_PP40G_LIF_RX_INTERRUPTZ_dft;
+  dft_pp40g->pcs_rx_CNTRL.wrd = TEN_PP40G_PCS_RX_CNTRL_dft;
+  dft_pp40g->CSF_CNTRL.wrd = TEN_PP40G_PCS_RX_CSF_CNTRL_dft;
+  dft_pp40g->XDC_CNTRL.wrd = TEN_PP40G_PCS_RX_XDC_CNTRL_dft;
+  dft_pp40g->pcs_rx_RATE_CNTRL.wrd = TEN_PP40G_PCS_RX_RATE_CNTRL_dft;
+  dft_pp40g->AMSTATUS.wrd = TEN_PP40G_PCS_RX_AMSTATUS_dft;
+  dft_pp40g->AMSTATUS1.wrd = TEN_PP40G_PCS_RX_AMSTATUS1_dft;
+  dft_pp40g->pcs_rx_INTSTATUS.wrd = TEN_PP40G_PCS_RX_INTSTATUS_dft;
+  dft_pp40g->pcs_rx_INTERRUPT.wrd = TEN_PP40G_PCS_RX_INTERRUPT_dft;
+  dft_pp40g->pcs_rx_INTENABLE.wrd = TEN_PP40G_PCS_RX_INTENABLE_dft;
+  dft_pp40g->pcs_rx_INTERRUPTZ.wrd = TEN_PP40G_PCS_RX_INTERRUPTZ_dft;
+  dft_pp40g->LDBINTERRUPT.wrd = TEN_PP40G_PCS_RX_LDBINTERRUPT_dft;
+  dft_pp40g->LDBINTENABLE.wrd = TEN_PP40G_PCS_RX_LDBINTENABLE_dft;
+  dft_pp40g->LDBINTERRUPTZ.wrd = TEN_PP40G_PCS_RX_LDBINTERRUPTZ_dft;
+  dft_pp40g->SKEWCNTRL.wrd = TEN_PP40G_PCS_RX_SKEWCNTRL_dft;
+  dft_pp40g->SKEWTHRESHOLD.wrd = TEN_PP40G_PCS_RX_SKEWTHRESHOLD_dft;
+  dft_pp40g->SKEWTHRESHOLD1.wrd = TEN_PP40G_PCS_RX_SKEWTHRESHOLD1_dft;
+  dft_pp40g->SKEWSTATUS1.wrd = TEN_PP40G_PCS_RX_SKEWSTATUS1_dft;
+  dft_pp40g->SKEWSTATUS2.wrd = TEN_PP40G_PCS_RX_SKEWSTATUS2_dft;
+  dft_pp40g->BERTIMER.wrd = TEN_PP40G_PCS_RX_BERTIMER_dft;
+  dft_pp40g->rs_rx_CNTRL.wrd = TEN_PP40G_RS_RX_CNTRL_dft;
+  dft_pp40g->rs_rx_INTSTATUS.wrd = TEN_PP40G_RS_RX_INTSTATUS_dft;
+  dft_pp40g->rs_rx_INTERRUPT.wrd = TEN_PP40G_RS_RX_INTERRUPT_dft;
+  dft_pp40g->rs_rx_INTENABLE.wrd = TEN_PP40G_RS_RX_INTENABLE_dft;
+  dft_pp40g->rs_rx_INTERRUPTZ.wrd = TEN_PP40G_RS_RX_INTERRUPTZ_dft;
+  dft_pp40g->UNKNOWNORD1.wrd = TEN_PP40G_RS_RX_UNKNOWNORD1_dft;
+  dft_pp40g->UNKNOWNORD2.wrd = TEN_PP40G_RS_RX_UNKNOWNORD2_dft;
+  dft_pp40g->mac_rx_CNTRL.wrd = TEN_PP40G_MAC_RX_CNTRL_dft;
+  dft_pp40g->VLAN_TAG1.wrd = TEN_PP40G_MAC_RX_VLAN_TAG1_dft;
+  dft_pp40g->VLAN_TAG2.wrd = TEN_PP40G_MAC_RX_VLAN_TAG2_dft;
+  dft_pp40g->VLAN_TAG3.wrd = TEN_PP40G_MAC_RX_VLAN_TAG3_dft;
+  dft_pp40g->MAXLEN.wrd = TEN_PP40G_MAC_RX_MAXLEN_dft;
+  dft_pp40g->misc_tx_FUNCEN.wrd = TEN_PP40G_MISC_TX_FUNCEN_dft;
+  dft_pp40g->misc_tx_CLKEN.wrd = TEN_PP40G_MISC_TX_CLKEN_dft;
+  dft_pp40g->misc_tx_INTERRUPT.wrd = TEN_PP40G_MISC_TX_INTERRUPT_dft;
+  dft_pp40g->misc_tx_INTENABLE.wrd = TEN_PP40G_MISC_TX_INTENABLE_dft;
+  dft_pp40g->pcs_tx_CNTRL.wrd = TEN_PP40G_PCS_TX_CNTRL_dft;
+  dft_pp40g->FAULT_CNTRL.wrd = TEN_PP40G_PCS_TX_FAULT_CNTRL_dft;
+  dft_pp40g->XEC_CNTRL.wrd = TEN_PP40G_PCS_TX_XEC_CNTRL_dft;
+  dft_pp40g->pcs_tx_INTSTATUS.wrd = TEN_PP40G_PCS_TX_INTSTATUS_dft;
+  dft_pp40g->pcs_tx_INTERRUPT.wrd = TEN_PP40G_PCS_TX_INTERRUPT_dft;
+  dft_pp40g->pcs_tx_INTENABLE.wrd = TEN_PP40G_PCS_TX_INTENABLE_dft;
+  dft_pp40g->pcs_tx_INTERRUPTZ.wrd = TEN_PP40G_PCS_TX_INTERRUPTZ_dft;
+  dft_pp40g->pbert40g_tx_CNTRL.wrd = TEN_PP40G_PBERT40G_TX_CNTRL_dft;
+  dft_pp40g->TYPELEN.wrd = TEN_PP40G_PBERT40G_TX_TYPELEN_dft;
+  dft_pp40g->FPAT01.wrd = TEN_PP40G_PBERT40G_TX_FPAT01_dft;
+  dft_pp40g->FPAT23.wrd = TEN_PP40G_PBERT40G_TX_FPAT23_dft;
+  dft_pp40g->FRMLEN.wrd = TEN_PP40G_PBERT40G_TX_FRMLEN_dft;
+  dft_pp40g->FRMLENMIN.wrd = TEN_PP40G_PBERT40G_TX_FRMLENMIN_dft;
+  dft_pp40g->FRMLENMAX.wrd = TEN_PP40G_PBERT40G_TX_FRMLENMAX_dft;
+  dft_pp40g->TX_IFG.wrd = TEN_PP40G_PBERT40G_TX_TX_IFG_dft;
+  dft_pp40g->FRMCNTRL.wrd = TEN_PP40G_PBERT40G_TX_FRMCNTRL_dft;
+  dft_pp40g->ERRINS_CONT.wrd = TEN_PP40G_PBERT40G_TX_ERRINS_CONT_dft;
+  dft_pp40g->ERRINS_SGL.wrd = TEN_PP40G_PBERT40G_TX_ERRINS_SGL_dft;
+  dft_pp40g->GO.wrd = TEN_PP40G_PBERT40G_TX_GO_dft; 
+  dft_pp40g->FRMCNT2.wrd = TEN_PP40G_PBERT40G_TX_FRMCNT2_dft;
+  dft_pp40g->FRMCNT1.wrd = TEN_PP40G_PBERT40G_TX_FRMCNT1_dft;
+  dft_pp40g->FRMCNT0.wrd = TEN_PP40G_PBERT40G_TX_FRMCNT0_dft;
+  dft_pp40g->FRMOCTCNT2.wrd = TEN_PP40G_PBERT40G_TX_FRMOCTCNT2_dft;
+  dft_pp40g->FRMOCTCNT1.wrd = TEN_PP40G_PBERT40G_TX_FRMOCTCNT1_dft;
+  dft_pp40g->FRMOCTCNT0.wrd = TEN_PP40G_PBERT40G_TX_FRMOCTCNT0_dft;
+  dft_pp40g->pbert40g_tx_INTERRUPT.wrd = TEN_PP40G_PBERT40G_TX_INTERRUPT_dft;
+  dft_pp40g->pbert40g_tx_INTENABLE.wrd = TEN_PP40G_PBERT40G_TX_INTENABLE_dft;
+  dft_pp40g->pbert40g_tx_INTERRUPTZ.wrd = TEN_PP40G_PBERT40G_TX_INTERRUPTZ_dft;
+  dft_pp40g->CTRL.wrd = TEN_PP40G_PM_CTRL_dft;      
+  dft_pp40g->CLEAR.wrd = TEN_PP40G_PM_CLEAR_dft;    
+  dft_pp40g->STATUS.wrd = TEN_PP40G_PM_STATUS_dft;  
+  dft_pp40g->pm_INTERRUPT.wrd = TEN_PP40G_PM_INTERRUPT_dft;
+  dft_pp40g->pm_INTENABLE.wrd = TEN_PP40G_PM_INTENABLE_dft;
+  dft_pp40g->pm_INTERRUPTZ.wrd = TEN_PP40G_PM_INTERRUPTZ_dft;
+  dft_pp40g->BANK0_ECC_D_ERR_ADDR.wrd = TEN_PP40G_PM_BANK0_ECC_D_ERR_ADDR_dft;
+  dft_pp40g->BANK1_ECC_D_ERR_ADDR.wrd = TEN_PP40G_PM_BANK1_ECC_D_ERR_ADDR_dft;
+  dft_pp40g->STATS_ACCESS.wrd = TEN_PP40G_PM_STATS_ACCESS_dft;
+  dft_pp40g->STATS_DATA2.wrd = TEN_PP40G_PM_STATS_DATA2_dft;
+  dft_pp40g->STATS_DATA1.wrd = TEN_PP40G_PM_STATS_DATA1_dft;
+  dft_pp40g->STATS_DATA0.wrd = TEN_PP40G_PM_STATS_DATA0_dft;
+
+  g_pTEN->drvr_flag |= TEN_DRVR_LOG_SUSPEND;
+
+  tmp_pp40g->RESET.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, RESET));
+  tmp_pp40g->misc_CLKEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_CLKEN));
+  tmp_pp40g->BYPASS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, BYPASS));
+  tmp_pp40g->misc_INTSTATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_INTSTATUS));
+  tmp_pp40g->misc_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_INTERRUPT));
+  tmp_pp40g->misc_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_INTENABLE));
+  tmp_pp40g->misc_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_INTERRUPTZ));
+  tmp_pp40g->misc_rx_FUNCEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_rx_FUNCEN));
+  tmp_pp40g->misc_rx_CLKEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_rx_CLKEN));
+  tmp_pp40g->misc_rx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_rx_INTERRUPT));
+  tmp_pp40g->misc_rx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_rx_INTENABLE));
+  tmp_pp40g->misc_rx_PATH_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_rx_PATH_CNTRL));
+  tmp_pp40g->lif_rx_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, lif_rx_CNTRL));
+  tmp_pp40g->lif_rx_INTSTATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, lif_rx_INTSTATUS));
+  tmp_pp40g->lif_rx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, lif_rx_INTERRUPT));
+  tmp_pp40g->lif_rx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, lif_rx_INTENABLE));
+  tmp_pp40g->lif_rx_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, lif_rx_INTERRUPTZ));
+  tmp_pp40g->pcs_rx_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_rx_CNTRL));
+  tmp_pp40g->CSF_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, CSF_CNTRL));
+  tmp_pp40g->XDC_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, XDC_CNTRL));
+  tmp_pp40g->pcs_rx_RATE_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_rx_RATE_CNTRL));
+  tmp_pp40g->AMSTATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, AMSTATUS));
+  tmp_pp40g->AMSTATUS1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, AMSTATUS1));
+  tmp_pp40g->pcs_rx_INTSTATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_rx_INTSTATUS));
+  tmp_pp40g->pcs_rx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_rx_INTERRUPT));
+  tmp_pp40g->pcs_rx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_rx_INTENABLE));
+  tmp_pp40g->pcs_rx_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_rx_INTERRUPTZ));
+  tmp_pp40g->LDBINTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, LDBINTERRUPT));
+  tmp_pp40g->LDBINTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, LDBINTENABLE));
+  tmp_pp40g->LDBINTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, LDBINTERRUPTZ));
+  tmp_pp40g->SKEWCNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, SKEWCNTRL));
+  tmp_pp40g->SKEWTHRESHOLD.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, SKEWTHRESHOLD));
+  tmp_pp40g->SKEWTHRESHOLD1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, SKEWTHRESHOLD1));
+  tmp_pp40g->SKEWSTATUS1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, SKEWSTATUS1));
+  tmp_pp40g->SKEWSTATUS2.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, SKEWSTATUS2));
+  tmp_pp40g->BERTIMER.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, BERTIMER));
+  tmp_pp40g->rs_rx_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, rs_rx_CNTRL));
+  tmp_pp40g->rs_rx_INTSTATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, rs_rx_INTSTATUS));
+  tmp_pp40g->rs_rx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, rs_rx_INTERRUPT));
+  tmp_pp40g->rs_rx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, rs_rx_INTENABLE));
+  tmp_pp40g->rs_rx_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, rs_rx_INTERRUPTZ));
+  tmp_pp40g->UNKNOWNORD1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, UNKNOWNORD1));
+  tmp_pp40g->UNKNOWNORD2.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, UNKNOWNORD2));
+  tmp_pp40g->mac_rx_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, mac_rx_CNTRL));
+  tmp_pp40g->VLAN_TAG1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, VLAN_TAG1));
+  tmp_pp40g->VLAN_TAG2.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, VLAN_TAG2));
+  tmp_pp40g->VLAN_TAG3.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, VLAN_TAG3));
+  tmp_pp40g->MAXLEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, MAXLEN));
+  tmp_pp40g->misc_tx_FUNCEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_tx_FUNCEN));
+  tmp_pp40g->misc_tx_CLKEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_tx_CLKEN));
+  tmp_pp40g->misc_tx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_tx_INTERRUPT));
+  tmp_pp40g->misc_tx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, misc_tx_INTENABLE));
+  tmp_pp40g->pcs_tx_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_tx_CNTRL));
+  tmp_pp40g->FAULT_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FAULT_CNTRL));
+  tmp_pp40g->XEC_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, XEC_CNTRL));
+  tmp_pp40g->pcs_tx_INTSTATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_tx_INTSTATUS));
+  tmp_pp40g->pcs_tx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_tx_INTERRUPT));
+  tmp_pp40g->pcs_tx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_tx_INTENABLE));
+  tmp_pp40g->pcs_tx_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pcs_tx_INTERRUPTZ));
+  tmp_pp40g->pbert40g_tx_CNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pbert40g_tx_CNTRL));
+  tmp_pp40g->TYPELEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, TYPELEN));
+  tmp_pp40g->FPAT01.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FPAT01));
+  tmp_pp40g->FPAT23.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FPAT23));
+  tmp_pp40g->FRMLEN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMLEN));
+  tmp_pp40g->FRMLENMIN.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMLENMIN));
+  tmp_pp40g->FRMLENMAX.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMLENMAX));
+  tmp_pp40g->TX_IFG.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, TX_IFG));
+  tmp_pp40g->FRMCNTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMCNTRL));
+  tmp_pp40g->ERRINS_CONT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, ERRINS_CONT));
+  tmp_pp40g->ERRINS_SGL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, ERRINS_SGL));
+  tmp_pp40g->GO.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, GO));
+  tmp_pp40g->FRMCNT2.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMCNT2));
+  tmp_pp40g->FRMCNT1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMCNT1));
+  tmp_pp40g->FRMCNT0.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMCNT0));
+  tmp_pp40g->FRMOCTCNT2.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMOCTCNT2));
+  tmp_pp40g->FRMOCTCNT1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMOCTCNT1));
+  tmp_pp40g->FRMOCTCNT0.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, FRMOCTCNT0));
+  tmp_pp40g->pbert40g_tx_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pbert40g_tx_INTERRUPT));
+  tmp_pp40g->pbert40g_tx_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pbert40g_tx_INTENABLE));
+  tmp_pp40g->pbert40g_tx_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pbert40g_tx_INTERRUPTZ));
+  tmp_pp40g->CTRL.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, CTRL));
+  tmp_pp40g->CLEAR.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, CLEAR));
+  tmp_pp40g->STATUS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, STATUS));
+  tmp_pp40g->pm_INTERRUPT.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pm_INTERRUPT));
+  tmp_pp40g->pm_INTENABLE.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pm_INTENABLE));
+  tmp_pp40g->pm_INTERRUPTZ.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, pm_INTERRUPTZ));
+  tmp_pp40g->BANK0_ECC_D_ERR_ADDR.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, BANK0_ECC_D_ERR_ADDR));
+  tmp_pp40g->BANK1_ECC_D_ERR_ADDR.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, BANK1_ECC_D_ERR_ADDR));
+  tmp_pp40g->STATS_ACCESS.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, STATS_ACCESS));
+  tmp_pp40g->STATS_DATA2.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, STATS_DATA2));
+  tmp_pp40g->STATS_DATA1.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, STATS_DATA1));
+  tmp_pp40g->STATS_DATA0.wrd = TEN_REG_READ(TEN_PP40G_REG_ADDR(pDev, module_id, STATS_DATA0));
+ 
+  g_pTEN->drvr_flag &= ~TEN_DRVR_LOG_SUSPEND;
+
+  ch1 = (module_id & 1) ? 'B' : 'A';
+
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RESET.wrd", tmp_pp40g->RESET.wrd, tmp_pp40g->RESET.wrd == dft_pp40g->RESET.wrd ? 0x20 : 0x2A, dft_pp40g->RESET.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RESET.bf.mpif_rst", tmp_pp40g->RESET.bf.mpif_rst, tmp_pp40g->RESET.bf.mpif_rst == dft_pp40g->RESET.bf.mpif_rst ? 0x20 : 0x2A, dft_pp40g->RESET.bf.mpif_rst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_CLKEN.wrd", tmp_pp40g->misc_CLKEN.wrd, tmp_pp40g->misc_CLKEN.wrd == dft_pp40g->misc_CLKEN.wrd ? 0x20 : 0x2A, dft_pp40g->misc_CLKEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_CLKEN.bf.clken_dsk", tmp_pp40g->misc_CLKEN.bf.clken_dsk, tmp_pp40g->misc_CLKEN.bf.clken_dsk == dft_pp40g->misc_CLKEN.bf.clken_dsk ? 0x20 : 0x2A, dft_pp40g->misc_CLKEN.bf.clken_dsk, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_CLKEN.bf.clken_pm", tmp_pp40g->misc_CLKEN.bf.clken_pm, tmp_pp40g->misc_CLKEN.bf.clken_pm == dft_pp40g->misc_CLKEN.bf.clken_pm ? 0x20 : 0x2A, dft_pp40g->misc_CLKEN.bf.clken_pm, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_CLKEN.bf.clken_tx", tmp_pp40g->misc_CLKEN.bf.clken_tx, tmp_pp40g->misc_CLKEN.bf.clken_tx == dft_pp40g->misc_CLKEN.bf.clken_tx ? 0x20 : 0x2A, dft_pp40g->misc_CLKEN.bf.clken_tx, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_CLKEN.bf.clken_rx", tmp_pp40g->misc_CLKEN.bf.clken_rx, tmp_pp40g->misc_CLKEN.bf.clken_rx == dft_pp40g->misc_CLKEN.bf.clken_rx ? 0x20 : 0x2A, dft_pp40g->misc_CLKEN.bf.clken_rx, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_BYPASS.wrd", tmp_pp40g->BYPASS.wrd, tmp_pp40g->BYPASS.wrd == dft_pp40g->BYPASS.wrd ? 0x20 : 0x2A, dft_pp40g->BYPASS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_BYPASS.bf.rx_dsk_en", tmp_pp40g->BYPASS.bf.rx_dsk_en, tmp_pp40g->BYPASS.bf.rx_dsk_en == dft_pp40g->BYPASS.bf.rx_dsk_en ? 0x20 : 0x2A, dft_pp40g->BYPASS.bf.rx_dsk_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_BYPASS.bf.rx_csf_en", tmp_pp40g->BYPASS.bf.rx_csf_en, tmp_pp40g->BYPASS.bf.rx_csf_en == dft_pp40g->BYPASS.bf.rx_csf_en ? 0x20 : 0x2A, dft_pp40g->BYPASS.bf.rx_csf_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_BYPASS.bf.tx_bypass", tmp_pp40g->BYPASS.bf.tx_bypass, tmp_pp40g->BYPASS.bf.tx_bypass == dft_pp40g->BYPASS.bf.tx_bypass ? 0x20 : 0x2A, dft_pp40g->BYPASS.bf.tx_bypass, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_BYPASS.bf.rx_bypass", tmp_pp40g->BYPASS.bf.rx_bypass, tmp_pp40g->BYPASS.bf.rx_bypass == dft_pp40g->BYPASS.bf.rx_bypass ? 0x20 : 0x2A, dft_pp40g->BYPASS.bf.rx_bypass, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTSTATUS.wrd", tmp_pp40g->misc_INTSTATUS.wrd, tmp_pp40g->misc_INTSTATUS.wrd == dft_pp40g->misc_INTSTATUS.wrd ? 0x20 : 0x2A, dft_pp40g->misc_INTSTATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTSTATUS.bf.rx_dsk_syncS", tmp_pp40g->misc_INTSTATUS.bf.rx_dsk_syncS, tmp_pp40g->misc_INTSTATUS.bf.rx_dsk_syncS == dft_pp40g->misc_INTSTATUS.bf.rx_dsk_syncS ? 0x20 : 0x2A, dft_pp40g->misc_INTSTATUS.bf.rx_dsk_syncS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPT.wrd", tmp_pp40g->misc_INTERRUPT.wrd, tmp_pp40g->misc_INTERRUPT.wrd == dft_pp40g->misc_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPT.bf.rx_dsk_syncI", tmp_pp40g->misc_INTERRUPT.bf.rx_dsk_syncI, tmp_pp40g->misc_INTERRUPT.bf.rx_dsk_syncI == dft_pp40g->misc_INTERRUPT.bf.rx_dsk_syncI ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPT.bf.rx_dsk_syncI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPT.bf.pmI", tmp_pp40g->misc_INTERRUPT.bf.pmI, tmp_pp40g->misc_INTERRUPT.bf.pmI == dft_pp40g->misc_INTERRUPT.bf.pmI ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPT.bf.pmI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPT.bf.txI", tmp_pp40g->misc_INTERRUPT.bf.txI, tmp_pp40g->misc_INTERRUPT.bf.txI == dft_pp40g->misc_INTERRUPT.bf.txI ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPT.bf.txI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPT.bf.rxI", tmp_pp40g->misc_INTERRUPT.bf.rxI, tmp_pp40g->misc_INTERRUPT.bf.rxI == dft_pp40g->misc_INTERRUPT.bf.rxI ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPT.bf.rxI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTENABLE.wrd", tmp_pp40g->misc_INTENABLE.wrd, tmp_pp40g->misc_INTENABLE.wrd == dft_pp40g->misc_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->misc_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTENABLE.bf.rx_dsk_syncE", tmp_pp40g->misc_INTENABLE.bf.rx_dsk_syncE, tmp_pp40g->misc_INTENABLE.bf.rx_dsk_syncE == dft_pp40g->misc_INTENABLE.bf.rx_dsk_syncE ? 0x20 : 0x2A, dft_pp40g->misc_INTENABLE.bf.rx_dsk_syncE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTENABLE.bf.pmE", tmp_pp40g->misc_INTENABLE.bf.pmE, tmp_pp40g->misc_INTENABLE.bf.pmE == dft_pp40g->misc_INTENABLE.bf.pmE ? 0x20 : 0x2A, dft_pp40g->misc_INTENABLE.bf.pmE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTENABLE.bf.txE", tmp_pp40g->misc_INTENABLE.bf.txE, tmp_pp40g->misc_INTENABLE.bf.txE == dft_pp40g->misc_INTENABLE.bf.txE ? 0x20 : 0x2A, dft_pp40g->misc_INTENABLE.bf.txE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTENABLE.bf.rxE", tmp_pp40g->misc_INTENABLE.bf.rxE, tmp_pp40g->misc_INTENABLE.bf.rxE == dft_pp40g->misc_INTENABLE.bf.rxE ? 0x20 : 0x2A, dft_pp40g->misc_INTENABLE.bf.rxE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPTZ.wrd", tmp_pp40g->misc_INTERRUPTZ.wrd, tmp_pp40g->misc_INTERRUPTZ.wrd == dft_pp40g->misc_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPTZ.bf.rx_dsk_syncIZ", tmp_pp40g->misc_INTERRUPTZ.bf.rx_dsk_syncIZ, tmp_pp40g->misc_INTERRUPTZ.bf.rx_dsk_syncIZ == dft_pp40g->misc_INTERRUPTZ.bf.rx_dsk_syncIZ ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPTZ.bf.rx_dsk_syncIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPTZ.bf.pmIZ", tmp_pp40g->misc_INTERRUPTZ.bf.pmIZ, tmp_pp40g->misc_INTERRUPTZ.bf.pmIZ == dft_pp40g->misc_INTERRUPTZ.bf.pmIZ ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPTZ.bf.pmIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPTZ.bf.txIZ", tmp_pp40g->misc_INTERRUPTZ.bf.txIZ, tmp_pp40g->misc_INTERRUPTZ.bf.txIZ == dft_pp40g->misc_INTERRUPTZ.bf.txIZ ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPTZ.bf.txIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_INTERRUPTZ.bf.rxIZ", tmp_pp40g->misc_INTERRUPTZ.bf.rxIZ, tmp_pp40g->misc_INTERRUPTZ.bf.rxIZ == dft_pp40g->misc_INTERRUPTZ.bf.rxIZ ? 0x20 : 0x2A, dft_pp40g->misc_INTERRUPTZ.bf.rxIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.wrd", tmp_pp40g->misc_rx_FUNCEN.wrd, tmp_pp40g->misc_rx_FUNCEN.wrd == dft_pp40g->misc_rx_FUNCEN.wrd ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_mac", tmp_pp40g->misc_rx_FUNCEN.bf.fen_mac, tmp_pp40g->misc_rx_FUNCEN.bf.fen_mac == dft_pp40g->misc_rx_FUNCEN.bf.fen_mac ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_mac, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_rs", tmp_pp40g->misc_rx_FUNCEN.bf.fen_rs, tmp_pp40g->misc_rx_FUNCEN.bf.fen_rs == dft_pp40g->misc_rx_FUNCEN.bf.fen_rs ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_rs, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_nra", tmp_pp40g->misc_rx_FUNCEN.bf.fen_nra, tmp_pp40g->misc_rx_FUNCEN.bf.fen_nra == dft_pp40g->misc_rx_FUNCEN.bf.fen_nra ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_nra, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_tpc", tmp_pp40g->misc_rx_FUNCEN.bf.fen_tpc, tmp_pp40g->misc_rx_FUNCEN.bf.fen_tpc == dft_pp40g->misc_rx_FUNCEN.bf.fen_tpc ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_tpc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_bdc", tmp_pp40g->misc_rx_FUNCEN.bf.fen_bdc, tmp_pp40g->misc_rx_FUNCEN.bf.fen_bdc == dft_pp40g->misc_rx_FUNCEN.bf.fen_bdc ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_bdc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_bds_bdc", tmp_pp40g->misc_rx_FUNCEN.bf.fen_bds_bdc, tmp_pp40g->misc_rx_FUNCEN.bf.fen_bds_bdc == dft_pp40g->misc_rx_FUNCEN.bf.fen_bds_bdc ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_bds_bdc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_bds_rxi", tmp_pp40g->misc_rx_FUNCEN.bf.fen_bds_rxi, tmp_pp40g->misc_rx_FUNCEN.bf.fen_bds_rxi == dft_pp40g->misc_rx_FUNCEN.bf.fen_bds_rxi ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_bds_rxi, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_xdc", tmp_pp40g->misc_rx_FUNCEN.bf.fen_xdc, tmp_pp40g->misc_rx_FUNCEN.bf.fen_xdc == dft_pp40g->misc_rx_FUNCEN.bf.fen_xdc ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_xdc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_mba", tmp_pp40g->misc_rx_FUNCEN.bf.fen_mba, tmp_pp40g->misc_rx_FUNCEN.bf.fen_mba == dft_pp40g->misc_rx_FUNCEN.bf.fen_mba ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_mba, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_lro", tmp_pp40g->misc_rx_FUNCEN.bf.fen_lro, tmp_pp40g->misc_rx_FUNCEN.bf.fen_lro == dft_pp40g->misc_rx_FUNCEN.bf.fen_lro ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_lro, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_lds", tmp_pp40g->misc_rx_FUNCEN.bf.fen_lds, tmp_pp40g->misc_rx_FUNCEN.bf.fen_lds == dft_pp40g->misc_rx_FUNCEN.bf.fen_lds ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_lds, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_lba", tmp_pp40g->misc_rx_FUNCEN.bf.fen_lba, tmp_pp40g->misc_rx_FUNCEN.bf.fen_lba == dft_pp40g->misc_rx_FUNCEN.bf.fen_lba ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_lba, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_dil", tmp_pp40g->misc_rx_FUNCEN.bf.fen_dil, tmp_pp40g->misc_rx_FUNCEN.bf.fen_dil == dft_pp40g->misc_rx_FUNCEN.bf.fen_dil ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_dil, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_FUNCEN.bf.fen_lif", tmp_pp40g->misc_rx_FUNCEN.bf.fen_lif, tmp_pp40g->misc_rx_FUNCEN.bf.fen_lif == dft_pp40g->misc_rx_FUNCEN.bf.fen_lif ? 0x20 : 0x2A, dft_pp40g->misc_rx_FUNCEN.bf.fen_lif, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.wrd", tmp_pp40g->misc_rx_CLKEN.wrd, tmp_pp40g->misc_rx_CLKEN.wrd == dft_pp40g->misc_rx_CLKEN.wrd ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_mac", tmp_pp40g->misc_rx_CLKEN.bf.clken_mac, tmp_pp40g->misc_rx_CLKEN.bf.clken_mac == dft_pp40g->misc_rx_CLKEN.bf.clken_mac ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_mac, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_rs", tmp_pp40g->misc_rx_CLKEN.bf.clken_rs, tmp_pp40g->misc_rx_CLKEN.bf.clken_rs == dft_pp40g->misc_rx_CLKEN.bf.clken_rs ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_rs, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_nra", tmp_pp40g->misc_rx_CLKEN.bf.clken_nra, tmp_pp40g->misc_rx_CLKEN.bf.clken_nra == dft_pp40g->misc_rx_CLKEN.bf.clken_nra ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_nra, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_tpc", tmp_pp40g->misc_rx_CLKEN.bf.clken_tpc, tmp_pp40g->misc_rx_CLKEN.bf.clken_tpc == dft_pp40g->misc_rx_CLKEN.bf.clken_tpc ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_tpc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_bdc", tmp_pp40g->misc_rx_CLKEN.bf.clken_bdc, tmp_pp40g->misc_rx_CLKEN.bf.clken_bdc == dft_pp40g->misc_rx_CLKEN.bf.clken_bdc ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_bdc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_bds", tmp_pp40g->misc_rx_CLKEN.bf.clken_bds, tmp_pp40g->misc_rx_CLKEN.bf.clken_bds == dft_pp40g->misc_rx_CLKEN.bf.clken_bds ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_bds, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_xdc", tmp_pp40g->misc_rx_CLKEN.bf.clken_xdc, tmp_pp40g->misc_rx_CLKEN.bf.clken_xdc == dft_pp40g->misc_rx_CLKEN.bf.clken_xdc ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_xdc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_mba", tmp_pp40g->misc_rx_CLKEN.bf.clken_mba, tmp_pp40g->misc_rx_CLKEN.bf.clken_mba == dft_pp40g->misc_rx_CLKEN.bf.clken_mba ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_mba, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_lro", tmp_pp40g->misc_rx_CLKEN.bf.clken_lro, tmp_pp40g->misc_rx_CLKEN.bf.clken_lro == dft_pp40g->misc_rx_CLKEN.bf.clken_lro ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_lro, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_lds", tmp_pp40g->misc_rx_CLKEN.bf.clken_lds, tmp_pp40g->misc_rx_CLKEN.bf.clken_lds == dft_pp40g->misc_rx_CLKEN.bf.clken_lds ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_lds, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_lba", tmp_pp40g->misc_rx_CLKEN.bf.clken_lba, tmp_pp40g->misc_rx_CLKEN.bf.clken_lba == dft_pp40g->misc_rx_CLKEN.bf.clken_lba ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_lba, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_dil", tmp_pp40g->misc_rx_CLKEN.bf.clken_dil, tmp_pp40g->misc_rx_CLKEN.bf.clken_dil == dft_pp40g->misc_rx_CLKEN.bf.clken_dil ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_dil, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_CLKEN.bf.clken_lif", tmp_pp40g->misc_rx_CLKEN.bf.clken_lif, tmp_pp40g->misc_rx_CLKEN.bf.clken_lif == dft_pp40g->misc_rx_CLKEN.bf.clken_lif ? 0x20 : 0x2A, dft_pp40g->misc_rx_CLKEN.bf.clken_lif, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTERRUPT.wrd", tmp_pp40g->misc_rx_INTERRUPT.wrd, tmp_pp40g->misc_rx_INTERRUPT.wrd == dft_pp40g->misc_rx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTERRUPT.bf.rsI", tmp_pp40g->misc_rx_INTERRUPT.bf.rsI, tmp_pp40g->misc_rx_INTERRUPT.bf.rsI == dft_pp40g->misc_rx_INTERRUPT.bf.rsI ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTERRUPT.bf.rsI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTERRUPT.bf.pcsldbI", tmp_pp40g->misc_rx_INTERRUPT.bf.pcsldbI, tmp_pp40g->misc_rx_INTERRUPT.bf.pcsldbI == dft_pp40g->misc_rx_INTERRUPT.bf.pcsldbI ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTERRUPT.bf.pcsldbI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTERRUPT.bf.pcsI", tmp_pp40g->misc_rx_INTERRUPT.bf.pcsI, tmp_pp40g->misc_rx_INTERRUPT.bf.pcsI == dft_pp40g->misc_rx_INTERRUPT.bf.pcsI ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTERRUPT.bf.pcsI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTERRUPT.bf.lifI", tmp_pp40g->misc_rx_INTERRUPT.bf.lifI, tmp_pp40g->misc_rx_INTERRUPT.bf.lifI == dft_pp40g->misc_rx_INTERRUPT.bf.lifI ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTERRUPT.bf.lifI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTENABLE.wrd", tmp_pp40g->misc_rx_INTENABLE.wrd, tmp_pp40g->misc_rx_INTENABLE.wrd == dft_pp40g->misc_rx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTENABLE.bf.rsE", tmp_pp40g->misc_rx_INTENABLE.bf.rsE, tmp_pp40g->misc_rx_INTENABLE.bf.rsE == dft_pp40g->misc_rx_INTENABLE.bf.rsE ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTENABLE.bf.rsE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTENABLE.bf.pcsldbE", tmp_pp40g->misc_rx_INTENABLE.bf.pcsldbE, tmp_pp40g->misc_rx_INTENABLE.bf.pcsldbE == dft_pp40g->misc_rx_INTENABLE.bf.pcsldbE ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTENABLE.bf.pcsldbE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTENABLE.bf.pcsE", tmp_pp40g->misc_rx_INTENABLE.bf.pcsE, tmp_pp40g->misc_rx_INTENABLE.bf.pcsE == dft_pp40g->misc_rx_INTENABLE.bf.pcsE ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTENABLE.bf.pcsE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_INTENABLE.bf.lifE", tmp_pp40g->misc_rx_INTENABLE.bf.lifE, tmp_pp40g->misc_rx_INTENABLE.bf.lifE == dft_pp40g->misc_rx_INTENABLE.bf.lifE ? 0x20 : 0x2A, dft_pp40g->misc_rx_INTENABLE.bf.lifE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_PATH_CNTRL.wrd", tmp_pp40g->misc_rx_PATH_CNTRL.wrd, tmp_pp40g->misc_rx_PATH_CNTRL.wrd == dft_pp40g->misc_rx_PATH_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->misc_rx_PATH_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_PATH_CNTRL.bf.rx_los_data0", tmp_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_data0, tmp_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_data0 == dft_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_data0 ? 0x20 : 0x2A, dft_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_data0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_RX_PATH_CNTRL.bf.rx_los_dis", tmp_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_dis, tmp_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_dis == dft_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_dis ? 0x20 : 0x2A, dft_pp40g->misc_rx_PATH_CNTRL.bf.rx_los_dis, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_CNTRL.wrd", tmp_pp40g->lif_rx_CNTRL.wrd, tmp_pp40g->lif_rx_CNTRL.wrd == dft_pp40g->lif_rx_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->lif_rx_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_CNTRL.bf.rxrst", tmp_pp40g->lif_rx_CNTRL.bf.rxrst, tmp_pp40g->lif_rx_CNTRL.bf.rxrst == dft_pp40g->lif_rx_CNTRL.bf.rxrst ? 0x20 : 0x2A, dft_pp40g->lif_rx_CNTRL.bf.rxrst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_CNTRL.bf.mono_mode", tmp_pp40g->lif_rx_CNTRL.bf.mono_mode, tmp_pp40g->lif_rx_CNTRL.bf.mono_mode == dft_pp40g->lif_rx_CNTRL.bf.mono_mode ? 0x20 : 0x2A, dft_pp40g->lif_rx_CNTRL.bf.mono_mode, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTSTATUS.wrd", tmp_pp40g->lif_rx_INTSTATUS.wrd, tmp_pp40g->lif_rx_INTSTATUS.wrd == dft_pp40g->lif_rx_INTSTATUS.wrd ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTSTATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTSTATUS.bf.overflow3S", tmp_pp40g->lif_rx_INTSTATUS.bf.overflow3S, tmp_pp40g->lif_rx_INTSTATUS.bf.overflow3S == dft_pp40g->lif_rx_INTSTATUS.bf.overflow3S ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTSTATUS.bf.overflow3S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTSTATUS.bf.overflow2S", tmp_pp40g->lif_rx_INTSTATUS.bf.overflow2S, tmp_pp40g->lif_rx_INTSTATUS.bf.overflow2S == dft_pp40g->lif_rx_INTSTATUS.bf.overflow2S ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTSTATUS.bf.overflow2S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTSTATUS.bf.overflow1S", tmp_pp40g->lif_rx_INTSTATUS.bf.overflow1S, tmp_pp40g->lif_rx_INTSTATUS.bf.overflow1S == dft_pp40g->lif_rx_INTSTATUS.bf.overflow1S ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTSTATUS.bf.overflow1S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTSTATUS.bf.overflow0S", tmp_pp40g->lif_rx_INTSTATUS.bf.overflow0S, tmp_pp40g->lif_rx_INTSTATUS.bf.overflow0S == dft_pp40g->lif_rx_INTSTATUS.bf.overflow0S ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTSTATUS.bf.overflow0S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPT.wrd", tmp_pp40g->lif_rx_INTERRUPT.wrd, tmp_pp40g->lif_rx_INTERRUPT.wrd == dft_pp40g->lif_rx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPT.bf.overflow3I", tmp_pp40g->lif_rx_INTERRUPT.bf.overflow3I, tmp_pp40g->lif_rx_INTERRUPT.bf.overflow3I == dft_pp40g->lif_rx_INTERRUPT.bf.overflow3I ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPT.bf.overflow3I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPT.bf.overflow2I", tmp_pp40g->lif_rx_INTERRUPT.bf.overflow2I, tmp_pp40g->lif_rx_INTERRUPT.bf.overflow2I == dft_pp40g->lif_rx_INTERRUPT.bf.overflow2I ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPT.bf.overflow2I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPT.bf.overflow1I", tmp_pp40g->lif_rx_INTERRUPT.bf.overflow1I, tmp_pp40g->lif_rx_INTERRUPT.bf.overflow1I == dft_pp40g->lif_rx_INTERRUPT.bf.overflow1I ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPT.bf.overflow1I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPT.bf.overflow0I", tmp_pp40g->lif_rx_INTERRUPT.bf.overflow0I, tmp_pp40g->lif_rx_INTERRUPT.bf.overflow0I == dft_pp40g->lif_rx_INTERRUPT.bf.overflow0I ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPT.bf.overflow0I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTENABLE.wrd", tmp_pp40g->lif_rx_INTENABLE.wrd, tmp_pp40g->lif_rx_INTENABLE.wrd == dft_pp40g->lif_rx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTENABLE.bf.overflow3E", tmp_pp40g->lif_rx_INTENABLE.bf.overflow3E, tmp_pp40g->lif_rx_INTENABLE.bf.overflow3E == dft_pp40g->lif_rx_INTENABLE.bf.overflow3E ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTENABLE.bf.overflow3E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTENABLE.bf.overflow2E", tmp_pp40g->lif_rx_INTENABLE.bf.overflow2E, tmp_pp40g->lif_rx_INTENABLE.bf.overflow2E == dft_pp40g->lif_rx_INTENABLE.bf.overflow2E ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTENABLE.bf.overflow2E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTENABLE.bf.overflow1E", tmp_pp40g->lif_rx_INTENABLE.bf.overflow1E, tmp_pp40g->lif_rx_INTENABLE.bf.overflow1E == dft_pp40g->lif_rx_INTENABLE.bf.overflow1E ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTENABLE.bf.overflow1E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTENABLE.bf.overflow0E", tmp_pp40g->lif_rx_INTENABLE.bf.overflow0E, tmp_pp40g->lif_rx_INTENABLE.bf.overflow0E == dft_pp40g->lif_rx_INTENABLE.bf.overflow0E ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTENABLE.bf.overflow0E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPTZ.wrd", tmp_pp40g->lif_rx_INTERRUPTZ.wrd, tmp_pp40g->lif_rx_INTERRUPTZ.wrd == dft_pp40g->lif_rx_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPTZ.bf.overflow3IZ", tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow3IZ, tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow3IZ == dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow3IZ ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow3IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPTZ.bf.overflow2IZ", tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow2IZ, tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow2IZ == dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow2IZ ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow2IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPTZ.bf.overflow1IZ", tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow1IZ, tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow1IZ == dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow1IZ ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow1IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_LIF_RX_INTERRUPTZ.bf.overflow0IZ", tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow0IZ, tmp_pp40g->lif_rx_INTERRUPTZ.bf.overflow0IZ == dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow0IZ ? 0x20 : 0x2A, dft_pp40g->lif_rx_INTERRUPTZ.bf.overflow0IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CNTRL.wrd", tmp_pp40g->pcs_rx_CNTRL.wrd, tmp_pp40g->pcs_rx_CNTRL.wrd == dft_pp40g->pcs_rx_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_rx_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CNTRL.bf.rxrst", tmp_pp40g->pcs_rx_CNTRL.bf.rxrst, tmp_pp40g->pcs_rx_CNTRL.bf.rxrst == dft_pp40g->pcs_rx_CNTRL.bf.rxrst ? 0x20 : 0x2A, dft_pp40g->pcs_rx_CNTRL.bf.rxrst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CNTRL.bf.loa_pattern", tmp_pp40g->pcs_rx_CNTRL.bf.loa_pattern, tmp_pp40g->pcs_rx_CNTRL.bf.loa_pattern == dft_pp40g->pcs_rx_CNTRL.bf.loa_pattern ? 0x20 : 0x2A, dft_pp40g->pcs_rx_CNTRL.bf.loa_pattern, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CNTRL.bf.mrk_remove", tmp_pp40g->pcs_rx_CNTRL.bf.mrk_remove, tmp_pp40g->pcs_rx_CNTRL.bf.mrk_remove == dft_pp40g->pcs_rx_CNTRL.bf.mrk_remove ? 0x20 : 0x2A, dft_pp40g->pcs_rx_CNTRL.bf.mrk_remove, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CNTRL.bf.test_pat_chk_en", tmp_pp40g->pcs_rx_CNTRL.bf.test_pat_chk_en, tmp_pp40g->pcs_rx_CNTRL.bf.test_pat_chk_en == dft_pp40g->pcs_rx_CNTRL.bf.test_pat_chk_en ? 0x20 : 0x2A, dft_pp40g->pcs_rx_CNTRL.bf.test_pat_chk_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.wrd", tmp_pp40g->CSF_CNTRL.wrd, tmp_pp40g->CSF_CNTRL.wrd == dft_pp40g->CSF_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.idle_force", tmp_pp40g->CSF_CNTRL.bf.idle_force, tmp_pp40g->CSF_CNTRL.bf.idle_force == dft_pp40g->CSF_CNTRL.bf.idle_force ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.idle_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.idle_en", tmp_pp40g->CSF_CNTRL.bf.idle_en, tmp_pp40g->CSF_CNTRL.bf.idle_en == dft_pp40g->CSF_CNTRL.bf.idle_en ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.idle_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.rf_force", tmp_pp40g->CSF_CNTRL.bf.rf_force, tmp_pp40g->CSF_CNTRL.bf.rf_force == dft_pp40g->CSF_CNTRL.bf.rf_force ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.rf_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.rf_en", tmp_pp40g->CSF_CNTRL.bf.rf_en, tmp_pp40g->CSF_CNTRL.bf.rf_en == dft_pp40g->CSF_CNTRL.bf.rf_en ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.rf_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.lf_force", tmp_pp40g->CSF_CNTRL.bf.lf_force, tmp_pp40g->CSF_CNTRL.bf.lf_force == dft_pp40g->CSF_CNTRL.bf.lf_force ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.lf_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.lf_en", tmp_pp40g->CSF_CNTRL.bf.lf_en, tmp_pp40g->CSF_CNTRL.bf.lf_en == dft_pp40g->CSF_CNTRL.bf.lf_en ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.lf_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.ohpp_force", tmp_pp40g->CSF_CNTRL.bf.ohpp_force, tmp_pp40g->CSF_CNTRL.bf.ohpp_force == dft_pp40g->CSF_CNTRL.bf.ohpp_force ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.ohpp_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.ohpp_en", tmp_pp40g->CSF_CNTRL.bf.ohpp_en, tmp_pp40g->CSF_CNTRL.bf.ohpp_en == dft_pp40g->CSF_CNTRL.bf.ohpp_en ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.ohpp_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.csf_berhigh_en", tmp_pp40g->CSF_CNTRL.bf.csf_berhigh_en, tmp_pp40g->CSF_CNTRL.bf.csf_berhigh_en == dft_pp40g->CSF_CNTRL.bf.csf_berhigh_en ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.csf_berhigh_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_CSF_CNTRL.bf.csf_align_en", tmp_pp40g->CSF_CNTRL.bf.csf_align_en, tmp_pp40g->CSF_CNTRL.bf.csf_align_en == dft_pp40g->CSF_CNTRL.bf.csf_align_en ? 0x20 : 0x2A, dft_pp40g->CSF_CNTRL.bf.csf_align_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_XDC_CNTRL.wrd", tmp_pp40g->XDC_CNTRL.wrd, tmp_pp40g->XDC_CNTRL.wrd == dft_pp40g->XDC_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->XDC_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_XDC_CNTRL.bf.xdc_pcs_bip_err_mask_en", tmp_pp40g->XDC_CNTRL.bf.xdc_pcs_bip_err_mask_en, tmp_pp40g->XDC_CNTRL.bf.xdc_pcs_bip_err_mask_en == dft_pp40g->XDC_CNTRL.bf.xdc_pcs_bip_err_mask_en ? 0x20 : 0x2A, dft_pp40g->XDC_CNTRL.bf.xdc_pcs_bip_err_mask_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_XDC_CNTRL.bf.xdc_otn_bip_err_mask_en", tmp_pp40g->XDC_CNTRL.bf.xdc_otn_bip_err_mask_en, tmp_pp40g->XDC_CNTRL.bf.xdc_otn_bip_err_mask_en == dft_pp40g->XDC_CNTRL.bf.xdc_otn_bip_err_mask_en ? 0x20 : 0x2A, dft_pp40g->XDC_CNTRL.bf.xdc_otn_bip_err_mask_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_XDC_CNTRL.bf.xdc_frame_chk_en", tmp_pp40g->XDC_CNTRL.bf.xdc_frame_chk_en, tmp_pp40g->XDC_CNTRL.bf.xdc_frame_chk_en == dft_pp40g->XDC_CNTRL.bf.xdc_frame_chk_en ? 0x20 : 0x2A, dft_pp40g->XDC_CNTRL.bf.xdc_frame_chk_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_RATE_CNTRL.wrd", tmp_pp40g->pcs_rx_RATE_CNTRL.wrd, tmp_pp40g->pcs_rx_RATE_CNTRL.wrd == dft_pp40g->pcs_rx_RATE_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_rx_RATE_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_RATE_CNTRL.bf.min_ifg", tmp_pp40g->pcs_rx_RATE_CNTRL.bf.min_ifg, tmp_pp40g->pcs_rx_RATE_CNTRL.bf.min_ifg == dft_pp40g->pcs_rx_RATE_CNTRL.bf.min_ifg ? 0x20 : 0x2A, dft_pp40g->pcs_rx_RATE_CNTRL.bf.min_ifg, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.wrd", tmp_pp40g->AMSTATUS.wrd, tmp_pp40g->AMSTATUS.wrd == dft_pp40g->AMSTATUS.wrd ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.vlaneid3", tmp_pp40g->AMSTATUS.bf.vlaneid3, tmp_pp40g->AMSTATUS.bf.vlaneid3 == dft_pp40g->AMSTATUS.bf.vlaneid3 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.vlaneid3, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.vlaneid2", tmp_pp40g->AMSTATUS.bf.vlaneid2, tmp_pp40g->AMSTATUS.bf.vlaneid2 == dft_pp40g->AMSTATUS.bf.vlaneid2 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.vlaneid2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.vlaneid1", tmp_pp40g->AMSTATUS.bf.vlaneid1, tmp_pp40g->AMSTATUS.bf.vlaneid1 == dft_pp40g->AMSTATUS.bf.vlaneid1 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.vlaneid1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.vlaneid0", tmp_pp40g->AMSTATUS.bf.vlaneid0, tmp_pp40g->AMSTATUS.bf.vlaneid0 == dft_pp40g->AMSTATUS.bf.vlaneid0 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.vlaneid0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.monoamlock3", tmp_pp40g->AMSTATUS.bf.monoamlock3, tmp_pp40g->AMSTATUS.bf.monoamlock3 == dft_pp40g->AMSTATUS.bf.monoamlock3 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.monoamlock3, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.monoamlock2", tmp_pp40g->AMSTATUS.bf.monoamlock2, tmp_pp40g->AMSTATUS.bf.monoamlock2 == dft_pp40g->AMSTATUS.bf.monoamlock2 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.monoamlock2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.monoamlock1", tmp_pp40g->AMSTATUS.bf.monoamlock1, tmp_pp40g->AMSTATUS.bf.monoamlock1 == dft_pp40g->AMSTATUS.bf.monoamlock1 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.monoamlock1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.monoamlock0", tmp_pp40g->AMSTATUS.bf.monoamlock0, tmp_pp40g->AMSTATUS.bf.monoamlock0 == dft_pp40g->AMSTATUS.bf.monoamlock0 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.monoamlock0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.laneamlock3", tmp_pp40g->AMSTATUS.bf.laneamlock3, tmp_pp40g->AMSTATUS.bf.laneamlock3 == dft_pp40g->AMSTATUS.bf.laneamlock3 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.laneamlock3, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.laneamlock2", tmp_pp40g->AMSTATUS.bf.laneamlock2, tmp_pp40g->AMSTATUS.bf.laneamlock2 == dft_pp40g->AMSTATUS.bf.laneamlock2 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.laneamlock2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.laneamlock1", tmp_pp40g->AMSTATUS.bf.laneamlock1, tmp_pp40g->AMSTATUS.bf.laneamlock1 == dft_pp40g->AMSTATUS.bf.laneamlock1 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.laneamlock1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS.bf.laneamlock0", tmp_pp40g->AMSTATUS.bf.laneamlock0, tmp_pp40g->AMSTATUS.bf.laneamlock0 == dft_pp40g->AMSTATUS.bf.laneamlock0 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS.bf.laneamlock0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS1.wrd", tmp_pp40g->AMSTATUS1.wrd, tmp_pp40g->AMSTATUS1.wrd == dft_pp40g->AMSTATUS1.wrd ? 0x20 : 0x2A, dft_pp40g->AMSTATUS1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS1.bf.xdcamlock3", tmp_pp40g->AMSTATUS1.bf.xdcamlock3, tmp_pp40g->AMSTATUS1.bf.xdcamlock3 == dft_pp40g->AMSTATUS1.bf.xdcamlock3 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS1.bf.xdcamlock3, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS1.bf.xdcamlock2", tmp_pp40g->AMSTATUS1.bf.xdcamlock2, tmp_pp40g->AMSTATUS1.bf.xdcamlock2 == dft_pp40g->AMSTATUS1.bf.xdcamlock2 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS1.bf.xdcamlock2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS1.bf.xdcamlock1", tmp_pp40g->AMSTATUS1.bf.xdcamlock1, tmp_pp40g->AMSTATUS1.bf.xdcamlock1 == dft_pp40g->AMSTATUS1.bf.xdcamlock1 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS1.bf.xdcamlock1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_AMSTATUS1.bf.xdcamlock0", tmp_pp40g->AMSTATUS1.bf.xdcamlock0, tmp_pp40g->AMSTATUS1.bf.xdcamlock0 == dft_pp40g->AMSTATUS1.bf.xdcamlock0 ? 0x20 : 0x2A, dft_pp40g->AMSTATUS1.bf.xdcamlock0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.wrd", tmp_pp40g->pcs_rx_INTSTATUS.wrd, tmp_pp40g->pcs_rx_INTSTATUS.wrd == dft_pp40g->pcs_rx_INTSTATUS.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.skewhighS", tmp_pp40g->pcs_rx_INTSTATUS.bf.skewhighS, tmp_pp40g->pcs_rx_INTSTATUS.bf.skewhighS == dft_pp40g->pcs_rx_INTSTATUS.bf.skewhighS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.skewhighS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.patdetectS", tmp_pp40g->pcs_rx_INTSTATUS.bf.patdetectS, tmp_pp40g->pcs_rx_INTSTATUS.bf.patdetectS == dft_pp40g->pcs_rx_INTSTATUS.bf.patdetectS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.patdetectS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.berhighS", tmp_pp40g->pcs_rx_INTSTATUS.bf.berhighS, tmp_pp40g->pcs_rx_INTSTATUS.bf.berhighS == dft_pp40g->pcs_rx_INTSTATUS.bf.berhighS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.berhighS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.xdcamstatusS", tmp_pp40g->pcs_rx_INTSTATUS.bf.xdcamstatusS, tmp_pp40g->pcs_rx_INTSTATUS.bf.xdcamstatusS == dft_pp40g->pcs_rx_INTSTATUS.bf.xdcamstatusS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.xdcamstatusS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.xdcblocklockS", tmp_pp40g->pcs_rx_INTSTATUS.bf.xdcblocklockS, tmp_pp40g->pcs_rx_INTSTATUS.bf.xdcblocklockS == dft_pp40g->pcs_rx_INTSTATUS.bf.xdcblocklockS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.xdcblocklockS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.monoamstatusS", tmp_pp40g->pcs_rx_INTSTATUS.bf.monoamstatusS, tmp_pp40g->pcs_rx_INTSTATUS.bf.monoamstatusS == dft_pp40g->pcs_rx_INTSTATUS.bf.monoamstatusS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.monoamstatusS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.monoblocklockS", tmp_pp40g->pcs_rx_INTSTATUS.bf.monoblocklockS, tmp_pp40g->pcs_rx_INTSTATUS.bf.monoblocklockS == dft_pp40g->pcs_rx_INTSTATUS.bf.monoblocklockS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.monoblocklockS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.lanealignstatusS", tmp_pp40g->pcs_rx_INTSTATUS.bf.lanealignstatusS, tmp_pp40g->pcs_rx_INTSTATUS.bf.lanealignstatusS == dft_pp40g->pcs_rx_INTSTATUS.bf.lanealignstatusS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.lanealignstatusS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.laneamstatusS", tmp_pp40g->pcs_rx_INTSTATUS.bf.laneamstatusS, tmp_pp40g->pcs_rx_INTSTATUS.bf.laneamstatusS == dft_pp40g->pcs_rx_INTSTATUS.bf.laneamstatusS ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.laneamstatusS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.laneblocklock3S", tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock3S, tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock3S == dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock3S ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock3S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.laneblocklock2S", tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock2S, tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock2S == dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock2S ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock2S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.laneblocklock1S", tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock1S, tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock1S == dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock1S ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock1S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTSTATUS.bf.laneblocklock0S", tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock0S, tmp_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock0S == dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock0S ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTSTATUS.bf.laneblocklock0S, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.wrd", tmp_pp40g->pcs_rx_INTERRUPT.wrd, tmp_pp40g->pcs_rx_INTERRUPT.wrd == dft_pp40g->pcs_rx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.skewhighI", tmp_pp40g->pcs_rx_INTERRUPT.bf.skewhighI, tmp_pp40g->pcs_rx_INTERRUPT.bf.skewhighI == dft_pp40g->pcs_rx_INTERRUPT.bf.skewhighI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.skewhighI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.patdetectI", tmp_pp40g->pcs_rx_INTERRUPT.bf.patdetectI, tmp_pp40g->pcs_rx_INTERRUPT.bf.patdetectI == dft_pp40g->pcs_rx_INTERRUPT.bf.patdetectI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.patdetectI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.errordecI", tmp_pp40g->pcs_rx_INTERRUPT.bf.errordecI, tmp_pp40g->pcs_rx_INTERRUPT.bf.errordecI == dft_pp40g->pcs_rx_INTERRUPT.bf.errordecI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.errordecI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.berhighI", tmp_pp40g->pcs_rx_INTERRUPT.bf.berhighI, tmp_pp40g->pcs_rx_INTERRUPT.bf.berhighI == dft_pp40g->pcs_rx_INTERRUPT.bf.berhighI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.berhighI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.xdcamstatusI", tmp_pp40g->pcs_rx_INTERRUPT.bf.xdcamstatusI, tmp_pp40g->pcs_rx_INTERRUPT.bf.xdcamstatusI == dft_pp40g->pcs_rx_INTERRUPT.bf.xdcamstatusI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.xdcamstatusI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.xdcblocklockI", tmp_pp40g->pcs_rx_INTERRUPT.bf.xdcblocklockI, tmp_pp40g->pcs_rx_INTERRUPT.bf.xdcblocklockI == dft_pp40g->pcs_rx_INTERRUPT.bf.xdcblocklockI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.xdcblocklockI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.monoamstatusI", tmp_pp40g->pcs_rx_INTERRUPT.bf.monoamstatusI, tmp_pp40g->pcs_rx_INTERRUPT.bf.monoamstatusI == dft_pp40g->pcs_rx_INTERRUPT.bf.monoamstatusI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.monoamstatusI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.monoblocklockI", tmp_pp40g->pcs_rx_INTERRUPT.bf.monoblocklockI, tmp_pp40g->pcs_rx_INTERRUPT.bf.monoblocklockI == dft_pp40g->pcs_rx_INTERRUPT.bf.monoblocklockI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.monoblocklockI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.lanealignstatusI", tmp_pp40g->pcs_rx_INTERRUPT.bf.lanealignstatusI, tmp_pp40g->pcs_rx_INTERRUPT.bf.lanealignstatusI == dft_pp40g->pcs_rx_INTERRUPT.bf.lanealignstatusI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.lanealignstatusI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.laneamstatusI", tmp_pp40g->pcs_rx_INTERRUPT.bf.laneamstatusI, tmp_pp40g->pcs_rx_INTERRUPT.bf.laneamstatusI == dft_pp40g->pcs_rx_INTERRUPT.bf.laneamstatusI ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.laneamstatusI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.laneblocklock3I", tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock3I, tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock3I == dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock3I ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock3I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.laneblocklock2I", tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock2I, tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock2I == dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock2I ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock2I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.laneblocklock1I", tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock1I, tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock1I == dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock1I ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock1I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPT.bf.laneblocklock0I", tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock0I, tmp_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock0I == dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock0I ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPT.bf.laneblocklock0I, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.wrd", tmp_pp40g->pcs_rx_INTENABLE.wrd, tmp_pp40g->pcs_rx_INTENABLE.wrd == dft_pp40g->pcs_rx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.skewhighE", tmp_pp40g->pcs_rx_INTENABLE.bf.skewhighE, tmp_pp40g->pcs_rx_INTENABLE.bf.skewhighE == dft_pp40g->pcs_rx_INTENABLE.bf.skewhighE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.skewhighE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.patdetectE", tmp_pp40g->pcs_rx_INTENABLE.bf.patdetectE, tmp_pp40g->pcs_rx_INTENABLE.bf.patdetectE == dft_pp40g->pcs_rx_INTENABLE.bf.patdetectE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.patdetectE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.errordecE", tmp_pp40g->pcs_rx_INTENABLE.bf.errordecE, tmp_pp40g->pcs_rx_INTENABLE.bf.errordecE == dft_pp40g->pcs_rx_INTENABLE.bf.errordecE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.errordecE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.berhighE", tmp_pp40g->pcs_rx_INTENABLE.bf.berhighE, tmp_pp40g->pcs_rx_INTENABLE.bf.berhighE == dft_pp40g->pcs_rx_INTENABLE.bf.berhighE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.berhighE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.xdcamstatusE", tmp_pp40g->pcs_rx_INTENABLE.bf.xdcamstatusE, tmp_pp40g->pcs_rx_INTENABLE.bf.xdcamstatusE == dft_pp40g->pcs_rx_INTENABLE.bf.xdcamstatusE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.xdcamstatusE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.xdcblocklockE", tmp_pp40g->pcs_rx_INTENABLE.bf.xdcblocklockE, tmp_pp40g->pcs_rx_INTENABLE.bf.xdcblocklockE == dft_pp40g->pcs_rx_INTENABLE.bf.xdcblocklockE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.xdcblocklockE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.monoamstatusE", tmp_pp40g->pcs_rx_INTENABLE.bf.monoamstatusE, tmp_pp40g->pcs_rx_INTENABLE.bf.monoamstatusE == dft_pp40g->pcs_rx_INTENABLE.bf.monoamstatusE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.monoamstatusE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.monoblocklockE", tmp_pp40g->pcs_rx_INTENABLE.bf.monoblocklockE, tmp_pp40g->pcs_rx_INTENABLE.bf.monoblocklockE == dft_pp40g->pcs_rx_INTENABLE.bf.monoblocklockE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.monoblocklockE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.lanealignstatusE", tmp_pp40g->pcs_rx_INTENABLE.bf.lanealignstatusE, tmp_pp40g->pcs_rx_INTENABLE.bf.lanealignstatusE == dft_pp40g->pcs_rx_INTENABLE.bf.lanealignstatusE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.lanealignstatusE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.laneamstatusE", tmp_pp40g->pcs_rx_INTENABLE.bf.laneamstatusE, tmp_pp40g->pcs_rx_INTENABLE.bf.laneamstatusE == dft_pp40g->pcs_rx_INTENABLE.bf.laneamstatusE ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.laneamstatusE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.laneblocklock3E", tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock3E, tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock3E == dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock3E ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock3E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.laneblocklock2E", tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock2E, tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock2E == dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock2E ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock2E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.laneblocklock1E", tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock1E, tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock1E == dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock1E ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock1E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTENABLE.bf.laneblocklock0E", tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock0E, tmp_pp40g->pcs_rx_INTENABLE.bf.laneblocklock0E == dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock0E ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTENABLE.bf.laneblocklock0E, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.wrd", tmp_pp40g->pcs_rx_INTERRUPTZ.wrd, tmp_pp40g->pcs_rx_INTERRUPTZ.wrd == dft_pp40g->pcs_rx_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.skewhighIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.skewhighIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.skewhighIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.skewhighIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.skewhighIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.patdetectIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.patdetectIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.patdetectIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.patdetectIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.patdetectIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.errordecIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.errordecIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.errordecIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.errordecIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.errordecIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.berhighIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.berhighIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.berhighIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.berhighIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.berhighIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.xdcamstatusIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.xdcamstatusIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.xdcamstatusIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.xdcamstatusIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.xdcamstatusIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.xdcblocklockIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.xdcblocklockIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.xdcblocklockIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.xdcblocklockIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.xdcblocklockIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.monoamstatusIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.monoamstatusIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.monoamstatusIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.monoamstatusIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.monoamstatusIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.monoblocklockIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.monoblocklockIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.monoblocklockIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.monoblocklockIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.monoblocklockIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.lanealignstatusIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.lanealignstatusIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.lanealignstatusIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.lanealignstatusIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.lanealignstatusIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.laneamstatusIZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneamstatusIZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneamstatusIZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneamstatusIZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneamstatusIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.laneblocklock3IZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock3IZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock3IZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock3IZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock3IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.laneblocklock2IZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock2IZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock2IZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock2IZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock2IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.laneblocklock1IZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock1IZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock1IZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock1IZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock1IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_INTERRUPTZ.bf.laneblocklock0IZ", tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock0IZ, tmp_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock0IZ == dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock0IZ ? 0x20 : 0x2A, dft_pp40g->pcs_rx_INTERRUPTZ.bf.laneblocklock0IZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.wrd", tmp_pp40g->LDBINTERRUPT.wrd, tmp_pp40g->LDBINTERRUPT.wrd == dft_pp40g->LDBINTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane3_overflowI", tmp_pp40g->LDBINTERRUPT.bf.lane3_overflowI, tmp_pp40g->LDBINTERRUPT.bf.lane3_overflowI == dft_pp40g->LDBINTERRUPT.bf.lane3_overflowI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane3_overflowI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane2_overflowI", tmp_pp40g->LDBINTERRUPT.bf.lane2_overflowI, tmp_pp40g->LDBINTERRUPT.bf.lane2_overflowI == dft_pp40g->LDBINTERRUPT.bf.lane2_overflowI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane2_overflowI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane1_overflowI", tmp_pp40g->LDBINTERRUPT.bf.lane1_overflowI, tmp_pp40g->LDBINTERRUPT.bf.lane1_overflowI == dft_pp40g->LDBINTERRUPT.bf.lane1_overflowI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane1_overflowI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane0_overflowI", tmp_pp40g->LDBINTERRUPT.bf.lane0_overflowI, tmp_pp40g->LDBINTERRUPT.bf.lane0_overflowI == dft_pp40g->LDBINTERRUPT.bf.lane0_overflowI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane0_overflowI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane3_ecc_d_errI", tmp_pp40g->LDBINTERRUPT.bf.lane3_ecc_d_errI, tmp_pp40g->LDBINTERRUPT.bf.lane3_ecc_d_errI == dft_pp40g->LDBINTERRUPT.bf.lane3_ecc_d_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane3_ecc_d_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane3_ecc_s_errI", tmp_pp40g->LDBINTERRUPT.bf.lane3_ecc_s_errI, tmp_pp40g->LDBINTERRUPT.bf.lane3_ecc_s_errI == dft_pp40g->LDBINTERRUPT.bf.lane3_ecc_s_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane3_ecc_s_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane2_ecc_d_errI", tmp_pp40g->LDBINTERRUPT.bf.lane2_ecc_d_errI, tmp_pp40g->LDBINTERRUPT.bf.lane2_ecc_d_errI == dft_pp40g->LDBINTERRUPT.bf.lane2_ecc_d_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane2_ecc_d_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane2_ecc_s_errI", tmp_pp40g->LDBINTERRUPT.bf.lane2_ecc_s_errI, tmp_pp40g->LDBINTERRUPT.bf.lane2_ecc_s_errI == dft_pp40g->LDBINTERRUPT.bf.lane2_ecc_s_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane2_ecc_s_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane1_ecc_d_errI", tmp_pp40g->LDBINTERRUPT.bf.lane1_ecc_d_errI, tmp_pp40g->LDBINTERRUPT.bf.lane1_ecc_d_errI == dft_pp40g->LDBINTERRUPT.bf.lane1_ecc_d_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane1_ecc_d_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane1_ecc_s_errI", tmp_pp40g->LDBINTERRUPT.bf.lane1_ecc_s_errI, tmp_pp40g->LDBINTERRUPT.bf.lane1_ecc_s_errI == dft_pp40g->LDBINTERRUPT.bf.lane1_ecc_s_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane1_ecc_s_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane0_ecc_d_errI", tmp_pp40g->LDBINTERRUPT.bf.lane0_ecc_d_errI, tmp_pp40g->LDBINTERRUPT.bf.lane0_ecc_d_errI == dft_pp40g->LDBINTERRUPT.bf.lane0_ecc_d_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane0_ecc_d_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPT.bf.lane0_ecc_s_errI", tmp_pp40g->LDBINTERRUPT.bf.lane0_ecc_s_errI, tmp_pp40g->LDBINTERRUPT.bf.lane0_ecc_s_errI == dft_pp40g->LDBINTERRUPT.bf.lane0_ecc_s_errI ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPT.bf.lane0_ecc_s_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.wrd", tmp_pp40g->LDBINTENABLE.wrd, tmp_pp40g->LDBINTENABLE.wrd == dft_pp40g->LDBINTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane3_overflowE", tmp_pp40g->LDBINTENABLE.bf.lane3_overflowE, tmp_pp40g->LDBINTENABLE.bf.lane3_overflowE == dft_pp40g->LDBINTENABLE.bf.lane3_overflowE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane3_overflowE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane2_overflowE", tmp_pp40g->LDBINTENABLE.bf.lane2_overflowE, tmp_pp40g->LDBINTENABLE.bf.lane2_overflowE == dft_pp40g->LDBINTENABLE.bf.lane2_overflowE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane2_overflowE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane1_overflowE", tmp_pp40g->LDBINTENABLE.bf.lane1_overflowE, tmp_pp40g->LDBINTENABLE.bf.lane1_overflowE == dft_pp40g->LDBINTENABLE.bf.lane1_overflowE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane1_overflowE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane0_overflowE", tmp_pp40g->LDBINTENABLE.bf.lane0_overflowE, tmp_pp40g->LDBINTENABLE.bf.lane0_overflowE == dft_pp40g->LDBINTENABLE.bf.lane0_overflowE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane0_overflowE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane3_ecc_d_errE", tmp_pp40g->LDBINTENABLE.bf.lane3_ecc_d_errE, tmp_pp40g->LDBINTENABLE.bf.lane3_ecc_d_errE == dft_pp40g->LDBINTENABLE.bf.lane3_ecc_d_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane3_ecc_d_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane3_ecc_s_errE", tmp_pp40g->LDBINTENABLE.bf.lane3_ecc_s_errE, tmp_pp40g->LDBINTENABLE.bf.lane3_ecc_s_errE == dft_pp40g->LDBINTENABLE.bf.lane3_ecc_s_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane3_ecc_s_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane2_ecc_d_errE", tmp_pp40g->LDBINTENABLE.bf.lane2_ecc_d_errE, tmp_pp40g->LDBINTENABLE.bf.lane2_ecc_d_errE == dft_pp40g->LDBINTENABLE.bf.lane2_ecc_d_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane2_ecc_d_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane2_ecc_s_errE", tmp_pp40g->LDBINTENABLE.bf.lane2_ecc_s_errE, tmp_pp40g->LDBINTENABLE.bf.lane2_ecc_s_errE == dft_pp40g->LDBINTENABLE.bf.lane2_ecc_s_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane2_ecc_s_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane1_ecc_d_errE", tmp_pp40g->LDBINTENABLE.bf.lane1_ecc_d_errE, tmp_pp40g->LDBINTENABLE.bf.lane1_ecc_d_errE == dft_pp40g->LDBINTENABLE.bf.lane1_ecc_d_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane1_ecc_d_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane1_ecc_s_errE", tmp_pp40g->LDBINTENABLE.bf.lane1_ecc_s_errE, tmp_pp40g->LDBINTENABLE.bf.lane1_ecc_s_errE == dft_pp40g->LDBINTENABLE.bf.lane1_ecc_s_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane1_ecc_s_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane0_ecc_d_errE", tmp_pp40g->LDBINTENABLE.bf.lane0_ecc_d_errE, tmp_pp40g->LDBINTENABLE.bf.lane0_ecc_d_errE == dft_pp40g->LDBINTENABLE.bf.lane0_ecc_d_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane0_ecc_d_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTENABLE.bf.lane0_ecc_s_errE", tmp_pp40g->LDBINTENABLE.bf.lane0_ecc_s_errE, tmp_pp40g->LDBINTENABLE.bf.lane0_ecc_s_errE == dft_pp40g->LDBINTENABLE.bf.lane0_ecc_s_errE ? 0x20 : 0x2A, dft_pp40g->LDBINTENABLE.bf.lane0_ecc_s_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.wrd", tmp_pp40g->LDBINTERRUPTZ.wrd, tmp_pp40g->LDBINTERRUPTZ.wrd == dft_pp40g->LDBINTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane3_overflowIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane3_overflowIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane3_overflowIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane3_overflowIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane3_overflowIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane2_overflowIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane2_overflowIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane2_overflowIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane2_overflowIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane2_overflowIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane1_overflowIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane1_overflowIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane1_overflowIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane1_overflowIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane1_overflowIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane0_overflowIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane0_overflowIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane0_overflowIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane0_overflowIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane0_overflowIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane3_ecc_d_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_d_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_d_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_d_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_d_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane3_ecc_s_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_s_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_s_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_s_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane3_ecc_s_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane2_ecc_d_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_d_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_d_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_d_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_d_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane2_ecc_s_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_s_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_s_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_s_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane2_ecc_s_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane1_ecc_d_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_d_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_d_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_d_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_d_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane1_ecc_s_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_s_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_s_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_s_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane1_ecc_s_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane0_ecc_d_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_d_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_d_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_d_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_d_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_LDBINTERRUPTZ.bf.lane0_ecc_s_errIZ", tmp_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_s_errIZ, tmp_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_s_errIZ == dft_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_s_errIZ ? 0x20 : 0x2A, dft_pp40g->LDBINTERRUPTZ.bf.lane0_ecc_s_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWCNTRL.wrd", tmp_pp40g->SKEWCNTRL.wrd, tmp_pp40g->SKEWCNTRL.wrd == dft_pp40g->SKEWCNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->SKEWCNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWCNTRL.bf.clear", tmp_pp40g->SKEWCNTRL.bf.clear, tmp_pp40g->SKEWCNTRL.bf.clear == dft_pp40g->SKEWCNTRL.bf.clear ? 0x20 : 0x2A, dft_pp40g->SKEWCNTRL.bf.clear, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWCNTRL.bf.lock", tmp_pp40g->SKEWCNTRL.bf.lock, tmp_pp40g->SKEWCNTRL.bf.lock == dft_pp40g->SKEWCNTRL.bf.lock ? 0x20 : 0x2A, dft_pp40g->SKEWCNTRL.bf.lock, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWCNTRL.bf.lane_align_mode", tmp_pp40g->SKEWCNTRL.bf.lane_align_mode, tmp_pp40g->SKEWCNTRL.bf.lane_align_mode == dft_pp40g->SKEWCNTRL.bf.lane_align_mode ? 0x20 : 0x2A, dft_pp40g->SKEWCNTRL.bf.lane_align_mode, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWTHRESHOLD.wrd", tmp_pp40g->SKEWTHRESHOLD.wrd, tmp_pp40g->SKEWTHRESHOLD.wrd == dft_pp40g->SKEWTHRESHOLD.wrd ? 0x20 : 0x2A, dft_pp40g->SKEWTHRESHOLD.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWTHRESHOLD.bf.skew_thresh", tmp_pp40g->SKEWTHRESHOLD.bf.skew_thresh, tmp_pp40g->SKEWTHRESHOLD.bf.skew_thresh == dft_pp40g->SKEWTHRESHOLD.bf.skew_thresh ? 0x20 : 0x2A, dft_pp40g->SKEWTHRESHOLD.bf.skew_thresh, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWTHRESHOLD1.wrd", tmp_pp40g->SKEWTHRESHOLD1.wrd, tmp_pp40g->SKEWTHRESHOLD1.wrd == dft_pp40g->SKEWTHRESHOLD1.wrd ? 0x20 : 0x2A, dft_pp40g->SKEWTHRESHOLD1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWTHRESHOLD1.bf.skew_thresh1", tmp_pp40g->SKEWTHRESHOLD1.bf.skew_thresh1, tmp_pp40g->SKEWTHRESHOLD1.bf.skew_thresh1 == dft_pp40g->SKEWTHRESHOLD1.bf.skew_thresh1 ? 0x20 : 0x2A, dft_pp40g->SKEWTHRESHOLD1.bf.skew_thresh1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWSTATUS1.wrd", tmp_pp40g->SKEWSTATUS1.wrd, tmp_pp40g->SKEWSTATUS1.wrd == dft_pp40g->SKEWSTATUS1.wrd ? 0x20 : 0x2A, dft_pp40g->SKEWSTATUS1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWSTATUS1.bf.skew", tmp_pp40g->SKEWSTATUS1.bf.skew, tmp_pp40g->SKEWSTATUS1.bf.skew == dft_pp40g->SKEWSTATUS1.bf.skew ? 0x20 : 0x2A, dft_pp40g->SKEWSTATUS1.bf.skew, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWSTATUS2.wrd", tmp_pp40g->SKEWSTATUS2.wrd, tmp_pp40g->SKEWSTATUS2.wrd == dft_pp40g->SKEWSTATUS2.wrd ? 0x20 : 0x2A, dft_pp40g->SKEWSTATUS2.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWSTATUS2.bf.ln_last", tmp_pp40g->SKEWSTATUS2.bf.ln_last, tmp_pp40g->SKEWSTATUS2.bf.ln_last == dft_pp40g->SKEWSTATUS2.bf.ln_last ? 0x20 : 0x2A, dft_pp40g->SKEWSTATUS2.bf.ln_last, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_SKEWSTATUS2.bf.ln_first", tmp_pp40g->SKEWSTATUS2.bf.ln_first, tmp_pp40g->SKEWSTATUS2.bf.ln_first == dft_pp40g->SKEWSTATUS2.bf.ln_first ? 0x20 : 0x2A, dft_pp40g->SKEWSTATUS2.bf.ln_first, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_BERTIMER.wrd", tmp_pp40g->BERTIMER.wrd, tmp_pp40g->BERTIMER.wrd == dft_pp40g->BERTIMER.wrd ? 0x20 : 0x2A, dft_pp40g->BERTIMER.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_RX_BERTIMER.bf.timer_value", tmp_pp40g->BERTIMER.bf.timer_value, tmp_pp40g->BERTIMER.bf.timer_value == dft_pp40g->BERTIMER.bf.timer_value ? 0x20 : 0x2A, dft_pp40g->BERTIMER.bf.timer_value, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_CNTRL.wrd", tmp_pp40g->rs_rx_CNTRL.wrd, tmp_pp40g->rs_rx_CNTRL.wrd == dft_pp40g->rs_rx_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->rs_rx_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_CNTRL.bf.rxrst", tmp_pp40g->rs_rx_CNTRL.bf.rxrst, tmp_pp40g->rs_rx_CNTRL.bf.rxrst == dft_pp40g->rs_rx_CNTRL.bf.rxrst ? 0x20 : 0x2A, dft_pp40g->rs_rx_CNTRL.bf.rxrst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_CNTRL.bf.rs_active", tmp_pp40g->rs_rx_CNTRL.bf.rs_active, tmp_pp40g->rs_rx_CNTRL.bf.rs_active == dft_pp40g->rs_rx_CNTRL.bf.rs_active ? 0x20 : 0x2A, dft_pp40g->rs_rx_CNTRL.bf.rs_active, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTSTATUS.wrd", tmp_pp40g->rs_rx_INTSTATUS.wrd, tmp_pp40g->rs_rx_INTSTATUS.wrd == dft_pp40g->rs_rx_INTSTATUS.wrd ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTSTATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTSTATUS.bf.rfS", tmp_pp40g->rs_rx_INTSTATUS.bf.rfS, tmp_pp40g->rs_rx_INTSTATUS.bf.rfS == dft_pp40g->rs_rx_INTSTATUS.bf.rfS ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTSTATUS.bf.rfS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTSTATUS.bf.lfS", tmp_pp40g->rs_rx_INTSTATUS.bf.lfS, tmp_pp40g->rs_rx_INTSTATUS.bf.lfS == dft_pp40g->rs_rx_INTSTATUS.bf.lfS ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTSTATUS.bf.lfS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTSTATUS.bf.unknownordS", tmp_pp40g->rs_rx_INTSTATUS.bf.unknownordS, tmp_pp40g->rs_rx_INTSTATUS.bf.unknownordS == dft_pp40g->rs_rx_INTSTATUS.bf.unknownordS ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTSTATUS.bf.unknownordS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTSTATUS.bf.remoteordS", tmp_pp40g->rs_rx_INTSTATUS.bf.remoteordS, tmp_pp40g->rs_rx_INTSTATUS.bf.remoteordS == dft_pp40g->rs_rx_INTSTATUS.bf.remoteordS ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTSTATUS.bf.remoteordS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTSTATUS.bf.localordS", tmp_pp40g->rs_rx_INTSTATUS.bf.localordS, tmp_pp40g->rs_rx_INTSTATUS.bf.localordS == dft_pp40g->rs_rx_INTSTATUS.bf.localordS ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTSTATUS.bf.localordS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPT.wrd", tmp_pp40g->rs_rx_INTERRUPT.wrd, tmp_pp40g->rs_rx_INTERRUPT.wrd == dft_pp40g->rs_rx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPT.bf.rfI", tmp_pp40g->rs_rx_INTERRUPT.bf.rfI, tmp_pp40g->rs_rx_INTERRUPT.bf.rfI == dft_pp40g->rs_rx_INTERRUPT.bf.rfI ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPT.bf.rfI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPT.bf.lfI", tmp_pp40g->rs_rx_INTERRUPT.bf.lfI, tmp_pp40g->rs_rx_INTERRUPT.bf.lfI == dft_pp40g->rs_rx_INTERRUPT.bf.lfI ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPT.bf.lfI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPT.bf.unknownordI", tmp_pp40g->rs_rx_INTERRUPT.bf.unknownordI, tmp_pp40g->rs_rx_INTERRUPT.bf.unknownordI == dft_pp40g->rs_rx_INTERRUPT.bf.unknownordI ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPT.bf.unknownordI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPT.bf.remoteordI", tmp_pp40g->rs_rx_INTERRUPT.bf.remoteordI, tmp_pp40g->rs_rx_INTERRUPT.bf.remoteordI == dft_pp40g->rs_rx_INTERRUPT.bf.remoteordI ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPT.bf.remoteordI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPT.bf.localordI", tmp_pp40g->rs_rx_INTERRUPT.bf.localordI, tmp_pp40g->rs_rx_INTERRUPT.bf.localordI == dft_pp40g->rs_rx_INTERRUPT.bf.localordI ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPT.bf.localordI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTENABLE.wrd", tmp_pp40g->rs_rx_INTENABLE.wrd, tmp_pp40g->rs_rx_INTENABLE.wrd == dft_pp40g->rs_rx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTENABLE.bf.rfE", tmp_pp40g->rs_rx_INTENABLE.bf.rfE, tmp_pp40g->rs_rx_INTENABLE.bf.rfE == dft_pp40g->rs_rx_INTENABLE.bf.rfE ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTENABLE.bf.rfE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTENABLE.bf.lfE", tmp_pp40g->rs_rx_INTENABLE.bf.lfE, tmp_pp40g->rs_rx_INTENABLE.bf.lfE == dft_pp40g->rs_rx_INTENABLE.bf.lfE ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTENABLE.bf.lfE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTENABLE.bf.unknownordE", tmp_pp40g->rs_rx_INTENABLE.bf.unknownordE, tmp_pp40g->rs_rx_INTENABLE.bf.unknownordE == dft_pp40g->rs_rx_INTENABLE.bf.unknownordE ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTENABLE.bf.unknownordE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTENABLE.bf.remoteordE", tmp_pp40g->rs_rx_INTENABLE.bf.remoteordE, tmp_pp40g->rs_rx_INTENABLE.bf.remoteordE == dft_pp40g->rs_rx_INTENABLE.bf.remoteordE ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTENABLE.bf.remoteordE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTENABLE.bf.localordE", tmp_pp40g->rs_rx_INTENABLE.bf.localordE, tmp_pp40g->rs_rx_INTENABLE.bf.localordE == dft_pp40g->rs_rx_INTENABLE.bf.localordE ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTENABLE.bf.localordE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPTZ.wrd", tmp_pp40g->rs_rx_INTERRUPTZ.wrd, tmp_pp40g->rs_rx_INTERRUPTZ.wrd == dft_pp40g->rs_rx_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPTZ.bf.rfIZ", tmp_pp40g->rs_rx_INTERRUPTZ.bf.rfIZ, tmp_pp40g->rs_rx_INTERRUPTZ.bf.rfIZ == dft_pp40g->rs_rx_INTERRUPTZ.bf.rfIZ ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPTZ.bf.rfIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPTZ.bf.lfIZ", tmp_pp40g->rs_rx_INTERRUPTZ.bf.lfIZ, tmp_pp40g->rs_rx_INTERRUPTZ.bf.lfIZ == dft_pp40g->rs_rx_INTERRUPTZ.bf.lfIZ ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPTZ.bf.lfIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPTZ.bf.unknownordIZ", tmp_pp40g->rs_rx_INTERRUPTZ.bf.unknownordIZ, tmp_pp40g->rs_rx_INTERRUPTZ.bf.unknownordIZ == dft_pp40g->rs_rx_INTERRUPTZ.bf.unknownordIZ ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPTZ.bf.unknownordIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPTZ.bf.remoteordIZ", tmp_pp40g->rs_rx_INTERRUPTZ.bf.remoteordIZ, tmp_pp40g->rs_rx_INTERRUPTZ.bf.remoteordIZ == dft_pp40g->rs_rx_INTERRUPTZ.bf.remoteordIZ ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPTZ.bf.remoteordIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_INTERRUPTZ.bf.localordIZ", tmp_pp40g->rs_rx_INTERRUPTZ.bf.localordIZ, tmp_pp40g->rs_rx_INTERRUPTZ.bf.localordIZ == dft_pp40g->rs_rx_INTERRUPTZ.bf.localordIZ ? 0x20 : 0x2A, dft_pp40g->rs_rx_INTERRUPTZ.bf.localordIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_UNKNOWNORD1.wrd", tmp_pp40g->UNKNOWNORD1.wrd, tmp_pp40g->UNKNOWNORD1.wrd == dft_pp40g->UNKNOWNORD1.wrd ? 0x20 : 0x2A, dft_pp40g->UNKNOWNORD1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_UNKNOWNORD1.bf.unknownord_l2", tmp_pp40g->UNKNOWNORD1.bf.unknownord_l2, tmp_pp40g->UNKNOWNORD1.bf.unknownord_l2 == dft_pp40g->UNKNOWNORD1.bf.unknownord_l2 ? 0x20 : 0x2A, dft_pp40g->UNKNOWNORD1.bf.unknownord_l2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_UNKNOWNORD1.bf.unknownord_l1", tmp_pp40g->UNKNOWNORD1.bf.unknownord_l1, tmp_pp40g->UNKNOWNORD1.bf.unknownord_l1 == dft_pp40g->UNKNOWNORD1.bf.unknownord_l1 ? 0x20 : 0x2A, dft_pp40g->UNKNOWNORD1.bf.unknownord_l1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_UNKNOWNORD2.wrd", tmp_pp40g->UNKNOWNORD2.wrd, tmp_pp40g->UNKNOWNORD2.wrd == dft_pp40g->UNKNOWNORD2.wrd ? 0x20 : 0x2A, dft_pp40g->UNKNOWNORD2.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_RS_RX_UNKNOWNORD2.bf.unknownord_l3", tmp_pp40g->UNKNOWNORD2.bf.unknownord_l3, tmp_pp40g->UNKNOWNORD2.bf.unknownord_l3 == dft_pp40g->UNKNOWNORD2.bf.unknownord_l3 ? 0x20 : 0x2A, dft_pp40g->UNKNOWNORD2.bf.unknownord_l3, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.wrd", tmp_pp40g->mac_rx_CNTRL.wrd, tmp_pp40g->mac_rx_CNTRL.wrd == dft_pp40g->mac_rx_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.rxrst", tmp_pp40g->mac_rx_CNTRL.bf.rxrst, tmp_pp40g->mac_rx_CNTRL.bf.rxrst == dft_pp40g->mac_rx_CNTRL.bf.rxrst ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.rxrst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.stats_octets_full", tmp_pp40g->mac_rx_CNTRL.bf.stats_octets_full, tmp_pp40g->mac_rx_CNTRL.bf.stats_octets_full == dft_pp40g->mac_rx_CNTRL.bf.stats_octets_full ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.stats_octets_full, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.sfd_check", tmp_pp40g->mac_rx_CNTRL.bf.sfd_check, tmp_pp40g->mac_rx_CNTRL.bf.sfd_check == dft_pp40g->mac_rx_CNTRL.bf.sfd_check ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.sfd_check, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.minlen_mode", tmp_pp40g->mac_rx_CNTRL.bf.minlen_mode, tmp_pp40g->mac_rx_CNTRL.bf.minlen_mode == dft_pp40g->mac_rx_CNTRL.bf.minlen_mode ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.minlen_mode, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.maxlen_mode", tmp_pp40g->mac_rx_CNTRL.bf.maxlen_mode, tmp_pp40g->mac_rx_CNTRL.bf.maxlen_mode == dft_pp40g->mac_rx_CNTRL.bf.maxlen_mode ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.maxlen_mode, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.fcs_chk_en", tmp_pp40g->mac_rx_CNTRL.bf.fcs_chk_en, tmp_pp40g->mac_rx_CNTRL.bf.fcs_chk_en == dft_pp40g->mac_rx_CNTRL.bf.fcs_chk_en ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.fcs_chk_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.len_chk_en_pad", tmp_pp40g->mac_rx_CNTRL.bf.len_chk_en_pad, tmp_pp40g->mac_rx_CNTRL.bf.len_chk_en_pad == dft_pp40g->mac_rx_CNTRL.bf.len_chk_en_pad ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.len_chk_en_pad, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.len_chk_en_pause", tmp_pp40g->mac_rx_CNTRL.bf.len_chk_en_pause, tmp_pp40g->mac_rx_CNTRL.bf.len_chk_en_pause == dft_pp40g->mac_rx_CNTRL.bf.len_chk_en_pause ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.len_chk_en_pause, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_CNTRL.bf.len_chk_en", tmp_pp40g->mac_rx_CNTRL.bf.len_chk_en, tmp_pp40g->mac_rx_CNTRL.bf.len_chk_en == dft_pp40g->mac_rx_CNTRL.bf.len_chk_en ? 0x20 : 0x2A, dft_pp40g->mac_rx_CNTRL.bf.len_chk_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_VLAN_TAG1.wrd", tmp_pp40g->VLAN_TAG1.wrd, tmp_pp40g->VLAN_TAG1.wrd == dft_pp40g->VLAN_TAG1.wrd ? 0x20 : 0x2A, dft_pp40g->VLAN_TAG1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_VLAN_TAG1.bf.tag", tmp_pp40g->VLAN_TAG1.bf.tag, tmp_pp40g->VLAN_TAG1.bf.tag == dft_pp40g->VLAN_TAG1.bf.tag ? 0x20 : 0x2A, dft_pp40g->VLAN_TAG1.bf.tag, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_VLAN_TAG2.wrd", tmp_pp40g->VLAN_TAG2.wrd, tmp_pp40g->VLAN_TAG2.wrd == dft_pp40g->VLAN_TAG2.wrd ? 0x20 : 0x2A, dft_pp40g->VLAN_TAG2.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_VLAN_TAG2.bf.tag", tmp_pp40g->VLAN_TAG2.bf.tag, tmp_pp40g->VLAN_TAG2.bf.tag == dft_pp40g->VLAN_TAG2.bf.tag ? 0x20 : 0x2A, dft_pp40g->VLAN_TAG2.bf.tag, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_VLAN_TAG3.wrd", tmp_pp40g->VLAN_TAG3.wrd, tmp_pp40g->VLAN_TAG3.wrd == dft_pp40g->VLAN_TAG3.wrd ? 0x20 : 0x2A, dft_pp40g->VLAN_TAG3.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_VLAN_TAG3.bf.tag", tmp_pp40g->VLAN_TAG3.bf.tag, tmp_pp40g->VLAN_TAG3.bf.tag == dft_pp40g->VLAN_TAG3.bf.tag ? 0x20 : 0x2A, dft_pp40g->VLAN_TAG3.bf.tag, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_MAXLEN.wrd", tmp_pp40g->MAXLEN.wrd, tmp_pp40g->MAXLEN.wrd == dft_pp40g->MAXLEN.wrd ? 0x20 : 0x2A, dft_pp40g->MAXLEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MAC_RX_MAXLEN.bf.maxlen", tmp_pp40g->MAXLEN.bf.maxlen, tmp_pp40g->MAXLEN.bf.maxlen == dft_pp40g->MAXLEN.bf.maxlen ? 0x20 : 0x2A, dft_pp40g->MAXLEN.bf.maxlen, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.wrd", tmp_pp40g->misc_tx_FUNCEN.wrd, tmp_pp40g->misc_tx_FUNCEN.wrd == dft_pp40g->misc_tx_FUNCEN.wrd ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_bil", tmp_pp40g->misc_tx_FUNCEN.bf.fen_bil, tmp_pp40g->misc_tx_FUNCEN.bf.fen_bil == dft_pp40g->misc_tx_FUNCEN.bf.fen_bil ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_bil, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_itp", tmp_pp40g->misc_tx_FUNCEN.bf.fen_itp, tmp_pp40g->misc_tx_FUNCEN.bf.fen_itp == dft_pp40g->misc_tx_FUNCEN.bf.fen_itp ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_itp, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_fpg", tmp_pp40g->misc_tx_FUNCEN.bf.fen_fpg, tmp_pp40g->misc_tx_FUNCEN.bf.fen_fpg == dft_pp40g->misc_tx_FUNCEN.bf.fen_fpg ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_fpg, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_xec", tmp_pp40g->misc_tx_FUNCEN.bf.fen_xec, tmp_pp40g->misc_tx_FUNCEN.bf.fen_xec == dft_pp40g->misc_tx_FUNCEN.bf.fen_xec ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_xec, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_mgb", tmp_pp40g->misc_tx_FUNCEN.bf.fen_mgb, tmp_pp40g->misc_tx_FUNCEN.bf.fen_mgb == dft_pp40g->misc_tx_FUNCEN.bf.fen_mgb ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_mgb, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_bdb", tmp_pp40g->misc_tx_FUNCEN.bf.fen_bdb, tmp_pp40g->misc_tx_FUNCEN.bf.fen_bdb == dft_pp40g->misc_tx_FUNCEN.bf.fen_bdb ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_bdb, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_pra", tmp_pp40g->misc_tx_FUNCEN.bf.fen_pra, tmp_pp40g->misc_tx_FUNCEN.bf.fen_pra == dft_pp40g->misc_tx_FUNCEN.bf.fen_pra ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_pra, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_FUNCEN.bf.fen_pbt", tmp_pp40g->misc_tx_FUNCEN.bf.fen_pbt, tmp_pp40g->misc_tx_FUNCEN.bf.fen_pbt == dft_pp40g->misc_tx_FUNCEN.bf.fen_pbt ? 0x20 : 0x2A, dft_pp40g->misc_tx_FUNCEN.bf.fen_pbt, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.wrd", tmp_pp40g->misc_tx_CLKEN.wrd, tmp_pp40g->misc_tx_CLKEN.wrd == dft_pp40g->misc_tx_CLKEN.wrd ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.bf.clken_fpg", tmp_pp40g->misc_tx_CLKEN.bf.clken_fpg, tmp_pp40g->misc_tx_CLKEN.bf.clken_fpg == dft_pp40g->misc_tx_CLKEN.bf.clken_fpg ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.bf.clken_fpg, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.bf.clken_xec", tmp_pp40g->misc_tx_CLKEN.bf.clken_xec, tmp_pp40g->misc_tx_CLKEN.bf.clken_xec == dft_pp40g->misc_tx_CLKEN.bf.clken_xec ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.bf.clken_xec, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.bf.clken_mgb", tmp_pp40g->misc_tx_CLKEN.bf.clken_mgb, tmp_pp40g->misc_tx_CLKEN.bf.clken_mgb == dft_pp40g->misc_tx_CLKEN.bf.clken_mgb ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.bf.clken_mgb, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.bf.clken_bdb", tmp_pp40g->misc_tx_CLKEN.bf.clken_bdb, tmp_pp40g->misc_tx_CLKEN.bf.clken_bdb == dft_pp40g->misc_tx_CLKEN.bf.clken_bdb ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.bf.clken_bdb, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.bf.clken_pra", tmp_pp40g->misc_tx_CLKEN.bf.clken_pra, tmp_pp40g->misc_tx_CLKEN.bf.clken_pra == dft_pp40g->misc_tx_CLKEN.bf.clken_pra ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.bf.clken_pra, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_CLKEN.bf.clken_pbt", tmp_pp40g->misc_tx_CLKEN.bf.clken_pbt, tmp_pp40g->misc_tx_CLKEN.bf.clken_pbt == dft_pp40g->misc_tx_CLKEN.bf.clken_pbt ? 0x20 : 0x2A, dft_pp40g->misc_tx_CLKEN.bf.clken_pbt, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_INTERRUPT.wrd", tmp_pp40g->misc_tx_INTERRUPT.wrd, tmp_pp40g->misc_tx_INTERRUPT.wrd == dft_pp40g->misc_tx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->misc_tx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_INTERRUPT.bf.pbert40g_txI", tmp_pp40g->misc_tx_INTERRUPT.bf.pbert40g_txI, tmp_pp40g->misc_tx_INTERRUPT.bf.pbert40g_txI == dft_pp40g->misc_tx_INTERRUPT.bf.pbert40g_txI ? 0x20 : 0x2A, dft_pp40g->misc_tx_INTERRUPT.bf.pbert40g_txI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_INTERRUPT.bf.pcsI", tmp_pp40g->misc_tx_INTERRUPT.bf.pcsI, tmp_pp40g->misc_tx_INTERRUPT.bf.pcsI == dft_pp40g->misc_tx_INTERRUPT.bf.pcsI ? 0x20 : 0x2A, dft_pp40g->misc_tx_INTERRUPT.bf.pcsI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_INTENABLE.wrd", tmp_pp40g->misc_tx_INTENABLE.wrd, tmp_pp40g->misc_tx_INTENABLE.wrd == dft_pp40g->misc_tx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->misc_tx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_INTENABLE.bf.pbert40g_txE", tmp_pp40g->misc_tx_INTENABLE.bf.pbert40g_txE, tmp_pp40g->misc_tx_INTENABLE.bf.pbert40g_txE == dft_pp40g->misc_tx_INTENABLE.bf.pbert40g_txE ? 0x20 : 0x2A, dft_pp40g->misc_tx_INTENABLE.bf.pbert40g_txE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_MISC_TX_INTENABLE.bf.pcsE", tmp_pp40g->misc_tx_INTENABLE.bf.pcsE, tmp_pp40g->misc_tx_INTENABLE.bf.pcsE == dft_pp40g->misc_tx_INTENABLE.bf.pcsE ? 0x20 : 0x2A, dft_pp40g->misc_tx_INTENABLE.bf.pcsE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.wrd", tmp_pp40g->pcs_tx_CNTRL.wrd, tmp_pp40g->pcs_tx_CNTRL.wrd == dft_pp40g->pcs_tx_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.tx_rst", tmp_pp40g->pcs_tx_CNTRL.bf.tx_rst, tmp_pp40g->pcs_tx_CNTRL.bf.tx_rst == dft_pp40g->pcs_tx_CNTRL.bf.tx_rst ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.tx_rst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.scramble", tmp_pp40g->pcs_tx_CNTRL.bf.scramble, tmp_pp40g->pcs_tx_CNTRL.bf.scramble == dft_pp40g->pcs_tx_CNTRL.bf.scramble ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.scramble, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.insert_am_rst", tmp_pp40g->pcs_tx_CNTRL.bf.insert_am_rst, tmp_pp40g->pcs_tx_CNTRL.bf.insert_am_rst == dft_pp40g->pcs_tx_CNTRL.bf.insert_am_rst ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.insert_am_rst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.insert_am_lock", tmp_pp40g->pcs_tx_CNTRL.bf.insert_am_lock, tmp_pp40g->pcs_tx_CNTRL.bf.insert_am_lock == dft_pp40g->pcs_tx_CNTRL.bf.insert_am_lock ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.insert_am_lock, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.mrk_insert", tmp_pp40g->pcs_tx_CNTRL.bf.mrk_insert, tmp_pp40g->pcs_tx_CNTRL.bf.mrk_insert == dft_pp40g->pcs_tx_CNTRL.bf.mrk_insert ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.mrk_insert, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.mrk_regen", tmp_pp40g->pcs_tx_CNTRL.bf.mrk_regen, tmp_pp40g->pcs_tx_CNTRL.bf.mrk_regen == dft_pp40g->pcs_tx_CNTRL.bf.mrk_regen ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.mrk_regen, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.bip_err_fwd", tmp_pp40g->pcs_tx_CNTRL.bf.bip_err_fwd, tmp_pp40g->pcs_tx_CNTRL.bf.bip_err_fwd == dft_pp40g->pcs_tx_CNTRL.bf.bip_err_fwd ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.bip_err_fwd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_CNTRL.bf.bip_regen", tmp_pp40g->pcs_tx_CNTRL.bf.bip_regen, tmp_pp40g->pcs_tx_CNTRL.bf.bip_regen == dft_pp40g->pcs_tx_CNTRL.bf.bip_regen ? 0x20 : 0x2A, dft_pp40g->pcs_tx_CNTRL.bf.bip_regen, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.wrd", tmp_pp40g->FAULT_CNTRL.wrd, tmp_pp40g->FAULT_CNTRL.wrd == dft_pp40g->FAULT_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.lf_clk_switch", tmp_pp40g->FAULT_CNTRL.bf.lf_clk_switch, tmp_pp40g->FAULT_CNTRL.bf.lf_clk_switch == dft_pp40g->FAULT_CNTRL.bf.lf_clk_switch ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.lf_clk_switch, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.lf_pattern", tmp_pp40g->FAULT_CNTRL.bf.lf_pattern, tmp_pp40g->FAULT_CNTRL.bf.lf_pattern == dft_pp40g->FAULT_CNTRL.bf.lf_pattern ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.lf_pattern, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.idle_auto", tmp_pp40g->FAULT_CNTRL.bf.idle_auto, tmp_pp40g->FAULT_CNTRL.bf.idle_auto == dft_pp40g->FAULT_CNTRL.bf.idle_auto ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.idle_auto, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.idle_force", tmp_pp40g->FAULT_CNTRL.bf.idle_force, tmp_pp40g->FAULT_CNTRL.bf.idle_force == dft_pp40g->FAULT_CNTRL.bf.idle_force ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.idle_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.rf_auto", tmp_pp40g->FAULT_CNTRL.bf.rf_auto, tmp_pp40g->FAULT_CNTRL.bf.rf_auto == dft_pp40g->FAULT_CNTRL.bf.rf_auto ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.rf_auto, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.rf_force", tmp_pp40g->FAULT_CNTRL.bf.rf_force, tmp_pp40g->FAULT_CNTRL.bf.rf_force == dft_pp40g->FAULT_CNTRL.bf.rf_force ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.rf_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.lf_auto", tmp_pp40g->FAULT_CNTRL.bf.lf_auto, tmp_pp40g->FAULT_CNTRL.bf.lf_auto == dft_pp40g->FAULT_CNTRL.bf.lf_auto ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.lf_auto, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_FAULT_CNTRL.bf.lf_force", tmp_pp40g->FAULT_CNTRL.bf.lf_force, tmp_pp40g->FAULT_CNTRL.bf.lf_force == dft_pp40g->FAULT_CNTRL.bf.lf_force ? 0x20 : 0x2A, dft_pp40g->FAULT_CNTRL.bf.lf_force, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_XEC_CNTRL.wrd", tmp_pp40g->XEC_CNTRL.wrd, tmp_pp40g->XEC_CNTRL.wrd == dft_pp40g->XEC_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->XEC_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_XEC_CNTRL.bf.pcs_bip_err_mask_en", tmp_pp40g->XEC_CNTRL.bf.pcs_bip_err_mask_en, tmp_pp40g->XEC_CNTRL.bf.pcs_bip_err_mask_en == dft_pp40g->XEC_CNTRL.bf.pcs_bip_err_mask_en ? 0x20 : 0x2A, dft_pp40g->XEC_CNTRL.bf.pcs_bip_err_mask_en, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTSTATUS.wrd", tmp_pp40g->pcs_tx_INTSTATUS.wrd, tmp_pp40g->pcs_tx_INTSTATUS.wrd == dft_pp40g->pcs_tx_INTSTATUS.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTSTATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTSTATUS.bf.idle_reqS", tmp_pp40g->pcs_tx_INTSTATUS.bf.idle_reqS, tmp_pp40g->pcs_tx_INTSTATUS.bf.idle_reqS == dft_pp40g->pcs_tx_INTSTATUS.bf.idle_reqS ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTSTATUS.bf.idle_reqS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTSTATUS.bf.rf_reqS", tmp_pp40g->pcs_tx_INTSTATUS.bf.rf_reqS, tmp_pp40g->pcs_tx_INTSTATUS.bf.rf_reqS == dft_pp40g->pcs_tx_INTSTATUS.bf.rf_reqS ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTSTATUS.bf.rf_reqS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTSTATUS.bf.lf_reqS", tmp_pp40g->pcs_tx_INTSTATUS.bf.lf_reqS, tmp_pp40g->pcs_tx_INTSTATUS.bf.lf_reqS == dft_pp40g->pcs_tx_INTSTATUS.bf.lf_reqS ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTSTATUS.bf.lf_reqS, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPT.wrd", tmp_pp40g->pcs_tx_INTERRUPT.wrd, tmp_pp40g->pcs_tx_INTERRUPT.wrd == dft_pp40g->pcs_tx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPT.bf.idle_reqI", tmp_pp40g->pcs_tx_INTERRUPT.bf.idle_reqI, tmp_pp40g->pcs_tx_INTERRUPT.bf.idle_reqI == dft_pp40g->pcs_tx_INTERRUPT.bf.idle_reqI ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPT.bf.idle_reqI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPT.bf.rf_reqI", tmp_pp40g->pcs_tx_INTERRUPT.bf.rf_reqI, tmp_pp40g->pcs_tx_INTERRUPT.bf.rf_reqI == dft_pp40g->pcs_tx_INTERRUPT.bf.rf_reqI ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPT.bf.rf_reqI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPT.bf.lf_reqI", tmp_pp40g->pcs_tx_INTERRUPT.bf.lf_reqI, tmp_pp40g->pcs_tx_INTERRUPT.bf.lf_reqI == dft_pp40g->pcs_tx_INTERRUPT.bf.lf_reqI ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPT.bf.lf_reqI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTENABLE.wrd", tmp_pp40g->pcs_tx_INTENABLE.wrd, tmp_pp40g->pcs_tx_INTENABLE.wrd == dft_pp40g->pcs_tx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTENABLE.bf.idle_reqE", tmp_pp40g->pcs_tx_INTENABLE.bf.idle_reqE, tmp_pp40g->pcs_tx_INTENABLE.bf.idle_reqE == dft_pp40g->pcs_tx_INTENABLE.bf.idle_reqE ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTENABLE.bf.idle_reqE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTENABLE.bf.rf_reqE", tmp_pp40g->pcs_tx_INTENABLE.bf.rf_reqE, tmp_pp40g->pcs_tx_INTENABLE.bf.rf_reqE == dft_pp40g->pcs_tx_INTENABLE.bf.rf_reqE ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTENABLE.bf.rf_reqE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTENABLE.bf.lf_reqE", tmp_pp40g->pcs_tx_INTENABLE.bf.lf_reqE, tmp_pp40g->pcs_tx_INTENABLE.bf.lf_reqE == dft_pp40g->pcs_tx_INTENABLE.bf.lf_reqE ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTENABLE.bf.lf_reqE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPTZ.wrd", tmp_pp40g->pcs_tx_INTERRUPTZ.wrd, tmp_pp40g->pcs_tx_INTERRUPTZ.wrd == dft_pp40g->pcs_tx_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPTZ.bf.idle_reqIZ", tmp_pp40g->pcs_tx_INTERRUPTZ.bf.idle_reqIZ, tmp_pp40g->pcs_tx_INTERRUPTZ.bf.idle_reqIZ == dft_pp40g->pcs_tx_INTERRUPTZ.bf.idle_reqIZ ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPTZ.bf.idle_reqIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPTZ.bf.rf_reqIZ", tmp_pp40g->pcs_tx_INTERRUPTZ.bf.rf_reqIZ, tmp_pp40g->pcs_tx_INTERRUPTZ.bf.rf_reqIZ == dft_pp40g->pcs_tx_INTERRUPTZ.bf.rf_reqIZ ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPTZ.bf.rf_reqIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PCS_TX_INTERRUPTZ.bf.lf_reqIZ", tmp_pp40g->pcs_tx_INTERRUPTZ.bf.lf_reqIZ, tmp_pp40g->pcs_tx_INTERRUPTZ.bf.lf_reqIZ == dft_pp40g->pcs_tx_INTERRUPTZ.bf.lf_reqIZ ? 0x20 : 0x2A, dft_pp40g->pcs_tx_INTERRUPTZ.bf.lf_reqIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_CNTRL.wrd", tmp_pp40g->pbert40g_tx_CNTRL.wrd, tmp_pp40g->pbert40g_tx_CNTRL.wrd == dft_pp40g->pbert40g_tx_CNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_CNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_CNTRL.bf.tx_rst", tmp_pp40g->pbert40g_tx_CNTRL.bf.tx_rst, tmp_pp40g->pbert40g_tx_CNTRL.bf.tx_rst == dft_pp40g->pbert40g_tx_CNTRL.bf.tx_rst ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_CNTRL.bf.tx_rst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_CNTRL.bf.eth_da", tmp_pp40g->pbert40g_tx_CNTRL.bf.eth_da, tmp_pp40g->pbert40g_tx_CNTRL.bf.eth_da == dft_pp40g->pbert40g_tx_CNTRL.bf.eth_da ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_CNTRL.bf.eth_da, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_CNTRL.bf.seq_num", tmp_pp40g->pbert40g_tx_CNTRL.bf.seq_num, tmp_pp40g->pbert40g_tx_CNTRL.bf.seq_num == dft_pp40g->pbert40g_tx_CNTRL.bf.seq_num ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_CNTRL.bf.seq_num, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_TYPELEN.wrd", tmp_pp40g->TYPELEN.wrd, tmp_pp40g->TYPELEN.wrd == dft_pp40g->TYPELEN.wrd ? 0x20 : 0x2A, dft_pp40g->TYPELEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_TYPELEN.bf.typelen1", tmp_pp40g->TYPELEN.bf.typelen1, tmp_pp40g->TYPELEN.bf.typelen1 == dft_pp40g->TYPELEN.bf.typelen1 ? 0x20 : 0x2A, dft_pp40g->TYPELEN.bf.typelen1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_TYPELEN.bf.typelen0", tmp_pp40g->TYPELEN.bf.typelen0, tmp_pp40g->TYPELEN.bf.typelen0 == dft_pp40g->TYPELEN.bf.typelen0 ? 0x20 : 0x2A, dft_pp40g->TYPELEN.bf.typelen0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FPAT01.wrd", tmp_pp40g->FPAT01.wrd, tmp_pp40g->FPAT01.wrd == dft_pp40g->FPAT01.wrd ? 0x20 : 0x2A, dft_pp40g->FPAT01.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FPAT01.bf.fpat1", tmp_pp40g->FPAT01.bf.fpat1, tmp_pp40g->FPAT01.bf.fpat1 == dft_pp40g->FPAT01.bf.fpat1 ? 0x20 : 0x2A, dft_pp40g->FPAT01.bf.fpat1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FPAT01.bf.fpat0", tmp_pp40g->FPAT01.bf.fpat0, tmp_pp40g->FPAT01.bf.fpat0 == dft_pp40g->FPAT01.bf.fpat0 ? 0x20 : 0x2A, dft_pp40g->FPAT01.bf.fpat0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FPAT23.wrd", tmp_pp40g->FPAT23.wrd, tmp_pp40g->FPAT23.wrd == dft_pp40g->FPAT23.wrd ? 0x20 : 0x2A, dft_pp40g->FPAT23.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FPAT23.bf.fpat3", tmp_pp40g->FPAT23.bf.fpat3, tmp_pp40g->FPAT23.bf.fpat3 == dft_pp40g->FPAT23.bf.fpat3 ? 0x20 : 0x2A, dft_pp40g->FPAT23.bf.fpat3, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FPAT23.bf.fpat2", tmp_pp40g->FPAT23.bf.fpat2, tmp_pp40g->FPAT23.bf.fpat2 == dft_pp40g->FPAT23.bf.fpat2 ? 0x20 : 0x2A, dft_pp40g->FPAT23.bf.fpat2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLEN.wrd", tmp_pp40g->FRMLEN.wrd, tmp_pp40g->FRMLEN.wrd == dft_pp40g->FRMLEN.wrd ? 0x20 : 0x2A, dft_pp40g->FRMLEN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLEN.bf.mode", tmp_pp40g->FRMLEN.bf.mode, tmp_pp40g->FRMLEN.bf.mode == dft_pp40g->FRMLEN.bf.mode ? 0x20 : 0x2A, dft_pp40g->FRMLEN.bf.mode, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLEN.bf.rndmask", tmp_pp40g->FRMLEN.bf.rndmask, tmp_pp40g->FRMLEN.bf.rndmask == dft_pp40g->FRMLEN.bf.rndmask ? 0x20 : 0x2A, dft_pp40g->FRMLEN.bf.rndmask, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLENMIN.wrd", tmp_pp40g->FRMLENMIN.wrd, tmp_pp40g->FRMLENMIN.wrd == dft_pp40g->FRMLENMIN.wrd ? 0x20 : 0x2A, dft_pp40g->FRMLENMIN.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLENMIN.bf.minlen", tmp_pp40g->FRMLENMIN.bf.minlen, tmp_pp40g->FRMLENMIN.bf.minlen == dft_pp40g->FRMLENMIN.bf.minlen ? 0x20 : 0x2A, dft_pp40g->FRMLENMIN.bf.minlen, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLENMAX.wrd", tmp_pp40g->FRMLENMAX.wrd, tmp_pp40g->FRMLENMAX.wrd == dft_pp40g->FRMLENMAX.wrd ? 0x20 : 0x2A, dft_pp40g->FRMLENMAX.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMLENMAX.bf.maxlen", tmp_pp40g->FRMLENMAX.bf.maxlen, tmp_pp40g->FRMLENMAX.bf.maxlen == dft_pp40g->FRMLENMAX.bf.maxlen ? 0x20 : 0x2A, dft_pp40g->FRMLENMAX.bf.maxlen, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_TX_IFG.wrd", tmp_pp40g->TX_IFG.wrd, tmp_pp40g->TX_IFG.wrd == dft_pp40g->TX_IFG.wrd ? 0x20 : 0x2A, dft_pp40g->TX_IFG.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_TX_IFG.bf.cnt", tmp_pp40g->TX_IFG.bf.cnt, tmp_pp40g->TX_IFG.bf.cnt == dft_pp40g->TX_IFG.bf.cnt ? 0x20 : 0x2A, dft_pp40g->TX_IFG.bf.cnt, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNTRL.wrd", tmp_pp40g->FRMCNTRL.wrd, tmp_pp40g->FRMCNTRL.wrd == dft_pp40g->FRMCNTRL.wrd ? 0x20 : 0x2A, dft_pp40g->FRMCNTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNTRL.bf.units", tmp_pp40g->FRMCNTRL.bf.units, tmp_pp40g->FRMCNTRL.bf.units == dft_pp40g->FRMCNTRL.bf.units ? 0x20 : 0x2A, dft_pp40g->FRMCNTRL.bf.units, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_ERRINS_CONT.wrd", tmp_pp40g->ERRINS_CONT.wrd, tmp_pp40g->ERRINS_CONT.wrd == dft_pp40g->ERRINS_CONT.wrd ? 0x20 : 0x2A, dft_pp40g->ERRINS_CONT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_ERRINS_CONT.bf.fcs_errc", tmp_pp40g->ERRINS_CONT.bf.fcs_errc, tmp_pp40g->ERRINS_CONT.bf.fcs_errc == dft_pp40g->ERRINS_CONT.bf.fcs_errc ? 0x20 : 0x2A, dft_pp40g->ERRINS_CONT.bf.fcs_errc, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_ERRINS_SGL.wrd", tmp_pp40g->ERRINS_SGL.wrd, tmp_pp40g->ERRINS_SGL.wrd == dft_pp40g->ERRINS_SGL.wrd ? 0x20 : 0x2A, dft_pp40g->ERRINS_SGL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_ERRINS_SGL.bf.fcs_errs", tmp_pp40g->ERRINS_SGL.bf.fcs_errs, tmp_pp40g->ERRINS_SGL.bf.fcs_errs == dft_pp40g->ERRINS_SGL.bf.fcs_errs ? 0x20 : 0x2A, dft_pp40g->ERRINS_SGL.bf.fcs_errs, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_GO.wrd", tmp_pp40g->GO.wrd, tmp_pp40g->GO.wrd == dft_pp40g->GO.wrd ? 0x20 : 0x2A, dft_pp40g->GO.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_GO.bf.go", tmp_pp40g->GO.bf.go, tmp_pp40g->GO.bf.go == dft_pp40g->GO.bf.go ? 0x20 : 0x2A, dft_pp40g->GO.bf.go, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNT2.wrd", tmp_pp40g->FRMCNT2.wrd, tmp_pp40g->FRMCNT2.wrd == dft_pp40g->FRMCNT2.wrd ? 0x20 : 0x2A, dft_pp40g->FRMCNT2.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNT2.bf.cnt2", tmp_pp40g->FRMCNT2.bf.cnt2, tmp_pp40g->FRMCNT2.bf.cnt2 == dft_pp40g->FRMCNT2.bf.cnt2 ? 0x20 : 0x2A, dft_pp40g->FRMCNT2.bf.cnt2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNT1.wrd", tmp_pp40g->FRMCNT1.wrd, tmp_pp40g->FRMCNT1.wrd == dft_pp40g->FRMCNT1.wrd ? 0x20 : 0x2A, dft_pp40g->FRMCNT1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNT1.bf.cnt1", tmp_pp40g->FRMCNT1.bf.cnt1, tmp_pp40g->FRMCNT1.bf.cnt1 == dft_pp40g->FRMCNT1.bf.cnt1 ? 0x20 : 0x2A, dft_pp40g->FRMCNT1.bf.cnt1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNT0.wrd", tmp_pp40g->FRMCNT0.wrd, tmp_pp40g->FRMCNT0.wrd == dft_pp40g->FRMCNT0.wrd ? 0x20 : 0x2A, dft_pp40g->FRMCNT0.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMCNT0.bf.cnt0", tmp_pp40g->FRMCNT0.bf.cnt0, tmp_pp40g->FRMCNT0.bf.cnt0 == dft_pp40g->FRMCNT0.bf.cnt0 ? 0x20 : 0x2A, dft_pp40g->FRMCNT0.bf.cnt0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMOCTCNT2.wrd", tmp_pp40g->FRMOCTCNT2.wrd, tmp_pp40g->FRMOCTCNT2.wrd == dft_pp40g->FRMOCTCNT2.wrd ? 0x20 : 0x2A, dft_pp40g->FRMOCTCNT2.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMOCTCNT2.bf.cnt2", tmp_pp40g->FRMOCTCNT2.bf.cnt2, tmp_pp40g->FRMOCTCNT2.bf.cnt2 == dft_pp40g->FRMOCTCNT2.bf.cnt2 ? 0x20 : 0x2A, dft_pp40g->FRMOCTCNT2.bf.cnt2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMOCTCNT1.wrd", tmp_pp40g->FRMOCTCNT1.wrd, tmp_pp40g->FRMOCTCNT1.wrd == dft_pp40g->FRMOCTCNT1.wrd ? 0x20 : 0x2A, dft_pp40g->FRMOCTCNT1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMOCTCNT1.bf.cnt1", tmp_pp40g->FRMOCTCNT1.bf.cnt1, tmp_pp40g->FRMOCTCNT1.bf.cnt1 == dft_pp40g->FRMOCTCNT1.bf.cnt1 ? 0x20 : 0x2A, dft_pp40g->FRMOCTCNT1.bf.cnt1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMOCTCNT0.wrd", tmp_pp40g->FRMOCTCNT0.wrd, tmp_pp40g->FRMOCTCNT0.wrd == dft_pp40g->FRMOCTCNT0.wrd ? 0x20 : 0x2A, dft_pp40g->FRMOCTCNT0.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_FRMOCTCNT0.bf.cnt0", tmp_pp40g->FRMOCTCNT0.bf.cnt0, tmp_pp40g->FRMOCTCNT0.bf.cnt0 == dft_pp40g->FRMOCTCNT0.bf.cnt0 ? 0x20 : 0x2A, dft_pp40g->FRMOCTCNT0.bf.cnt0, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTERRUPT.wrd", tmp_pp40g->pbert40g_tx_INTERRUPT.wrd, tmp_pp40g->pbert40g_tx_INTERRUPT.wrd == dft_pp40g->pbert40g_tx_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTERRUPT.bf.frmoctcntI", tmp_pp40g->pbert40g_tx_INTERRUPT.bf.frmoctcntI, tmp_pp40g->pbert40g_tx_INTERRUPT.bf.frmoctcntI == dft_pp40g->pbert40g_tx_INTERRUPT.bf.frmoctcntI ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTERRUPT.bf.frmoctcntI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTERRUPT.bf.frmcntI", tmp_pp40g->pbert40g_tx_INTERRUPT.bf.frmcntI, tmp_pp40g->pbert40g_tx_INTERRUPT.bf.frmcntI == dft_pp40g->pbert40g_tx_INTERRUPT.bf.frmcntI ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTERRUPT.bf.frmcntI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTENABLE.wrd", tmp_pp40g->pbert40g_tx_INTENABLE.wrd, tmp_pp40g->pbert40g_tx_INTENABLE.wrd == dft_pp40g->pbert40g_tx_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTENABLE.bf.frmoctcntE", tmp_pp40g->pbert40g_tx_INTENABLE.bf.frmoctcntE, tmp_pp40g->pbert40g_tx_INTENABLE.bf.frmoctcntE == dft_pp40g->pbert40g_tx_INTENABLE.bf.frmoctcntE ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTENABLE.bf.frmoctcntE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTENABLE.bf.frmcntE", tmp_pp40g->pbert40g_tx_INTENABLE.bf.frmcntE, tmp_pp40g->pbert40g_tx_INTENABLE.bf.frmcntE == dft_pp40g->pbert40g_tx_INTENABLE.bf.frmcntE ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTENABLE.bf.frmcntE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTERRUPTZ.wrd", tmp_pp40g->pbert40g_tx_INTERRUPTZ.wrd, tmp_pp40g->pbert40g_tx_INTERRUPTZ.wrd == dft_pp40g->pbert40g_tx_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTERRUPTZ.bf.frmoctcntIZ", tmp_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmoctcntIZ, tmp_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmoctcntIZ == dft_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmoctcntIZ ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmoctcntIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PBERT40G_TX_INTERRUPTZ.bf.frmcntIZ", tmp_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmcntIZ, tmp_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmcntIZ == dft_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmcntIZ ? 0x20 : 0x2A, dft_pp40g->pbert40g_tx_INTERRUPTZ.bf.frmcntIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_CTRL.wrd", tmp_pp40g->CTRL.wrd, tmp_pp40g->CTRL.wrd == dft_pp40g->CTRL.wrd ? 0x20 : 0x2A, dft_pp40g->CTRL.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_CTRL.bf.rst", tmp_pp40g->CTRL.bf.rst, tmp_pp40g->CTRL.bf.rst == dft_pp40g->CTRL.bf.rst ? 0x20 : 0x2A, dft_pp40g->CTRL.bf.rst, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_CTRL.bf.sel_tick1sec", tmp_pp40g->CTRL.bf.sel_tick1sec, tmp_pp40g->CTRL.bf.sel_tick1sec == dft_pp40g->CTRL.bf.sel_tick1sec ? 0x20 : 0x2A, dft_pp40g->CTRL.bf.sel_tick1sec, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_CTRL.bf.mode", tmp_pp40g->CTRL.bf.mode, tmp_pp40g->CTRL.bf.mode == dft_pp40g->CTRL.bf.mode ? 0x20 : 0x2A, dft_pp40g->CTRL.bf.mode, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_CLEAR.wrd", tmp_pp40g->CLEAR.wrd, tmp_pp40g->CLEAR.wrd == dft_pp40g->CLEAR.wrd ? 0x20 : 0x2A, dft_pp40g->CLEAR.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_CLEAR.bf.clear", tmp_pp40g->CLEAR.bf.clear, tmp_pp40g->CLEAR.bf.clear == dft_pp40g->CLEAR.bf.clear ? 0x20 : 0x2A, dft_pp40g->CLEAR.bf.clear, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATUS.wrd", tmp_pp40g->STATUS.wrd, tmp_pp40g->STATUS.wrd == dft_pp40g->STATUS.wrd ? 0x20 : 0x2A, dft_pp40g->STATUS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATUS.bf.busy", tmp_pp40g->STATUS.bf.busy, tmp_pp40g->STATUS.bf.busy == dft_pp40g->STATUS.bf.busy ? 0x20 : 0x2A, dft_pp40g->STATUS.bf.busy, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATUS.bf.init_done", tmp_pp40g->STATUS.bf.init_done, tmp_pp40g->STATUS.bf.init_done == dft_pp40g->STATUS.bf.init_done ? 0x20 : 0x2A, dft_pp40g->STATUS.bf.init_done, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPT.wrd", tmp_pp40g->pm_INTERRUPT.wrd, tmp_pp40g->pm_INTERRUPT.wrd == dft_pp40g->pm_INTERRUPT.wrd ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPT.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPT.bf.pm_avI", tmp_pp40g->pm_INTERRUPT.bf.pm_avI, tmp_pp40g->pm_INTERRUPT.bf.pm_avI == dft_pp40g->pm_INTERRUPT.bf.pm_avI ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPT.bf.pm_avI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPT.bf.bank1_ecc_d_errI", tmp_pp40g->pm_INTERRUPT.bf.bank1_ecc_d_errI, tmp_pp40g->pm_INTERRUPT.bf.bank1_ecc_d_errI == dft_pp40g->pm_INTERRUPT.bf.bank1_ecc_d_errI ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPT.bf.bank1_ecc_d_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPT.bf.bank1_ecc_s_errI", tmp_pp40g->pm_INTERRUPT.bf.bank1_ecc_s_errI, tmp_pp40g->pm_INTERRUPT.bf.bank1_ecc_s_errI == dft_pp40g->pm_INTERRUPT.bf.bank1_ecc_s_errI ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPT.bf.bank1_ecc_s_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPT.bf.bank0_ecc_d_errI", tmp_pp40g->pm_INTERRUPT.bf.bank0_ecc_d_errI, tmp_pp40g->pm_INTERRUPT.bf.bank0_ecc_d_errI == dft_pp40g->pm_INTERRUPT.bf.bank0_ecc_d_errI ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPT.bf.bank0_ecc_d_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPT.bf.bank0_ecc_s_errI", tmp_pp40g->pm_INTERRUPT.bf.bank0_ecc_s_errI, tmp_pp40g->pm_INTERRUPT.bf.bank0_ecc_s_errI == dft_pp40g->pm_INTERRUPT.bf.bank0_ecc_s_errI ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPT.bf.bank0_ecc_s_errI, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTENABLE.wrd", tmp_pp40g->pm_INTENABLE.wrd, tmp_pp40g->pm_INTENABLE.wrd == dft_pp40g->pm_INTENABLE.wrd ? 0x20 : 0x2A, dft_pp40g->pm_INTENABLE.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTENABLE.bf.pm_avE", tmp_pp40g->pm_INTENABLE.bf.pm_avE, tmp_pp40g->pm_INTENABLE.bf.pm_avE == dft_pp40g->pm_INTENABLE.bf.pm_avE ? 0x20 : 0x2A, dft_pp40g->pm_INTENABLE.bf.pm_avE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTENABLE.bf.bank1_ecc_d_errE", tmp_pp40g->pm_INTENABLE.bf.bank1_ecc_d_errE, tmp_pp40g->pm_INTENABLE.bf.bank1_ecc_d_errE == dft_pp40g->pm_INTENABLE.bf.bank1_ecc_d_errE ? 0x20 : 0x2A, dft_pp40g->pm_INTENABLE.bf.bank1_ecc_d_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTENABLE.bf.bank1_ecc_s_errE", tmp_pp40g->pm_INTENABLE.bf.bank1_ecc_s_errE, tmp_pp40g->pm_INTENABLE.bf.bank1_ecc_s_errE == dft_pp40g->pm_INTENABLE.bf.bank1_ecc_s_errE ? 0x20 : 0x2A, dft_pp40g->pm_INTENABLE.bf.bank1_ecc_s_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTENABLE.bf.bank0_ecc_d_errE", tmp_pp40g->pm_INTENABLE.bf.bank0_ecc_d_errE, tmp_pp40g->pm_INTENABLE.bf.bank0_ecc_d_errE == dft_pp40g->pm_INTENABLE.bf.bank0_ecc_d_errE ? 0x20 : 0x2A, dft_pp40g->pm_INTENABLE.bf.bank0_ecc_d_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTENABLE.bf.bank0_ecc_s_errE", tmp_pp40g->pm_INTENABLE.bf.bank0_ecc_s_errE, tmp_pp40g->pm_INTENABLE.bf.bank0_ecc_s_errE == dft_pp40g->pm_INTENABLE.bf.bank0_ecc_s_errE ? 0x20 : 0x2A, dft_pp40g->pm_INTENABLE.bf.bank0_ecc_s_errE, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPTZ.wrd", tmp_pp40g->pm_INTERRUPTZ.wrd, tmp_pp40g->pm_INTERRUPTZ.wrd == dft_pp40g->pm_INTERRUPTZ.wrd ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPTZ.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPTZ.bf.pm_avIZ", tmp_pp40g->pm_INTERRUPTZ.bf.pm_avIZ, tmp_pp40g->pm_INTERRUPTZ.bf.pm_avIZ == dft_pp40g->pm_INTERRUPTZ.bf.pm_avIZ ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPTZ.bf.pm_avIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPTZ.bf.bank1_ecc_d_errIZ", tmp_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_d_errIZ, tmp_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_d_errIZ == dft_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_d_errIZ ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_d_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPTZ.bf.bank1_ecc_s_errIZ", tmp_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_s_errIZ, tmp_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_s_errIZ == dft_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_s_errIZ ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPTZ.bf.bank1_ecc_s_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPTZ.bf.bank0_ecc_d_errIZ", tmp_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_d_errIZ, tmp_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_d_errIZ == dft_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_d_errIZ ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_d_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_INTERRUPTZ.bf.bank0_ecc_s_errIZ", tmp_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_s_errIZ, tmp_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_s_errIZ == dft_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_s_errIZ ? 0x20 : 0x2A, dft_pp40g->pm_INTERRUPTZ.bf.bank0_ecc_s_errIZ, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_BANK0_ECC_D_ERR_ADDR.wrd", tmp_pp40g->BANK0_ECC_D_ERR_ADDR.wrd, tmp_pp40g->BANK0_ECC_D_ERR_ADDR.wrd == dft_pp40g->BANK0_ECC_D_ERR_ADDR.wrd ? 0x20 : 0x2A, dft_pp40g->BANK0_ECC_D_ERR_ADDR.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_BANK0_ECC_D_ERR_ADDR.bf.bank0_ecc_d_err_addr", tmp_pp40g->BANK0_ECC_D_ERR_ADDR.bf.bank0_ecc_d_err_addr, tmp_pp40g->BANK0_ECC_D_ERR_ADDR.bf.bank0_ecc_d_err_addr == dft_pp40g->BANK0_ECC_D_ERR_ADDR.bf.bank0_ecc_d_err_addr ? 0x20 : 0x2A, dft_pp40g->BANK0_ECC_D_ERR_ADDR.bf.bank0_ecc_d_err_addr, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_BANK1_ECC_D_ERR_ADDR.wrd", tmp_pp40g->BANK1_ECC_D_ERR_ADDR.wrd, tmp_pp40g->BANK1_ECC_D_ERR_ADDR.wrd == dft_pp40g->BANK1_ECC_D_ERR_ADDR.wrd ? 0x20 : 0x2A, dft_pp40g->BANK1_ECC_D_ERR_ADDR.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_BANK1_ECC_D_ERR_ADDR.bf.bank1_ecc_d_err_addr", tmp_pp40g->BANK1_ECC_D_ERR_ADDR.bf.bank1_ecc_d_err_addr, tmp_pp40g->BANK1_ECC_D_ERR_ADDR.bf.bank1_ecc_d_err_addr == dft_pp40g->BANK1_ECC_D_ERR_ADDR.bf.bank1_ecc_d_err_addr ? 0x20 : 0x2A, dft_pp40g->BANK1_ECC_D_ERR_ADDR.bf.bank1_ecc_d_err_addr, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_ACCESS.wrd", tmp_pp40g->STATS_ACCESS.wrd, tmp_pp40g->STATS_ACCESS.wrd == dft_pp40g->STATS_ACCESS.wrd ? 0x20 : 0x2A, dft_pp40g->STATS_ACCESS.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_ACCESS.bf.access", tmp_pp40g->STATS_ACCESS.bf.access, tmp_pp40g->STATS_ACCESS.bf.access == dft_pp40g->STATS_ACCESS.bf.access ? 0x20 : 0x2A, dft_pp40g->STATS_ACCESS.bf.access, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_ACCESS.bf.cntr_id", tmp_pp40g->STATS_ACCESS.bf.cntr_id, tmp_pp40g->STATS_ACCESS.bf.cntr_id == dft_pp40g->STATS_ACCESS.bf.cntr_id ? 0x20 : 0x2A, dft_pp40g->STATS_ACCESS.bf.cntr_id, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_DATA2.wrd", tmp_pp40g->STATS_DATA2.wrd, tmp_pp40g->STATS_DATA2.wrd == dft_pp40g->STATS_DATA2.wrd ? 0x20 : 0x2A, dft_pp40g->STATS_DATA2.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_DATA2.bf.data2", tmp_pp40g->STATS_DATA2.bf.data2, tmp_pp40g->STATS_DATA2.bf.data2 == dft_pp40g->STATS_DATA2.bf.data2 ? 0x20 : 0x2A, dft_pp40g->STATS_DATA2.bf.data2, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_DATA1.wrd", tmp_pp40g->STATS_DATA1.wrd, tmp_pp40g->STATS_DATA1.wrd == dft_pp40g->STATS_DATA1.wrd ? 0x20 : 0x2A, dft_pp40g->STATS_DATA1.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_DATA1.bf.data1", tmp_pp40g->STATS_DATA1.bf.data1, tmp_pp40g->STATS_DATA1.bf.data1 == dft_pp40g->STATS_DATA1.bf.data1 ? 0x20 : 0x2A, dft_pp40g->STATS_DATA1.bf.data1, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_DATA0.wrd", tmp_pp40g->STATS_DATA0.wrd, tmp_pp40g->STATS_DATA0.wrd == dft_pp40g->STATS_DATA0.wrd ? 0x20 : 0x2A, dft_pp40g->STATS_DATA0.wrd, ch1);
+  CS_PRINT_OUTPUT("%-60s = 0x%04X%c  0x%04X   %c\n", "PP40G_PM_STATS_DATA0.bf.data0", tmp_pp40g->STATS_DATA0.bf.data0, tmp_pp40g->STATS_DATA0.bf.data0 == dft_pp40g->STATS_DATA0.bf.data0 ? 0x20 : 0x2A, dft_pp40g->STATS_DATA0.bf.data0, ch1);
+
+  CS_FREE(tmp_pp40g);
+  CS_FREE(dft_pp40g);
+  
+  #else
+  CS_PRINT_OUTPUT("Debug APIs are not compiled in.\n");
+  #endif
+  return (CS_OK);
+}
+

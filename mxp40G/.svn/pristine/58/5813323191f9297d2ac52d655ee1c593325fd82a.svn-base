@@ -1,0 +1,273 @@
+MSG: RPC service port 1 has just been cleanup!
+MSG: RPC service port 2 has just been cleanup!
+MSG: RPC service port 3 has just been cleanup!
+MSG: RPC service port 4 has just been cleanup!
+WARN: No register name file t41.init is available !
+PCI PHY is being initialized...
+Failed to open the dev file.
+Make sure kernel module is loaded !
+PCI Init done !
+Mapped memory for slot 0 bar 0 addr EF600000 length 00200000 to B7BD4000
+Mapped memory for slot 0 bar 1 addr EF400000 length 00200000 to B79D4000
+Mapped memory for slot 0 bar 2 addr EF200000 length 00200000 to B77D4000
+Mapped memory for slot 0 bar 3 addr EFC00000 length 00200000 to B75D4000
+Mapped memory for slot 0 bar 4 addr EFA00000 length 00200000 to B73D4000
+Mapped memory for slot 0 bar 5 addr EF800000 length 00200000 to B71D4000
+MEM MAP is done!
+Enabling PicoBlaze I2C communication
+Looking for EEPROMs on the IBB buses
+
+
+T40 board and device found. Select the type of device to report to the driver:
+  1) T40
+  2) T41
+Board type: 
+PCI device scan is done!
+***************************************************************
+* CORTINA SYSTEMS: Common Board             
+* PCI Target: Vendor 10ee, Device 0300:
+*
+* BAR0 = Common Board = ef600000
+* BAR1 = IBB 0        = ef400000
+* BAR2 = IBB 1        = ef200000
+* BAR3 = IBB 2        = efc00000
+* BAR4 = IBB 1 Slave  = efa00000
+* BAR5 = IBB 2 Slave  = ef800000
+*
+* MAP0 = Common Board = b7bd4000
+* MAP1 = IBB 0        = b79d4000
+* MAP2 = IBB 1        = b77d4000
+* MAP3 = IBB 2        = b75d4000
+* MAP4 = IBB 1 Slave  = b73d4000
+* MAP5 = IBB 2 Slave  = b71d4000
+*
+* Device Driver Base addresses and device status:
+*
+*   PCI Bridge  : VELOCIRAPTOR       (384) : b7bd4000 : INSTALLED
+*   IBB 0       : TENABO FPGA        (432) : b79d4000 : INSTALLED
+*   IBB 0       : T41                (448) : b7a54000 : INSTALLED
+*   IBB 1       :                          :          : N/A
+*   IBB 1       :                          :          : N/A
+***************************************************************
+rs: cb_dev_register dev_id = 0
+T41 Driver Lab Release:  5.6.603
+XFI Microcode Release:      126201041732PM
+Driver built on Feb  6 2012 @ 17:51:58
+--> (int) cs_trans_server_callback_register( 0x4 );
+MSG: client callback server 10.243.13.80 is connected!
+--> cs_trans_enable_dump( 0x1 );
+INFO: The client 10.243.13.80(4) dump flag has just been turned on !
+--> ten_drvr_ctl_logging( 0x1 );
+--> (cs_status) ten_reg_write( 0x0, 0x3, 0xbe );
+WR: 0x00003 = 0x00BE
+--> (cs_status) ten_reg_write( 0x0, 0x12, 0x0 );
+WR: 0x00012 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x26, 0x0 );
+WR: 0x00026 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x12, 0x0 );
+WR: 0x00012 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa02, 0x4206 );
+WR: 0x00A02 = 0x4206
+--> (cs_status) ten_reg_write( 0x0, 0xa05, 0x33 );
+WR: 0x00A05 = 0x0033
+--> (cs_status) ten_reg_write( 0x0, 0xa00, 0x0 );
+WR: 0x00A00 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa09, 0x0 );
+WR: 0x00A09 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa0a, 0x0 );
+WR: 0x00A0A = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa0c, 0x8000 );
+WR: 0x00A0C = 0x8000
+--> (cs_status) ten_reg_write( 0x0, 0xa0c, 0x0 );
+WR: 0x00A0C = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x13, 0x0 );
+WR: 0x00013 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x11, 0x0 );
+WR: 0x00011 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x4, 0xf );
+WR: 0x00004 = 0x000F
+--> (cs_status) ten_reg_write( 0x0, 0x5, 0xff );
+WR: 0x00005 = 0x00FF
+--> (cs_status) ten_reg_write( 0x0, 0x6, 0xff );
+WR: 0x00006 = 0x00FF
+--> (cs_status) ten_reg_write( 0x0, 0x7, 0xff );
+WR: 0x00007 = 0x00FF
+--> (cs_status) ten_reg_write( 0x0, 0x13, 0x0 );
+WR: 0x00013 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x21, 0xf0 );
+WR: 0x00021 = 0x00F0
+--> (cs_status) ten_reg_write( 0x0, 0x21, 0xf0f0 );
+WR: 0x00021 = 0xF0F0
+--> (cs_status) ten_reg_write( 0x0, 0x21, 0xf0f0 );
+WR: 0x00021 = 0xF0F0
+--> (cs_status) ten_reg_write( 0x0, 0x22, 0xffff );
+WR: 0x00022 = 0xFFFF
+--> (cs_status) ten_reg_write( 0x0, 0x23, 0x0 );
+WR: 0x00023 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x2, 0xf );
+WR: 0x00002 = 0x000F
+--> (cs_status) ten_reg_write( 0x0, 0x6c, 0x0 );
+WR: 0x0006C = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x1001, 0x44 );
+WR: 0x01001 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x1002, 0x44 );
+WR: 0x01002 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x1003, 0x44 );
+WR: 0x01003 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x1004, 0x44 );
+WR: 0x01004 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x16, 0xff00 );
+WR: 0x00016 = 0xFF00
+--> (cs_status) ten_reg_write( 0x0, 0x2001, 0x44 );
+WR: 0x02001 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x2002, 0x44 );
+WR: 0x02002 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x2003, 0x44 );
+WR: 0x02003 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x2004, 0x44 );
+WR: 0x02004 = 0x0044
+--> (cs_status) ten_reg_write( 0x0, 0x17, 0xff00 );
+WR: 0x00017 = 0xFF00
+--> (cs_status) ten_reg_write( 0x0, 0x11, 0x0 );
+WR: 0x00011 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa41, 0x0 );
+WR: 0x00A41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa81, 0x0 );
+WR: 0x00A81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xac1, 0x0 );
+WR: 0x00AC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xb01, 0x0 );
+WR: 0x00B01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xb41, 0x0 );
+WR: 0x00B41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xb81, 0x0 );
+WR: 0x00B81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xbc1, 0x0 );
+WR: 0x00BC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xc01, 0x0 );
+WR: 0x00C01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xc41, 0x0 );
+WR: 0x00C41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xc81, 0x0 );
+WR: 0x00C81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xcc1, 0x0 );
+WR: 0x00CC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xd01, 0x0 );
+WR: 0x00D01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xd41, 0x0 );
+WR: 0x00D41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xd81, 0x0 );
+WR: 0x00D81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xdc1, 0x0 );
+WR: 0x00DC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xe01, 0x0 );
+WR: 0x00E01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x1001, 0x11 );
+WR: 0x01001 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x1002, 0x11 );
+WR: 0x01002 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x1003, 0x11 );
+WR: 0x01003 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x1004, 0x11 );
+WR: 0x01004 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x16, 0xffff );
+WR: 0x00016 = 0xFFFF
+--> (cs_status) ten_reg_write( 0x0, 0x2001, 0x11 );
+WR: 0x02001 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x2002, 0x11 );
+WR: 0x02002 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x2003, 0x11 );
+WR: 0x02003 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x2004, 0x11 );
+WR: 0x02004 = 0x0011
+--> (cs_status) ten_reg_write( 0x0, 0x17, 0xffff );
+WR: 0x00017 = 0xFFFF
+--> (cs_status) ten_reg_write( 0x0, 0xa41, 0x0 );
+WR: 0x00A41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa81, 0x0 );
+WR: 0x00A81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xac1, 0x0 );
+WR: 0x00AC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xb01, 0x0 );
+WR: 0x00B01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xb41, 0x0 );
+WR: 0x00B41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xb81, 0x0 );
+WR: 0x00B81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xbc1, 0x0 );
+WR: 0x00BC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xc01, 0x0 );
+WR: 0x00C01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xc41, 0x0 );
+WR: 0x00C41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xc81, 0x0 );
+WR: 0x00C81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xcc1, 0x0 );
+WR: 0x00CC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xd01, 0x0 );
+WR: 0x00D01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xd41, 0x0 );
+WR: 0x00D41 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xd81, 0x0 );
+WR: 0x00D81 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xdc1, 0x0 );
+WR: 0x00DC1 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xe01, 0x0 );
+WR: 0x00E01 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x11, 0x0 );
+WR: 0x00011 = 0x0000
+--> (cs_uint16) ten_reg_read( 0x0, 0x0 );
+RD: 0x00000 = 0x03E5
+--> (cs_uint16) ten_reg_read( 0x0, 0x1 );
+RD: 0x00001 = 0x2009
+--> (cs_uint16) ten_reg_read( 0x0, 0x65 );
+RD: 0x00065 = 0x0000
+--> (cs_uint16) ten_reg_read( 0x0, 0x66 );
+RD: 0x00066 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x65, 0x55aa );
+WR: 0x00065 = 0x55AA
+--> (cs_status) ten_reg_write( 0x0, 0x66, 0xaa55 );
+WR: 0x00066 = 0xAA55
+--> (cs_uint16) ten_reg_read( 0x0, 0x65 );
+RD: 0x00065 = 0x55AA
+--> (cs_uint16) ten_reg_read( 0x0, 0x66 );
+RD: 0x00066 = 0xAA55
+--> (cs_uint16) ten_reg_read( 0x0, 0x3 );
+RD: 0x00003 = 0x00BE
+--> (cs_status) ten_reg_write( 0x0, 0x3, 0xbe );
+WR: 0x00003 = 0x00BE
+--> (cs_status) ten_reg_write( 0x0, 0x11, 0x0 );
+WR: 0x00011 = 0x0000
+--> (cs_uint16) ten_reg_read( 0x0, 0x12 );
+RD: 0x00012 = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0x12, 0x0 );
+WR: 0x00012 = 0x0000
+--> (cs_uint16) ten_reg_read( 0x0, 0x12 );
+RD: 0x00012 = 0x0000
+--> (cs_uint16) ten_reg_read( 0x0, 0xa02 );
+RD: 0x00A02 = 0x4206
+--> (cs_status) ten_reg_write( 0x0, 0xa02, 0x4206 );
+WR: 0x00A02 = 0x4206
+--> (cs_uint16) ten_reg_read( 0x0, 0xa0c );
+RD: 0x00A0C = 0x0000
+--> (cs_status) ten_reg_write( 0x0, 0xa0c, 0x8000 );
+WR: 0x00A0C = 0x8000
+--> (cs_status) ten_reg_write( 0x0, 0xa0c, 0x0 );
+WR: 0x00A0C = 0x0000
+--> (cs_uint16) ten_reg_read( 0x0, 0xa19 );
+RD: 0x00A19 = 0x0008
+--> (cs_status) ten_reg_write( 0x0, 0xa18, 0x7f );
+WR: 0x00A18 = 0x007F
+--> (cs_uint16) ten_reg_read( 0x0, 0xa18 );
+RD: 0x00A18 = 0x0002
+--> (cs_uint16) ten_reg_read( 0x0, 0xa18 );
+RD: 0x00A18 = 0x0002
+--> (cs_uint16) ten_reg_read( 0x0, 0xa19 );
+RD: 0x00A19 = 0x0049
+--> cs_trans_server_stop( 0x1 );
+ten_drvr_unload
+ten_dev_unregister
+T41 device (0) unregistered!
+T41 Driver Unloaded.
+No driver caused errors found while closing phy
+SERVER: cs_trans_server_stop() ... exiting!

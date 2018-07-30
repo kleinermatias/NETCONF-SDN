@@ -1,0 +1,37 @@
+\BOOKMARK [1][-]{section.1}{System Access}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Windows}{section.1}% 2
+\BOOKMARK [3][-]{subsubsection.1.1.1}{PuTTY}{subsection.1.1}% 3
+\BOOKMARK [3][-]{subsubsection.1.1.2}{Local Access}{subsection.1.1}% 4
+\BOOKMARK [3][-]{subsubsection.1.1.3}{Remote Access via SSH}{subsection.1.1}% 5
+\BOOKMARK [3][-]{subsubsection.1.1.4}{Remote Access via Telnet}{subsection.1.1}% 6
+\BOOKMARK [1][-]{section.2}{System reboot}{}% 7
+\BOOKMARK [1][-]{section.3}{Enable/Disable Client Laser}{}% 8
+\BOOKMARK [1][-]{section.4}{Enable/Disable Line Laser}{}% 9
+\BOOKMARK [1][-]{section.5}{Report Module Manufacturer's info and Type}{}% 10
+\BOOKMARK [1][-]{section.6}{Typical Configurations}{}% 11
+\BOOKMARK [2][-]{subsection.6.1}{4x10GbE/OTU-3}{section.6}% 12
+\BOOKMARK [2][-]{subsection.6.2}{4xOTU-2/OTU-3}{section.6}% 13
+\BOOKMARK [2][-]{subsection.6.3}{1x40GbE/OTU-3}{section.6}% 14
+\BOOKMARK [1][-]{section.7}{Commands Details}{}% 15
+\BOOKMARK [2][-]{subsection.7.1}{show}{section.7}% 16
+\BOOKMARK [3][-]{subsubsection.7.1.1}{show - -port}{subsection.7.1}% 17
+\BOOKMARK [3][-]{subsubsection.7.1.2}{show - -port <port\137id> - -optics}{subsection.7.1}% 18
+\BOOKMARK [3][-]{subsubsection.7.1.3}{show - -line}{subsection.7.1}% 19
+\BOOKMARK [3][-]{subsubsection.7.1.4}{show - -status}{subsection.7.1}% 20
+\BOOKMARK [3][-]{subsubsection.7.1.5}{show - -status - -port}{subsection.7.1}% 21
+\BOOKMARK [3][-]{subsubsection.7.1.6}{show - -status - -line}{subsection.7.1}% 22
+\BOOKMARK [3][-]{subsubsection.7.1.7}{show - -info}{subsection.7.1}% 23
+\BOOKMARK [3][-]{subsubsection.7.1.8}{show - -cond}{subsection.7.1}% 24
+\BOOKMARK [2][-]{subsection.7.2}{config}{section.7}% 25
+\BOOKMARK [3][-]{subsubsection.7.2.1}{config - -port - -mode}{subsection.7.2}% 26
+\BOOKMARK [3][-]{subsubsection.7.2.2}{config - -channelrx}{subsection.7.2}% 27
+\BOOKMARK [3][-]{subsubsection.7.2.3}{config - -channeltx}{subsection.7.2}% 28
+\BOOKMARK [3][-]{subsubsection.7.2.4}{config - -status}{subsection.7.2}% 29
+\BOOKMARK [3][-]{subsubsection.7.2.5}{config - -status - -port}{subsection.7.2}% 30
+\BOOKMARK [3][-]{subsubsection.7.2.6}{config - -status - -line}{subsection.7.2}% 31
+\BOOKMARK [2][-]{subsection.7.3}{logs}{section.7}% 32
+\BOOKMARK [2][-]{subsection.7.4}{hwcheck}{section.7}% 33
+\BOOKMARK [2][-]{subsection.7.5}{CS6041 power}{section.7}% 34
+\BOOKMARK [2][-]{subsection.7.6}{RTC}{section.7}% 35
+\BOOKMARK [3][-]{subsubsection.7.6.1}{setrtc}{subsection.7.6}% 36
+\BOOKMARK [3][-]{subsubsection.7.6.2}{setdate}{subsection.7.6}% 37

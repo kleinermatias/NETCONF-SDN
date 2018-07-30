@@ -1,0 +1,724 @@
+#!/usr/bin/perl
+use config_clocks;
+
+# This log was captured with this command:
+# BA: -mode;kpga;-hsif_line;xfi;-line_port;4;-line;otu3;-line_fec;gfec;-kpga_pattern;prbs31;-sysclk;425;-k_value;64;-id;365
+# This script was generated with the following command
+# batch full.pl,-mode;kpga;-hsif_line;xfi;-line_port;4;-line;otu3;-line_fec;gfec;-kpga_pattern;prbs31;-sysclk;425;-k_value;64;-id;365
+
+my ( $mod_a, $mod_b, $slice_line, $slice_client, $dyn_repro, $auxclk, $t100 ) = @ARGS;
+
+use strict;
+
+# These are the variables that will be used in the following API calls
+# Change them as required
+
+# Device ID
+my $dev_id = defined $mod_a ? $mod_a >> 8 : 0;
+
+# Module IDs of Sides A and B
+$mod_a = $dev_id << 8         unless defined $mod_a;
+$mod_b = ( $dev_id << 8 ) | 1 unless defined $mod_b;
+
+# Module ID of the line
+my $mod_line = ( $dev_id << 8 ) | 1;
+
+# Slice of the line
+$slice_line = 0 unless defined $slice_line;
+
+# Module ID of the client
+my $mod_client = ( $dev_id << 8 ) | 0;
+
+# Slice of the client
+$slice_client = 0 unless defined $slice_client;
+
+# Dynamic reprovisioning:
+# Set to '0' for the initial config of a board (resets board and chip)
+# Set to '1' to dynamically reprovision a client (keeps the line-side up)
+# Set to '2' to dynamically reprovision line and client (resets both line and client first, not for a muxponder!)
+# Set to '3' to dynamically reprovision the initial traffic in another chip (resets chip but not board)
+$dyn_repro = 0 unless defined $dyn_repro;
+$auxclk    = 0 unless defined $auxclk;
+$t100      = 0 unless defined $t100;
+
+# Set the sysrefclk frequency in MHz
+my $sysrefclk = 425;
+
+# This determines the type of Cortina EVB being used; disregard it for customer applications
+my $board_type = t40fpga_get_board_type(432);
+
+# Set this to '0' to use internal fan-out clock distribution
+# The Cortina T41 Customer EVB requires this to be 0 for the CFP/XFI interface
+my $xfi_clk_dist = ( ( $board_type == 8 ) && 1 ) ? 0 : 1;
+
+# For KPGA modes these can be changed to the desired pattern
+my $hsif_kpga = TEN_HSIF_PRBS_PN31;
+my $kpga      = TEN_KPG_PN31;
+
+# The following variables will also be used throughout the script:
+my $module;
+my $sysclk_freq;
+my $mbclksel;
+my $provision_line;
+my $provision_client;
+my $slice;
+my $dir;
+my $inv;
+my $fracdiv_module;
+my $fracdiv_slice;
+my $inst;
+my $silab_mod_line;
+my $silab_mod_client;
+my $silab_slice_line;
+my $silab_slice_client;
+my $silab_module;
+my $silab_slice;
+my $gpllx1_inst_line;
+my $gpllx1_inst_client;
+my $rdiv_divider;
+my $tmp_mod_line;
+my $tmp_mod_client;
+my $ar_mod;
+my $ar_slice;
+
+# my $clk_rate;
+my $mod_hsif;
+my $slice_hsif;
+my $clock_ch;
+my $clock_card;
+my $side;
+my $mr_optical_module_type;
+my $tmp_slice_line;
+my $tmp_slice_line2;
+my $tmp_slice_client;
+my $tmp_slice_client2;
+my $config_cfp_mr_clock_client;
+my $config_cfp_mr_clock_line;
+
+# A local variable for iterators
+my $i;
+
+# This defines the XFI lane inversions for different styles of Cortine Evaluation Platforms
+my %evb_xfi = (
+    '3' => [ [ CS_RX,        1 ], [ 0, 0 ], [ CS_RX,        1 ], [ 0, 0 ] ],
+    '4' => [ [ CS_TX_AND_RX, 1 ], [ 0, 0 ], [ CS_TX_AND_RX, 1 ], [ 0, 0 ] ],
+    '5' => [ [ CS_RX, 1 ], [ CS_TX, 1 ], [ CS_RX, 1 ], [ CS_TX, 1 ] ],
+    '6' => [ [ CS_TX_AND_RX, 1 ], [ 0, 0 ], [ CS_TX_AND_RX, 1 ], [ 0, 0 ] ],
+    '7' => [ [ CS_RX,        1 ], [ 0, 0 ], [ CS_RX,        1 ], [ 0, 0 ] ],
+    '8' => [ [ CS_RX,        1 ], [ 0, 0 ], [ CS_RX,        1 ], [ 0, 0 ] ],
+    '9' => [ [ 0, 0 ], [ CS_RX, 1 ], [ 0, 0 ], [ CS_RX, 1 ] ],
+    '11' => [ [ 0, 0 ], [ 0, 0 ], [ 0, 0 ], [ 0, 0 ] ]
+);
+if ( $board_type == 11 ) {
+    dev_reg_write( 432, 0, 0x40000, 0 );
+}
+$sysclk_freq = $sysrefclk * 1000000;
+
+# This is only for EVB use; it disables apish logging
+client_dump_off();
+$provision_line   = $dyn_repro != 1;
+$provision_client = 0;
+
+if ( ( $dyn_repro == 0 ) or ( $dyn_repro == 3 ) ) {
+
+    # Hard-reset the CS604x device and set the sysrefclk
+    tb_init( $sysclk_freq, $dev_id, $dyn_repro == 3 ? 1 : 0 );
+    $mbclksel = $sysclk_freq > 200000000 ? 1 : 0;
+
+    # Initialize the device driver
+    ten_dev_main_init($dev_id);
+    $mod_a = ten_mod_main_init( $dev_id, TEN_MODULE_A );
+    $mod_b = ten_mod_main_init( $dev_id, TEN_MODULE_B );
+    ten_hl_config_global( $dev_id, 1, 0, $mbclksel, 1, 1 );
+    ten_hl_ohpp_and_shadow_ram_init($dev_id);
+}
+else {
+    if ($provision_line) {
+        ten_mpif_clock_select_gpll_in( $dev_id, $mod_line & 1, TEN_SLICE_ALL, CS_TX, 1 );
+    }
+}
+$sysclk_freq = $sysclk_freq > 200000000 ? $sysclk_freq : $sysclk_freq * 4;
+$gpllx1_inst_line = 9;
+if ($t100) {
+    if ( $board_type == 11 ) {
+        t40fpga_write_reg( 432, 0x4802, 0x0020 );
+    }
+    elsif ( $board_type == 8 ) {
+        t40fpga_crosspoint( 432, 0, 2, 3 );
+    }
+}
+$slice = 0 ? $slice_client : $slice_line;
+ten_cb_rates( $dev_id, 43018413560, 0 );
+if ($provision_line) {
+    $fracdiv_module = $mod_line;
+    $fracdiv_slice  = $slice_line;
+    $inst           = ( ( $fracdiv_module & 1 ) == TEN_MODULE_A ) ? $fracdiv_slice : $fracdiv_slice + 4;
+    ten_hl_fracdiv_config( $dev_id, 6, $sysclk_freq, 336081355 );
+    ten_hl_fracdiv_config( $dev_id, 7, $sysclk_freq, 336081355 );
+    ten_hl_fracdiv_config( $dev_id, 4, $sysclk_freq, 336081355 );
+    ten_hl_fracdiv_config( $dev_id, 5, $sysclk_freq, 336081355 );
+}
+$silab_mod_client   = $mod_client;
+$silab_mod_line     = $mod_line;
+$silab_slice_line   = $slice_line;
+$silab_slice_client = $slice_client;
+
+#
+# Detect the EVB type and program the crosspoint and SiLabs device
+#
+if ( $board_type == 8 ) {
+    $clock_card = 1;
+    $clock_ch   = $silab_slice_line;
+    $side       = 1;
+
+    # This programs the crosspoint on the T41 EVB
+    t40fpga_crosspoint( 432, $clock_ch,     $clock_card, $side );
+    t40fpga_crosspoint( 432, $clock_ch + 4, $clock_card, $side );
+
+    $clock_ch   = 1;
+    $clock_card = 2;
+    $side       = 1;
+
+    # This programs the crosspoint on the T41 EVB
+    t40fpga_crosspoint( 432, $clock_ch,     $clock_card, $side );
+    t40fpga_crosspoint( 432, $clock_ch + 4, $clock_card, $side );
+
+}
+elsif ( $board_type == 9 ) {
+}
+$silab_module = $silab_mod_line;
+
+# The Cortina EVB requires the third slice for proper clocking due to board layout
+$silab_slice = 2;
+
+# Clocks on the different Cortina EVBs are programmed differently.
+# This code will check the board type and program the SiLabs appropriately.
+if ( ( $board_type == 8 ) and ( $silab_module == 1 ) and ( 'xfi' ne 'xfi' ) ) {
+    tb_program_clock( 3, 2**$silab_slice, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+    tb_program_clock( 3, 4, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+}
+else {
+    if ( $board_type == 11 ) {
+        tb_program_clock( $dev_id == 2 ? 3 : $dev_id, 2**$silab_slice, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+    }
+    else {
+        tb_program_clock( $silab_module, 2**$silab_slice, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+    }
+    ten_mpif_rxdiv_cfg0_mode_t41( $dev_id, ( $silab_module * 4 + $silab_slice ), 0 );
+}
+if ( $board_type == 11 ) {
+    tb_ical( $dev_id == 2 ? 3 : $dev_id, $silab_slice );
+}
+else {
+    tb_ical( $silab_module, $silab_slice );
+    sleep 5;
+}
+$tmp_slice_line2   = $slice_line;
+$tmp_slice_client2 = $slice_client;
+if ( ( $dyn_repro == 0 ) or ( $dyn_repro == 3 ) ) {
+    if (   ( ( ( ( $slice_client == 1 ) or ( $slice_client == 3 ) ) and ( 'disabled' eq 'cfp_mr' ) ) )
+        || ( ( ( ( $slice_line == 1 ) or ( $slice_line == 3 ) ) and ( 'xfi' eq 'cfp_mr' ) ) ) )
+    {
+        $tmp_slice_line2   = 0 if $slice_line == 1;
+        $tmp_slice_line2   = 2 if $slice_line == 3;
+        $tmp_slice_client2 = 0 if $slice_client == 1;
+        $tmp_slice_client2 = 2 if $slice_client == 3;
+        $silab_mod_line    = $tmp_mod_line;
+        $silab_slice_line  = $tmp_slice_line2;
+        $silab_mod_client  = $tmp_mod_client;
+        $silab_slice_client = $tmp_slice_client2;
+
+        #
+        # Detect the EVB type and program the crosspoint and SiLabs device
+        #
+        if ( $board_type == 8 ) {
+            $clock_card = 1;
+            $clock_ch   = $silab_slice_line;
+            $side       = 1;
+
+            # This programs the crosspoint on the T41 EVB
+            t40fpga_crosspoint( 432, $clock_ch,     $clock_card, $side );
+            t40fpga_crosspoint( 432, $clock_ch + 4, $clock_card, $side );
+
+            $clock_ch   = 1;
+            $clock_card = 2;
+            $side       = 1;
+
+            # This programs the crosspoint on the T41 EVB
+            t40fpga_crosspoint( 432, $clock_ch,     $clock_card, $side );
+            t40fpga_crosspoint( 432, $clock_ch + 4, $clock_card, $side );
+
+        }
+        elsif ( $board_type == 9 ) {
+        }
+        $silab_module = $silab_mod_line;
+
+        # The Cortina EVB requires the third slice for proper clocking due to board layout
+        $silab_slice = 2;
+
+        # Clocks on the different Cortina EVBs are programmed differently.
+        # This code will check the board type and program the SiLabs appropriately.
+        if ( ( $board_type == 8 ) and ( $silab_module == 1 ) and ( 'xfi' ne 'xfi' ) ) {
+            tb_program_clock( 3, 2**$silab_slice, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+            tb_program_clock( 3, 4, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+        }
+        else {
+            if ( $board_type == 11 ) {
+                tb_program_clock( $dev_id == 2 ? 3 : $dev_id, 2**$silab_slice, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+            }
+            else {
+                tb_program_clock( $silab_module, 2**$silab_slice, 2, 'xfi', 8, 4, 10, 306, 354, 10, $dev_id );
+            }
+            ten_mpif_rxdiv_cfg0_mode_t41( $dev_id, ( $silab_module * 4 + $silab_slice ), 0 );
+        }
+        if ( $board_type == 11 ) {
+            tb_ical( $dev_id == 2 ? 3 : $dev_id, $silab_slice );
+        }
+        else {
+            tb_ical( $silab_module, $silab_slice );
+            sleep 5;
+        }
+    }
+}
+if ($t100) {
+    t40fpga_crosspoint( 432, 0, 1, 3 );
+}
+if ( ( $dyn_repro == 0 ) or ( $dyn_repro == 3 ) ) {
+    ten_hsif_provision_datapath( $mod_a, TEN_INSTANCE_ALL, 0, 0, 0, 0, 0, 0 );
+    ten_hsif_provision_datapath( $mod_b, TEN_INSTANCE_ALL, 0, 0, 0, 0, 0, 0 );
+}
+if ($provision_line) {
+    $tmp_mod_line = $mod_line;
+    ten_hsif_set_clk_40g( $tmp_mod_line, TEN_HSIF_CLK_40G_RX_AGGR_MODE, 0x1 );
+    ten_hsif_set_clk_40g( $tmp_mod_line, TEN_HSIF_CLK_40G_TX_AGGR_MODE, 0x1 );
+}
+
+# This code controls the CFP laser on Cortina EVBs
+if ( $dyn_repro == 0 ) {
+    if ( ten_dev_is_t41($dev_id) ) {
+        if ( ( dev_reg_read( 432, 0, 0x6003 ) & 0x20 ) == 0 ) { t40fpga_cfp_power( 432, 0 ); }
+        if ( ( dev_reg_read( 432, 0, 0x6007 ) & 0x20 ) == 0 ) { t40fpga_cfp_power( 432, 1 ); }
+    }
+}
+if ( $board_type == 8 ) {
+    dev_reg_write( 432, 0, 0x6c08, 1 );
+    dev_reg_write( 432, 0, 0x6c00, 9 );
+}
+$tmp_slice_line   = $slice_line;
+$tmp_slice_client = 5;
+if ( ( $dyn_repro == 0 ) or ( $dyn_repro == 3 ) ) {
+    if ( 'disabled' eq 'cfp_mr' ) {
+        if ( $slice_client == 1 ) { $tmp_slice_client = 0; $config_cfp_mr_clock_client = 1; }
+        if ( $slice_client == 3 ) { $tmp_slice_client = 2; $config_cfp_mr_clock_client = 1; }
+    }
+    if ( 'xfi' eq 'cfp_mr' ) {
+        if ( $slice_line == 1 ) { $tmp_slice_line = 0; $config_cfp_mr_clock_line = 1; }
+        if ( $slice_line == 3 ) { $tmp_slice_line = 2; $config_cfp_mr_clock_line = 1; }
+    }
+}
+if ( ($provision_line) and ($config_cfp_mr_clock_line) ) {
+
+    # This is to invert the SERDES lanes for the Cortina EVB; change as necessary
+    $dir                    = $evb_xfi{$board_type}[$tmp_slice_line][0];
+    $inv                    = $evb_xfi{$board_type}[$tmp_slice_line][1];
+    $mod_hsif               = $mod_line;
+    $slice_hsif             = $tmp_slice_line;
+    $mr_optical_module_type = t40fpga_msa_detect( 432, $mod_hsif & 1 );
+
+    if (
+        ( $mr_optical_module_type == 0 ) ||     # msa_loopback = 0
+        ( $mr_optical_module_type == 1 ) ||     # msa_bridge = 1
+        ( $mr_optical_module_type == 2 ) ||     # msa_breakout = 2
+        ( $mr_optical_module_type == 4 ) ||     # msa_sfi41_loopback = 4
+        ( $mr_optical_module_type == 10 ) ||    # msa_fpga_loopback = 10
+        ( $mr_optical_module_type == 12 ) ||    # msa_none = 12
+        ( $mr_optical_module_type == 0xFF )
+      )
+    {                                           # msa_error = 0xFF
+                                                # Optical module is not pressent, so there will be no loss of signal indication
+                                                # 10G lane OK status signal will NOT take external LOS into consideration.
+        ten_hsif_set_ok_ctrl( $mod_hsif, TEN_SLICE_ALL, TEN_HSIF_OK_CTRL_XLOS_EN, 0 );
+
+    }
+    else {
+
+        # This is a temporary fix. The N40G_OTNR4X_ODWCFG:LINKALM_JCNOM bit default has been
+        # changed to 1 in T41. This bit gets set if an XLOS is detected on the hardware pin,
+        # generated by the FPGA which in turn gets a signal from the optical module. It causes
+        # the dewrapper to disable justifications and N10G to go in and out of frame.
+        # This needs to be fixed in the FPGA
+        ten_glb_misc_xlos_inv_mr( $mod_hsif, $slice_hsif, 1 );
+    }
+    $dir = CS_TX_AND_RX;
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 0 == 0 || 0 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 0 == 0 || 0 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 0 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 0 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 0 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+    $dir = CS_TX_AND_RX;
+
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 1 == 0 || 1 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 1 == 0 || 1 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 1 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 1 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 1 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+    $dir = CS_TX_AND_RX;
+
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 2 == 0 || 2 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 2 == 0 || 2 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 2 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 2 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 2 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+    $dir = CS_TX_AND_RX;
+
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 3 == 0 || 3 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 3 == 0 || 3 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 3 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 3 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 3 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+}
+$tmp_slice_line             = $slice_line;
+$tmp_slice_client           = 5;
+$config_cfp_mr_clock_client = 1;
+$config_cfp_mr_clock_line   = 1;
+if ( ($provision_line) and ($config_cfp_mr_clock_line) ) {
+
+    # This is to invert the SERDES lanes for the Cortina EVB; change as necessary
+    $dir                    = $evb_xfi{$board_type}[$tmp_slice_line][0];
+    $inv                    = $evb_xfi{$board_type}[$tmp_slice_line][1];
+    $mod_hsif               = $mod_line;
+    $slice_hsif             = $tmp_slice_line;
+    $mr_optical_module_type = t40fpga_msa_detect( 432, $mod_hsif & 1 );
+
+    if (
+        ( $mr_optical_module_type == 0 ) ||     # msa_loopback = 0
+        ( $mr_optical_module_type == 1 ) ||     # msa_bridge = 1
+        ( $mr_optical_module_type == 2 ) ||     # msa_breakout = 2
+        ( $mr_optical_module_type == 4 ) ||     # msa_sfi41_loopback = 4
+        ( $mr_optical_module_type == 10 ) ||    # msa_fpga_loopback = 10
+        ( $mr_optical_module_type == 12 ) ||    # msa_none = 12
+        ( $mr_optical_module_type == 0xFF )
+      )
+    {                                           # msa_error = 0xFF
+                                                # Optical module is not pressent, so there will be no loss of signal indication
+                                                # 10G lane OK status signal will NOT take external LOS into consideration.
+        ten_hsif_set_ok_ctrl( $mod_hsif, TEN_SLICE_ALL, TEN_HSIF_OK_CTRL_XLOS_EN, 0 );
+
+    }
+    else {
+
+        # This is a temporary fix. The N40G_OTNR4X_ODWCFG:LINKALM_JCNOM bit default has been
+        # changed to 1 in T41. This bit gets set if an XLOS is detected on the hardware pin,
+        # generated by the FPGA which in turn gets a signal from the optical module. It causes
+        # the dewrapper to disable justifications and N10G to go in and out of frame.
+        # This needs to be fixed in the FPGA
+        ten_glb_misc_xlos_inv_mr( $mod_hsif, $slice_hsif, 1 );
+    }
+    $dir = CS_TX_AND_RX;
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 0 == 0 || 0 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 0 == 0 || 0 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 0 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 0 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 0 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+    $dir = CS_TX_AND_RX;
+
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 1 == 0 || 1 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 1 == 0 || 1 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 1 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 1 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 1 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+    $dir = CS_TX_AND_RX;
+
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 2 == 0 || 2 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 2 == 0 || 2 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 2 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 2 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 2 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+    $dir = CS_TX_AND_RX;
+
+    if ( $board_type == 8 ) {
+        if ( t40fpga_get_ceb_daughtercard_type( 432, 0 ) == 1 ) {
+            if ( 3 == 0 || 3 == 2 ) {
+                $inv = 0;
+            }
+            else {
+                $inv = 1;
+            }
+        }
+        else {
+            $inv = 0;
+        }
+    }
+    else {
+        if ( 3 == 0 || 3 == 2 ) {
+            $inv = 0;
+        }
+        else {
+            $inv = 1;
+        }
+    }
+    ten_mpif_global_reset_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_DEASSERT );
+    ten_mpif_global_clock_disable_n40g( $dev_id, $mod_hsif & 1, CS_RX, CS_RESET_ASSERT );
+    ten_reg_write( $dev_id, TEN_N40G_MLDRX_MLD_ES_RESET + ( ( $mod_hsif & 1 ) * TEN_N40G_STRIDE ) + ( 0x40 * 3 ), 0 );
+    ten_n40g_mldrx_sadeco_release_sreset_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_sdc_on_t41($mod_hsif);
+    ten_n40g_rx_otl34_t41($mod_hsif);
+    ten_n40g_mldrx_sadeco_frame_word_length_t41( $mod_hsif, 0x0FF0 );
+    ten_reg_write( $dev_id, 0x3022 + ( 3 * 0x400 ), 0x2e );
+    ten_reg_write( $dev_id, 0x3023 + ( 3 * 0x400 ), 0xc21e );
+    ten_hsif_misc_xfi_xlos_broadcast( $mod_hsif, 1 );
+}
+if ( !ten_dev_is_t41($dev_id) ) {
+    ten_hl_syncdsync_threadsafe_datapath_config( $mod_line, $slice, $mod_client, $slice_client, 6, 0, 3, 64, 13, 16 );
+}
+else {
+    ten_hl_syncdsync_datapath_config_t41( $mod_line, $slice, $mod_client, $slice_client, 13, 16, 6, 3, 64, 255, 0, 4 );
+}
+if ( ( $dyn_repro == 0 ) or ( $dyn_repro == 3 ) ) {
+    ten_mpif_global_clock_disable_common( $dev_id, CS_ENABLE, TEN_MPIF_GLOBAL_CLOCK_DISABLE_COMMON_XCON );
+    ten_mpif_global_reset_common( $dev_id, CS_RESET_DEASSERT, TEN_MPIF_GLOBAL_RESET_COMMON_XCON );
+    ten_mpif_global_reset_common( $dev_id, CS_RESET_DEASSERT, TEN_MPIF_GLOBAL_RESET_COMMON_TOPSYS );
+}
+ten_hl_config_otu3v_kpga_t41( $mod_line, 1, 13, $kpga, 1, 1 );
+if ($provision_line) {
+    ten_hsif_set_ok_ctrl( $mod_line, TEN_SLICE_ALL, TEN_HSIF_OK_CTRL_XLOS_EN, 0 );
+}
+if ($provision_client) {
+    ten_hsif_set_ok_ctrl( $mod_client, TEN_SLICE_ALL, TEN_HSIF_OK_CTRL_XLOS_EN, 0 );
+}
+
+# The following clockmux code is written for CS604x only in order to simplify it
+
+# The following clockmux code is written for CS604x only in order to simplify it
+if ($provision_line) {
+    ten_hl_xfi_config_clockmux_t41( $mod_b, 0, $auxclk, 64, 5, 0 );
+    ten_hl_xfi_config_clockmux_t41( $mod_b, 1, $auxclk, 64, 5, 0 );
+    ten_hl_xfi_config_clockmux_t41( $mod_b, 2, $auxclk, 64, 5, 0 );
+    ten_hl_xfi_config_clockmux_t41( $mod_b, 3, $auxclk, 64, 5, 0 );
+    ten_mpif_clock_select_gpll_in( $dev_id, $mod_line & 1, TEN_SLICE_ALL, CS_TX, 0x0 );
+}
+ten_mpif_clock_select_gpll_in( $dev_id, $mod_client & 1, $slice_client, CS_TX, 0 );
+if ($provision_line) {
+    $gpllx1_inst_line = ( $mod_line & 1 ) == TEN_MODULE_A ? 1 : 9;
+    ten_hl_gpllx1_waitfor_gpll_lock( $dev_id, $gpllx1_inst_line + $slice_line );
+}
+$module = ( ( $mod_line & 1 ) == 0 ) ? TEN_MODULE_A : TEN_MODULE_B;
+ten_n40g_set_global_resets( $mod_line, CS_RESET_DEASSERT, TEN_N40G_GLOBAL_RESETS_ALL );
+ten_n10g_set_global_resets( $mod_line, 0, CS_RESET_DEASSERT, TEN_N10G_GLOBAL_RESETS_ALL );
+ten_n10g_set_global_resets( $mod_line, 1, CS_RESET_DEASSERT, TEN_N10G_GLOBAL_RESETS_ALL );
+ten_n10g_set_global_resets( $mod_line, 2, CS_RESET_DEASSERT, TEN_N10G_GLOBAL_RESETS_ALL );
+ten_n10g_set_global_resets( $mod_line, 3, CS_RESET_DEASSERT, TEN_N10G_GLOBAL_RESETS_ALL );
+ten_xcon_datapath_reset( $dev_id, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 0, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 1, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 2, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 3, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 4, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 5, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 6, CS_RESET_DEASSERT );
+ten_xcon_es_reset( $dev_id, 7, CS_RESET_DEASSERT );
+ten_mpif_global_reset_syncdsync( $dev_id, $mod_line, TEN_SLICE_ALL, CS_TX_AND_RX, CS_RESET_DEASSERT );
+ten_hl_resets_block( $mod_line, 0, CS_RESET_DEASSERT, TEN_HL_RESETS_BLOCK_SYNCDSYNC );
+ten_mpif_set_clock_switch_force( $dev_id, $module, TEN_SLICE_ALL, CS_TX_AND_RX, CS_DISABLE );
+ten_mpif_global_reset_hsif( $dev_id, $module, CS_TX_AND_RX, CS_RESET_DEASSERT );
+
+# Reset the optical module
+dev_reg_write( 432, 0, 0x5000, 0x80a );
+dev_reg_write( 432, 0, 0x5400, 0x80a );
+sleep(1);
+dev_reg_write( 432, 0, 0x5000, 0x803 );
+
+dev_reg_write( 432, 0, 0x5400, 0x803 );
+
+sleep(1);
+ten_hl_gpllx1_waitfor_gpll_lock_40g( $dev_id, $gpllx1_inst_line );
+
+# This is setting a GSTI timer so that KPGA statistics can be read in regression
+ten_n40g_sdfr_select_global_timing_source( $mod_line, 6 );
+ten_reg_write( $dev_id, TEN_GLB_MISC_GSTI01, 0x17D7 );
+ten_reg_write( $dev_id, TEN_GLB_MISC_GSTI01, 0x8400 );
+ten_mpif_global_reset_common( $dev_id, CS_RESET_DEASSERT, TEN_MPIF_GLOBAL_RESET_COMMON_TOPSYS );
+sleep 1;
+return 0;

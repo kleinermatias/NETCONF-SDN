@@ -1,0 +1,38 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}System Access}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Windows}{3}{subsection.1.1}
+\contentsline {subsubsection}{\numberline {1.1.1}PuTTY}{3}{subsubsection.1.1.1}
+\contentsline {subsubsection}{\numberline {1.1.2}Local Access}{3}{subsubsection.1.1.2}
+\contentsline {subsubsection}{\numberline {1.1.3}Remote Access via SSH}{5}{subsubsection.1.1.3}
+\contentsline {subsubsection}{\numberline {1.1.4}Remote Access via Telnet}{7}{subsubsection.1.1.4}
+\contentsline {section}{\numberline {2}System reboot}{9}{section.2}
+\contentsline {section}{\numberline {3}Enable/Disable Client Laser}{9}{section.3}
+\contentsline {section}{\numberline {4}Enable/Disable Line Laser}{9}{section.4}
+\contentsline {section}{\numberline {5}Report Module Manufacturer's info and Type}{9}{section.5}
+\contentsline {section}{\numberline {6}Typical Configurations}{9}{section.6}
+\contentsline {subsection}{\numberline {6.1}4x10GbE/OTU-3}{10}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}4xOTU-2/OTU-3}{11}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}1x40GbE/OTU-3}{11}{subsection.6.3}
+\contentsline {section}{\numberline {7}Commands Details}{11}{section.7}
+\contentsline {subsection}{\numberline {7.1}show}{11}{subsection.7.1}
+\contentsline {subsubsection}{\numberline {7.1.1}show -\hspace {0.01cm}-port}{12}{subsubsection.7.1.1}
+\contentsline {subsubsection}{\numberline {7.1.2}show -\hspace {0.01cm}-port <port\_id> \hspace {1ex}-\hspace {0.01cm}-optics}{13}{subsubsection.7.1.2}
+\contentsline {subsubsection}{\numberline {7.1.3}show -\hspace {0.01cm}-line}{14}{subsubsection.7.1.3}
+\contentsline {subsubsection}{\numberline {7.1.4}show -\hspace {0.01cm}-status}{16}{subsubsection.7.1.4}
+\contentsline {subsubsection}{\numberline {7.1.5}show -\hspace {0.01cm}-status -\hspace {0.01cm}-port}{16}{subsubsection.7.1.5}
+\contentsline {subsubsection}{\numberline {7.1.6}show -\hspace {0.01cm}-status -\hspace {0.01cm}-line}{17}{subsubsection.7.1.6}
+\contentsline {subsubsection}{\numberline {7.1.7}show -\hspace {0.01cm}-info}{17}{subsubsection.7.1.7}
+\contentsline {subsubsection}{\numberline {7.1.8}show -\hspace {0.01cm}-cond}{18}{subsubsection.7.1.8}
+\contentsline {subsection}{\numberline {7.2}config}{19}{subsection.7.2}
+\contentsline {subsubsection}{\numberline {7.2.1}config -\hspace {0.01cm}-port -\hspace {0.01cm}-mode}{20}{subsubsection.7.2.1}
+\contentsline {subsubsection}{\numberline {7.2.2}config -\hspace {0.01cm}-channelrx}{22}{subsubsection.7.2.2}
+\contentsline {subsubsection}{\numberline {7.2.3}config -\hspace {0.01cm}-channeltx}{22}{subsubsection.7.2.3}
+\contentsline {subsubsection}{\numberline {7.2.4}config -\hspace {0.01cm}-status}{23}{subsubsection.7.2.4}
+\contentsline {subsubsection}{\numberline {7.2.5}config -\hspace {0.01cm}-status -\hspace {0.01cm}-port}{23}{subsubsection.7.2.5}
+\contentsline {subsubsection}{\numberline {7.2.6}config -\hspace {0.01cm}-status -\hspace {0.01cm}-line}{24}{subsubsection.7.2.6}
+\contentsline {subsection}{\numberline {7.3}logs}{25}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}hwcheck}{27}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}CS6041 power}{29}{subsection.7.5}
+\contentsline {subsection}{\numberline {7.6}RTC}{30}{subsection.7.6}
+\contentsline {subsubsection}{\numberline {7.6.1}setrtc}{30}{subsubsection.7.6.1}
+\contentsline {subsubsection}{\numberline {7.6.2}setdate}{30}{subsubsection.7.6.2}

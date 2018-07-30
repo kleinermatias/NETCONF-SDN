@@ -1,0 +1,5 @@
+#!/bin/csh
+gcc4 -c t40_testbench.c 
+gcc -o t40_testbench t40_testbench.o targets/Linux/tenabo.a
+
+

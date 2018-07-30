@@ -1,0 +1,189 @@
+#/***********************************************************************/
+#/* This file contains information proprietary to Cortina Systems, Inc. */
+#/* (Cortina). Any use or disclosure, in whole or in part, of this      */
+#/* information to any unauthorized party, for any purposes other than  */
+#/* that for which it is provided is expressly prohibited except as     */
+#/* authorized by Cortina in writing. Cortina reserves its rights to    */
+#/* pursue both civil and criminal penalties for copying or disclosure  */
+#/* of this material without authorization. Cortina Systems (R),        */
+#/* Cortina (TM) and the Cortina Systems Earth Logo are the trademarks  */
+#/* or registered trademarks of Cortina Systems, Inc. and its           */
+#/* subsidiaries in the U.S. and other countries. Any other product     */
+#/* and company names are the trademarks of their respective owners.    */
+#/* Copyright (C) 2006-2011 Cortina Systems, Inc. All rights reserved.  */
+#/***********************************************************************/
+#
+# Makefile common sections for building target of TENABO
+#
+# $Id: Makefile.common,v 1.10 2012/07/13 13:33:40 rsinglet Exp $
+#
+
+###########################################
+# common driver sub-directories
+###########################################
+TENTARGETDIR    =    $(CHIPROOT)/targets
+CSPLATFORMDIR   =    $(CHIPROOT)/../platform
+TENMODULEDIR    =    $(CHIPROOT)/modules
+TENGENERALDIR   =    $(TENMODULEDIR)/general
+BUILDDIR        =    $(TENTARGETDIR)/$(OSTYPE)
+
+###########################################
+# common macros
+###########################################
+# PLATFORM settings other than RELEASE_PLATFORM are used internally
+#  by CORTINA for debug purpose.
+PLATFORM        =    RELEASE_PLATFORM
+OSTYPE          =    $(shell uname)
+ifneq ($(findstring NT,$(OSTYPE)),)
+OSTYPE          =    Windows_NT
+endif
+
+PLATFORM_INC    =
+INC             =    $(PLATFORM_INC) -I$(CHIPROOT) \
+                     -I$(CSPLATFORMDIR)            \
+                     -I$(TENMODULEDIR)/debug       \
+                     -I$(TENMODULEDIR)/dm          \
+                     -I$(TENMODULEDIR)/fec         \
+                     -I$(TENMODULEDIR)/fracdiv     \
+                     -I$(TENGENERALDIR)            \
+                     -I$(TENMODULEDIR)/glb         \
+                     -I$(TENMODULEDIR)/highlevel   \
+                     -I$(TENMODULEDIR)/hl_config   \
+                     -I$(TENMODULEDIR)/hsif        \
+                     -I$(TENMODULEDIR)/gpllx1      \
+                     -I$(TENMODULEDIR)/irq         \
+                     -I$(TENMODULEDIR)/mpif        \
+                     -I$(TENMODULEDIR)/n10g        \
+                     -I$(TENMODULEDIR)/n40g        \
+                     -I$(TENMODULEDIR)/ohpp        \
+                     -I$(TENMODULEDIR)/pp10g       \
+                     -I$(TENMODULEDIR)/pp40g       \
+                     -I$(TENMODULEDIR)/spoh        \
+                     -I$(TENMODULEDIR)/stats       \
+                     -I$(TENMODULEDIR)/syncdsync   \
+                     -I$(TENMODULEDIR)/xcon
+                     
+# Presume all header files are dependendancies to avoid build issues.
+HDRS            =    cs_types.h \
+                     cs_rtos.h \
+		     $(wildcard ../*/*.h)
+
+###########################################
+# common tools options
+###########################################
+CC              = gcc4
+#CC               = gcc
+ifeq ($(PLATFORM), RELEASE_PLATFORM)
+#CC              = gcc4 -ansi -O3 -ggdb
+#CC              = gcc4 -Wall -Werror -x c -ansi -pedantic -O3 
+CFLAGS           = -Wall -x c -ansi -O3 $(EVB_SDK)
+else
+CFLAGS           = -ansi -g
+endif
+
+# -DRELEASE_PLATFORM -DCS_DONT_USE_STDLIB
+# -DCS_DONT_USE_VAR_ARGS -DTEN_GET_MODE_INFO_FROM_HW
+
+
+#LABROOT            = $(shell cd ../../..; pwd)
+LABROOT            = $(shell cd ../..; pwd)
+
+CFLAGS         +=    -D$(PLATFORM) -D$(ENDIAN) -D$(CHIP) -D$(OSTYPE) \
+                     $(INC) $(DEVFLAGS) 
+
+###########################################
+# customer-specific compiling macros
+###########################################
+# Here are the customer-specific settings which should be
+# taken care by customer:
+
+# 1. POSIX_PTHREAD support:
+# ========================
+# The TENABO Driver provides some useful utility APIs to
+# support lab debug/test, but requires the support of
+# POSIX PTHREAD library.  Since POSIX PTHREAD library is
+# not supported by some RTOS, typically, VxWorks, the TENABO
+# driver disables compiling this part of code by default.
+# If the customer wants to use these APIs, they should
+# follow NON RELEASE_PLATFORM to include the corresponding
+# compiling macro "-DPOSIX_PTHREAD".
+#
+CFLAGS        +=  -DPOSIX_PTHREAD
+
+# 2. Inline functions
+# ===================
+# For performance reasons, by default the driver uses inline
+# functions via the __inline__ utility. The customer has the option
+# of not using it (either it is not supported by the compiler or
+# it is disabled through the compiler switch). If that is the case,
+# then the user needs include the compile macro,
+# "-DCS_DONT_USE_INLINE".
+#
+CFLAGS	+= -DCS_DONT_USE_INLINE
+#
+
+# 3. Standard libraries
+# =====================
+# If the customer environment does not support some of the standard
+# C libraries(like stdio.h, unistd.h, etc.), then use the
+# -DCS_DONT_USE_STDLIB compiler macro.
+#
+# CFLAGS	+= -DCS_DONT_USE_STDLIB
+#
+
+# 4. Variable Argument list
+# =========================
+# if the customer environment does not support handling of
+# variable argument list, then use the
+# -DCS_DONT_USE_VAR_ARGS compiler macro.
+# Note, that if CS_DONT_USE_STDLIB is defined, then the driver
+# will automatically define CS_DONT_USE_VAR_ARGS if it hasn't
+# been explicitly defined.
+#
+# CFLAGS	+= -DCS_DONT_USE_VAR_ARGS
+
+# 5. Target processor endianness
+# ==============================
+# This will auto-detect the endianness of the build platform.
+# If cross-compiling and the target platform's endianness
+# is not the same as the build platform's endianness
+# then comment out the following and uncomment one of the
+# two endianness definitions corresponding to the target
+# machine
+ENDIAN          =    $(shell cd $(CSPLATFORMDIR) ;       \
+                             ./test_endian -c gcc -a $(OSTYPE) ; \
+                             ./$(OSTYPE)/which_endian.o)
+# Uncomment this for Intel Architecture and other little endian machines
+# ENDIAN		=    CS_LITTLE_ENDIAN
+# Uncomment this for PowerPC and other big endian machines
+# ENDIAN		=    CS_BIG_ENDIAN
+
+# 6. VSNPRINTF
+# ============
+# If vsnprintf is available in the target's C library then comment this line
+CFLAGS         += -DCS_DONT_HAVE_VSNPRINTF
+
+# 7. Building the example executable
+# ==================================
+# To build the example executable, which includes code in modules/general/ten_main.c,
+# uncomment the following then execute the "m" script after doing a "make"
+# The sample executable will be called "t40_testbench"
+#CFLAGS       += -DMAKE_STANDALONE_TESTBENCH
+
+# 8. Define the CS600x version
+# ============================
+# This is no longer supported.
+
+# 9. DONT_HAVE_FUNC
+# =================
+# If __func__ macro is available in the target's C library then comment this line
+#CFLAGS         += -DCS_DONT_HAVE_FUNC
+
+
+# 10. ten_irq_isr and ten_irq_walk_tree semaphore locking
+# =======================================================
+# If the ISR will run in an interrupt context and the functions above
+# shouldn't lock the IRQ semaphore, then comment this define.
+# If the ISR is polled and you do want the IRQ tree walker to lock the IRQ
+# semaphore, then don't comment this out.
+#CFLAGS		+= -DTEN_IRQ_LOCK_INTERRUPT_WALKER
