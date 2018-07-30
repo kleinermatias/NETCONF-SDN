@@ -1175,6 +1175,7 @@ static status_t y_cli_mxp_mux_apply_invoke (
     strcpy (str,"settings ");
     strcat (str,"--potencia ");
     strcat (str,buff);
+    printf("\n COMANDO : %s\n", str);
     system(str);
   }
 
