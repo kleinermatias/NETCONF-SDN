@@ -1155,7 +1155,7 @@ static status_t y_cli_mxp_mux_apply_invoke (
   /* invoke your device instrumentation code here */
   void *resp;
 
-  if (xmlStrEqual(comando,(const xmlChar *)"activar noti")) {
+  if (xmlStrEqual(comando,(const xmlChar *)"notify")) {
       log_debug("\n******ALARMA ACTIVADA******");
 
       if (alarma_tid == 0) {
@@ -1166,7 +1166,7 @@ static status_t y_cli_mxp_mux_apply_invoke (
 
   }
 
-  if (xmlStrEqual(comando,(const xmlChar *)"aplicar cambios")) {
+  else if (xmlStrEqual(comando,(const xmlChar *)"cambios")) {
     char command[50];
     strcpy( command, "settings --potencia 5" );
     int system(command);
