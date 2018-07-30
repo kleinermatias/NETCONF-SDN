@@ -62,7 +62,7 @@ oven_thread(void *arg)
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     while (alarma_tid) {
-        if(pt_monitor_struct->edfa_struct.edfa_output_power > 5.00)
+        if(atof(pt_monitor_struct->edfa_struct.edfa_output_power) > 5.00)
         {   
             y_cli_mxp_mux_notify_send((const xmlChar *)"hola?");
         }
