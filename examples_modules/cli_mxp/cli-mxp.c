@@ -729,7 +729,7 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
-    edfa_output_power_conf = VAL_DEC64(newval);
+    edfa_output_power_conf = VAL_DEC64(newval)/100;
     printf("%s\n", "AAAAAAAAAAAAAAAAAa************");
     printf("%.2f", edfa_output_power_conf);
     switch (editop) {
