@@ -148,7 +148,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_config_val = NULL;
 
   /* init your static variables here */
-  edfa_output_power_conf=0.0;
+  edfa_output_power_conf="5.0";
 } /* y_cli_mxp_init_static_vars */
 
 
