@@ -9,8 +9,8 @@ echo "------- Restart ssh server -------"
 
 # REINICIAR SSHD!
 
-sh init_bridge_tx.sh
-sh init_bridge_rx.sh
+sh /root/init_bridge_tx.sh
+sh /root/init_bridge_rx.sh
 
 echo "------- EXPORT PATH -------"
 
