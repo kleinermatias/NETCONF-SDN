@@ -45,6 +45,9 @@ rm -r -f ../$arch/output/tmp/lib/*.a
 rm -r -f ../$arch/output/tmp/lib/yuma/*.la
 rm -r -f ../$arch/output/tmp/lib/yuma/*.a
 
+cp -r -f ./ssh_script.sh ../$arch/output/tmp/
+cp -r -f ./sshd_config ../$arch/output/tmp/
+
 scp -r ../$arch/output/tmp $user@$host:/root/usrapp
 
 rm -r -f ../$arch/output/tmp
