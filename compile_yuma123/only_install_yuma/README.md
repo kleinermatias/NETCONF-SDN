@@ -10,11 +10,9 @@ Iniciamos el docker:
 
     $ docker run -it fulgor/yuma123
 
-El cliente Netconf de yuma (yangcli) va a conectarse al usuario 'root' y necesita una contraseña para 
-el mismo. Para ello, ejecutamos los siguientes comandos:
+El cliente NETCONF de yuma (yangcli) va a conectarse al usuario 'root' y necesita una contraseña para 
+el mismo. La contraseña del usuario root es 'fulgor'.
 
-    $ passwd $PASS
-    $ /etc/init.d/ssh restart
     $ netconfd &
-    $ yangcli --user=root --server=localhost --pass=$PASS
+    $ yangcli --user=root --server=localhost --pass=fulgor
 
