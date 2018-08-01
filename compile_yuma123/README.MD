@@ -25,9 +25,9 @@ Independientemente de la arquitectura (target), se deben realizar los siguientes
 
 ### Automatizacion. 
 
-Para facilitar y automatizar la instalacion o desinstalacion de la herramienta en el dispositivo, se anexan los siguientes scripts.
+Para facilitar y automatizar la instalacion o desinstalacion del agente NETCONF en el dispositivo, se anexan los siguientes scripts (ver carpeta **utils_scripts**).
 
-**remote_install_yuma.sh :** Copia el contenido de la carpeta /usrapp (resultante de la compilacion) al directorio /root/usrapp del dispositivo de forma remota. Solicita tres parametros: host - direccion ip del host - arquitectura. 
+**remote_install_yuma.sh :** Copia el contenido de la carpeta /usrapp (resultante de la compilacion) al directorio /root/usrapp del dispositivo de forma remota. Solicita tres parametros: host - direccion ip del host - arquitectura.
 
 **remote_clean_yuma.sh :** Elimina completamente la herramienta YUMA del dispositivo. Solicita dos parametros: host - direccion ip del host.
 
