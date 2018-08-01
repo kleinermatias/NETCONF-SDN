@@ -12,4 +12,9 @@ echo "------- Restart ssh server -------"
 sh init_bridge_tx.sh
 sh init_bridge_rx.sh
 
+echo "------- EXPORT PATH -------"
 
+echo "export PATH=$PATH:/root/usrapp/sbin" >> ~/.bashrc
+. ~/.bashrc
+
+echo "------- DONE! -------"
