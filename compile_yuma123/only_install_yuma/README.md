@@ -1,5 +1,7 @@
 # Only install YUMA123 - General.
 
+> **NOTA**: Esta imagen Docker unicamente instala yuma123 (agente y cliente NETCONF). No es de utilidad para compilar y instalar de forma remota en otro dispositivo.
+
 Iniciamos la construccion de la imagen docker: 
 
     $ docker build -t fulgor/yuma123 .
