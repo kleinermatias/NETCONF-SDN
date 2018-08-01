@@ -3,17 +3,20 @@
 
 echo "------- Start install module script... -------"
 
-echo 'Introduzca el usuario remoto:'
-read user
+user=$1
 
-echo 'Introduzca la direccion del host:'
-read host
+host=$2
 
-echo 'Modulo a instalar:'
-read module
+module=$3
 
-echo 'Introduzca la arquitectura a instalar (nios2 - arm - x86_64):'
-read arch
+arch=$4
+
+if test "$#" -ne 4; then
+    echo "Illegal number of parameters"
+    echo "Example: @user @host @module @arch"
+    exit
+fi
+
 
 libmodule=lib$module
 
@@ -24,3 +27,6 @@ elif [ "$arch" == "arm" ]; then
 elif [ "$arch" == "x86_64" ]; then
 	gcc -shared  -fPIC -DPIC  -I. -I../../compile_yuma123/$arch/output/usrapp/include/yuma/agt -I../../compile_yuma123/$arch/output/usrapp/include/yuma/ncx -I../../compile_yuma123/$arch/output/usrapp/include/yuma/platform -I../../compile_yuma123/$arch/output/usrapp/include/libxml2 -I../../compile_yuma123/$arch/output/usrapp/include/libxml2/libxml -rdynamic ../$module/$module.c ../../compile_yuma123/$arch/output/usrapp/lib/libyumancx.so ../../compile_yuma123/$arch/output/usrapp/lib/libyumaagt.so ../../compile_yuma123/$arch/output/usrapp/lib/libxml2.so -lz -ldl -O0 -o ../$module/$libmodule.so
 fi
+
+scp -r ../$module/$libmodule.so $user@$host:/root/usrapp/lib/yuma
+scp -r ../$module/$module.yang $user@$host:/root/usrapp/share/yuma/modules
