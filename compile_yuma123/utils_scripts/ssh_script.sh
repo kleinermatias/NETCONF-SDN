@@ -7,7 +7,7 @@ cp -r -f /root/usrapp/sshd_config /etc/ssh/sshd_config
 
 echo "------- Restart ssh server -------"
 
-# REINICIAR SSHD!
+/etc/init.d/S50sshd restart
 
 sh /root/init_bridge_tx.sh
 sh /root/init_bridge_rx.sh
