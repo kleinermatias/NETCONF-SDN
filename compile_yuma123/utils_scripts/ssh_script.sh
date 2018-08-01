@@ -3,7 +3,7 @@
 
 echo "------- Copy sshd_config -------"
 
-cp -r -f /root/usrapp/sshd_config /etc/ssh/sshd_config
+cp -r -f /root/usrapp/sshd_config /etc/ssh/
 
 echo "------- Restart ssh server -------"
 
