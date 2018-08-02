@@ -11,10 +11,4 @@ echo "------- Restart ssh server -------"
 #Reinicio el servicio ssh
 /etc/init.d/S50sshd restart
 
-echo "------- EXPORT PATH -------"
-
-
-echo "export PATH=$PATH:/root/usrapp/sbin" >> ~/.bashrc
-. ~/.bashrc
-
 echo "------- DONE! -------"
