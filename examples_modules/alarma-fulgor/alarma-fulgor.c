@@ -421,7 +421,9 @@
       /* database manipulation done here */
       break;
     case AGT_CB_COMMIT:
-      /* device instrumentation done here */
+    if (LOGDEBUG) {
+      log_debug("\n************** \n \n \n MENSAJE PARA TODOS TODOS \n \n \n **************");
+    }
       switch (editop) {
       case OP_EDITOP_LOAD:
         break;
