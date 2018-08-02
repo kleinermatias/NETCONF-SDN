@@ -49,7 +49,7 @@ cp -r -f ./ssh_script.sh ../$arch/output/tmp/
 cp -r -f ./sshd_config ../$arch/output/tmp/
 
 scp -r ../$arch/output/tmp $user@$host:/root/usrapp
-ssh $user@$host 'sh /root/usrapp/ssh_script.sh'
+ssh $user@$host 'nohup sh /root/usrapp/ssh_script.sh &'
 rm -r -f ../$arch/output/tmp
 
 
