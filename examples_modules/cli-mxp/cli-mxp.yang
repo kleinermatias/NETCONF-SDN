@@ -12,6 +12,15 @@ module cli-mxp {
           "Version 0.1.0";
     }
 
+    // patrones como expresiones regulares. Ejemplo que acepta cualquier string terminado en .a  pattern "*.a";
+    typedef restricted-tipo-trafico {
+      type enumeration {
+        enum "otu2";
+        enum "xge";
+        }
+    }
+
+
     container mux-config {
         description
           "Parametros de la CLI";
@@ -28,7 +37,7 @@ module cli-mxp {
         leaf tipo_trafico {
             description
               "[otu2|xge] especifica el tipo de tráfico.";
-            type string;
+            type restricted-tipo-trafico;
         }
 
         leaf tipo_fec_linea {
