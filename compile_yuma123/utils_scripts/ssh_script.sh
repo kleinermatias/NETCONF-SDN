@@ -11,10 +11,6 @@ echo "------- Restart ssh server -------"
 #Reinicio el servicio ssh
 /etc/init.d/S50sshd restart
 
-#Ejecuto los scripts
-sh /root/init_bridge_tx.sh
-sh /root/init_bridge_rx.sh
-
 echo "------- EXPORT PATH -------"
 
 
