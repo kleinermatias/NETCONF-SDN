@@ -40,3 +40,20 @@ Para crear los valores:
     $ ENTER VALUE
     
 > **NOTA 2**: Desde yang se verifica que por ejemplo, tipo_trafico solo pueda tener valores como otu2 o xge, restringiendo cualquier otra posibilidad para este parametro. (same para tipo_fec_linea, tipo_fec_cliente, etc).
+
+
+## RPC Disponibles.
+
+Por el momento:
+
+**mux-notify-activate**: Activa las notificaciones si edfa_output_power_config se configura por encima de 5.
+
+**mux-notify-deactivate**: Desactiva las notificaciones, ignorando si edfa_output_power_config se configura por encima de 5.
+
+**mux-apply-config**: RPC que ejecuta el binario "muxponder --configuracion" aplicando los parametros configurados previamente.
+
+**mux-settings**: RPC que ejecuta el binario "settings --potencia $edfa_output_power_config".
+
+Como usarlos? desde yangcli:
+
+    $ mux-notify-activate
