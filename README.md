@@ -1,5 +1,7 @@
 # NETCONF -  MXP - YUMA123
 
+**REQUIERE INICIAR MONITOR EN EL MXP PREVIAMENTE**
+
 Iniciamos netconfd, especificando que levante desde el inicio el modulo del mxp.
 
     $ cd ~/usrapp/sbin/
