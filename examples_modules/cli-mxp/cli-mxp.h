@@ -39,17 +39,18 @@ extern "C" {
 #define y_cli_mxp_N_board_humidity_state (const xmlChar *)"board_humidity_state"
 #define y_cli_mxp_N_canal (const xmlChar *)"canal"
 #define y_cli_mxp_N_cd_compensacion (const xmlChar *)"cd_compensacion"
-#define y_cli_mxp_N_comando (const xmlChar *)"comando"
 #define y_cli_mxp_N_configuracion (const xmlChar *)"configuracion"
 #define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
 #define y_cli_mxp_N_edfa_output_power_state (const xmlChar *)"edfa_output_power_state"
 #define y_cli_mxp_N_fpga_temperature_state (const xmlChar *)"fpga_temperature_state"
-#define y_cli_mxp_N_mux_apply (const xmlChar *)"mux-apply"
+#define y_cli_mxp_N_mux_apply_config (const xmlChar *)"mux-apply-config"
 #define y_cli_mxp_N_mux_config (const xmlChar *)"mux-config"
 #define y_cli_mxp_N_mux_notify (const xmlChar *)"mux-notify"
+#define y_cli_mxp_N_mux_notify_activate (const xmlChar *)"mux-notify-activate"
+#define y_cli_mxp_N_mux_notify_deactivate (const xmlChar *)"mux-notify-deactivate"
+#define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
-#define y_cli_mxp_N_respuesta (const xmlChar *)"respuesta"
 #define y_cli_mxp_N_ringtone (const xmlChar *)"ringtone"
 #define y_cli_mxp_N_source (const xmlChar *)"source"
 #define y_cli_mxp_N_tipo_fec_cliente (const xmlChar *)"tipo_fec_cliente"
@@ -75,21 +76,61 @@ typedef struct y_cli_mxp_T_mux_state_ {
   int64 edfa_output_power_state;
 } y_cli_mxp_T_mux_state;
 
-/* container /mux-apply/input */
-typedef struct y_cli_mxp_T_mux_apply_input_ {
-  xmlChar *comando;
-} y_cli_mxp_T_mux_apply_input;
+/* container /mux-notify-activate/input */
+typedef struct y_cli_mxp_T_mux_notify_activate_input_ {
+} y_cli_mxp_T_mux_notify_activate_input;
 
-/* container /mux-apply/output */
-typedef struct y_cli_mxp_T_mux_apply_output_ {
-  xmlChar *respuesta;
-} y_cli_mxp_T_mux_apply_output;
+/* container /mux-notify-activate/output */
+typedef struct y_cli_mxp_T_mux_notify_activate_output_ {
+} y_cli_mxp_T_mux_notify_activate_output;
 
-/* rpc /mux-apply */
-typedef struct y_cli_mxp_T_mux_apply_ {
-  y_cli_mxp_T_mux_apply_input input;
-  y_cli_mxp_T_mux_apply_output output;
-} y_cli_mxp_T_mux_apply;
+/* rpc /mux-notify-activate */
+typedef struct y_cli_mxp_T_mux_notify_activate_ {
+  y_cli_mxp_T_mux_notify_activate_input input;
+  y_cli_mxp_T_mux_notify_activate_output output;
+} y_cli_mxp_T_mux_notify_activate;
+
+/* container /mux-notify-deactivate/input */
+typedef struct y_cli_mxp_T_mux_notify_deactivate_input_ {
+} y_cli_mxp_T_mux_notify_deactivate_input;
+
+/* container /mux-notify-deactivate/output */
+typedef struct y_cli_mxp_T_mux_notify_deactivate_output_ {
+} y_cli_mxp_T_mux_notify_deactivate_output;
+
+/* rpc /mux-notify-deactivate */
+typedef struct y_cli_mxp_T_mux_notify_deactivate_ {
+  y_cli_mxp_T_mux_notify_deactivate_input input;
+  y_cli_mxp_T_mux_notify_deactivate_output output;
+} y_cli_mxp_T_mux_notify_deactivate;
+
+/* container /mux-apply-config/input */
+typedef struct y_cli_mxp_T_mux_apply_config_input_ {
+} y_cli_mxp_T_mux_apply_config_input;
+
+/* container /mux-apply-config/output */
+typedef struct y_cli_mxp_T_mux_apply_config_output_ {
+} y_cli_mxp_T_mux_apply_config_output;
+
+/* rpc /mux-apply-config */
+typedef struct y_cli_mxp_T_mux_apply_config_ {
+  y_cli_mxp_T_mux_apply_config_input input;
+  y_cli_mxp_T_mux_apply_config_output output;
+} y_cli_mxp_T_mux_apply_config;
+
+/* container /mux-settings/input */
+typedef struct y_cli_mxp_T_mux_settings_input_ {
+} y_cli_mxp_T_mux_settings_input;
+
+/* container /mux-settings/output */
+typedef struct y_cli_mxp_T_mux_settings_output_ {
+} y_cli_mxp_T_mux_settings_output;
+
+/* rpc /mux-settings */
+typedef struct y_cli_mxp_T_mux_settings_ {
+  y_cli_mxp_T_mux_settings_input input;
+  y_cli_mxp_T_mux_settings_output output;
+} y_cli_mxp_T_mux_settings;
 
 /* container /mux-notify/source */
 typedef struct y_cli_mxp_T_mux_notify_source_ {

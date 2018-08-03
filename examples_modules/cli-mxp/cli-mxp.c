@@ -25,7 +25,10 @@
 static ncx_module_t *cli_mxp_mod;
 static obj_template_t *mux_config_obj;
 static obj_template_t *mux_state_obj;
-static obj_template_t *mux_apply_obj;
+static obj_template_t *mux_notify_activate_obj;
+static obj_template_t *mux_notify_deactivate_obj;
+static obj_template_t *mux_apply_config_obj;
+static obj_template_t *mux_settings_obj;
 static obj_template_t *mux_notify_obj;
 static val_value_t *mux_config_val;
 
@@ -50,10 +53,6 @@ Monitor *pt_monitor_struct;
 int shmfd;
 float edfa_output_power_conf;
 volatile pthread_t alarma_tid;
-
-
-
-
 
 
 static void *
@@ -143,7 +142,10 @@ static void y_cli_mxp_init_static_vars (void)
   cli_mxp_mod = NULL;
   mux_config_obj = NULL;
   mux_state_obj = NULL;
-  mux_apply_obj = NULL;
+  mux_notify_activate_obj = NULL;
+  mux_notify_deactivate_obj = NULL;
+  mux_apply_config_obj = NULL;
+  mux_settings_obj = NULL;
   mux_notify_obj = NULL;
   mux_config_val = NULL;
 
@@ -948,7 +950,7 @@ static status_t cli_mxp_mux_state_board_humidity_state_get (
 
   /* set the board_humidity_state var here, change zero */
   /* set the fpga_temperature var here, change zero */
-  board_humidity_state = (const xmlChar *)pt_monitor_struct->general_struct.board_humidity;
+  board_humidity_state = (const xmlChar *)"0";
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -1075,7 +1077,7 @@ static status_t
 
 
 /********************************************************************
-* FUNCTION y_cli_mxp_mux_apply_validate
+* FUNCTION y_cli_mxp_mux_notify_activate_validate
 * 
 * RPC validation phase
 * All YANG constraints have passed at this point.
@@ -1087,7 +1089,7 @@ static status_t
 * RETURNS:
 *     error status
 ********************************************************************/
-static status_t y_cli_mxp_mux_apply_validate (
+static status_t y_cli_mxp_mux_notify_activate_validate (
   ses_cb_t *scb,
   rpc_msg_t *msg,
   xml_node_t *methnode)
@@ -1095,16 +1097,6 @@ static status_t y_cli_mxp_mux_apply_validate (
   status_t res = NO_ERR;
   val_value_t *errorval = NULL;
 
-  val_value_t *comando_val;
-  const xmlChar *comando;
-
-  comando_val = val_find_child(
-    msg->rpc_input,
-    y_cli_mxp_M_cli_mxp,
-    y_cli_mxp_N_comando);
-  if (comando_val != NULL && comando_val->res == NO_ERR) {
-    comando = VAL_STRING(comando_val);
-  }
 
   if (res != NO_ERR) {
     agt_record_error(
@@ -1120,11 +1112,11 @@ static status_t y_cli_mxp_mux_apply_validate (
   }
   return res;
 
-} /* y_cli_mxp_mux_apply_validate */
+} /* y_cli_mxp_mux_notify_activate_validate */
 
 
 /********************************************************************
-* FUNCTION y_cli_mxp_mux_apply_invoke
+* FUNCTION y_cli_mxp_mux_notify_activate_invoke
 * 
 * RPC invocation phase
 * All constraints have passed at this point.
@@ -1136,73 +1128,285 @@ static status_t y_cli_mxp_mux_apply_validate (
 * RETURNS:
 *     error status
 ********************************************************************/
-static status_t y_cli_mxp_mux_apply_invoke (
+static status_t y_cli_mxp_mux_notify_activate_invoke (
   ses_cb_t *scb,
   rpc_msg_t *msg,
   xml_node_t *methnode)
 {
   status_t res = NO_ERR;
 
-  val_value_t *comando_val;
-  const xmlChar *comando;
-
-  comando_val = val_find_child(
-    msg->rpc_input,
-    y_cli_mxp_M_cli_mxp,
-    y_cli_mxp_N_comando);
-  if (comando_val != NULL && comando_val->res == NO_ERR) {
-    comando = VAL_STRING(comando_val);
-  }
 
   /* remove the next line if scb is used */
   (void)scb;
+
+  /* remove the next line if msg is used */
+  (void)msg;
 
   /* remove the next line if methnode is used */
   (void)methnode;
 
   /* invoke your device instrumentation code here */
-  void *resp;
+  
 
-  if (xmlStrEqual(comando,(const xmlChar *)"notify")) {
-      log_debug("\n******ALARMA ACTIVADA******");
+  if (alarma_tid == 0) {
+    log_debug("\n******ALARMA ACTIVADA******");
+    pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
+    } 
 
-      if (alarma_tid == 0) {
-       
-          pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
+  return res;
 
-        } 
+} /* y_cli_mxp_mux_notify_activate_invoke */
 
+
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_notify_deactivate_validate
+* 
+* RPC validation phase
+* All YANG constraints have passed at this point.
+* Add description-stmt checks in this function.
+* 
+* INPUTS:
+*     see agt/agt_rpc.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t y_cli_mxp_mux_notify_deactivate_validate (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  xml_node_t *methnode)
+{
+  status_t res = NO_ERR;
+  val_value_t *errorval = NULL;
+
+
+  if (res != NO_ERR) {
+    agt_record_error(
+      scb,
+      &msg->mhdr,
+      NCX_LAYER_OPERATION,
+      res,
+      methnode,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval);
   }
+  return res;
 
-  else if (xmlStrEqual(comando,(const xmlChar *)"cambios")) {
-    char str[80];
-    char buff[80];
+} /* y_cli_mxp_mux_notify_deactivate_validate */
 
-    ftoa(edfa_output_power_conf, buff, 2);
 
-    strcpy (str,"settings ");
-    strcat (str,"--potencia ");
-    strcat (str,buff);
-    printf("\n COMANDO : %s\n", str);
-    system(str);
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_notify_deactivate_invoke
+* 
+* RPC invocation phase
+* All constraints have passed at this point.
+* Call device instrumentation code in this function.
+* 
+* INPUTS:
+*     see agt/agt_rpc.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t y_cli_mxp_mux_notify_deactivate_invoke (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  xml_node_t *methnode)
+{
+  status_t res = NO_ERR;
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if msg is used */
+  (void)msg;
+
+  /* remove the next line if methnode is used */
+  (void)methnode;
+
+  /* invoke your device instrumentation code here */
+  
+  if (alarma_tid != 0) {
+  /* the oven should be turned off but is on (stop the oven thread) */
+    int rc = pthread_cancel(alarma_tid);
+    rc = pthread_join(alarma_tid, &resp);
+    if (resp == PTHREAD_CANCELED){
+      printf("main(): thread was canceled\n");
+      alarma_tid=0;
+      log_debug("\n******ALARMA DESCTIVADA******");
+    }
   }
-
-  else{
-        if (alarma_tid != 0) {
-        /* the oven should be turned off but is on (stop the oven thread) */
-          int rc = pthread_cancel(alarma_tid);
-          rc = pthread_join(alarma_tid, &resp);
-          if (resp == PTHREAD_CANCELED){
-            printf("main(): thread was canceled\n");
-            alarma_tid=0;
-          }
-        }
-      }
 
 
   return res;
 
-} /* y_cli_mxp_mux_apply_invoke */
+} /* y_cli_mxp_mux_notify_deactivate_invoke */
+
+
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_apply_config_validate
+* 
+* RPC validation phase
+* All YANG constraints have passed at this point.
+* Add description-stmt checks in this function.
+* 
+* INPUTS:
+*     see agt/agt_rpc.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t y_cli_mxp_mux_apply_config_validate (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  xml_node_t *methnode)
+{
+  status_t res = NO_ERR;
+  val_value_t *errorval = NULL;
+
+
+  if (res != NO_ERR) {
+    agt_record_error(
+      scb,
+      &msg->mhdr,
+      NCX_LAYER_OPERATION,
+      res,
+      methnode,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval);
+  }
+  return res;
+
+} /* y_cli_mxp_mux_apply_config_validate */
+
+
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_apply_config_invoke
+* 
+* RPC invocation phase
+* All constraints have passed at this point.
+* Call device instrumentation code in this function.
+* 
+* INPUTS:
+*     see agt/agt_rpc.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t y_cli_mxp_mux_apply_config_invoke (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  xml_node_t *methnode)
+{
+  status_t res = NO_ERR;
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if msg is used */
+  (void)msg;
+
+  /* remove the next line if methnode is used */
+  (void)methnode;
+
+  /* invoke your device instrumentation code here */
+  
+  return res;
+
+} /* y_cli_mxp_mux_apply_config_invoke */
+
+
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_settings_validate
+* 
+* RPC validation phase
+* All YANG constraints have passed at this point.
+* Add description-stmt checks in this function.
+* 
+* INPUTS:
+*     see agt/agt_rpc.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t y_cli_mxp_mux_settings_validate (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  xml_node_t *methnode)
+{
+  status_t res = NO_ERR;
+  val_value_t *errorval = NULL;
+
+
+  if (res != NO_ERR) {
+    agt_record_error(
+      scb,
+      &msg->mhdr,
+      NCX_LAYER_OPERATION,
+      res,
+      methnode,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval);
+  }
+  return res;
+
+} /* y_cli_mxp_mux_settings_validate */
+
+
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_settings_invoke
+* 
+* RPC invocation phase
+* All constraints have passed at this point.
+* Call device instrumentation code in this function.
+* 
+* INPUTS:
+*     see agt/agt_rpc.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t y_cli_mxp_mux_settings_invoke (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  xml_node_t *methnode)
+{
+  status_t res = NO_ERR;
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if msg is used */
+  (void)msg;
+
+  /* remove the next line if methnode is used */
+  (void)methnode;
+
+  /* invoke your device instrumentation code here */
+  
+  char str[80];
+  char buff[80];
+
+  ftoa(edfa_output_power_conf, buff, 2);
+
+  strcpy (str,"settings ");
+  strcat (str,"--potencia ");
+  strcat (str,buff);
+  printf("\n COMANDO : %s\n", str);
+  system(str);
+
+  return res;
+
+} /* y_cli_mxp_mux_settings_invoke */
 
 
 /********************************************************************
@@ -1290,9 +1494,27 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
-  mux_apply_obj = ncx_find_object(
+  mux_notify_activate_obj = ncx_find_object(
     cli_mxp_mod,
-    y_cli_mxp_N_mux_apply);
+    y_cli_mxp_N_mux_notify_activate);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_notify_deactivate_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_notify_deactivate);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_apply_config_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_apply_config);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_settings_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_settings);
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
@@ -1304,18 +1526,72 @@ status_t y_cli_mxp_init (
   }
   res = agt_rpc_register_method(
     y_cli_mxp_M_cli_mxp,
-    y_cli_mxp_N_mux_apply,
+    y_cli_mxp_N_mux_notify_activate,
     AGT_RPC_PH_VALIDATE,
-    y_cli_mxp_mux_apply_validate);
+    y_cli_mxp_mux_notify_activate_validate);
   if (res != NO_ERR) {
     return res;
   }
 
   res = agt_rpc_register_method(
     y_cli_mxp_M_cli_mxp,
-    y_cli_mxp_N_mux_apply,
+    y_cli_mxp_N_mux_notify_activate,
     AGT_RPC_PH_INVOKE,
-    y_cli_mxp_mux_apply_invoke);
+    y_cli_mxp_mux_notify_activate_invoke);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = agt_rpc_register_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_notify_deactivate,
+    AGT_RPC_PH_VALIDATE,
+    y_cli_mxp_mux_notify_deactivate_validate);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = agt_rpc_register_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_notify_deactivate,
+    AGT_RPC_PH_INVOKE,
+    y_cli_mxp_mux_notify_deactivate_invoke);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = agt_rpc_register_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_apply_config,
+    AGT_RPC_PH_VALIDATE,
+    y_cli_mxp_mux_apply_config_validate);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = agt_rpc_register_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_apply_config,
+    AGT_RPC_PH_INVOKE,
+    y_cli_mxp_mux_apply_config_invoke);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = agt_rpc_register_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_settings,
+    AGT_RPC_PH_VALIDATE,
+    y_cli_mxp_mux_settings_validate);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = agt_rpc_register_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_settings,
+    AGT_RPC_PH_INVOKE,
+    y_cli_mxp_mux_settings_invoke);
   if (res != NO_ERR) {
     return res;
   }
@@ -1419,8 +1695,7 @@ status_t y_cli_mxp_init (
     perror("In mmap()");
     exit(1);
   }
-
-
+  
   return res;
 } /* y_cli_mxp_init */
 
@@ -1465,7 +1740,19 @@ void y_cli_mxp_cleanup (void)
   
   agt_rpc_unregister_method(
     y_cli_mxp_M_cli_mxp,
-    y_cli_mxp_N_mux_apply);
+    y_cli_mxp_N_mux_notify_activate);
+  
+  agt_rpc_unregister_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_notify_deactivate);
+  
+  agt_rpc_unregister_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_apply_config);
+  
+  agt_rpc_unregister_method(
+    y_cli_mxp_M_cli_mxp,
+    y_cli_mxp_N_mux_settings);
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,
     (const xmlChar *)"/mux-config");
@@ -1503,10 +1790,9 @@ void y_cli_mxp_cleanup (void)
     (const xmlChar *)"/mux-config/edfa_output_power_config");
 
   /* put your cleanup code here */
-    if (close(shmfd) != 0)
-      {
-        printf("Error closing the SHM \n");
-      }
+  if (close(shmfd) != 0){
+    printf("Error closing the SHM \n");
+  }
   
 } /* y_cli_mxp_cleanup */
 
