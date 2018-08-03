@@ -12,11 +12,26 @@ module cli-mxp {
           "Version 0.1.0";
     }
 
-    // patrones como expresiones regulares. Ejemplo que acepta cualquier string terminado en .a  pattern "*.a";
+    
     typedef restricted-tipo-trafico {
       type enumeration {
         enum "otu2";
         enum "xge";
+        }
+    }
+
+    typedef restricted-tipo-fec-linea {
+      type enumeration {
+        enum "gfec";
+        enum "cerofec";
+        }
+    }
+
+    typedef restricted-tipo-fec-cliente {
+      type enumeration {
+        enum "gfec_cliente";
+        enum "cerofec_cliente";
+        enum "nulofec_cliente";
         }
     }
 
@@ -43,13 +58,13 @@ module cli-mxp {
         leaf tipo_fec_linea {
             description
               "[gfec|cerofec] especifica el uso de fec.";
-            type string;
+            type restricted-tipo-fec-linea;
         }
 
         leaf tipo_fec_cliente {
             description
               "[gfec_cliente|cerofec_cliente|nulofec_cliente] especifica el uso de fec.";
-            type string;
+            type restricted-tipo-fec-cliente;
         }
 
         leaf canal {
@@ -108,23 +123,21 @@ module cli-mxp {
     }
 
 
-    rpc mux-apply {
-        
-        description "RPC que aplica la configuracion segun el string enviado";
-
-        input {
-            leaf comando {
-                type string;
-            }
-        }
-
-        output {
-            leaf respuesta {
-                type string;
-            }
-        }
+    rpc mux-notify-activate {        
+        description "RPC que activa la notificacion";
     }
 
+    rpc mux-notify-deactivate {        
+        description "RPC que desactiva la notificacion";
+    }
+
+    rpc mux-apply-config {        
+        description "RPC que aplica los cambios --configuracion ";
+    }
+
+    rpc mux-settings {        
+        description "RPC que aplica los cambios --settings ";
+    }
 
 
     notification mux-notify {
