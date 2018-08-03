@@ -956,6 +956,8 @@ static status_t cli_mxp_mux_state_board_humidity_state_get (
   /* set the board_humidity_state var here, change zero */
   /* set the fpga_temperature var here, change zero */
 
+  printf("%s\n", "LOGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+  printf("%s\n", (const xmlChar *)pt_monitor_struct->general_struct.board_humidity);
   //(const xmlChar *)pt_monitor_struct->general_struct.board_humidity;
   board_humidity_state = (const xmlChar *)pt_monitor_struct->general_struct.board_humidity;
   res = val_set_simval_obj(
