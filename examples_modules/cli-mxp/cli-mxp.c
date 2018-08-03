@@ -53,7 +53,9 @@ Monitor *pt_monitor_struct;
 int shmfd;
 float edfa_output_power_conf;
 volatile pthread_t alarma_tid;
-
+const xmlChar *tipo_trafico_var;
+const xmlChar *tipo_fec_linea_var;
+const xmlChar *tipo_fec_cliente_var;
 
 static void *
 oven_thread(void *arg)
@@ -269,6 +271,9 @@ static status_t cli_mxp_mux_config_tipo_trafico_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
+    tipo_trafico_var = VAL_STRING(newval);
+    printf("%s\n", "VALOR ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS**********************");
+    printf("%s\n", VAL_STRING(newval));
     switch (editop) {
     case OP_EDITOP_LOAD:
       break;
@@ -1318,6 +1323,16 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
 
   /* invoke your device instrumentation code here */
   
+  char str[80];
+  char buff[80];
+
+  strcpy (str,"muxponder ");
+  strcat (str,"--configuracion ");
+  strcat (str,"--");
+  strcat (str, tipo_trafico_var);
+  printf("\n COMANDO : %s\n", str);
+  //system(str);
+
   return res;
 
 } /* y_cli_mxp_mux_apply_config_invoke */
