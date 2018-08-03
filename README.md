@@ -30,8 +30,13 @@ Para crear los valores:
     $ create /mux-config/edfa_output_power_config
     $ ENTER VALUE
     
-    $ create /mux-config/edfa_output_power_config
+    $ create /mux-config/tipo_trafico
     $ ENTER VALUE
     
-    $ create /mux-config/edfa_output_power_config
+    $ create /mux-config/tipo_fec_linea
     $ ENTER VALUE
+    
+    $ create /mux-config/tipo_fec_cliente
+    $ ENTER VALUE
+    
+> **NOTA 2**: Desde yang se verifica que por ejemplo, tipo_trafico solo pueda tener valores como otu2 o xge, restringiendo cualquier otra posibilidad para este parametro. (same para tipo_fec_linea, tipo_fec_cliente, etc).
