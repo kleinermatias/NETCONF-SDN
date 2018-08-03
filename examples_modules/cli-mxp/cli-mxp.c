@@ -272,8 +272,6 @@ static status_t cli_mxp_mux_config_tipo_trafico_edit (
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
     tipo_trafico_var = VAL_STRING(newval);
-    printf("%s\n", "VALOR ESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS**********************");
-    printf("%s\n", VAL_STRING(newval));
     switch (editop) {
     case OP_EDITOP_LOAD:
       break;
@@ -351,6 +349,7 @@ static status_t cli_mxp_mux_config_tipo_fec_linea_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
+    tipo_fec_linea_var = VAL_STRING(newval);
     switch (editop) {
     case OP_EDITOP_LOAD:
       break;
@@ -428,6 +427,7 @@ static status_t cli_mxp_mux_config_tipo_fec_cliente_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
+    tipo_fec_cliente_var = VAL_STRING(newval);
     switch (editop) {
     case OP_EDITOP_LOAD:
       break;
@@ -1330,6 +1330,10 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   strcat (str,"--configuracion ");
   strcat (str,"--");
   strcat (str, tipo_trafico_var);
+  strcat (str,"--");
+  strcat (str, tipo_fec_linea_var);
+  strcat (str,"--");
+  strcat (str, tipo_fec_cliente_var);
   printf("\n COMANDO : %s\n", str);
   //system(str);
 
