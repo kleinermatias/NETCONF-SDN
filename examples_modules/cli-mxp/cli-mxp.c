@@ -1338,7 +1338,7 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   strcat (str," --");
   strcat (str, tipo_fec_cliente_var);
   printf("\n COMANDO : %s\n", str);
-  //system(str);
+  system(str);
 
   return res;
 
