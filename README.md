@@ -11,9 +11,10 @@ Nos conectamos al servidor NETCONF:
 
 Unicamente 3 datos de estado por el momento. 
 
-1. **fpga_temperature_state**
-2. **board_humidity_state**
-3. **edfa_output_power_state**
+
+ 1. **fpga_temperature_state**
+ 2. **board_humidity_state**
+ 3. **edfa_output_power_state**
 
 Para ver los datos de ESTADO, desde yangcli:
 
@@ -57,3 +58,11 @@ Por el momento:
 Como usarlos? desde yangcli:
 
     $ mux-notify-activate
+    
+## TODO. 
+
+1. Conectar a onos.
+2. Completar la cli. ?
+3. Probar RPC 'mux-apply-config'.
+4. Respuestas RPC mas detalladas. 
+5. Mas..
