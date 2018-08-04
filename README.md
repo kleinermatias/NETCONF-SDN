@@ -9,7 +9,7 @@ Iniciamos netconfd, especificando que levante desde el inicio el modulo del mxp.
     
 Nos conectamos al servidor NETCONF: 
 
-    $ yangcli --user=root --server=172.16.0.41 --pass=123
+    $ yangcli --user=root --server=172.16.0.41 --pass=123 --timeout=120
 
 Unicamente 3 datos de estado por el momento. 
 
