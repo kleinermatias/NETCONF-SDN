@@ -5,7 +5,7 @@
 Iniciamos netconfd, especificando que levante desde el inicio el modulo del mxp.
 
     $ cd ~/usrapp/sbin/
-    $ ./netconfd --module=cli-mxp --log-level="debug4" --superuser=root
+    $ ./netconfd --module=cli-mxp --log-level="debug4" --superuser=root --with-startup=true
     
 Nos conectamos al servidor NETCONF: 
 
