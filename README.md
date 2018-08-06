@@ -72,6 +72,7 @@ Como usarlos? desde yangcli:
 4. Respuestas RPC mas detalladas. 
 5. Mas..
 
+    
+PING:
 
-
-ping6 -I enp1s0f0 2607:f0d0:2001:a::3
+    $ ping6 -I enp1s0f0 2607:f0d0:2001:a::3
