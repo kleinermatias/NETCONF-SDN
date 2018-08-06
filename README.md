@@ -71,3 +71,7 @@ Como usarlos? desde yangcli:
 3. Probar RPC 'mux-apply-config'.
 4. Respuestas RPC mas detalladas. 
 5. Mas..
+
+
+
+ping6 -I enp1s0f0 2607:f0d0:2001:a::3
