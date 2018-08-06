@@ -75,4 +75,4 @@ Como usarlos? desde yangcli:
     
 PING:
 
-    $ ping6 -I enp1s0f0 2607:f0d0:2001:a::3
+    $ sudo ping6 -f -I enp1s0f0 2607:f0d0:2001:a::3
