@@ -7,6 +7,9 @@ Iniciamos netconfd, especificando que levante desde el inicio el modulo del mxp.
     $ cd ~/usrapp/sbin/
     $ ./netconfd --module=cli-mxp --log-level="debug4" --superuser=root --with-startup=true
     
+Ruta al archivo startup:
+/root/.yuma/startup-cfg.xml  
+
 Nos conectamos al servidor NETCONF: 
 
     $ yangcli --user=root --server=172.16.0.41 --pass=123 --timeout=120
