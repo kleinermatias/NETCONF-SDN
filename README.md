@@ -68,9 +68,8 @@ Como usarlos? desde yangcli:
 
 1. Conectar a onos.
 2. Completar la cli. ?
-3. Probar RPC 'mux-apply-config'.
-4. Respuestas RPC mas detalladas. 
-5. Mas..
+3. Respuestas RPC mas detalladas. 
+4. Mas..
 
     
 PING:
