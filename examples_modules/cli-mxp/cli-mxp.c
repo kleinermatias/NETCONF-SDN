@@ -1275,7 +1275,7 @@ static status_t cli_mxp_mux_state_xfp_rx_power_get (
 
   char buff[20];
 
-  float rx_powe=pt_monitor_struct->txp_struct.;
+  float rx_powe=pt_monitor_struct->txp_struct.txp_rx_power;
   ftoa(rx_powe, buff, 2);
 
   /* set the xfp_rx_power var here */
