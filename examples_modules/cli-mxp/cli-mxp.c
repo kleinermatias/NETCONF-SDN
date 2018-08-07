@@ -1230,7 +1230,7 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
   char buf[80];
   char bu[80];
   sprintf(buf, "Test=%.2f", tx_powe);
-  strcpy(bu, buf);
+  strcpy(bu, "-1.54");
   printf(bu);
 
   /* set the xfp_tx_power var here */
