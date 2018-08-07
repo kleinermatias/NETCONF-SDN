@@ -57,6 +57,8 @@ extern "C" {
 #define y_cli_mxp_N_tipo_fec_linea (const xmlChar *)"tipo_fec_linea"
 #define y_cli_mxp_N_tipo_trafico (const xmlChar *)"tipo_trafico"
 #define y_cli_mxp_N_value_notify_config (const xmlChar *)"value_notify_config"
+#define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
+#define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
 
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
@@ -68,7 +70,7 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *potencia;
   xmlChar *cd_compensacion;
   int64 edfa_output_power_config;
-  int64 time_notify_config;
+  int16 time_notify_config;
   int64 value_notify_config;
 } y_cli_mxp_T_mux_config;
 
@@ -77,6 +79,8 @@ typedef struct y_cli_mxp_T_mux_state_ {
   int64 fpga_temperature_state;
   int16 board_humidity_state;
   int64 edfa_output_power_state;
+  int64 xfp_tx_power;
+  int64 xfp_rx_power;
 } y_cli_mxp_T_mux_state;
 
 /* container /mux-notify-activate/input */

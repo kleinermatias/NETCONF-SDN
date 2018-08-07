@@ -1184,6 +1184,112 @@ static status_t cli_mxp_mux_state_edfa_output_power_state_get (
 
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_xfp_tx_power_get
+* 
+* Get database object callback
+* Path: /mux-state/xfp_tx_power
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_xfp_tx_power_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *tx_power;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_xfp_tx_power_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  char buff[20];
+
+  float tx_powe=pt_monitor_struct->xfp_struct.xfp_tx_power[xfp_module];
+  ftoa(tx_powe, buff, 2);
+
+  /* set the xfp_tx_power var here */
+  tx_power = (const xmlChar *)buff;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    tx_power);
+
+  return res;
+
+} /* cli_mxp_mux_state_xfp_tx_power_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_xfp_rx_power_get
+* 
+* Get database object callback
+* Path: /mux-state/xfp_rx_power
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_xfp_rx_power_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *rx_power;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_xfp_rx_power_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  char buff[20];
+
+  float rx_powe=pt_monitor_struct->xfp_struct.xfp_rx_power[xfp_module];
+  ftoa(rx_powe, buff, 2);
+
+  /* set the xfp_rx_power var here */
+  rx_power = (const xmlChar *)buff;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    rx_power);
+
+  return res;
+
+} /* cli_mxp_mux_state_xfp_rx_power_get */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_state_mro
 * 
 * Make read-only top-level node
@@ -1234,6 +1340,30 @@ static status_t
     parentval->obj,
     y_cli_mxp_N_edfa_output_power_state,
     cli_mxp_mux_state_edfa_output_power_state_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state/xfp_tx_power */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_xfp_tx_power,
+    cli_mxp_mux_state_xfp_tx_power_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state/xfp_rx_power */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_xfp_rx_power,
+    cli_mxp_mux_state_xfp_rx_power_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);
