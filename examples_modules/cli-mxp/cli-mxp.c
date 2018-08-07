@@ -72,7 +72,7 @@ oven_thread(void *arg)
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] pout");
         }
 
-        if(pt_monitor_struct->txp_struct.txp_rx_power < value_rx_power_notify_conf)
+        if(pt_monitor_struct->txp_struct.txp_rx_power > value_rx_power_notify_conf)
         {   
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] rx_power");
         }
@@ -986,11 +986,9 @@ static status_t cli_mxp_mux_config_value_rx_power_notify_config_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
-    printf("%s\n", "A VERRRRRRR");
-    //float x = VAL_DOUBLE(newval);
-    //printf("%.2f\n", x);
+
     value_rx_power_notify_conf = atof(VAL_STRING(newval));
-    printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSsFloat value = %f\n", value_rx_power_notify_conf);
+    
 
     switch (editop) {
     case OP_EDITOP_LOAD:
