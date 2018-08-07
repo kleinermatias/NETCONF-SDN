@@ -1227,14 +1227,11 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
   
   printf("%s\n", "HOLA!!!!!!!!!!!!!!!!!!!");
 
-  char buf[80];
-  char bu[80];
-  sprintf(buf, "Test=%.2f", tx_powe);
-  strcpy(bu, "-1.54");
-  printf(bu);
-
+  char buf[10];
+  sprintf(buf, "%.2f", x);
+  printf(buf);
   /* set the xfp_tx_power var here */
-  tx_power = (const xmlChar *)bu;
+  tx_power = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
