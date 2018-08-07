@@ -1228,7 +1228,7 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
   printf("%s\n", "HOLA!!!!!!!!!!!!!!!!!!!");
 
   char buf[10];
-  sprintf(buf, "%.2f", x);
+  sprintf(buf, "%.2f", tx_powe);
   printf(buf);
   /* set the xfp_tx_power var here */
   tx_power = (const xmlChar *)buf;
