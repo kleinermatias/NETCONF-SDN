@@ -1232,7 +1232,7 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
   printf(buf);
   
   /* set the xfp_tx_power var here */
-  tx_power = (const xmlChar *)buff;
+  tx_power = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
