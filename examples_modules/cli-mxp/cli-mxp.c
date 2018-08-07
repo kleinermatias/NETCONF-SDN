@@ -66,10 +66,17 @@ oven_thread(void *arg)
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     while (alarma_tid) {
+        
         if(atof(pt_monitor_struct->edfa_struct.edfa_output_power) > value_notify_conf)
         {   
-            y_cli_mxp_mux_notify_send((const xmlChar *)"hola?");
+            y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] pout");
         }
+
+        if(pt_monitor_struct->txp_struct.txp_rx_power < value_rx_power_notify_conf)
+        {   
+            y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] rx_power");
+        }
+
         sleep(time_notify_conf);
     }
     return NULL;
