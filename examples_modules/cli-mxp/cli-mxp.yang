@@ -120,6 +120,7 @@ module cli-mxp {
 
         config false;
 
+        // float in C
         leaf fpga_temperature_state {
             description "Temperatura de la FPGA";
             type decimal64 {
@@ -136,6 +137,22 @@ module cli-mxp {
             description "Potencia de salida EDFA";
             type decimal64 {
                 fraction-digits 1;
+            }
+        }
+
+        // float in C
+        leaf xfp_tx_power {
+            description "TX power";
+            type decimal64 {
+                fraction-digits 2;
+            }
+        }
+
+        // float in C
+        leaf xfp_rx_power {
+            description "RX power";
+            type decimal64 {
+                fraction-digits 2;
             }
         }
 
