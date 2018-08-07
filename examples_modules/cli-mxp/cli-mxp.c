@@ -1222,7 +1222,7 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
 
   char buff[20];
 
-  float tx_powe=pt_monitor_struct->xfp_struct.xfp_tx_power[xfp_module];
+  float tx_powe=pt_monitor_struct->xfp_struct.xfp_tx_power;
   ftoa(tx_powe, buff, 2);
 
   /* set the xfp_tx_power var here */
@@ -1275,7 +1275,7 @@ static status_t cli_mxp_mux_state_xfp_rx_power_get (
 
   char buff[20];
 
-  float rx_powe=pt_monitor_struct->xfp_struct.xfp_rx_power[xfp_module];
+  float rx_powe=pt_monitor_struct->xfp_struct.xfp_rx_power;
   ftoa(rx_powe, buff, 2);
 
   /* set the xfp_rx_power var here */
