@@ -112,6 +112,14 @@ module cli-mxp {
             }
         }
 
+        leaf value_rx_power_notify_config {
+            description
+              "Umbral del valor para notificar rx power.";
+            type decimal64 {
+                fraction-digits 2;
+            }
+        }
+
     }
 
 
