@@ -73,7 +73,7 @@ typedef struct y_cli_mxp_T_mux_config_ {
   int64 edfa_output_power_config;
   int16 time_notify_config;
   int64 value_notify_config;
-  int64 value_rx_power_notify_config;
+  xmlChar *value_rx_power_notify_config;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */
