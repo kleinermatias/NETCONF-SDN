@@ -1224,7 +1224,13 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
 
   float tx_powe=pt_monitor_struct->txp_struct.txp_tx_power;
   ftoa(tx_powe, buff, 2);
+  
+  printf("%s\n", "HOLA!!!!!!!!!!!!!!!!!!!");
 
+  char buf[10];
+  sprintf(buf, "Test=%.2f", tx_powe);
+  printf(buf);
+  
   /* set the xfp_tx_power var here */
   tx_power = (const xmlChar *)buff;
   res = val_set_simval_obj(
