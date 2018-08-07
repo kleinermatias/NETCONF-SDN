@@ -980,7 +980,7 @@ static status_t cli_mxp_mux_config_value_rx_power_notify_config_edit (
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
     printf("%s\n", "A VERRRRRRR");
-    printf("%s\n", VAL_STRING(newval));
+    printf("%d\n", VAL_DEC64(newval));
     //value_rx_power_notify_conf = atof(VAL_STRING(newval));
     //printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSsFloat value = %f\n", value_rx_power_notify_conf);
 
