@@ -52,10 +52,11 @@ extern "C" {
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
 #define y_cli_mxp_N_ringtone (const xmlChar *)"ringtone"
-#define y_cli_mxp_N_source (const xmlChar *)"source"
+#define y_cli_mxp_N_time_notify_config (const xmlChar *)"time_notify_config"
 #define y_cli_mxp_N_tipo_fec_cliente (const xmlChar *)"tipo_fec_cliente"
 #define y_cli_mxp_N_tipo_fec_linea (const xmlChar *)"tipo_fec_linea"
 #define y_cli_mxp_N_tipo_trafico (const xmlChar *)"tipo_trafico"
+#define y_cli_mxp_N_value_notify_config (const xmlChar *)"value_notify_config"
 
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
@@ -67,6 +68,8 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *potencia;
   xmlChar *cd_compensacion;
   int64 edfa_output_power_config;
+  int64 time_notify_config;
+  int64 value_notify_config;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */
@@ -132,14 +135,9 @@ typedef struct y_cli_mxp_T_mux_settings_ {
   y_cli_mxp_T_mux_settings_output output;
 } y_cli_mxp_T_mux_settings;
 
-/* container /mux-notify/source */
-typedef struct y_cli_mxp_T_mux_notify_source_ {
-  xmlChar *ringtone;
-} y_cli_mxp_T_mux_notify_source;
-
 /* notification /mux-notify */
 typedef struct y_cli_mxp_T_mux_notify_ {
-  y_cli_mxp_T_mux_notify_source source;
+  xmlChar *ringtone;
 } y_cli_mxp_T_mux_notify;
 
 /********************************************************************
@@ -150,7 +148,7 @@ typedef struct y_cli_mxp_T_mux_notify_ {
 * 
 ********************************************************************/
 extern void y_cli_mxp_mux_notify_send (
-  y_cli_mxp_T_mux_notify_source *source);
+  const xmlChar *ringtone);
 
 /********************************************************************
 * FUNCTION y_cli_mxp_init

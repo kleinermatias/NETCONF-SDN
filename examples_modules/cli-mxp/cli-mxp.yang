@@ -89,10 +89,29 @@ module cli-mxp {
             description
               "Potencia de salida de EDFA.";
             type decimal64 {
-                fraction-digits 2;
+                fraction-digits 1;
                 range "4 .. 6";
             }
         }
+
+
+        leaf time_notify_config {
+            description
+              "Cada cuantos segundos manda notificacion.";
+            type int16 {
+                range "1 .. 100";
+            }
+        }
+
+        leaf value_notify_config {
+            description
+              "Umbral del valor para notificar.";
+            type decimal64 {
+                fraction-digits 1;
+                range "4 .. 6";
+            }
+        }
+
     }
 
 
@@ -116,7 +135,7 @@ module cli-mxp {
         leaf edfa_output_power_state {
             description "Potencia de salida EDFA";
             type decimal64 {
-                fraction-digits 2;
+                fraction-digits 1;
             }
         }
 
@@ -141,12 +160,9 @@ module cli-mxp {
 
 
     notification mux-notify {
-        container source {
-            leaf ringtone {
-                type string;
-                mandatory "true";
-            }
+        leaf ringtone {
+            type string;
+            mandatory "true";
         }
     }
-
 }
