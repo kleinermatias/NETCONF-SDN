@@ -1230,9 +1230,9 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
   char buf[10];
   sprintf(buf, "Test=%.2f", tx_powe);
   printf(buf);
-  
+
   /* set the xfp_tx_power var here */
-  tx_power = (const xmlChar *)buf;
+  tx_power = (const xmlChar *)"-1.50";
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
