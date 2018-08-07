@@ -1220,17 +1220,13 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
     return ERR_NCX_OPERATION_NOT_SUPPORTED;
   }
 
-  char buff[20];
+
+  /* set the xfp_tx_power var here */
 
   float tx_powe=pt_monitor_struct->txp_struct.txp_tx_power;
-  ftoa(tx_powe, buff, 2);
-  
-  printf("%s\n", "HOLA!!!!!!!!!!!!!!!!!!!");
-
-  char buf[10];
+  char buf[30];
   sprintf(buf, "%.2f", tx_powe);
   printf(buf);
-  /* set the xfp_tx_power var here */
   tx_power = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
@@ -1278,13 +1274,13 @@ static status_t cli_mxp_mux_state_xfp_rx_power_get (
     return ERR_NCX_OPERATION_NOT_SUPPORTED;
   }
 
-  char buff[20];
+  /* set the xfp_rx_power var here */
 
   float rx_powe=pt_monitor_struct->txp_struct.txp_rx_power;
-  ftoa(rx_powe, buff, 2);
-
-  /* set the xfp_rx_power var here */
-  rx_power = (const xmlChar *)buff;
+  char buf[30];
+  sprintf(buf, "%.2f", rx_powe);
+  printf(buf);
+  rx_power = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
