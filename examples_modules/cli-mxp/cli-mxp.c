@@ -61,7 +61,7 @@ const xmlChar *tipo_fec_linea_var;
 const xmlChar *tipo_fec_cliente_var;
 
 static void *
-oven_thread(void *arg)
+alarmas_thread(void *arg)
 {
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
@@ -1539,7 +1539,7 @@ static status_t y_cli_mxp_mux_notify_activate_invoke (
 
   if (alarma_tid == 0) {
     log_debug("\n******ALARMA ACTIVADA******");
-    pthread_create((pthread_t *)&alarma_tid, NULL, oven_thread, NULL);
+    pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
     } 
 
   return res;
@@ -1624,7 +1624,7 @@ static status_t y_cli_mxp_mux_notify_deactivate_invoke (
     int rc = pthread_cancel(alarma_tid);
     rc = pthread_join(alarma_tid, &resp);
     if (resp == PTHREAD_CANCELED){
-      printf("main(): thread was canceled\n");
+      printf("Thread was canceled\n");
       alarma_tid=0;
       log_debug("\n******ALARMA DESCTIVADA******");
     }
