@@ -187,6 +187,7 @@ module cli-mxp {
         output {
             leaf respuesta {
                 type string;
+                mandatory true;
             }
         }
     }
