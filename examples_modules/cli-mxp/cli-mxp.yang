@@ -175,21 +175,10 @@ module cli-mxp {
 
     rpc mux-apply-config {        
         description "RPC que aplica los cambios --configuracion ";
-        output {
-            leaf respuesta {
-                type string;
-            }
-        }
     }
 
     rpc mux-settings {        
         description "RPC que aplica los cambios --settings ";
-        output {
-            leaf respuesta {
-                type string;
-                mandatory true;
-            }
-        }
     }
 
 
