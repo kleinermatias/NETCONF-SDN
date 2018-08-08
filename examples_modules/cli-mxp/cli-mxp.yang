@@ -127,7 +127,7 @@ module cli-mxp {
         config false;
 
         // float in C
-        leaf fpga_temperature_state {
+        leaf fpga_temperature_state[C] {
             description "Temperatura de la FPGA";
             type decimal64 {
                 fraction-digits 2;
