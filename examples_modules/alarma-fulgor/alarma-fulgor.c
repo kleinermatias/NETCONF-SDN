@@ -786,6 +786,11 @@ oven_thread(void *arg)
 
     }
     
+    val_value_t *prueba;
+    prueba = val_make_string(alarma_fulgor_mod->nsid, y_alarma_fulgor_N_respuesta, "holaSSSSSSS");
+    dlq_enque(prueba, &msg->rpc_dataQ);
+    msg->rpc_data_type = RPC_DATA_YANG;
+    
     return res;
 
   } /* y_alarma_fulgor_alarma_fulgor_activate_invoke */
