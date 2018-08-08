@@ -1542,6 +1542,7 @@ static status_t y_cli_mxp_mux_notify_activate_invoke (
     pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
     } 
 
+  res=1;
   return res;
 
 } /* y_cli_mxp_mux_notify_activate_invoke */
