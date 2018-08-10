@@ -51,6 +51,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
+#define y_cli_mxp_N_respuesta_mux_apply_config (const xmlChar *)"respuesta-mux-apply-config"
 #define y_cli_mxp_N_respuesta_mux_settings (const xmlChar *)"respuesta-mux-settings"
 #define y_cli_mxp_N_ringtone (const xmlChar *)"ringtone"
 #define y_cli_mxp_N_time_notify_config (const xmlChar *)"time_notify_config"
@@ -116,7 +117,7 @@ typedef struct y_cli_mxp_T_mux_notify_deactivate_ {
 
 /* container /mux-apply-config/output */
 typedef struct y_cli_mxp_T_mux_apply_config_output_ {
-  xmlChar *respuesta_mux_settings;
+  xmlChar *respuesta_mux_apply_config;
 } y_cli_mxp_T_mux_apply_config_output;
 
 /* container /mux-apply-config/input */
