@@ -72,7 +72,7 @@ alarmas_thread(void *arg)
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] pout");
         }
 
-        if(pt_monitor_struct->txp_struct.txp_rx_power > value_rx_power_notify_conf)
+        if(pt_monitor_struct->txp_struct.txp_rx_power < value_rx_power_notify_conf)
         {   
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] rx_power");
         }
