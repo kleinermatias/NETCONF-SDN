@@ -51,6 +51,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
+#define y_cli_mxp_N_respuesta_mux_settings (const xmlChar *)"respuesta-mux-settings"
 #define y_cli_mxp_N_ringtone (const xmlChar *)"ringtone"
 #define y_cli_mxp_N_time_notify_config (const xmlChar *)"time_notify_config"
 #define y_cli_mxp_N_tipo_fec_cliente (const xmlChar *)"tipo_fec_cliente"
@@ -113,32 +114,34 @@ typedef struct y_cli_mxp_T_mux_notify_deactivate_ {
   y_cli_mxp_T_mux_notify_deactivate_output output;
 } y_cli_mxp_T_mux_notify_deactivate;
 
+/* container /mux-apply-config/output */
+typedef struct y_cli_mxp_T_mux_apply_config_output_ {
+  xmlChar *respuesta_mux_settings;
+} y_cli_mxp_T_mux_apply_config_output;
+
 /* container /mux-apply-config/input */
 typedef struct y_cli_mxp_T_mux_apply_config_input_ {
 } y_cli_mxp_T_mux_apply_config_input;
 
-/* container /mux-apply-config/output */
-typedef struct y_cli_mxp_T_mux_apply_config_output_ {
-} y_cli_mxp_T_mux_apply_config_output;
-
 /* rpc /mux-apply-config */
 typedef struct y_cli_mxp_T_mux_apply_config_ {
-  y_cli_mxp_T_mux_apply_config_input input;
   y_cli_mxp_T_mux_apply_config_output output;
+  y_cli_mxp_T_mux_apply_config_input input;
 } y_cli_mxp_T_mux_apply_config;
+
+/* container /mux-settings/output */
+typedef struct y_cli_mxp_T_mux_settings_output_ {
+  xmlChar *respuesta_mux_settings;
+} y_cli_mxp_T_mux_settings_output;
 
 /* container /mux-settings/input */
 typedef struct y_cli_mxp_T_mux_settings_input_ {
 } y_cli_mxp_T_mux_settings_input;
 
-/* container /mux-settings/output */
-typedef struct y_cli_mxp_T_mux_settings_output_ {
-} y_cli_mxp_T_mux_settings_output;
-
 /* rpc /mux-settings */
 typedef struct y_cli_mxp_T_mux_settings_ {
-  y_cli_mxp_T_mux_settings_input input;
   y_cli_mxp_T_mux_settings_output output;
+  y_cli_mxp_T_mux_settings_input input;
 } y_cli_mxp_T_mux_settings;
 
 /* notification /mux-notify */
