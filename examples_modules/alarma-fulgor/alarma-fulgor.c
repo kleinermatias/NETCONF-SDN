@@ -787,7 +787,7 @@ oven_thread(void *arg)
     }
     
     val_value_t *prueba;
-    prueba = val_make_string(alarma_fulgor_mod->nsid, y_alarma_fulgor_N_respuesta, "holaSSSSSSS");
+    prueba = val_make_string(alarma_fulgor_mod->nsid, y_alarma_fulgor_N_respuesta, "Esta es una prueba de respuesta RPC");
     dlq_enque(prueba, &msg->rpc_dataQ);
     msg->rpc_data_type = RPC_DATA_YANG;
     
