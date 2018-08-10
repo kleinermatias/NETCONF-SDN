@@ -1,5 +1,0 @@
-<action xmlns="urn:ietf:params:xml:ns:yang:1">
-  <alarmaconfig xmlns="urn:ietf:params:xml:ns:yang:alarmafulgor">
-    <comando>activar</comando>
-  </alarmaconfig>
-</action>

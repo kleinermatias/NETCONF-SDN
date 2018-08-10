@@ -1,6 +1,0 @@
-<alarma xmlns="urn:ietf:params:xml:ns:yang:alarmafulgor">
-	<horas>16</horas>
-	<minutos>58</minutos>
-	<segundos>25</segundos>
-	<ringtone>tarado e</ringtone>
-</alarma> 
