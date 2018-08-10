@@ -1710,7 +1710,7 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   
   char str[80];
   char buff[80];
-
+  int system_status;
   strcpy (str,"muxponder ");
   strcat (str,"--configuracion ");
   strcat (str,"--");
@@ -1720,11 +1720,17 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   strcat (str," --");
   strcat (str, tipo_fec_cliente_var);
   printf("\n COMANDO : %s\n", str);
-  system(str);
+  system_status = system(str);
 
-  /* respuesta rpc */
   val_value_t *respuesta_mux_apply;
-  respuesta_mux_apply = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_apply_config, "LA RESPUESTA");
+  /* respuesta rpc */
+  if(system_status == -1) {
+     respuesta_mux_apply = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_apply_config, "ERROR");
+  }
+  else {
+    respuesta_mux_apply = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_apply_config, "OK");
+  }
+
   dlq_enque(respuesta_mux_apply, &msg->rpc_dataQ);
   msg->rpc_data_type = RPC_DATA_YANG;
 
@@ -1806,6 +1812,7 @@ static status_t y_cli_mxp_mux_settings_invoke (
   
   char str[80];
   char buff[80];
+  int system_status;
 
   ftoa(edfa_output_power_conf, buff, 2);
 
@@ -1813,15 +1820,20 @@ static status_t y_cli_mxp_mux_settings_invoke (
   strcat (str,"--potencia ");
   strcat (str,buff);
   printf("\n COMANDO : %s\n", str);
-  system(str);
+  system_status = system(str);
 
 
-  /* respuesta rpc */
   val_value_t *respuesta_mux_settings;
-  respuesta_mux_settings = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_settings, "LA RESPUESTA");
+  /* respuesta rpc */
+  if(system_status == -1) {
+    respuesta_mux_settings = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_settings, "ERROR");
+  }
+  else {
+    respuesta_mux_settings = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_settings, "OK");
+  }
   dlq_enque(respuesta_mux_settings, &msg->rpc_dataQ);
   msg->rpc_data_type = RPC_DATA_YANG;
-
+  
   return res;
 
 } /* y_cli_mxp_mux_settings_invoke */
