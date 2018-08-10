@@ -1722,6 +1722,12 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   printf("\n COMANDO : %s\n", str);
   system(str);
 
+  /* respuesta rpc */
+  val_value_t *respuesta_mux_apply;
+  respuesta_mux_apply = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_apply_config, "LA RESPUESTA");
+  dlq_enque(respuesta_mux_apply, &msg->rpc_dataQ);
+  msg->rpc_data_type = RPC_DATA_YANG;
+
   return res;
 
 } /* y_cli_mxp_mux_apply_config_invoke */
@@ -1808,6 +1814,13 @@ static status_t y_cli_mxp_mux_settings_invoke (
   strcat (str,buff);
   printf("\n COMANDO : %s\n", str);
   system(str);
+
+
+  /* respuesta rpc */
+  val_value_t *respuesta_mux_settings;
+  respuesta_mux_settings = val_make_string(cli_mxp_mod->nsid, y_cli_mxp_N_respuesta_mux_settings, "LA RESPUESTA");
+  dlq_enque(respuesta_mux_settings, &msg->rpc_dataQ);
+  msg->rpc_data_type = RPC_DATA_YANG;
 
   return res;
 
