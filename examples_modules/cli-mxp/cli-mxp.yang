@@ -176,7 +176,7 @@ module cli-mxp {
     rpc mux-apply-config {        
         description "RPC que aplica los cambios --configuracion ";
         output {
-            leaf respuesta-mux-settings {
+            leaf respuesta-mux-apply-config {
                 type string;
             }
         }
