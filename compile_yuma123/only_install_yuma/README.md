@@ -13,6 +13,6 @@ Iniciamos el docker:
 El cliente NETCONF de yuma (yangcli) va a conectarse al usuario 'root' y necesita una contraseña para 
 el mismo. La contraseña del usuario root es 'fulgor'.
 
-    $ netconfd &
+    $ netconfd --log-level="debug4" --superuser=root
     $ yangcli --user=root --server=localhost --pass=fulgor
 
