@@ -3,14 +3,17 @@
 
 echo "------- Start install YUMA123 script... -------"
 
-echo 'Introduzca el usuario remoto:'
-read user
+user=$1
 
-echo 'Introduzca la direccion del host:'
-read host
+host=$2
 
-echo 'Introduzca la arquitectura a instalar (nios2 - arm - x86_64):'
-read arch
+arch=$3
+
+if test "$#" -ne 3; then
+    echo "Illegal number of parameters"
+    echo "Example: @user @host @arch"
+    exit
+fi
 
 cp -r -f ../$arch/output/usrapp ../$arch/output/tmp
 
