@@ -30,3 +30,11 @@ fi
 
 scp -r ../$module/$libmodule.so $user@$host:/root/usrapp/lib/yuma
 scp -r ../$module/$module.yang $user@$host:/root/usrapp/share/yuma/modules
+
+if [[ "$module" == "cli-mxp" ]]
+then
+    scp -r ./startup-cfg.xml $user@$host:/root/.yuma/
+else
+    exit
+fi
+
