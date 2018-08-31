@@ -5,7 +5,7 @@
 Iniciamos netconfd, especificando que levante desde el inicio el modulo del mxp.
 
     $ cd ~/usrapp/sbin/
-    $ ./netconfd --module=cli-mxp --log-level="debug4" --superuser=root --with-startup=true
+    $ ./netconfd --module=cli-mxp --log-level="debug4" --target=running --superuser=root --with-startup=true
     
 Ruta al archivo startup:
 /root/.yuma/startup-cfg.xml  
