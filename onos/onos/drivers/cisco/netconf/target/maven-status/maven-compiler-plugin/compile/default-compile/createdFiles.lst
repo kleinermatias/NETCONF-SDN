@@ -1,6 +1,0 @@
-org/onosproject/drivers/cisco/XmlParserCisco.class
-org/onosproject/drivers/cisco/AlturaDeviceDescription.class
-org/onosproject/drivers/cisco/TextBlockParserCisco.class
-org/onosproject/drivers/cisco/package-info.class
-org/onosproject/drivers/cisco/InterfaceConfigCiscoIosImpl.class
-org/onosproject/drivers/cisco/AlturaDriversLoader.class
