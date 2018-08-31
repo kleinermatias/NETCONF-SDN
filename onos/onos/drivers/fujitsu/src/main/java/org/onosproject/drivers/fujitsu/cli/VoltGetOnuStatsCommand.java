@@ -46,7 +46,7 @@ public class VoltGetOnuStatsCommand extends AbstractShellCommand {
         deviceId = DeviceId.deviceId(uri);
         DriverHandler h = service.createHandler(deviceId);
         MxpConfig volt = h.behaviour(MxpConfig.class);
-        String reply = volt.getOnuStatistics(target);
+        String reply = volt.getOnus(target);
         if (reply != null) {
             print("%s", reply);
         } else {
