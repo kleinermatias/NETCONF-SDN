@@ -147,8 +147,22 @@ public class AlturaMxpConfig extends AbstractHandlerBehaviour
         }
 
         try {
-            StringBuilder request = new StringBuilder("ACA");
-            request.append("Y ACA");
+            StringBuilder request = new StringBuilder("<edit-config xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">");
+            request.append("<target>");
+            request.append("<running/>");
+            request.append("</target>");
+            request.append("<default-operation>merge</default-operation>");
+            request.append("<test-option>set</test-option>");
+            request.append("<config>");
+            request.append("<mux-config xmlns=\"http://fulgor.com/ns/cli-mxp\">");
+            request.append("<tipo_trafico xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" nc:operation=\"replace\">");
+            request.append(tipo_trafico);
+            request.append("</tipo_trafico>");
+            request.append("</mux-config>");
+            request.append("</config>");
+            request.append("</edit-config>");
+
+
             reply = controller
                         .getDevicesMap()
                         .get(ncDeviceId)
@@ -183,8 +197,21 @@ public class AlturaMxpConfig extends AbstractHandlerBehaviour
         }
 
         try {
-            StringBuilder request = new StringBuilder("ACA");
-            request.append("Y ACA");
+            StringBuilder request = new StringBuilder("<edit-config xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">");
+            request.append("<target>");
+            request.append("<running/>");
+            request.append("</target>");
+            request.append("<default-operation>merge</default-operation>");
+            request.append("<test-option>set</test-option>");
+            request.append("<config>");
+            request.append("<mux-config xmlns=\"http://fulgor.com/ns/cli-mxp\">");
+            request.append("<tipo_fec_linea xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" nc:operation=\"replace\">");
+            request.append(tipo_fec_linea);
+            request.append("</tipo_fec_linea>");
+            request.append("</mux-config>");
+            request.append("</config>");
+            request.append("</edit-config>");
+
             reply = controller
                     .getDevicesMap()
                     .get(ncDeviceId)
@@ -220,8 +247,22 @@ public class AlturaMxpConfig extends AbstractHandlerBehaviour
         }
 
         try {
-            StringBuilder request = new StringBuilder("ACA");
-            request.append("Y ACA");
+            StringBuilder request = new StringBuilder("<edit-config xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\">");
+            request.append("<target>");
+            request.append("<running/>");
+            request.append("</target>");
+            request.append("<default-operation>merge</default-operation>");
+            request.append("<test-option>set</test-option>");
+            request.append("<config>");
+            request.append("<mux-config xmlns=\"http://fulgor.com/ns/cli-mxp\">");
+            request.append("<tipo_fec_cliente xmlns:nc=\"urn:ietf:params:xml:ns:netconf:base:1.0\" nc:operation=\"replace\">");
+            request.append(tipo_fec_cliente);
+            request.append("</tipo_fec_cliente>");
+            request.append("</mux-config>");
+            request.append("</config>");
+            request.append("</edit-config>");
+
+
             reply = controller
                     .getDevicesMap()
                     .get(ncDeviceId)

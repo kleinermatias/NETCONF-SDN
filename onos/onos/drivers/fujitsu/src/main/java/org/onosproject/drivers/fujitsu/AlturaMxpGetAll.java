@@ -56,10 +56,9 @@ public class AlturaMxpGetAll extends AbstractHandlerBehaviour
         }
 
         try {
-            StringBuilder request = new StringBuilder();
-            request.append(VOLT_NE_OPEN + VOLT_NE_NAMESPACE);
-            request.append(ANGLE_RIGHT + NEW_LINE);
-            request.append(VOLT_NE_CLOSE);
+            StringBuilder request = new StringBuilder("<mux-config xmlns=\"http://fulgor.com/ns/cli-mxp\"/>");
+            request.append("<mux-state xmlns=\"http://fulgor.com/ns/cli-mxp\"/>");
+            
 
             reply = controller
                     .getDevicesMap()
