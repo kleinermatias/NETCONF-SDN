@@ -64,6 +64,7 @@ public class AlturaMxpDeviceDescription extends AbstractHandlerBehaviour
     @Override
     public List<PortDescription> discoverPortDetails() {
         log.debug("Discovering device ports");
+        //TODO to be implemented if needed.
         return ImmutableList.of();
     }
 

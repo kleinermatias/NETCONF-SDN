@@ -69,4 +69,31 @@ public interface MxpConfig extends HandlerBehaviour {
      */
     String setEdfaOutPower(String edfa_output_power);
 
+
+    /**
+     * Setea la frecuencia de las notificaciones del dispositivo.
+     *
+     * @param time_notify_config time data in string
+     * @return response string
+     */
+    String setTimeToNotify(String time_notify_config);
+
+
+    /**
+     * Setea el valor del EDFA a notificar. (umbral)
+     *
+     * @param value_notify_config time data in string
+     * @return response string
+     */
+    String setValueEdfaNotify(String value_notify_config);
+
+
+    /**
+     * Setea el valor del rx_power a notificar. (umbral)
+     *
+     * @param value_rx_power_notify_config time data in string
+     * @return response string
+     */
+    String setValueRxPowerNotify(String value_rx_power_notify_config);
+
 }

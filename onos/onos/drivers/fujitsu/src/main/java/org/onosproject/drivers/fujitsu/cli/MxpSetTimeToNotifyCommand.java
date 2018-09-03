@@ -19,24 +19,24 @@ import org.apache.karaf.shell.commands.Argument;
 import org.apache.karaf.shell.commands.Command;
 import org.onosproject.cli.AbstractShellCommand;
 import org.onosproject.net.DeviceId;
-import org.onosproject.drivers.fujitsu.behaviour.MxpLoadModule;
+import org.onosproject.drivers.fujitsu.behaviour.MxpConfig;
 import org.onosproject.net.driver.DriverHandler;
 import org.onosproject.net.driver.DriverService;
 
 /**
- * Load a Module in MXP.
+ * Setea el periodo de las notificaciones en el dispositivo.
  */
-@Command(scope = "onos", name = "mxp-load-module",
-        description = "Load a Module in MXP")
-public class MxpLoadModuleCommand extends AbstractShellCommand {
+@Command(scope = "onos", name = "mxp-set-time-to-notify",
+        description = "Setea el periodo de las notificaciones en el dispositivo.")
+public class MxpSetTimeToNotifyCommand extends AbstractShellCommand {
 
     @Argument(index = 0, name = "uri", description = "Device ID",
             required = true, multiValued = false)
     String uri = null;
 
-    @Argument(index = 1, name = "module", description = "module name to load. Default: cli-mxp",
+    @Argument(index = 1, name = "module", description = "Setea el periodo de las notificaciones en el dispositivo. Default: 5",
             required = false, multiValued = false)
-    String module = "cli-mxp";
+    String time = "5";
 
     private DeviceId deviceId;
 
@@ -45,8 +45,8 @@ public class MxpLoadModuleCommand extends AbstractShellCommand {
         DriverService service = get(DriverService.class);
         deviceId = DeviceId.deviceId(uri);
         DriverHandler h = service.createHandler(deviceId);
-        MxpLoadModule mxp = h.behaviour(MxpLoadModule.class);
-        String reply = mxp.loadModule(module);
+        MxpConfig mxp = h.behaviour(MxpConfig.class);
+        String reply = mxp.setTimeToNotify(time);
         if (reply != null) {
             print("%s", reply);
         } else {
@@ -55,5 +55,3 @@ public class MxpLoadModuleCommand extends AbstractShellCommand {
     }
 
 }
-
-

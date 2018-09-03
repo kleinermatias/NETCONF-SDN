@@ -102,6 +102,8 @@
             </completers>
         </command>
 
+
+
         <command>
             <action class="org.onosproject.drivers.fujitsu.cli.MxpLoadModuleCommand"/>
             <completers>
@@ -123,6 +125,26 @@
             </completers>
         </command>
 
+        <command>
+            <action class="org.onosproject.drivers.fujitsu.cli.MxpSetTimeToNotifyCommand"/>
+            <completers>
+                <ref component-id="deviceIdCompleter"/>
+            </completers>
+        </command>
+
+        <command>
+            <action class="org.onosproject.drivers.fujitsu.cli.MxpSetEdfaNotifyCommand"/>
+            <completers>
+                <ref component-id="deviceIdCompleter"/>
+            </completers>
+        </command>
+
+        <command>
+            <action class="org.onosproject.drivers.fujitsu.cli.MxpSetRxPowerNotifyCommand"/>
+            <completers>
+                <ref component-id="deviceIdCompleter"/>
+            </completers>
+        </command>
 
     </command-bundle>
 
