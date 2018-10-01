@@ -47,7 +47,7 @@ extern "C" {
 #define y_cli_mxp_N_device_hwVersion (const xmlChar *)"device_hwVersion"		
 #define y_cli_mxp_N_device_manufacturer (const xmlChar *)"device_manufacturer"		
 #define y_cli_mxp_N_device_swVersion (const xmlChar *)"device_swVersion"
-	#define y_cli_mxp_N_device_neighbors (const xmlChar *)"device-neighbors"
+	#define y_cli_mxp_N_device_neighbors (const xmlChar *)"deviceneighbors"
 /* revision OCTUBRE 2018 */
 
 
@@ -73,6 +73,13 @@ extern "C" {
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
 #define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
 
+
+/* leaf-list /mux-config/deviceneighbors */
+typedef struct y_cli_mxp_T_mux_config_deviceneighbors_ {
+  dlq_hdr_t qhdr;
+  xmlChar *deviceneighbors;
+} y_cli_mxp_T_mux_config_deviceneighbors;
+
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *configuracion;
@@ -86,13 +93,8 @@ typedef struct y_cli_mxp_T_mux_config_ {
   int16 time_notify_config;
   int64 value_notify_config;
   xmlChar *value_rx_power_notify_config;
+  dlq_hdr_t deviceneighbors;
 } y_cli_mxp_T_mux_config;
-
-/* leaf-list /mux-state/device-neighbors */		
-typedef struct y_cli_mxp_T_mux_state_device_neighbors_ {		
-  dlq_hdr_t qhdr;		
-  xmlChar *device_neighbors;		
-} y_cli_mxp_T_mux_state_device_neighbors;
 
 /* container /mux-state */
 typedef struct y_cli_mxp_T_mux_state_ {

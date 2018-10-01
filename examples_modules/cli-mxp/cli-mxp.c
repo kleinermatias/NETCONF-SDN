@@ -1067,6 +1067,82 @@ static status_t cli_mxp_mux_config_value_rx_power_notify_config_edit (
 
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_config_deviceneighbors_edit
+* 
+* Edit database object callback
+* Path: /mux-config/deviceneighbors
+* Add object instrumentation in COMMIT phase.
+* 
+* INPUTS:
+*     see agt/agt_cb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_config_deviceneighbors_edit (
+  ses_cb_t *scb,
+  rpc_msg_t *msg,
+  agt_cbtyp_t cbtyp,
+  op_editop_t editop,
+  val_value_t *newval,
+  val_value_t *curval)
+{
+  status_t res = NO_ERR;
+  val_value_t *errorval = (curval) ? curval : newval;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_config_deviceneighbors_edit callback for %s phase",
+      agt_cbtype_name(cbtyp));
+  }
+
+  switch (cbtyp) {
+  case AGT_CB_VALIDATE:
+    /* description-stmt validation here */
+    break;
+  case AGT_CB_APPLY:
+    /* database manipulation done here */
+    break;
+  case AGT_CB_COMMIT:
+    /* device instrumentation done here */
+    switch (editop) {
+    case OP_EDITOP_LOAD:
+      break;
+    case OP_EDITOP_MERGE:
+      break;
+    case OP_EDITOP_REPLACE:
+      break;
+    case OP_EDITOP_CREATE:
+      break;
+    case OP_EDITOP_DELETE:
+      break;
+    default:
+      res = SET_ERROR(ERR_INTERNAL_VAL);
+    }
+    break;
+  case AGT_CB_ROLLBACK:
+    /* undo device instrumentation here */
+    break;
+  default:
+    res = SET_ERROR(ERR_INTERNAL_VAL);
+  }
+
+  if (res != NO_ERR) {
+    agt_record_error(
+      scb,
+      &msg->mhdr,
+      NCX_LAYER_CONTENT,
+      res,
+      NULL,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval,
+      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
+      errorval);
+  }
+  return res;
+
+} /* cli_mxp_mux_config_deviceneighbors_edit */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_config_edit
 * 
 * Edit database object callback
@@ -2424,6 +2500,15 @@ status_t y_cli_mxp_init (
     return res;
   }
 
+  res = agt_cb_register_callback(
+    y_cli_mxp_M_cli_mxp,
+    (const xmlChar *)"/mux-config/deviceneighbors",
+    y_cli_mxp_R_cli_mxp,
+    cli_mxp_mux_config_deviceneighbors_edit);
+  if (res != NO_ERR) {
+    return res;
+  }
+
   /* put your module initialization code here */
   shmfd = shm_open(SHMOBJ_PATH, O_CREAT | O_RDWR, S_IRWXU | S_IRWXG);
   if (shmfd < 0)
@@ -2547,6 +2632,10 @@ void y_cli_mxp_cleanup (void)
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,
     (const xmlChar *)"/mux-config/value_rx_power_notify_config");
+
+  agt_cb_unregister_callbacks(
+    y_cli_mxp_M_cli_mxp,
+    (const xmlChar *)"/mux-config/deviceneighbors");
 
   /* put your cleanup code here */
   if (close(shmfd) != 0){

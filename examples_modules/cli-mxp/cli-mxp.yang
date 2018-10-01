@@ -118,6 +118,11 @@ module cli-mxp {
             type string;
         }
 
+        leaf-list deviceneighbors  {
+         type string;
+         description "Lista de vecinos del dispositivo";
+        }
+
     }
 
 
@@ -181,11 +186,6 @@ module cli-mxp {
             description "Identificador unico del dispositivo";
             type string;
         }
-
-        leaf-list device-neighbors  {
-         type string;
-         description "Lista de vecinos del dispositivo";
-     }
 
     }
 
