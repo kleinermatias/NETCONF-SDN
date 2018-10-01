@@ -1,8 +1,8 @@
 {
     "devices": {
-        "netconf:172.17.0.3:830": {
+        "netconf:172.17.0.2:830": {
             "netconf": {
-                "ip": "172.17.0.3",
+                "ip": "172.17.0.2",
                 "port": 830,
                 "username": "root",
                 "password": "fulgor",
@@ -10,7 +10,10 @@
                 "reply-timeout": 100
             },
             "basic": {
-                "driver": "altura-netconf"
+                "driver": "altura-netconf",
+                "manufacturer":"ALTURA",
+                "hwVersion":"1.0",
+                "swVersion":"1.0"
             }
         }
     }
