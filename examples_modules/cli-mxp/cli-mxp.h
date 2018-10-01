@@ -1,4 +1,3 @@
-
 #ifndef _H_cli_mxp
 #define _H_cli_mxp
 /* 
@@ -41,6 +40,17 @@ extern "C" {
 #define y_cli_mxp_N_cd_compensacion (const xmlChar *)"cd_compensacion"
 #define y_cli_mxp_N_configuracion (const xmlChar *)"configuracion"
 #define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
+
+
+/* revision OCTUBRE 2018 */
+#define y_cli_mxp_N_device_boardId (const xmlChar *)"device_boardId"		
+#define y_cli_mxp_N_device_hwVersion (const xmlChar *)"device_hwVersion"		
+#define y_cli_mxp_N_device_manufacturer (const xmlChar *)"device_manufacturer"		
+#define y_cli_mxp_N_device_swVersion (const xmlChar *)"device_swVersion"
+	#define y_cli_mxp_N_device_neighbors (const xmlChar *)"device-neighbors"
+/* revision OCTUBRE 2018 */
+
+
 #define y_cli_mxp_N_edfa_output_power_state (const xmlChar *)"edfa_output_power_state"
 #define y_cli_mxp_N_fpga_temperature_state (const xmlChar *)"fpga_temperature_state"
 #define y_cli_mxp_N_mux_apply_config (const xmlChar *)"mux-apply-config"
@@ -78,8 +88,22 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *value_rx_power_notify_config;
 } y_cli_mxp_T_mux_config;
 
+/* leaf-list /mux-state/device-neighbors */		
+typedef struct y_cli_mxp_T_mux_state_device_neighbors_ {		
+  dlq_hdr_t qhdr;		
+  xmlChar *device_neighbors;		
+} y_cli_mxp_T_mux_state_device_neighbors;
+
 /* container /mux-state */
 typedef struct y_cli_mxp_T_mux_state_ {
+
+  /* revision OCTUBRE 2018 */
+  xmlChar *device_manufacturer;		
+  xmlChar *device_swVersion;		
+  xmlChar *device_hwVersion;		
+  xmlChar *device_boardId;
+  /* revision OCTUBRE 2018 */
+
   int64 fpga_temperature_state;
   int16 board_humidity_state;
   int64 edfa_output_power_state;

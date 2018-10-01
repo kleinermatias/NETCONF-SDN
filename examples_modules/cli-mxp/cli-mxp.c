@@ -37,8 +37,8 @@ static val_value_t *mux_config_val;
 #include <sys/mman.h>
 #include <sys/stat.h>   /* For mode constants */
 #include <fcntl.h>
-#include<stdio.h>
-#include<math.h>
+#include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -59,6 +59,13 @@ volatile pthread_t alarma_tid;
 const xmlChar *tipo_trafico_var;
 const xmlChar *tipo_fec_linea_var;
 const xmlChar *tipo_fec_cliente_var;
+
+struct Device_info {
+    char  device_manufacturer[50];
+    char  device_swVersion[50];
+    char  device_hwVersion[50];
+    char  device_boardId[50];
+} device_info;  
 
 static void *
 alarmas_thread(void *arg)
@@ -163,6 +170,36 @@ static void y_cli_mxp_init_static_vars (void)
 
   /* init your static variables here */
   edfa_output_power_conf=0.0;
+  
+  /* PRUEBA */
+  FILE* fp;
+  char aux_buf[1024];
+
+  if ((fp = fopen("/root/usrapp/deviceDescription.txt", "r")) == NULL)
+  { /* Open source file. */
+    perror("fopen source-file");
+  }
+ 
+ 
+  fgets(aux_buf, sizeof(aux_buf), fp);
+  aux_buf[strlen(aux_buf) - 1] = '\0'; 
+  strcpy( device_info.device_manufacturer, aux_buf);
+
+  fgets(aux_buf, sizeof(aux_buf), fp);
+  aux_buf[strlen(aux_buf) - 1] = '\0';
+  strcpy( device_info.device_swVersion, aux_buf); 
+
+  fgets(aux_buf, sizeof(aux_buf), fp);
+  aux_buf[strlen(aux_buf) - 1] = '\0';
+  strcpy( device_info.device_hwVersion, aux_buf); 
+
+  fgets(aux_buf, sizeof(aux_buf), fp);
+  aux_buf[strlen(aux_buf) - 1] = '\0';
+  strcpy( device_info.device_boardId, aux_buf);
+
+  fclose(fp);
+  /* PRUEBA */
+
 } /* y_cli_mxp_init_static_vars */
 
 
@@ -1314,7 +1351,7 @@ static status_t cli_mxp_mux_state_xfp_tx_power_get (
   float tx_powe=pt_monitor_struct->txp_struct.txp_tx_power;
   char buf[30];
   sprintf(buf, "%.2f", tx_powe);
-  printf(buf);
+  //printf(buf);
   tx_power = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
@@ -1367,7 +1404,7 @@ static status_t cli_mxp_mux_state_xfp_rx_power_get (
   float rx_powe=pt_monitor_struct->txp_struct.txp_rx_power;
   char buf[30];
   sprintf(buf, "%.2f", rx_powe);
-  printf(buf);
+  //printf(buf);
   rx_power = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
@@ -1377,6 +1414,202 @@ static status_t cli_mxp_mux_state_xfp_rx_power_get (
   return res;
 
 } /* cli_mxp_mux_state_xfp_rx_power_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_device_manufacturer_get
+* 
+* Get database object callback
+* Path: /mux-state/device_manufacturer
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_device_manufacturer_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *device_manufacturer;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_device_manufacturer_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the device_manufacturer var here, change EMPTY_STRING */
+
+  device_manufacturer = (const xmlChar *)device_info.device_manufacturer;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    device_manufacturer);
+
+  return res;
+
+} /* cli_mxp_mux_state_device_manufacturer_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_device_swVersion_get
+* 
+* Get database object callback
+* Path: /mux-state/device_swVersion
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_device_swVersion_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *device_swVersion;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_device_swVersion_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the device_swVersion var here, change EMPTY_STRING */
+  device_swVersion = (const xmlChar *)device_info.device_swVersion;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    device_swVersion);
+
+  return res;
+
+} /* cli_mxp_mux_state_device_swVersion_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_device_hwVersion_get
+* 
+* Get database object callback
+* Path: /mux-state/device_hwVersion
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_device_hwVersion_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *device_hwVersion;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_device_hwVersion_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the device_hwVersion var here, change EMPTY_STRING */
+  device_hwVersion = (const xmlChar *)device_info.device_hwVersion;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    device_hwVersion);
+
+  return res;
+
+} /* cli_mxp_mux_state_device_hwVersion_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_device_boardId_get
+* 
+* Get database object callback
+* Path: /mux-state/device_boardId
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_device_boardId_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *device_boardId;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_device_boardId_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the device_boardId var here, change EMPTY_STRING */
+  device_boardId = (const xmlChar *)device_info.device_boardId;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    device_boardId);
+
+  return res;
+
+} /* cli_mxp_mux_state_device_boardId_get */
+
+
 
 /********************************************************************
 * FUNCTION cli_mxp_mux_state_mro
@@ -1453,6 +1686,54 @@ static status_t
     parentval->obj,
     y_cli_mxp_N_xfp_rx_power,
     cli_mxp_mux_state_xfp_rx_power_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state/device_manufacturer */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_device_manufacturer,
+    cli_mxp_mux_state_device_manufacturer_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state/device_swVersion */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_device_swVersion,
+    cli_mxp_mux_state_device_swVersion_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state/device_hwVersion */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_device_hwVersion,
+    cli_mxp_mux_state_device_hwVersion_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state/device_boardId */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_device_boardId,
+    cli_mxp_mux_state_device_boardId_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);

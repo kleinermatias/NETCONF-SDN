@@ -162,6 +162,31 @@ module cli-mxp {
             }
         }
 
+        leaf device_manufacturer {
+            description "Fabricante del dispositivo";
+            type string;
+        }
+
+        leaf device_swVersion {
+            description "Version del SW";
+            type string;
+        }
+
+        leaf device_hwVersion {
+            description "Version del HW";
+            type string;
+        }
+
+        leaf device_boardId {
+            description "Identificador unico del dispositivo";
+            type string;
+        }
+
+        leaf-list device-neighbors  {
+         type string;
+         description "Lista de vecinos del dispositivo";
+     }
+
     }
 
 
