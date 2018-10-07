@@ -16,7 +16,8 @@ RUN \
   libreadline-dev \
   libncurses5-dev \
   gcc-multilib \
-  lib32z1
+  lib32z1 \
+  libxml2-dev
 
 RUN \
   mkdir ~/usrapp && \
@@ -43,17 +44,19 @@ RUN \
   cd zlib-1.2.8 && \
   mkdir build && \
   cd build && \
-  CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ cmake -DCMAKE_INSTALL_PREFIX:PATH=/root/usrapp .. && \
-  make  -j4 && \
+  export CFLAGS=-O3 && \
+  CC=arm-linux-gnueabihf-gcc CMAKE_C_FLAGS=-O3 CXX=arm-linux-gnueabihf-g++ cmake -DCMAKE_INSTALL_PREFIX:PATH=/root/usrapp .. && \
+  make VERBOSE=1 -j4 && \
   make install
 
 RUN \
   cd ~ && \
-  wget http://archive.ubuntu.com/ubuntu/pool/main/libx/libxml2/libxml2_2.9.3+dfsg1.orig.tar.xz && \
-  tar -xvf libxml2_2.9.3+dfsg1.orig.tar.xz && \
-  cd ~/libxml2-2.9.3 && \
-  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --prefix=/root/usrapp && \ 
-  CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ make -j4 && \
+  wget http://http.debian.net/debian/pool/main/libx/libxml2/libxml2_2.9.4+dfsg1.orig.tar.xz && \
+  tar -xvf libxml2_2.9.4+dfsg1.orig.tar.xz && \
+  cd ~/libxml2-2.9.4 && \
+  export CFLAGS=-O3 && \
+  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ CFLAGS='-O3' CXXFLAGS='-O3' --prefix=/root/usrapp && \ 
+  CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ CFLAGS='-O3' CXXFLAGS='-O3' VERBOSE=1 make -j4 && \
   make install
 
 # openssl
@@ -65,7 +68,7 @@ RUN \
   cd ~/openssl && \
   git checkout OpenSSL_1_0_2-stable && \
   ./Configure linux-generic32 shared -DOPENSSL_NO_HEARTBEATS --prefix=/root/usrapp/ --openssldir=/root/usrapp/ && \
-  make CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ MAKEDEPPROG=arm-linux-gnueabihf-gcc PROCESSOR=ARM -j4 && \
+  make VERBOSE=1 CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ MAKEDEPPROG=arm-linux-gnueabihf-gcc PROCESSOR=ARM -j4 && \
   make install_sw
 
 # libssh2
@@ -74,9 +77,9 @@ RUN \
   git clone https://github.com/libssh2/libssh2.git && \
   cd libssh2 && \
   ./buildconf && \
-  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ CFLAGS='-O2' CXXFLAGS='-O2' --prefix=/root/usrapp && \
+  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ CFLAGS='-O3' CXXFLAGS='-O3' --prefix=/root/usrapp && \
   cp -r -f /root/usrapp/* /root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/ && \
-  make -j4 && \
+  make VERBOSE=1 -j4 && \
   make install
 
 RUN \
@@ -86,8 +89,8 @@ RUN \
   wget http://lfs-matrix.net/patches/downloads/readline/readline-6.2-fixes-1.patch && \
   cd readline-6.2/ && \
   patch -Np1 -i ../readline-6.2-fixes-1.patch && \
-  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --enable-shared CFLAGS='-O2' CXXFLAGS='-O2' --prefix=/root/usrapp && \
-  make -j4 && \
+  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --enable-shared CFLAGS='-O3' CXXFLAGS='-O3' --prefix=/root/usrapp && \
+  make VERBOSE=1 -j4 && \
   make install
 
 
@@ -100,16 +103,18 @@ RUN \
   wget http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.7.tar.gz && \
   tar xzf ncurses-5.7.tar.gz && \
   cd ncurses-5.7 && \
-  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --with-shared --without-debug --without-ada --enable-overwrite --prefix=/root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr
+  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ CFLAGS='-O3' CXXFLAGS='-O3' --with-shared --without-debug --without-ada --enable-overwrite --prefix=/root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr
 
-RUN cd ncurses-5.7; make -j4; make install; exit 0
+RUN cd ncurses-5.7; make VERBOSE=1 -j4; make install; exit 0
 
 RUN \
   cp -R -f /root/usrapp/* /root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr && \
+  cp -r -f /root/libxml2-2.9.4/.libs/* /root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/lib/ && \
+  cp -r -f /root/libxml2-2.9.4/.libs/ /root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/usr/lib/ && \
   cd ~/yuma123-git && \
   autoreconf -i -f && \
-  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --enable-shared --enable-static  LDFLAGS=-L/root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/lib LDFLAGS="-lncurses" CFLAGS='-O2' CXXFLAGS='-O2' --prefix=/root/usrapp && \
-  make -j4 && \
+  ./configure --host=arm-none-linux-gnueabi CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ --enable-shared --enable-static  LDFLAGS=-L/root/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/arm-linux-gnueabihf/libc/lib LDFLAGS="-lncurses" CFLAGS='-O3' CXXFLAGS='-O3' --prefix=/root/usrapp && \
+  make VERBOSE=1 -j4 && \
   make install
 
 

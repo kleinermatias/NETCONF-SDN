@@ -22,7 +22,7 @@ RUN \
 	git clone git://git.code.sf.net/p/yuma123/git yuma123-git && \
 	cd yuma123-git && \
 	autoreconf -i -f && \
-	./configure CFLAGS='-g -O0' CXXFLAGS='-g -O0' --prefix=/usr && \
+	./configure CFLAGS='-g -O3' CXXFLAGS='-g -O3' --prefix=/usr && \
 	make -j4 && \
 	make install
 
