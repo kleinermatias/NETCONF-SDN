@@ -187,6 +187,18 @@ module cli-mxp {
             type string;
         }
 
+
+
+    }
+
+    container mux-optical-line-status {
+        description "Para determinar estado del enlace";
+        config false;
+        
+        leaf brctl_showstp_br0 {
+            description "Devuelve la respuesta de ejecutar brctl showstp br0";
+            type string;
+        }
     }
 
 

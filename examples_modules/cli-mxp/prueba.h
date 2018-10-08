@@ -1,3 +1,4 @@
+
 #ifndef _H_cli_mxp
 #define _H_cli_mxp
 /* 
@@ -40,18 +41,12 @@ extern "C" {
 #define y_cli_mxp_N_canal (const xmlChar *)"canal"
 #define y_cli_mxp_N_cd_compensacion (const xmlChar *)"cd_compensacion"
 #define y_cli_mxp_N_configuracion (const xmlChar *)"configuracion"
-#define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
-
-
-/* revision OCTUBRE 2018 */
-#define y_cli_mxp_N_device_boardId (const xmlChar *)"device_boardId"		
-#define y_cli_mxp_N_device_hwVersion (const xmlChar *)"device_hwVersion"		
-#define y_cli_mxp_N_device_manufacturer (const xmlChar *)"device_manufacturer"		
+#define y_cli_mxp_N_device_boardId (const xmlChar *)"device_boardId"
+#define y_cli_mxp_N_device_hwVersion (const xmlChar *)"device_hwVersion"
+#define y_cli_mxp_N_device_manufacturer (const xmlChar *)"device_manufacturer"
 #define y_cli_mxp_N_device_swVersion (const xmlChar *)"device_swVersion"
-	#define y_cli_mxp_N_device_neighbors (const xmlChar *)"deviceneighbors"
-/* revision OCTUBRE 2018 */
-
-
+#define y_cli_mxp_N_deviceneighbors (const xmlChar *)"deviceneighbors"
+#define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
 #define y_cli_mxp_N_edfa_output_power_state (const xmlChar *)"edfa_output_power_state"
 #define y_cli_mxp_N_fpga_temperature_state (const xmlChar *)"fpga_temperature_state"
 #define y_cli_mxp_N_mux_apply_config (const xmlChar *)"mux-apply-config"
@@ -74,7 +69,6 @@ extern "C" {
 #define y_cli_mxp_N_value_rx_power_notify_config (const xmlChar *)"value_rx_power_notify_config"
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
 #define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
-
 
 /* leaf-list /mux-config/deviceneighbors */
 typedef struct y_cli_mxp_T_mux_config_deviceneighbors_ {
@@ -100,24 +94,20 @@ typedef struct y_cli_mxp_T_mux_config_ {
 
 /* container /mux-state */
 typedef struct y_cli_mxp_T_mux_state_ {
-
-  /* revision OCTUBRE 2018 */
-  xmlChar *device_manufacturer;		
-  xmlChar *device_swVersion;		
-  xmlChar *device_hwVersion;		
-  xmlChar *device_boardId;
-  /* revision OCTUBRE 2018 */
-
   int64 fpga_temperature_state;
   int16 board_humidity_state;
   int64 edfa_output_power_state;
   int64 xfp_tx_power;
   int64 xfp_rx_power;
+  xmlChar *device_manufacturer;
+  xmlChar *device_swVersion;
+  xmlChar *device_hwVersion;
+  xmlChar *device_boardId;
 } y_cli_mxp_T_mux_state;
 
-/* container /mux-optical-line-status */		
-typedef struct y_cli_mxp_T_mux_optical_line_status_ {		
-  xmlChar *brctl_showstp_br0; 		
+/* container /mux-optical-line-status */
+typedef struct y_cli_mxp_T_mux_optical_line_status_ {
+  xmlChar *brctl_showstp_br0;
 } y_cli_mxp_T_mux_optical_line_status;
 
 /* container /mux-notify-activate/input */
