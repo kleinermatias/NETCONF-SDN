@@ -191,6 +191,75 @@ module cli-mxp {
 
     }
 
+
+    container mux-state-misc {
+        description "Container para variables de tipo misc en monitor";
+        config false;
+        
+        //txp_struct->txp_temperature[0]
+        leaf temp_around {
+            description "State de la variable temp_around";
+            type string;
+        }
+
+        //txp_struct->txp_temperature[1]
+        leaf temp_case {
+            description "State de la variable temp_case";
+            type string;
+        }
+
+        //txp_struct->txp_temperature[2]
+        leaf temp_tx_laser {
+            description "State de la variable temp_tx_laser";
+            type string;
+        }
+
+        //txp_struct->txp_temperature[3]
+        leaf temp_rx_laser {
+            description "State de la variable temp_rx_laser";
+            type string;
+        }
+
+        //txp_struct->txp_loss
+        leaf loss {
+            description "State de la variable loss";
+            type string;
+        }
+
+        //txp_struct->txp_interrupt
+        leaf interrupt {
+            description "State de la variable interrupt";
+            type string;
+        }
+
+        //ACA LAS OTRAS DOS HAY QUE MOVER
+
+        //txp_struct->txp_tx_laser_itu_channel.fields.band
+        leaf tx_laser_itu_band {
+            description "State de la variable tx_laser_itu_band";
+            type string;
+        }
+
+        //txp_struct->txp_tx_laser_itu_channel.fields.channel
+        leaf tx_laser_itu_channel {
+            description "State de la variable tx_laser_itu_channel";
+            type string;
+        }
+
+        //txp_struct->txp_rx_laser_itu_channel.fields.band
+        leaf rx_laser_itu_band {
+            description "State de la variable rx_laser_itu_band";
+            type string;
+        }
+
+        //txp_struct->txp_rx_laser_itu_channel.fields.channel
+        leaf rx_laser_itu_channel {
+            description "State de la variable rx_laser_itu_channel";
+            type string;
+        }
+
+    }
+
     container mux-optical-line-status {
         description "Para determinar estado del enlace";
         config false;
