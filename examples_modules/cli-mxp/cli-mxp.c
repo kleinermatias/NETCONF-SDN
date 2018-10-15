@@ -1705,7 +1705,6 @@ static status_t cli_mxp_mux_state_misc_temp_around_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *temp_around_c;
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_misc_temp_around_get callback");
