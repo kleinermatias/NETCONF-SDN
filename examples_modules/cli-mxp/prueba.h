@@ -49,6 +49,8 @@ extern "C" {
 #define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
 #define y_cli_mxp_N_edfa_output_power_state (const xmlChar *)"edfa_output_power_state"
 #define y_cli_mxp_N_fpga_temperature_state (const xmlChar *)"fpga_temperature_state"
+#define y_cli_mxp_N_interrupt (const xmlChar *)"interrupt"
+#define y_cli_mxp_N_loss (const xmlChar *)"loss"
 #define y_cli_mxp_N_mux_apply_config (const xmlChar *)"mux-apply-config"
 #define y_cli_mxp_N_mux_config (const xmlChar *)"mux-config"
 #define y_cli_mxp_N_mux_notify (const xmlChar *)"mux-notify"
@@ -57,14 +59,23 @@ extern "C" {
 #define y_cli_mxp_N_mux_optical_line_status (const xmlChar *)"mux-optical-line-status"
 #define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
+#define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
 #define y_cli_mxp_N_respuesta_mux_apply_config (const xmlChar *)"respuesta-mux-apply-config"
 #define y_cli_mxp_N_respuesta_mux_settings (const xmlChar *)"respuesta-mux-settings"
 #define y_cli_mxp_N_ringtone (const xmlChar *)"ringtone"
+#define y_cli_mxp_N_rx_laser_itu_band (const xmlChar *)"rx_laser_itu_band"
+#define y_cli_mxp_N_rx_laser_itu_channel (const xmlChar *)"rx_laser_itu_channel"
+#define y_cli_mxp_N_temp_around (const xmlChar *)"temp_around"
+#define y_cli_mxp_N_temp_case (const xmlChar *)"temp_case"
+#define y_cli_mxp_N_temp_rx_laser (const xmlChar *)"temp_rx_laser"
+#define y_cli_mxp_N_temp_tx_laser (const xmlChar *)"temp_tx_laser"
 #define y_cli_mxp_N_time_notify_config (const xmlChar *)"time_notify_config"
 #define y_cli_mxp_N_tipo_fec_cliente (const xmlChar *)"tipo_fec_cliente"
 #define y_cli_mxp_N_tipo_fec_linea (const xmlChar *)"tipo_fec_linea"
 #define y_cli_mxp_N_tipo_trafico (const xmlChar *)"tipo_trafico"
+#define y_cli_mxp_N_tx_laser_itu_band (const xmlChar *)"tx_laser_itu_band"
+#define y_cli_mxp_N_tx_laser_itu_channel (const xmlChar *)"tx_laser_itu_channel"
 #define y_cli_mxp_N_value_notify_config (const xmlChar *)"value_notify_config"
 #define y_cli_mxp_N_value_rx_power_notify_config (const xmlChar *)"value_rx_power_notify_config"
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
@@ -104,6 +115,20 @@ typedef struct y_cli_mxp_T_mux_state_ {
   xmlChar *device_hwVersion;
   xmlChar *device_boardId;
 } y_cli_mxp_T_mux_state;
+
+/* container /mux-state-misc */
+typedef struct y_cli_mxp_T_mux_state_misc_ {
+  xmlChar *temp_around;
+  xmlChar *temp_case;
+  xmlChar *temp_tx_laser;
+  xmlChar *temp_rx_laser;
+  xmlChar *loss;
+  xmlChar *interrupt;
+  xmlChar *tx_laser_itu_band;
+  xmlChar *tx_laser_itu_channel;
+  xmlChar *rx_laser_itu_band;
+  xmlChar *rx_laser_itu_channel;
+} y_cli_mxp_T_mux_state_misc;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {
