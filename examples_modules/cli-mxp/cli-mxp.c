@@ -1881,7 +1881,7 @@ static status_t cli_mxp_mux_state_misc_temp_rx_laser_get (
 
   /* set the temp_rx_laser var here, change EMPTY_STRING */
   const xmlChar *temp_rx_laser_c;
-  float temp_rx_laser=pt_monitor_struct->txp_struct.txp_temperature[2];
+  float temp_rx_laser=pt_monitor_struct->txp_struct.txp_temperature[3];
   char buf[30];
   sprintf(buf, "%.2f", temp_rx_laser);
   temp_rx_laser_c = (const xmlChar *)buf;
@@ -1932,7 +1932,7 @@ static status_t cli_mxp_mux_state_misc_loss_get (
   }
 
   /* set the loss var here, change EMPTY_STRING */
-  loss = EMPTY_STRING;
+  loss=(const xmlChar *)pt_monitor_struct->txp_struct.txp_loss;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
