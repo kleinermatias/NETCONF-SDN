@@ -1685,6 +1685,637 @@ static status_t cli_mxp_mux_state_device_boardId_get (
 
 } /* cli_mxp_mux_state_device_boardId_get */
 
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_temp_around_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/temp_around
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_temp_around_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *temp_around;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_temp_around_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the temp_around var here, change EMPTY_STRING */
+  const xmlChar *temp_around_c;
+  float temp_around=pt_monitor_struct->txp_struct.txp_temperature[0];
+  char buf[30];
+  sprintf(buf, "%.2f", temp_around);
+  temp_around_c = (const xmlChar *)buf;
+
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    temp_around_c);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_temp_around_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_temp_case_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/temp_case
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_temp_case_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *temp_case;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_temp_case_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the temp_case var here, change EMPTY_STRING */
+  temp_case = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    temp_case);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_temp_case_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_temp_tx_laser_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/temp_tx_laser
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_temp_tx_laser_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *temp_tx_laser;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_temp_tx_laser_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the temp_tx_laser var here, change EMPTY_STRING */
+  temp_tx_laser = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    temp_tx_laser);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_temp_tx_laser_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_temp_rx_laser_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/temp_rx_laser
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_temp_rx_laser_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *temp_rx_laser;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_temp_rx_laser_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the temp_rx_laser var here, change EMPTY_STRING */
+  temp_rx_laser = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    temp_rx_laser);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_temp_rx_laser_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_loss_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/loss
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_loss_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *loss;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_loss_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the loss var here, change EMPTY_STRING */
+  loss = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    loss);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_loss_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_interrupt_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/interrupt
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_interrupt_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *interrupt;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_interrupt_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the interrupt var here, change EMPTY_STRING */
+  interrupt = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    interrupt);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_interrupt_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_tx_laser_itu_band_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/tx_laser_itu_band
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_tx_laser_itu_band_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *tx_laser_itu_band;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_tx_laser_itu_band_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the tx_laser_itu_band var here, change EMPTY_STRING */
+  tx_laser_itu_band = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    tx_laser_itu_band);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_tx_laser_itu_band_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_tx_laser_itu_channel_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/tx_laser_itu_channel
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_tx_laser_itu_channel_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *tx_laser_itu_channel;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_tx_laser_itu_channel_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the tx_laser_itu_channel var here, change EMPTY_STRING */
+  tx_laser_itu_channel = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    tx_laser_itu_channel);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_tx_laser_itu_channel_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_rx_laser_itu_band_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/rx_laser_itu_band
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_rx_laser_itu_band_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *rx_laser_itu_band;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_rx_laser_itu_band_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the rx_laser_itu_band var here, change EMPTY_STRING */
+  rx_laser_itu_band = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    rx_laser_itu_band);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_rx_laser_itu_band_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_rx_laser_itu_channel_get
+* 
+* Get database object callback
+* Path: /mux-state-misc/rx_laser_itu_channel
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_misc_rx_laser_itu_channel_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *rx_laser_itu_channel;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_misc_rx_laser_itu_channel_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the rx_laser_itu_channel var here, change EMPTY_STRING */
+  rx_laser_itu_channel = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    rx_laser_itu_channel);
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_rx_laser_itu_channel_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_misc_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-misc
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_misc_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-misc */
+  res = agt_add_top_container(mux_state_misc_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-misc/temp_around */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_temp_around,
+    cli_mxp_mux_state_misc_temp_around_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/temp_case */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_temp_case,
+    cli_mxp_mux_state_misc_temp_case_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/temp_tx_laser */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_temp_tx_laser,
+    cli_mxp_mux_state_misc_temp_tx_laser_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/temp_rx_laser */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_temp_rx_laser,
+    cli_mxp_mux_state_misc_temp_rx_laser_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/loss */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_loss,
+    cli_mxp_mux_state_misc_loss_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/interrupt */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_interrupt,
+    cli_mxp_mux_state_misc_interrupt_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/tx_laser_itu_band */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_tx_laser_itu_band,
+    cli_mxp_mux_state_misc_tx_laser_itu_band_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/tx_laser_itu_channel */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_tx_laser_itu_channel,
+    cli_mxp_mux_state_misc_tx_laser_itu_channel_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/rx_laser_itu_band */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_rx_laser_itu_band,
+    cli_mxp_mux_state_misc_rx_laser_itu_band_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-misc/rx_laser_itu_channel */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_rx_laser_itu_channel,
+    cli_mxp_mux_state_misc_rx_laser_itu_channel_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_misc_mro */
 
 /********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
@@ -2393,6 +3024,12 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
+  mux_state_misc_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_misc);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
   mux_optical_line_status_obj = ncx_find_object(		
     cli_mxp_mod,		
     y_cli_mxp_N_mux_optical_line_status);		
@@ -2667,6 +3304,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_misc_mro();
   if (res != NO_ERR) {
     return res;
   }
