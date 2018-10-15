@@ -1932,8 +1932,9 @@ static status_t cli_mxp_mux_state_misc_loss_get (
   }
 
   /* set the loss var here, change EMPTY_STRING */
-  printf("AAAAAAAAAA %d",pt_monitor_struct->txp_struct.txp_loss);
-  loss=(const xmlChar *)pt_monitor_struct->txp_struct.txp_loss;
+  int loss_int = pt_monitor_struct->txp_struct.txp_loss;
+  char general_status[2][100] = { "Yes", "No" };
+  loss=(const xmlChar *)general_status[loss_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
