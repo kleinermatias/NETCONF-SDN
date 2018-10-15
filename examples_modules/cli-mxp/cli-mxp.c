@@ -1758,7 +1758,6 @@ static status_t cli_mxp_mux_state_misc_temp_case_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *temp_case;
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_misc_temp_case_get callback");
@@ -1776,11 +1775,16 @@ static status_t cli_mxp_mux_state_misc_temp_case_get (
   }
 
   /* set the temp_case var here, change EMPTY_STRING */
-  temp_case = EMPTY_STRING;
+  const xmlChar *temp_case_c;
+  float temp_case=pt_monitor_struct->txp_struct.txp_temperature[1];
+  char buf[30];
+  sprintf(buf, "%.2f", temp_case);
+  temp_case_c = (const xmlChar *)buf;
+
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
-    temp_case);
+    temp_case_c);
 
   return res;
 
@@ -1806,7 +1810,6 @@ static status_t cli_mxp_mux_state_misc_temp_tx_laser_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *temp_tx_laser;
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_misc_temp_tx_laser_get callback");
@@ -1824,11 +1827,16 @@ static status_t cli_mxp_mux_state_misc_temp_tx_laser_get (
   }
 
   /* set the temp_tx_laser var here, change EMPTY_STRING */
-  temp_tx_laser = EMPTY_STRING;
+  const xmlChar *temp_tx_laser_c;
+  float temp_tx_laser=pt_monitor_struct->txp_struct.txp_temperature[2];
+  char buf[30];
+  sprintf(buf, "%.2f", temp_tx_laser);
+  temp_tx_laser_c = (const xmlChar *)buf;
+
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
-    temp_tx_laser);
+    temp_tx_laser_c);
 
   return res;
 
@@ -1854,7 +1862,7 @@ static status_t cli_mxp_mux_state_misc_temp_rx_laser_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *temp_rx_laser;
+  
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_misc_temp_rx_laser_get callback");
@@ -1872,11 +1880,15 @@ static status_t cli_mxp_mux_state_misc_temp_rx_laser_get (
   }
 
   /* set the temp_rx_laser var here, change EMPTY_STRING */
-  temp_rx_laser = EMPTY_STRING;
+  const xmlChar *temp_rx_laser_c;
+  float temp_rx_laser=pt_monitor_struct->txp_struct.txp_temperature[2];
+  char buf[30];
+  sprintf(buf, "%.2f", temp_rx_laser);
+  temp_rx_laser_c = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
-    temp_rx_laser);
+    temp_rx_laser_c);
 
   return res;
 
