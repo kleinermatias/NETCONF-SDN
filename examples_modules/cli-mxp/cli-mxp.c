@@ -23,6 +23,7 @@
 static ncx_module_t *cli_mxp_mod;
 static obj_template_t *mux_config_obj;
 static obj_template_t *mux_state_obj;
+static obj_template_t *mux_state_misc_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
