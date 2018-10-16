@@ -2032,12 +2032,8 @@ static status_t cli_mxp_mux_state_misc_tx_laser_itu_band_get (
   }
 
   /* set the tx_laser_itu_band var here, change EMPTY_STRING */
-  //float tx_laser_itu_band_float=pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band;
   char buf[30];
-  printf("AAAAAAAAA");
-  
   sprintf(buf, "%c", pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
-  //printf("%c",(char)pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
   tx_laser_itu_band = (const xmlChar *)buf;
 
   res = val_set_simval_obj(
@@ -2069,7 +2065,6 @@ static status_t cli_mxp_mux_state_misc_tx_laser_itu_channel_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *tx_laser_itu_channel;
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_misc_tx_laser_itu_channel_get callback");
@@ -2087,7 +2082,11 @@ static status_t cli_mxp_mux_state_misc_tx_laser_itu_channel_get (
   }
 
   /* set the tx_laser_itu_channel var here, change EMPTY_STRING */
-  tx_laser_itu_channel = EMPTY_STRING;
+  const xmlChar *tx_laser_itu_channel;
+  float tx_laser_itu_channel_float=pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.channel;
+  char buf[30];
+  sprintf(buf, "%.2f", tx_laser_itu_channel_float);
+  tx_laser_itu_channel = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2135,7 +2134,9 @@ static status_t cli_mxp_mux_state_misc_rx_laser_itu_band_get (
   }
 
   /* set the rx_laser_itu_band var here, change EMPTY_STRING */
-  rx_laser_itu_band = EMPTY_STRING;
+  char buf[30];
+  sprintf(buf, "%c", pt_monitor_struct->txp_struct.txp_rx_laser_itu_channel.fields.band);
+  rx_laser_itu_band = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2165,7 +2166,6 @@ static status_t cli_mxp_mux_state_misc_rx_laser_itu_channel_get (
   val_value_t *dstval)
 {
   status_t res = NO_ERR;
-  const xmlChar *rx_laser_itu_channel;
 
   if (LOGDEBUG) {
     log_debug("\nEnter cli_mxp_mux_state_misc_rx_laser_itu_channel_get callback");
@@ -2183,7 +2183,11 @@ static status_t cli_mxp_mux_state_misc_rx_laser_itu_channel_get (
   }
 
   /* set the rx_laser_itu_channel var here, change EMPTY_STRING */
-  rx_laser_itu_channel = EMPTY_STRING;
+  const xmlChar *rx_laser_itu_channel;
+  float rx_laser_itu_channel_float=pt_monitor_struct->txp_struct.txp_rx_laser_itu_channel.fields.channel;
+  char buf[30];
+  sprintf(buf, "%.2f", rx_laser_itu_channel_float);
+  rx_laser_itu_channel = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
