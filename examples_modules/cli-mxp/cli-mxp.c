@@ -2036,8 +2036,8 @@ static status_t cli_mxp_mux_state_misc_tx_laser_itu_band_get (
   char buf[30];
   printf("AAAAAAAAA");
   
-  sprintf(buf, "%c C", tx_laser_itu_band_float);
-  printf(pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
+  sprintf(buf, "%c", tx_laser_itu_band_float);
+  printf("%c",(char)pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
   tx_laser_itu_band = (const xmlChar *)buf;
 
   res = val_set_simval_obj(
