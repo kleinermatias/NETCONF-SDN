@@ -2032,12 +2032,12 @@ static status_t cli_mxp_mux_state_misc_tx_laser_itu_band_get (
   }
 
   /* set the tx_laser_itu_band var here, change EMPTY_STRING */
-  float tx_laser_itu_band_float=pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band;
+  //float tx_laser_itu_band_float=pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band;
   char buf[30];
   printf("AAAAAAAAA");
   
-  sprintf(buf, "%c", tx_laser_itu_band_float);
-  printf("%c",(char)pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
+  sprintf(buf, "%c", pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
+  //printf("%c",(char)pt_monitor_struct->txp_struct.txp_tx_laser_itu_channel.fields.band);
   tx_laser_itu_band = (const xmlChar *)buf;
 
   res = val_set_simval_obj(
