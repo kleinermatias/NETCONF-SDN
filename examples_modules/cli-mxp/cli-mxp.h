@@ -35,6 +35,43 @@ extern "C" {
 #define y_cli_mxp_M_cli_mxp (const xmlChar *)"cli-mxp"
 #define y_cli_mxp_R_cli_mxp (const xmlChar *)"2018-06-24"
 
+#define y_cli_mxp_N_EOL_ALM (const xmlChar *)"EOL_ALM"
+#define y_cli_mxp_N_EOL_ALM_NOTIFY (const xmlChar *)"EOL_ALM_NOTIFY"
+#define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
+#define y_cli_mxp_N_LATCHED_TXFIFO_ERR_NOTIFY (const xmlChar *)"LATCHED_TXFIFO_ERR_NOTIFY"
+#define y_cli_mxp_N_LS_BIAS_ALM (const xmlChar *)"LS_BIAS_ALM"
+#define y_cli_mxp_N_LS_BIAS_ALM_NOTIFY (const xmlChar *)"LS_BIAS_ALM_NOTIFY"
+#define y_cli_mxp_N_LS_POW_ALM (const xmlChar *)"LS_POW_ALM"
+#define y_cli_mxp_N_LS_POW_ALM_NOTIFY (const xmlChar *)"LS_POW_ALM_NOTIFY"
+#define y_cli_mxp_N_LS_TEMP_ALM (const xmlChar *)"LS_TEMP_ALM"
+#define y_cli_mxp_N_LS_TEMP_ALM_NOTIFY (const xmlChar *)"LS_TEMP_ALM_NOTIFY"
+#define y_cli_mxp_N_LS_WAV_ALM (const xmlChar *)"LS_WAV_ALM"
+#define y_cli_mxp_N_LS_WAV_ALM_NOTIFY (const xmlChar *)"LS_WAV_ALM_NOTIFY"
+#define y_cli_mxp_N_MOD_BIAS_ALM (const xmlChar *)"MOD_BIAS_ALM"
+#define y_cli_mxp_N_MOD_BIAS_ALM_NOTIFY (const xmlChar *)"MOD_BIAS_ALM_NOTIFY"
+#define y_cli_mxp_N_MOD_TEMP_ALM (const xmlChar *)"MOD_TEMP_ALM"
+#define y_cli_mxp_N_PRBS_ERR_DET (const xmlChar *)"PRBS_ERR_DET"
+#define y_cli_mxp_N_PRBS_ERR_DET_NOTIFY (const xmlChar *)"PRBS_ERR_DET_NOTIFY"
+#define y_cli_mxp_N_RXALM_INT (const xmlChar *)"RXALM_INT"
+#define y_cli_mxp_N_RXALM_INT_NOTIFY (const xmlChar *)"RXALM_INT_NOTIFY"
+#define y_cli_mxp_N_RXPOW_ALM (const xmlChar *)"RXPOW_ALM"
+#define y_cli_mxp_N_RXPOW_ALM_NOTIFY (const xmlChar *)"RXPOW_ALM_NOTIFY"
+#define y_cli_mxp_N_RXS (const xmlChar *)"RXS"
+#define y_cli_mxp_N_RXS_NOTIFY (const xmlChar *)"RXS_NOTIFY"
+#define y_cli_mxp_N_RX_LOCK_ERR (const xmlChar *)"RX_LOCK_ERR"
+#define y_cli_mxp_N_RX_LOCK_ERR_NOTIFY (const xmlChar *)"RX_LOCK_ERR_NOTIFY"
+#define y_cli_mxp_N_RX_LOS (const xmlChar *)"RX_LOS"
+#define y_cli_mxp_N_RX_LOS_NOTIFY (const xmlChar *)"RX_LOS_NOTIFY"
+#define y_cli_mxp_N_TX_ALM_INT (const xmlChar *)"TX_ALM_INT"
+#define y_cli_mxp_N_TX_ALM_INT_NOTIFY (const xmlChar *)"TX_ALM_INT_NOTIFY"
+#define y_cli_mxp_N_TX_DSC_ERR (const xmlChar *)"TX_DSC_ERR"
+#define y_cli_mxp_N_TX_DSC_ERR_NOTIFY (const xmlChar *)"TX_DSC_ERR_NOTIFY"
+#define y_cli_mxp_N_TX_LOCK_ERR (const xmlChar *)"TX_LOCK_ERR"
+#define y_cli_mxp_N_TX_LOCK_ERR_NOTIFY (const xmlChar *)"TX_LOCK_ERR_NOTIFY"
+#define y_cli_mxp_N_TX_LOF_ALM (const xmlChar *)"TX_LOF_ALM"
+#define y_cli_mxp_N_TX_LOF_ALM_NOTIFY (const xmlChar *)"TX_LOF_ALM_NOTIFY"
+#define y_cli_mxp_N_TX_OOA (const xmlChar *)"TX_OOA"
+#define y_cli_mxp_N_TX_OOA_NOTIFY (const xmlChar *)"TX_OOA_NOTIFY"
 #define y_cli_mxp_N_board_humidity_state (const xmlChar *)"board_humidity_state"
 #define y_cli_mxp_N_brctl_showstp_br0 (const xmlChar *)"brctl_showstp_br0"
 #define y_cli_mxp_N_canal (const xmlChar *)"canal"
@@ -58,6 +95,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_optical_line_status (const xmlChar *)"mux-optical-line-status"
 #define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
+#define y_cli_mxp_N_mux_state_TX_RX_alarms (const xmlChar *)"mux-state-TX-RX-alarms"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
 #define y_cli_mxp_N_respuesta_mux_apply_config (const xmlChar *)"respuesta-mux-apply-config"
@@ -134,9 +172,32 @@ typedef struct y_cli_mxp_T_mux_state_misc_ {
   xmlChar *rx_laser_itu_channel;
 } y_cli_mxp_T_mux_state_misc;
 
-/* container /mux-optical-line-status */		
-typedef struct y_cli_mxp_T_mux_optical_line_status_ {		
-  xmlChar *brctl_showstp_br0; 		
+/* container /mux-state-TX-RX-alarms */
+typedef struct y_cli_mxp_T_mux_state_TX_RX_alarms_ {
+  xmlChar *EOL_ALM;
+  xmlChar *MOD_TEMP_ALM;
+  xmlChar *TX_OOA;
+  xmlChar *TX_LOF_ALM;
+  xmlChar *TX_DSC_ERR;
+  xmlChar *LS_WAV_ALM;
+  xmlChar *TX_ALM_INT;
+  xmlChar *LS_BIAS_ALM;
+  xmlChar *LS_TEMP_ALM;
+  xmlChar *TX_LOCK_ERR;
+  xmlChar *LS_POW_ALM;
+  xmlChar *MOD_BIAS_ALM;
+  xmlChar *LATCHED_TXFIFO_ERR;
+  xmlChar *RXALM_INT;
+  xmlChar *RXPOW_ALM;
+  xmlChar *RX_LOS;
+  xmlChar *RX_LOCK_ERR;
+  xmlChar *RXS;
+  xmlChar *PRBS_ERR_DET;
+} y_cli_mxp_T_mux_state_TX_RX_alarms;
+
+/* container /mux-optical-line-status */
+typedef struct y_cli_mxp_T_mux_optical_line_status_ {
+  xmlChar *brctl_showstp_br0;
 } y_cli_mxp_T_mux_optical_line_status;
 
 /* container /mux-notify-activate/input */
@@ -200,6 +261,24 @@ typedef struct y_cli_mxp_T_mux_settings_ {
 /* notification /mux-notify */
 typedef struct y_cli_mxp_T_mux_notify_ {
   xmlChar *ringtone;
+  xmlChar *EOL_ALM_NOTIFY;
+  xmlChar *TX_OOA_NOTIFY;
+  xmlChar *TX_LOF_ALM_NOTIFY;
+  xmlChar *TX_DSC_ERR_NOTIFY;
+  xmlChar *LS_WAV_ALM_NOTIFY;
+  xmlChar *TX_ALM_INT_NOTIFY;
+  xmlChar *LS_BIAS_ALM_NOTIFY;
+  xmlChar *LS_TEMP_ALM_NOTIFY;
+  xmlChar *TX_LOCK_ERR_NOTIFY;
+  xmlChar *LS_POW_ALM_NOTIFY;
+  xmlChar *MOD_BIAS_ALM_NOTIFY;
+  xmlChar *LATCHED_TXFIFO_ERR_NOTIFY;
+  xmlChar *RXALM_INT_NOTIFY;
+  xmlChar *RXPOW_ALM_NOTIFY;
+  xmlChar *RX_LOS_NOTIFY;
+  xmlChar *RX_LOCK_ERR_NOTIFY;
+  xmlChar *RXS_NOTIFY;
+  xmlChar *PRBS_ERR_DET_NOTIFY;
 } y_cli_mxp_T_mux_notify;
 
 /********************************************************************
@@ -210,7 +289,25 @@ typedef struct y_cli_mxp_T_mux_notify_ {
 * 
 ********************************************************************/
 extern void y_cli_mxp_mux_notify_send (
-  const xmlChar *ringtone);
+  const xmlChar *ringtone,
+  const xmlChar *EOL_ALM_NOTIFY,
+  const xmlChar *TX_OOA_NOTIFY,
+  const xmlChar *TX_LOF_ALM_NOTIFY,
+  const xmlChar *TX_DSC_ERR_NOTIFY,
+  const xmlChar *LS_WAV_ALM_NOTIFY,
+  const xmlChar *TX_ALM_INT_NOTIFY,
+  const xmlChar *LS_BIAS_ALM_NOTIFY,
+  const xmlChar *LS_TEMP_ALM_NOTIFY,
+  const xmlChar *TX_LOCK_ERR_NOTIFY,
+  const xmlChar *LS_POW_ALM_NOTIFY,
+  const xmlChar *MOD_BIAS_ALM_NOTIFY,
+  const xmlChar *LATCHED_TXFIFO_ERR_NOTIFY,
+  const xmlChar *RXALM_INT_NOTIFY,
+  const xmlChar *RXPOW_ALM_NOTIFY,
+  const xmlChar *RX_LOS_NOTIFY,
+  const xmlChar *RX_LOCK_ERR_NOTIFY,
+  const xmlChar *RXS_NOTIFY,
+  const xmlChar *PRBS_ERR_DET_NOTIFY);
 
 /********************************************************************
 * FUNCTION y_cli_mxp_init
