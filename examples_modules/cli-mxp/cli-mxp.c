@@ -60,7 +60,7 @@ volatile pthread_t alarma_tid;
 const xmlChar *tipo_trafico_var;
 const xmlChar *tipo_fec_linea_var;
 const xmlChar *tipo_fec_cliente_var;
-static char alarm[2][100] = { "Alarm", "--" };
+static char alarms[2][100] = { "Alarm", "--" };
 static char general_status[2][100] = { "Yes", "No" };
 
 struct Device_info {
@@ -2386,7 +2386,7 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_EOL_ALM_get (
 
   /* set the EOL_ALM var here, change EMPTY_STRING */
   int EOL_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
-  EOL_ALM=(const xmlChar *)alarm[EOL_ALM_int];
+  EOL_ALM=(const xmlChar *)alarms[EOL_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2435,7 +2435,7 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_MOD_TEMP_ALM_get (
 
   /* set the MOD_TEMP_ALM var here, change EMPTY_STRING */
   int MOD_TEMP_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm;
-  MOD_TEMP_ALM=(const xmlChar *)alarm[MOD_TEMP_ALM_int];
+  MOD_TEMP_ALM=(const xmlChar *)alarms[MOD_TEMP_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
