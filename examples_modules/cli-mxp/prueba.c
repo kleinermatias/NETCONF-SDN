@@ -46,6 +46,7 @@ static ncx_module_t *cli_mxp_mod;
 static obj_template_t *mux_config_obj;
 static obj_template_t *mux_state_obj;
 static obj_template_t *mux_state_misc_obj;
+static obj_template_t *mux_state_TX_RX_alarms_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -68,6 +69,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_config_obj = NULL;
   mux_state_obj = NULL;
   mux_state_misc_obj = NULL;
+  mux_state_TX_RX_alarms_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -2278,6 +2280,1173 @@ static status_t
 } /* cli_mxp_mux_state_misc_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_EOL_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/EOL_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_EOL_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *EOL_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_EOL_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the EOL_ALM var here, change EMPTY_STRING */
+  EOL_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    EOL_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_EOL_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_MOD_TEMP_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/MOD_TEMP_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_MOD_TEMP_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MOD_TEMP_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_MOD_TEMP_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MOD_TEMP_ALM var here, change EMPTY_STRING */
+  MOD_TEMP_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MOD_TEMP_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_MOD_TEMP_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_TX_OOA_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/TX_OOA
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_TX_OOA_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *TX_OOA;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_TX_OOA_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the TX_OOA var here, change EMPTY_STRING */
+  TX_OOA = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    TX_OOA);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_TX_OOA_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_TX_LOF_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/TX_LOF_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_TX_LOF_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *TX_LOF_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_TX_LOF_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the TX_LOF_ALM var here, change EMPTY_STRING */
+  TX_LOF_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    TX_LOF_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_TX_LOF_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_TX_DSC_ERR_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/TX_DSC_ERR
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_TX_DSC_ERR_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *TX_DSC_ERR;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_TX_DSC_ERR_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the TX_DSC_ERR var here, change EMPTY_STRING */
+  TX_DSC_ERR = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    TX_DSC_ERR);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_TX_DSC_ERR_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_LS_WAV_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/LS_WAV_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_LS_WAV_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LS_WAV_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_LS_WAV_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LS_WAV_ALM var here, change EMPTY_STRING */
+  LS_WAV_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LS_WAV_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_LS_WAV_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_TX_ALM_INT_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/TX_ALM_INT
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_TX_ALM_INT_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *TX_ALM_INT;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_TX_ALM_INT_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the TX_ALM_INT var here, change EMPTY_STRING */
+  TX_ALM_INT = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    TX_ALM_INT);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_TX_ALM_INT_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_LS_BIAS_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/LS_BIAS_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_LS_BIAS_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LS_BIAS_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_LS_BIAS_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LS_BIAS_ALM var here, change EMPTY_STRING */
+  LS_BIAS_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LS_BIAS_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_LS_BIAS_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_LS_TEMP_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/LS_TEMP_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_LS_TEMP_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LS_TEMP_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_LS_TEMP_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LS_TEMP_ALM var here, change EMPTY_STRING */
+  LS_TEMP_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LS_TEMP_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_LS_TEMP_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_TX_LOCK_ERR_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/TX_LOCK_ERR
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_TX_LOCK_ERR_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *TX_LOCK_ERR;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_TX_LOCK_ERR_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the TX_LOCK_ERR var here, change EMPTY_STRING */
+  TX_LOCK_ERR = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    TX_LOCK_ERR);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_TX_LOCK_ERR_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_LS_POW_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/LS_POW_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_LS_POW_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LS_POW_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_LS_POW_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LS_POW_ALM var here, change EMPTY_STRING */
+  LS_POW_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LS_POW_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_LS_POW_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_MOD_BIAS_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/MOD_BIAS_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_MOD_BIAS_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MOD_BIAS_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_MOD_BIAS_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MOD_BIAS_ALM var here, change EMPTY_STRING */
+  MOD_BIAS_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MOD_BIAS_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_MOD_BIAS_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_LATCHED_TXFIFO_ERR_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/LATCHED_TXFIFO_ERR
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_LATCHED_TXFIFO_ERR_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LATCHED_TXFIFO_ERR;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_LATCHED_TXFIFO_ERR_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LATCHED_TXFIFO_ERR var here, change EMPTY_STRING */
+  LATCHED_TXFIFO_ERR = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LATCHED_TXFIFO_ERR);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_LATCHED_TXFIFO_ERR_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_RXALM_INT_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/RXALM_INT
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_RXALM_INT_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *RXALM_INT;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_RXALM_INT_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the RXALM_INT var here, change EMPTY_STRING */
+  RXALM_INT = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    RXALM_INT);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_RXALM_INT_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_RXPOW_ALM_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/RXPOW_ALM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_RXPOW_ALM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *RXPOW_ALM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_RXPOW_ALM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the RXPOW_ALM var here, change EMPTY_STRING */
+  RXPOW_ALM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    RXPOW_ALM);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_RXPOW_ALM_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_RX_LOS_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/RX_LOS
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_RX_LOS_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *RX_LOS;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_RX_LOS_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the RX_LOS var here, change EMPTY_STRING */
+  RX_LOS = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    RX_LOS);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_RX_LOS_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_RX_LOCK_ERR_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/RX_LOCK_ERR
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_RX_LOCK_ERR_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *RX_LOCK_ERR;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_RX_LOCK_ERR_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the RX_LOCK_ERR var here, change EMPTY_STRING */
+  RX_LOCK_ERR = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    RX_LOCK_ERR);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_RX_LOCK_ERR_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_RXS_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/RXS
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_RXS_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *RXS;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_RXS_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the RXS var here, change EMPTY_STRING */
+  RXS = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    RXS);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_RXS_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_PRBS_ERR_DET_get
+* 
+* Get database object callback
+* Path: /mux-state-TX-RX-alarms/PRBS_ERR_DET
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_TX_RX_alarms_PRBS_ERR_DET_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *PRBS_ERR_DET;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_TX_RX_alarms_PRBS_ERR_DET_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the PRBS_ERR_DET var here, change EMPTY_STRING */
+  PRBS_ERR_DET = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    PRBS_ERR_DET);
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_PRBS_ERR_DET_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_TX_RX_alarms_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-TX-RX-alarms
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_TX_RX_alarms_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-TX-RX-alarms */
+  res = agt_add_top_container(mux_state_TX_RX_alarms_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/EOL_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_EOL_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_EOL_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/MOD_TEMP_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MOD_TEMP_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_MOD_TEMP_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/TX_OOA */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_TX_OOA,
+    cli_mxp_mux_state_TX_RX_alarms_TX_OOA_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/TX_LOF_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_TX_LOF_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_TX_LOF_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/TX_DSC_ERR */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_TX_DSC_ERR,
+    cli_mxp_mux_state_TX_RX_alarms_TX_DSC_ERR_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/LS_WAV_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LS_WAV_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_LS_WAV_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/TX_ALM_INT */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_TX_ALM_INT,
+    cli_mxp_mux_state_TX_RX_alarms_TX_ALM_INT_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/LS_BIAS_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LS_BIAS_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_LS_BIAS_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/LS_TEMP_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LS_TEMP_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_LS_TEMP_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/TX_LOCK_ERR */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_TX_LOCK_ERR,
+    cli_mxp_mux_state_TX_RX_alarms_TX_LOCK_ERR_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/LS_POW_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LS_POW_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_LS_POW_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/MOD_BIAS_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MOD_BIAS_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_MOD_BIAS_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/LATCHED_TXFIFO_ERR */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LATCHED_TXFIFO_ERR,
+    cli_mxp_mux_state_TX_RX_alarms_LATCHED_TXFIFO_ERR_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/RXALM_INT */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_RXALM_INT,
+    cli_mxp_mux_state_TX_RX_alarms_RXALM_INT_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/RXPOW_ALM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_RXPOW_ALM,
+    cli_mxp_mux_state_TX_RX_alarms_RXPOW_ALM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/RX_LOS */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_RX_LOS,
+    cli_mxp_mux_state_TX_RX_alarms_RX_LOS_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/RX_LOCK_ERR */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_RX_LOCK_ERR,
+    cli_mxp_mux_state_TX_RX_alarms_RX_LOCK_ERR_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/RXS */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_RXS,
+    cli_mxp_mux_state_TX_RX_alarms_RXS_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-TX-RX-alarms/PRBS_ERR_DET */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_PRBS_ERR_DET,
+    cli_mxp_mux_state_TX_RX_alarms_PRBS_ERR_DET_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_TX_RX_alarms_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -2677,7 +3846,25 @@ static status_t y_cli_mxp_mux_settings_invoke (
 * 
 ********************************************************************/
 void y_cli_mxp_mux_notify_send (
-  const xmlChar *ringtone)
+  const xmlChar *ringtone,
+  const xmlChar *EOL_ALM_NOTIFY,
+  const xmlChar *TX_OOA_NOTIFY,
+  const xmlChar *TX_LOF_ALM_NOTIFY,
+  const xmlChar *TX_DSC_ERR_NOTIFY,
+  const xmlChar *LS_WAV_ALM_NOTIFY,
+  const xmlChar *TX_ALM_INT_NOTIFY,
+  const xmlChar *LS_BIAS_ALM_NOTIFY,
+  const xmlChar *LS_TEMP_ALM_NOTIFY,
+  const xmlChar *TX_LOCK_ERR_NOTIFY,
+  const xmlChar *LS_POW_ALM_NOTIFY,
+  const xmlChar *MOD_BIAS_ALM_NOTIFY,
+  const xmlChar *LATCHED_TXFIFO_ERR_NOTIFY,
+  const xmlChar *RXALM_INT_NOTIFY,
+  const xmlChar *RXPOW_ALM_NOTIFY,
+  const xmlChar *RX_LOS_NOTIFY,
+  const xmlChar *RX_LOCK_ERR_NOTIFY,
+  const xmlChar *RXS_NOTIFY,
+  const xmlChar *PRBS_ERR_DET_NOTIFY)
 {
   agt_not_msg_t *notif;
   val_value_t *parmval;
@@ -2700,6 +3887,276 @@ void y_cli_mxp_mux_notify_send (
     mux_notify_obj,
     y_cli_mxp_N_ringtone,
     ringtone,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add EOL_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_EOL_ALM_NOTIFY,
+    EOL_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add TX_OOA_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_TX_OOA_NOTIFY,
+    TX_OOA_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add TX_LOF_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_TX_LOF_ALM_NOTIFY,
+    TX_LOF_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add TX_DSC_ERR_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_TX_DSC_ERR_NOTIFY,
+    TX_DSC_ERR_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add LS_WAV_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_LS_WAV_ALM_NOTIFY,
+    LS_WAV_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add TX_ALM_INT_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_TX_ALM_INT_NOTIFY,
+    TX_ALM_INT_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add LS_BIAS_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_LS_BIAS_ALM_NOTIFY,
+    LS_BIAS_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add LS_TEMP_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_LS_TEMP_ALM_NOTIFY,
+    LS_TEMP_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add TX_LOCK_ERR_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_TX_LOCK_ERR_NOTIFY,
+    TX_LOCK_ERR_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add LS_POW_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_LS_POW_ALM_NOTIFY,
+    LS_POW_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add MOD_BIAS_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_MOD_BIAS_ALM_NOTIFY,
+    MOD_BIAS_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add LATCHED_TXFIFO_ERR_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_LATCHED_TXFIFO_ERR_NOTIFY,
+    LATCHED_TXFIFO_ERR_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add RXALM_INT_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_RXALM_INT_NOTIFY,
+    RXALM_INT_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add RXPOW_ALM_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_RXPOW_ALM_NOTIFY,
+    RXPOW_ALM_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add RX_LOS_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_RX_LOS_NOTIFY,
+    RX_LOS_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add RX_LOCK_ERR_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_RX_LOCK_ERR_NOTIFY,
+    RX_LOCK_ERR_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add RXS_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_RXS_NOTIFY,
+    RXS_NOTIFY,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  /* add PRBS_ERR_DET_NOTIFY to payload */
+  parmval = agt_make_leaf(
+    mux_notify_obj,
+    y_cli_mxp_N_PRBS_ERR_DET_NOTIFY,
+    PRBS_ERR_DET_NOTIFY,
     &res);
   if (parmval == NULL) {
     log_error(
@@ -2767,6 +4224,12 @@ status_t y_cli_mxp_init (
   mux_state_misc_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_state_misc);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_state_TX_RX_alarms_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_TX_RX_alarms);
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
@@ -3027,6 +4490,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_TX_RX_alarms_mro();
   if (res != NO_ERR) {
     return res;
   }
