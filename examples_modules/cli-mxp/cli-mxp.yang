@@ -260,6 +260,87 @@ module cli-mxp {
 
     }
 
+    container mux-state-TX-RX-alarms {
+        description "Container para variables de tipo alarmas TX/RX en monitor";
+        config false;
+        
+        leaf EOL_ALM {
+            type string;
+        }
+
+        leaf MOD_TEMP_ALM {
+            type string;
+        }
+
+        leaf TX_OOA {
+            type string;
+        }
+
+        leaf TX_LOF_ALM {
+            type string;
+        }
+
+        leaf TX_DSC_ERR {
+            type string;
+        }
+        
+        leaf LS_WAV_ALM {
+            type string;
+        }
+        
+        leaf TX_ALM_INT {
+            type string;
+        }
+
+        leaf LS_BIAS_ALM {
+            type string;
+        }
+
+        leaf LS_TEMP_ALM {
+            type string;
+        }
+
+        leaf TX_LOCK_ERR {
+            type string;
+        }
+
+        leaf LS_POW_ALM {
+            type string;
+        }
+
+        leaf MOD_BIAS_ALM {
+            type string;
+        }
+
+        leaf LATCHED_TXFIFO_ERR {
+            type string;
+        }
+
+        leaf RXALM_INT {
+            type string;
+        }
+
+        leaf RXPOW_ALM {
+            type string;
+        }
+
+        leaf RX_LOS {
+            type string;
+        }
+        
+        leaf RX_LOCK_ERR {
+            type string;
+        }
+
+        leaf RXS {
+            type string;
+        }
+
+        leaf PRBS_ERR_DET {
+            type string;
+        }
+    }
+
     container mux-optical-line-status {
         description "Para determinar estado del enlace";
         config false;
@@ -299,7 +380,97 @@ module cli-mxp {
 
 
     notification mux-notify {
+
         leaf ringtone {
+            type string;
+            mandatory "true";
+        }
+        leaf EOL_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf TX_OOA_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf TX_LOF_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf TX_DSC_ERR_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf LS_WAV_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf TX_ALM_INT_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf LS_BIAS_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+        
+        leaf LS_TEMP_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf TX_LOCK_ERR_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf LS_POW_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf MOD_BIAS_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf LATCHED_TXFIFO_ERR_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf RXALM_INT_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf RXPOW_ALM_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf RX_LOS_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf RX_LOCK_ERR_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf RXS_NOTIFY {
+            type string;
+            mandatory "true";
+        }
+
+        leaf PRBS_ERR_DET_NOTIFY {
             type string;
             mandatory "true";
         }
