@@ -87,7 +87,28 @@ alarmas_thread(void *arg)
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] rx_power");
         }
 
-        sleep(time_notify_conf);
+        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm == (int)1)
+        {   
+            y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] EOL ALM");
+        }
+
+        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm == (int)1)
+        {   
+            y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod TEMP ALM");
+        }
+
+        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa == (int)1)
+        {   
+            y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] TxOOA");
+        }
+
+        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm == (int)1)
+        {   
+            y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOF ALM");
+        }
+
+        sleep(10);
+        //sleep(time_notify_conf);
     }
     return NULL;
 }
