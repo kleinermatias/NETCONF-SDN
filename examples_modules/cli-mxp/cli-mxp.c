@@ -2483,7 +2483,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_TX_OOA_get (
   }
 
   /* set the TX_OOA var here, change EMPTY_STRING */
-  TX_OOA = EMPTY_STRING;
+  int TX_OOA_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa;
+  TX_OOA=(const xmlChar *)alarms[TX_OOA_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2531,7 +2532,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_TX_LOF_ALM_get (
   }
 
   /* set the TX_LOF_ALM var here, change EMPTY_STRING */
-  TX_LOF_ALM = EMPTY_STRING;
+  int TX_LOF_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm;
+  TX_LOF_ALM=(const xmlChar *)alarms[TX_LOF_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2579,7 +2581,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_TX_DSC_ERR_get (
   }
 
   /* set the TX_DSC_ERR var here, change EMPTY_STRING */
-  TX_DSC_ERR = EMPTY_STRING;
+  int TX_DSC_ERR_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr;
+  TX_DSC_ERR=(const xmlChar *)alarms[TX_DSC_ERR_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2627,7 +2630,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_LS_WAV_ALM_get (
   }
 
   /* set the LS_WAV_ALM var here, change EMPTY_STRING */
-  LS_WAV_ALM = EMPTY_STRING;
+  int LS_WAV_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm;
+  LS_WAV_ALM=(const xmlChar *)alarms[LS_WAV_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2675,7 +2679,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_TX_ALM_INT_get (
   }
 
   /* set the TX_ALM_INT var here, change EMPTY_STRING */
-  TX_ALM_INT = EMPTY_STRING;
+  int TX_ALM_INT_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint;
+  TX_ALM_INT=(const xmlChar *)alarms[TX_ALM_INT_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2723,7 +2728,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_LS_BIAS_ALM_get (
   }
 
   /* set the LS_BIAS_ALM var here, change EMPTY_STRING */
-  LS_BIAS_ALM = EMPTY_STRING;
+  int LS_BIAS_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm;
+  LS_BIAS_ALM=(const xmlChar *)alarms[LS_BIAS_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2771,7 +2777,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_LS_TEMP_ALM_get (
   }
 
   /* set the LS_TEMP_ALM var here, change EMPTY_STRING */
-  LS_TEMP_ALM = EMPTY_STRING;
+  int LS_TEMP_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm;
+  LS_TEMP_ALM=(const xmlChar *)alarms[LS_TEMP_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2819,7 +2826,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_TX_LOCK_ERR_get (
   }
 
   /* set the TX_LOCK_ERR var here, change EMPTY_STRING */
-  TX_LOCK_ERR = EMPTY_STRING;
+  int TX_LOCK_ERR_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr;
+  TX_LOCK_ERR=(const xmlChar *)alarms[TX_LOCK_ERR_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2867,7 +2875,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_LS_POW_ALM_get (
   }
 
   /* set the LS_POW_ALM var here, change EMPTY_STRING */
-  LS_POW_ALM = EMPTY_STRING;
+  int LS_POW_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm;
+  LS_POW_ALM=(const xmlChar *)alarms[LS_POW_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2915,7 +2924,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_MOD_BIAS_ALM_get (
   }
 
   /* set the MOD_BIAS_ALM var here, change EMPTY_STRING */
-  MOD_BIAS_ALM = EMPTY_STRING;
+  int MOD_BIAS_ALM_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm;
+  MOD_BIAS_ALM=(const xmlChar *)alarms[MOD_BIAS_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -2963,7 +2973,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_LATCHED_TXFIFO_ERR_get (
   }
 
   /* set the LATCHED_TXFIFO_ERR var here, change EMPTY_STRING */
-  LATCHED_TXFIFO_ERR = EMPTY_STRING;
+  int LATCHED_TXFIFO_ERR_int = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr;
+  LATCHED_TXFIFO_ERR=(const xmlChar *)alarms[LATCHED_TXFIFO_ERR_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -3011,7 +3022,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_RXALM_INT_get (
   }
 
   /* set the RXALM_INT var here, change EMPTY_STRING */
-  RXALM_INT = EMPTY_STRING;
+  int RXALM_INT_int = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint;
+  RXALM_INT=(const xmlChar *)alarms[RXALM_INT_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -3059,7 +3071,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_RXPOW_ALM_get (
   }
 
   /* set the RXPOW_ALM var here, change EMPTY_STRING */
-  RXPOW_ALM = EMPTY_STRING;
+  int RXPOW_ALM_int = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm;
+  RXPOW_ALM=(const xmlChar *)alarms[RXPOW_ALM_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -3107,7 +3120,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_RX_LOS_get (
   }
 
   /* set the RX_LOS var here, change EMPTY_STRING */
-  RX_LOS = EMPTY_STRING;
+  int RX_LOS_int = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos;
+  RX_LOS=(const xmlChar *)alarms[RX_LOS_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -3155,7 +3169,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_RX_LOCK_ERR_get (
   }
 
   /* set the RX_LOCK_ERR var here, change EMPTY_STRING */
-  RX_LOCK_ERR = EMPTY_STRING;
+  int RX_LOCK_ERR_int = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr;
+  RX_LOCK_ERR=(const xmlChar *)alarms[RX_LOCK_ERR_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -3203,7 +3218,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_RXS_get (
   }
 
   /* set the RXS var here, change EMPTY_STRING */
-  RXS = EMPTY_STRING;
+  int RXS_int = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs;
+  RXS=(const xmlChar *)alarms[RXS_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -3251,7 +3267,8 @@ static status_t cli_mxp_mux_state_TX_RX_alarms_PRBS_ERR_DET_get (
   }
 
   /* set the PRBS_ERR_DET var here, change EMPTY_STRING */
-  PRBS_ERR_DET = EMPTY_STRING;
+  int PRBS_ERR_DET_int = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet;
+  PRBS_ERR_DET=(const xmlChar *)alarms[PRBS_ERR_DET_int];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
