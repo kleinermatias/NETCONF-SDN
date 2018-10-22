@@ -386,4 +386,13 @@ module cli-mxp {
             mandatory "true";
         }
     }
+    
+    notification mux-notify-TxOOA {
+
+        leaf INFO-TxOOA {
+            type string;
+            mandatory "true";
+        }
+    }
+
 }

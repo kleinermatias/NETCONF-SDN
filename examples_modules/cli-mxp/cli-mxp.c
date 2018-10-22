@@ -31,6 +31,7 @@ static obj_template_t *mux_notify_deactivate_obj;
 static obj_template_t *mux_apply_config_obj;
 static obj_template_t *mux_settings_obj;
 static obj_template_t *mux_notify_obj;
+static obj_template_t *mux_notify_TxOOA_obj;
 static val_value_t *mux_config_val;
 
 /* mux includes */
@@ -63,25 +64,25 @@ const xmlChar *tipo_fec_cliente_var;
 static char alarms[2][100] = { "Alarm", "--" };
 static char general_status[2][100] = { "Yes", "No" };
 
-static int eolalm_anterior = 0;
-static int modtempalm_anterior = 0;
-static int txooa_anterior = 0;
-static int txlofalm_anterior = 0;
-static int txdscerr_anterior = 0;
-static int lswavalm_anterior = 0;
-static int txalmint_anterior = 0;
-static int lsbiasalm_anterior = 0;
-static int lstempalm_anterior = 0;
-static int txlockerr_anterior = 0;
-static int lspowalm_anterior = 0;
-static int modbiasalm_anterior = 0;
-static int latchedtxfifoerr_anterior = 0;
-static int rxalmint_anterior = 0;
-static int rxpowalm_anterior = 0;
-static int rxlos_anterior = 0;
-static int rxlockerr_anterior = 0;
-static int rxs_anterior = 0;
-static int prbserrdet_anterior = 0;
+static int eolalm_anterior = 1;
+static int modtempalm_anterior = 1;
+static int txooa_anterior = 1;
+static int txlofalm_anterior = 1;
+static int txdscerr_anterior = 1;
+static int lswavalm_anterior = 1;
+static int txalmint_anterior = 1;
+static int lsbiasalm_anterior = 1;
+static int lstempalm_anterior = 1;
+static int txlockerr_anterior = 1;
+static int lspowalm_anterior = 1;
+static int modbiasalm_anterior = 1;
+static int latchedtxfifoerr_anterior = 1;
+static int rxalmint_anterior = 1;
+static int rxpowalm_anterior = 1;
+static int rxlos_anterior = 1;
+static int rxlockerr_anterior = 1;
+static int rxs_anterior = 1;
+static int prbserrdet_anterior = 1;
 
 
 struct Device_info {
@@ -98,19 +99,23 @@ alarmas_thread(void *arg)
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     while (alarma_tid) {
         
+        /*
         if(atof(pt_monitor_struct->edfa_struct.edfa_output_power) > value_notify_conf)
         {   
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] pout");
         }
+        */
 
+        /*
         if(pt_monitor_struct->txp_struct.txp_rx_power < value_rx_power_notify_conf)
         {   
             y_cli_mxp_mux_notify_send((const xmlChar *)"[WARNING] rx_power");
         }
+        */
 
         if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != eolalm_anterior )
         {   
-            if( eolalm_anterior == 0) {
+            if( eolalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] EOL ALM");
             }
             else {
@@ -120,7 +125,7 @@ alarmas_thread(void *arg)
 
         if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm != modtempalm_anterior )
         {    
-            if( modtempalm_anterior == 0) {
+            if( modtempalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod TEMP ALM");
             }
             else {
@@ -130,7 +135,7 @@ alarmas_thread(void *arg)
 
         if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa != txooa_anterior )
         {   
-            if( txooa_anterior == 0) {
+            if( txooa_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] TxOOA");
             }
             else {
@@ -140,7 +145,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm != txlofalm_anterior)
         {   
-            if( txlofalm_anterior == 0) {
+            if( txlofalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOF ALM");
             }
             else {
@@ -150,7 +155,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr != txdscerr_anterior)
         {   
-            if( txdscerr_anterior == 0) {
+            if( txdscerr_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx DSC ERR");
             }
             else {
@@ -160,7 +165,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm != lswavalm_anterior)
         {   
-            if( lswavalm_anterior == 0) {
+            if( lswavalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls WAV ALM");
             }
             else {
@@ -170,7 +175,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint != txalmint_anterior)
         {   
-            if( txalmint_anterior == 0) {
+            if( txalmint_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx ALM INT");
             }
             else {
@@ -180,7 +185,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm != lsbiasalm_anterior)
         {   
-            if( lsbiasalm_anterior == 0) {
+            if( lsbiasalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls BIAS ALM");
             }
             else {
@@ -190,7 +195,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm != lstempalm_anterior)
         {   
-            if( lstempalm_anterior == 0) {
+            if( lstempalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls TEMP ALM");
             }
             else {
@@ -200,7 +205,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr != txlockerr_anterior)
         {   
-            if( txlockerr_anterior == 0) {
+            if( txlockerr_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOCK ERR");
             }
             else {
@@ -210,7 +215,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm != lspowalm_anterior)
         {   
-            if( lspowalm_anterior == 0) {
+            if( lspowalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls POW ALM");
             }
             else {
@@ -220,7 +225,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm != modbiasalm_anterior)
         {   
-            if( modbiasalm_anterior == 0) {
+            if( modbiasalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod BIAS ALM");
             }
             else {
@@ -230,7 +235,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr != latchedtxfifoerr_anterior)
         {   
-            if( latchedtxfifoerr_anterior == 0) {
+            if( latchedtxfifoerr_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LATCHED TxFIFO ERR");
             }
             else {
@@ -240,7 +245,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint != rxalmint_anterior)
         {   
-            if( rxalmint_anterior == 0) {
+            if( rxalmint_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RxALM INT");
             }
             else {
@@ -250,7 +255,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm != rxpowalm_anterior)
         {   
-            if( rxpowalm_anterior == 0) {
+            if( rxpowalm_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx POW ALM");
             }
             else {
@@ -260,7 +265,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos != rxlos_anterior)
         {   
-            if( rxlos_anterior == 0) {
+            if( rxlos_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOS");
             }
             else {
@@ -270,7 +275,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr != rxlockerr_anterior)
         {   
-            if( rxlockerr_anterior == 0) {
+            if( rxlockerr_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOCK ERR");
             }
             else {
@@ -280,7 +285,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs != rxs_anterior)
         {   
-            if( rxs_anterior == 0) {
+            if( rxs_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RXS");
             }
             else {
@@ -290,7 +295,7 @@ alarmas_thread(void *arg)
 
         if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != prbserrdet_anterior)
         {   
-            if( prbserrdet_anterior == 0) {
+            if( prbserrdet_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PRBS ERR DET");
             }
             else {
@@ -337,9 +342,9 @@ void reverse(char *str, int len)
     }
 }
 
-   // Converts a given integer x to string str[].  d is the number
-   // of digits required in output. If d is more than the number
- // of digits in x, then 0s are added at the beginning.
+  // Converts a given integer x to string str[].  d is the number
+  // of digits required in output. If d is more than the number
+  // of digits in x, then 0s are added at the beginning.
 int intToStr(int x, char str[], int d)
 {
     int i = 0;
@@ -4422,6 +4427,51 @@ void y_cli_mxp_mux_notify_send (
 } /* y_cli_mxp_mux_notify_send */
 
 /********************************************************************
+* FUNCTION y_cli_mxp_mux_notify_TxOOA_send
+* 
+* Send a y_cli_mxp_mux_notify_TxOOA notification
+* Called by your code when notification event occurs
+* 
+********************************************************************/
+void y_cli_mxp_mux_notify_TxOOA_send (
+  const xmlChar *INFO_TxOOA)
+{
+  agt_not_msg_t *notif;
+  val_value_t *parmval;
+  status_t res = NO_ERR;
+
+
+  if (LOGDEBUG) {
+    log_debug("\nGenerating <mux-notify-TxOOA> notification");
+  }
+  
+  notif = agt_not_new_notification(mux_notify_TxOOA_obj);
+  if (notif == NULL) {
+    log_error("\nError: malloc failed, cannot send "
+    "<mux-notify-TxOOA> notification");
+    return;
+  }
+  
+  /* add INFO_TxOOA to payload */
+  parmval = agt_make_leaf(
+    mux_notify_TxOOA_obj,
+    y_cli_mxp_N_INFO_TxOOA,
+    INFO_TxOOA,
+    &res);
+  if (parmval == NULL) {
+    log_error(
+      "\nError: make leaf failed (%s), cannot send "
+      "<mux-notify-TxOOA> notification",
+      get_error_string(res));
+  } else {
+    agt_not_add_to_payload(notif, parmval);
+  }
+  
+  agt_not_queue_notification(notif);
+  
+} /* y_cli_mxp_mux_notify_TxOOA_send */
+
+/********************************************************************
 * FUNCTION y_cli_mxp_init
 * 
 * initialize the cli-mxp server instrumentation library
@@ -4516,6 +4566,12 @@ status_t y_cli_mxp_init (
   mux_notify_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_notify);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_notify_TxOOA_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_notify_TxOOA);
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }

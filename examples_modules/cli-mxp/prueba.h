@@ -38,6 +38,7 @@ extern "C" {
 
 #define y_cli_mxp_N_EOL_ALM (const xmlChar *)"EOL_ALM"
 #define y_cli_mxp_N_INFO (const xmlChar *)"INFO"
+#define y_cli_mxp_N_INFO_TxOOA (const xmlChar *)"INFO-TxOOA"
 #define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
 #define y_cli_mxp_N_LS_BIAS_ALM (const xmlChar *)"LS_BIAS_ALM"
 #define y_cli_mxp_N_LS_POW_ALM (const xmlChar *)"LS_POW_ALM"
@@ -74,6 +75,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_apply_config (const xmlChar *)"mux-apply-config"
 #define y_cli_mxp_N_mux_config (const xmlChar *)"mux-config"
 #define y_cli_mxp_N_mux_notify (const xmlChar *)"mux-notify"
+#define y_cli_mxp_N_mux_notify_TxOOA (const xmlChar *)"mux-notify-TxOOA"
 #define y_cli_mxp_N_mux_notify_activate (const xmlChar *)"mux-notify-activate"
 #define y_cli_mxp_N_mux_notify_deactivate (const xmlChar *)"mux-notify-deactivate"
 #define y_cli_mxp_N_mux_optical_line_status (const xmlChar *)"mux-optical-line-status"
@@ -241,6 +243,11 @@ typedef struct y_cli_mxp_T_mux_notify_ {
   xmlChar *INFO;
 } y_cli_mxp_T_mux_notify;
 
+/* notification /mux-notify-TxOOA */
+typedef struct y_cli_mxp_T_mux_notify_TxOOA_ {
+  xmlChar *INFO_TxOOA;
+} y_cli_mxp_T_mux_notify_TxOOA;
+
 /********************************************************************
 * FUNCTION y_cli_mxp_mux_notify_send
 * 
@@ -250,6 +257,17 @@ typedef struct y_cli_mxp_T_mux_notify_ {
 ********************************************************************/
 extern void y_cli_mxp_mux_notify_send (
   const xmlChar *INFO);
+
+
+/********************************************************************
+* FUNCTION y_cli_mxp_mux_notify_TxOOA_send
+* 
+* Send a y_cli_mxp_mux_notify_TxOOA notification
+* Called by your code when notification event occurs
+* 
+********************************************************************/
+extern void y_cli_mxp_mux_notify_TxOOA_send (
+  const xmlChar *INFO_TxOOA);
 
 /********************************************************************
 * FUNCTION y_cli_mxp_init
