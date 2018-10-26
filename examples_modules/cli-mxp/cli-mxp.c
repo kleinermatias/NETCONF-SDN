@@ -4171,7 +4171,7 @@ static status_t cli_mxp_mux_state_dsp_DSP_running_get (
   }
 
   /* set the DSP_running var here, change EMPTY_STRING */
-  DSP_running = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.GO]);
+  DSP_running = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.GO];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
