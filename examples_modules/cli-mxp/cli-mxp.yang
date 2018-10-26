@@ -325,6 +325,53 @@ module cli-mxp {
         }
     }
 
+        container mux-state-power {
+            description "Container para variables de tipo power en monitor";
+            config false;
+        
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf PSUMMARY {
+                description "State de la variable PSUMMARY";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.p5vanalog
+            leaf P5VANALOG {
+                description "State de la variable P5VANALOG";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.n5v2analog
+            leaf N5V2ANALOG {
+                description "State de la variable N5V2ANALOG";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.p3p3vanalog
+            leaf P3P3VANALOG {
+                description "State de la variable P3P3VANALOG";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.p3p3vdigital
+            leaf P3P3VDIGITAL {
+                description "State de la variable P3P3VDIGITAL";
+                type string;
+            }
+            
+            //txp_struct->txp_power_alarm.fields.lvdigital
+            leaf LVDIGITAL {
+                description "State de la variable LVDIGITAL";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.n5p2vdigital
+            leaf N5P2VDIGITAL {
+                description "State de la variable N5P2VDIGITAL";
+                type string;
+            }
+        }
+
     container mux-optical-line-status {
         description "Para determinar estado del enlace";
         config false;
