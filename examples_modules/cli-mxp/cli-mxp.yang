@@ -372,6 +372,125 @@ module cli-mxp {
             }
         }
 
+    container mux-state-dsp {
+            description "Container para variables de tipo dsp en monitor";
+            config false;
+        
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf DSP_running {
+                description "State de la variable DSP running";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf CONVERGED {
+                description "State de la variable CONVERGED";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf MSE_below_threshold {
+                description "State de la variable MSE below threshold";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf BCD_Enabled {
+                description "State de la variable BCD_Enabled";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Coarse_Carrier_Lock {
+                description "State de la variable Coarse Carrier Lock";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Collision {
+                description "State de la variable Collision";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf DSP_Initialized {
+                description "State de la variable DSP Initialized";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Presence_of_light {
+                description "State de la variable Presence of light";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Local_Oscillator_running {
+                description "State de la variable Local_Oscillator_running";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Transmit_Laser_running {
+                description "State de la variable Transmit Laser running";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf MSE_XI {
+                description "State de la variable MSE XI";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf MSE_XQ {
+                description "State de la variable MSE XQ";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf MSE_YI {
+                description "State de la variable MSE YI";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf MSE_YQ {
+                description "State de la variable MSE YQ";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf BER_Estimate {
+                description "State de la variable BER Estimate";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Min._Bulk_CD_Compensation_[ps/nm] {
+                description "State de la variable Min. Bulk CD Compensation [ps/nm]";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Max._Bulk_CD_Compensation_[ps/nm] {
+                description "State de la variable Max. Bulk CD Compensation [ps/nm]";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf Step_Size_[ps/nm] {
+                description "State de la variable Step Size [ps/nm]";
+                type string;
+            }
+
+            //txp_struct->txp_power_alarm.fields.psummary
+            leaf CD_Compensation_[ps/nm] {
+                description "State de la variable CD Compensation [ps/nm]";
+                type string;
+            }
+    }
+
     container mux-optical-line-status {
         description "Para determinar estado del enlace";
         config false;

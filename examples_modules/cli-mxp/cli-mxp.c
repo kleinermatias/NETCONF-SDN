@@ -277,13 +277,83 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != prbserrdet_anterior)
+        if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != prbserrdet_anterior )
         {   
             if( prbserrdet_anterior == 1) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PRBS ERR DET");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] PRBS ERR DET");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary != psummary_anterior )
+        {   
+            if( psummary_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PSUMMARY");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] PSUMMARY");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog != p5vanalog_anterior)
+        {   
+            if( p5vanalog_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P5VANALOG");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P5VANALOG");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog != n5v2analog_anterior)
+        {   
+            if( n5v2analog_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5V2ANALOG");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] N5V2ANALOG");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog != p3p3vanalog_anterior)
+        {   
+            if( p3p3vanalog_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VANALOG");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P3P3VANALOG");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital != p3p3vdigital_anterior)
+        {   
+            if( p3p3vdigital_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VDIGITAL");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P3P3VDIGITAL");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital != lvdigital_anterior)
+        {   
+            if( lvdigital_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LVDIGITAL");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] LVDIGITAL");
+            }
+        }
+
+        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital != n5p2vdigital_anterior)
+        {   
+            if( n5p2vdigital_anterior == 1) {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5P2VDIGITAL");
+            }
+            else {
+              y_cli_mxp_mux_notify_send((const xmlChar *)"[--] N5P2VDIGITAL");
             }
         }
 
@@ -306,7 +376,14 @@ alarmas_thread(void *arg)
         rxlockerr_anterior =          (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr;
         rxs_anterior =                (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs;
         prbserrdet_anterior =         (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet;
-        
+        psummary_anterior =           (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary;
+        p5vanalog_anterior =          (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog;
+        n5v2analog_anterior =         (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog;
+        p3p3vanalog_anterior =        (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog;
+        p3p3vdigital_anterior =       (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital;
+        lvdigital_anterior =          (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital;
+        n5p2vdigital_anterior =       (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital;
+ 
         sleep(10);
         //sleep(time_notify_conf);
     }
