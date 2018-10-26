@@ -5118,14 +5118,6 @@ void y_cli_mxp_cleanup (void)
 
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/value_notify_config");
-
-  agt_cb_unregister_callbacks(
-    y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/value_rx_power_notify_config");
-
-  agt_cb_unregister_callbacks(
-    y_cli_mxp_M_cli_mxp,
     (const xmlChar *)"/mux-config/deviceneighbors");
 
   /* put your cleanup code here */
