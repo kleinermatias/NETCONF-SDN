@@ -467,25 +467,25 @@ module cli-mxp {
             }
 
             //txp_struct->txp_power_alarm.fields.psummary
-            leaf Min._Bulk_CD_Compensation_[ps/nm] {
+            leaf Min_Bulk_CD_Compensation_ps/nm {
                 description "State de la variable Min. Bulk CD Compensation [ps/nm]";
                 type string;
             }
 
             //txp_struct->txp_power_alarm.fields.psummary
-            leaf Max._Bulk_CD_Compensation_[ps/nm] {
+            leaf Max_Bulk_CD_Compensation_ps/nm {
                 description "State de la variable Max. Bulk CD Compensation [ps/nm]";
                 type string;
             }
 
             //txp_struct->txp_power_alarm.fields.psummary
-            leaf Step_Size_[ps/nm] {
+            leaf Step_Size_ps/nm {
                 description "State de la variable Step Size [ps/nm]";
                 type string;
             }
 
             //txp_struct->txp_power_alarm.fields.psummary
-            leaf CD_Compensation_[ps/nm] {
+            leaf CD_Compensation_ps/nm {
                 description "State de la variable CD Compensation [ps/nm]";
                 type string;
             }
