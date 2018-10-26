@@ -35,6 +35,14 @@ extern "C" {
 #define y_cli_mxp_M_cli_mxp (const xmlChar *)"cli-mxp"
 #define y_cli_mxp_R_cli_mxp (const xmlChar *)"2018-06-24"
 
+#define y_cli_mxp_N_BCD_Enabled (const xmlChar *)"BCD_Enabled"
+#define y_cli_mxp_N_BER_Estimate (const xmlChar *)"BER_Estimate"
+#define y_cli_mxp_N_CD_Compensation_ps_nm (const xmlChar *)"CD_Compensation_ps_nm"
+#define y_cli_mxp_N_CONVERGED (const xmlChar *)"CONVERGED"
+#define y_cli_mxp_N_Coarse_Carrier_Lock (const xmlChar *)"Coarse_Carrier_Lock"
+#define y_cli_mxp_N_Collision (const xmlChar *)"Collision"
+#define y_cli_mxp_N_DSP_Initialized (const xmlChar *)"DSP_Initialized"
+#define y_cli_mxp_N_DSP_running (const xmlChar *)"DSP_running"
 #define y_cli_mxp_N_EOL_ALM (const xmlChar *)"EOL_ALM"
 #define y_cli_mxp_N_INFO (const xmlChar *)"INFO"
 #define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
@@ -43,8 +51,16 @@ extern "C" {
 #define y_cli_mxp_N_LS_TEMP_ALM (const xmlChar *)"LS_TEMP_ALM"
 #define y_cli_mxp_N_LS_WAV_ALM (const xmlChar *)"LS_WAV_ALM"
 #define y_cli_mxp_N_LVDIGITAL (const xmlChar *)"LVDIGITAL"
+#define y_cli_mxp_N_Local_Oscillator_running (const xmlChar *)"Local_Oscillator_running"
 #define y_cli_mxp_N_MOD_BIAS_ALM (const xmlChar *)"MOD_BIAS_ALM"
 #define y_cli_mxp_N_MOD_TEMP_ALM (const xmlChar *)"MOD_TEMP_ALM"
+#define y_cli_mxp_N_MSE_XI (const xmlChar *)"MSE_XI"
+#define y_cli_mxp_N_MSE_XQ (const xmlChar *)"MSE_XQ"
+#define y_cli_mxp_N_MSE_YI (const xmlChar *)"MSE_YI"
+#define y_cli_mxp_N_MSE_YQ (const xmlChar *)"MSE_YQ"
+#define y_cli_mxp_N_MSE_below_threshold (const xmlChar *)"MSE_below_threshold"
+#define y_cli_mxp_N_Max_Bulk_CD_Compensation_ps_nm (const xmlChar *)"Max_Bulk_CD_Compensation_ps_nm"
+#define y_cli_mxp_N_Min_Bulk_CD_Compensation_ps_nm (const xmlChar *)"Min_Bulk_CD_Compensation_ps_nm"
 #define y_cli_mxp_N_N5P2VDIGITAL (const xmlChar *)"N5P2VDIGITAL"
 #define y_cli_mxp_N_N5V2ANALOG (const xmlChar *)"N5V2ANALOG"
 #define y_cli_mxp_N_P3P3VANALOG (const xmlChar *)"P3P3VANALOG"
@@ -52,16 +68,19 @@ extern "C" {
 #define y_cli_mxp_N_P5VANALOG (const xmlChar *)"P5VANALOG"
 #define y_cli_mxp_N_PRBS_ERR_DET (const xmlChar *)"PRBS_ERR_DET"
 #define y_cli_mxp_N_PSUMMARY (const xmlChar *)"PSUMMARY"
+#define y_cli_mxp_N_Presence_of_light (const xmlChar *)"Presence_of_light"
 #define y_cli_mxp_N_RXALM_INT (const xmlChar *)"RXALM_INT"
 #define y_cli_mxp_N_RXPOW_ALM (const xmlChar *)"RXPOW_ALM"
 #define y_cli_mxp_N_RXS (const xmlChar *)"RXS"
 #define y_cli_mxp_N_RX_LOCK_ERR (const xmlChar *)"RX_LOCK_ERR"
 #define y_cli_mxp_N_RX_LOS (const xmlChar *)"RX_LOS"
+#define y_cli_mxp_N_Step_Size_ps_nm (const xmlChar *)"Step_Size_ps_nm"
 #define y_cli_mxp_N_TX_ALM_INT (const xmlChar *)"TX_ALM_INT"
 #define y_cli_mxp_N_TX_DSC_ERR (const xmlChar *)"TX_DSC_ERR"
 #define y_cli_mxp_N_TX_LOCK_ERR (const xmlChar *)"TX_LOCK_ERR"
 #define y_cli_mxp_N_TX_LOF_ALM (const xmlChar *)"TX_LOF_ALM"
 #define y_cli_mxp_N_TX_OOA (const xmlChar *)"TX_OOA"
+#define y_cli_mxp_N_Transmit_Laser_running (const xmlChar *)"Transmit_Laser_running"
 #define y_cli_mxp_N_board_humidity_state (const xmlChar *)"board_humidity_state"
 #define y_cli_mxp_N_brctl_showstp_br0 (const xmlChar *)"brctl_showstp_br0"
 #define y_cli_mxp_N_canal (const xmlChar *)"canal"
@@ -86,6 +105,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_mux_state_TX_RX_alarms (const xmlChar *)"mux-state-TX-RX-alarms"
+#define y_cli_mxp_N_mux_state_dsp (const xmlChar *)"mux-state-dsp"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
 #define y_cli_mxp_N_mux_state_power (const xmlChar *)"mux-state-power"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
@@ -191,6 +211,29 @@ typedef struct y_cli_mxp_T_mux_state_power_ {
   xmlChar *LVDIGITAL;
   xmlChar *N5P2VDIGITAL;
 } y_cli_mxp_T_mux_state_power;
+
+/* container /mux-state-dsp */
+typedef struct y_cli_mxp_T_mux_state_dsp_ {
+  xmlChar *DSP_running;
+  xmlChar *CONVERGED;
+  xmlChar *MSE_below_threshold;
+  xmlChar *BCD_Enabled;
+  xmlChar *Coarse_Carrier_Lock;
+  xmlChar *Collision;
+  xmlChar *DSP_Initialized;
+  xmlChar *Presence_of_light;
+  xmlChar *Local_Oscillator_running;
+  xmlChar *Transmit_Laser_running;
+  xmlChar *MSE_XI;
+  xmlChar *MSE_XQ;
+  xmlChar *MSE_YI;
+  xmlChar *MSE_YQ;
+  xmlChar *BER_Estimate;
+  xmlChar *Min_Bulk_CD_Compensation_ps_nm;
+  xmlChar *Max_Bulk_CD_Compensation_ps_nm;
+  xmlChar *Step_Size_ps_nm;
+  xmlChar *CD_Compensation_ps_nm;
+} y_cli_mxp_T_mux_state_dsp;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {
