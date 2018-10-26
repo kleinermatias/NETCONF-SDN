@@ -14,64 +14,20 @@ Nos conectamos al servidor NETCONF:
 
     $ yangcli --user=root --server=172.16.0.41 --pass=123 --timeout=120
 
-Unicamente 3 datos de estado por el momento. 
-
-
- 1. **fpga_temperature_state**
- 2. **board_humidity_state**
- 3. **edfa_output_power_state**
-
-Para ver los datos de ESTADO, desde yangcli:
-
-    $ xget /mux-state/*
-    
-Para ver los datos de CONFIGURACION, desde yangcli:
-
-    $ xget /mux-config/*
-
-> **NOTA 1**: Todavia no hay un archivo startup definido, por lo que estos valores de configuracion estan nulos. El xget, no devuelve nada en el inicio. El siguiente paso unicamente es necesario ahora que no hay definido un archivo startup.
-
-Para crear los valores: 
-
-    $ create /mux-config/edfa_output_power_config
-    $ ENTER VALUE
-    
-    $ create /mux-config/tipo_trafico
-    $ ENTER VALUE
-    
-    $ create /mux-config/tipo_fec_linea
-    $ ENTER VALUE
-    
-    $ create /mux-config/tipo_fec_cliente
-    $ ENTER VALUE
-    
-> **NOTA 2**: Desde yang se verifica que por ejemplo, tipo_trafico solo pueda tener valores como otu2 o xge, restringiendo cualquier otra posibilidad para este parametro. (same para tipo_fec_linea, tipo_fec_cliente, etc).
-
-
-## RPC Disponibles.
-
-Por el momento:
-
-**mux-notify-activate**: Activa las notificaciones si edfa_output_power_config se configura por encima de 5.
-
-**mux-notify-deactivate**: Desactiva las notificaciones, ignorando si edfa_output_power_config se configura por encima de 5.
-
-**mux-apply-config**: RPC que ejecuta el binario "muxponder --configuracion" aplicando los parametros configurados previamente.
-
-**mux-settings**: RPC que ejecuta el binario "settings --potencia $edfa_output_power_config".
-
-Como usarlos? desde yangcli:
-
-    $ mux-notify-activate
     
 ## TODO. 
 
-1. Conectar a onos.
-2. Completar la cli. ?
-3. Respuestas RPC mas detalladas. 
-4. Mas..
+1. Completar las variables faltantes del monitor - Modulo YANG.
+2. Completar las variables faltantes del monitor - Aplicacion C.
+3. Completar las variables faltantes del monitor - Driver behaviour.
+4. Conectar hosts al onos. **(?)**.
+5. Desarrollar aplicacion de usuario que muestre informacion del estado de los MXP en una GUI.
 
-    
+
+## TODO 29/10. 
+Se pretende completar las tareas 1, 2 y 3. 
+
+
 PING:
 
     $ sudo ping6 -f -I enp1s0f0 2607:f0d0:2001:a::3
