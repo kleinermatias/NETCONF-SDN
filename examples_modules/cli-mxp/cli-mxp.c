@@ -4219,7 +4219,7 @@ static status_t cli_mxp_mux_state_dsp_CONVERGED_get (
   }
 
   /* set the CONVERGED var here, change EMPTY_STRING */
-  CONVERGED = EMPTY_STRING;
+  CONVERGED = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.CONVERGED];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4267,7 +4267,7 @@ static status_t cli_mxp_mux_state_dsp_MSE_below_threshold_get (
   }
 
   /* set the MSE_below_threshold var here, change EMPTY_STRING */
-  MSE_below_threshold = EMPTY_STRING;
+  MSE_below_threshold = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.MSEBLTHR];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4315,7 +4315,7 @@ static status_t cli_mxp_mux_state_dsp_BCD_Enabled_get (
   }
 
   /* set the BCD_Enabled var here, change EMPTY_STRING */
-  BCD_Enabled = EMPTY_STRING;
+  BCD_Enabled = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.BCDEN];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4363,7 +4363,7 @@ static status_t cli_mxp_mux_state_dsp_Coarse_Carrier_Lock_get (
   }
 
   /* set the Coarse_Carrier_Lock var here, change EMPTY_STRING */
-  Coarse_Carrier_Lock = EMPTY_STRING;
+  Coarse_Carrier_Lock = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.LOCK];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4411,7 +4411,7 @@ static status_t cli_mxp_mux_state_dsp_Collision_get (
   }
 
   /* set the Collision var here, change EMPTY_STRING */
-  Collision = EMPTY_STRING;
+  Collision = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.COLLISION];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4459,7 +4459,7 @@ static status_t cli_mxp_mux_state_dsp_DSP_Initialized_get (
   }
 
   /* set the DSP_Initialized var here, change EMPTY_STRING */
-  DSP_Initialized = EMPTY_STRING;
+  DSP_Initialized = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.DSPINIT];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4507,7 +4507,7 @@ static status_t cli_mxp_mux_state_dsp_Presence_of_light_get (
   }
 
   /* set the Presence_of_light var here, change EMPTY_STRING */
-  Presence_of_light = EMPTY_STRING;
+  Presence_of_light = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.POL];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4555,7 +4555,7 @@ static status_t cli_mxp_mux_state_dsp_Local_Oscillator_running_get (
   }
 
   /* set the Local_Oscillator_running var here, change EMPTY_STRING */
-  Local_Oscillator_running = EMPTY_STRING;
+  Local_Oscillator_running = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.OSC];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4603,7 +4603,7 @@ static status_t cli_mxp_mux_state_dsp_Transmit_Laser_running_get (
   }
 
   /* set the Transmit_Laser_running var here, change EMPTY_STRING */
-  Transmit_Laser_running = EMPTY_STRING;
+  Transmit_Laser_running = (const xmlChar *) general_status[!pt_monitor_struct->txp_struct.txp_dspstat.fields.TXLASER];
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4651,7 +4651,11 @@ static status_t cli_mxp_mux_state_dsp_MSE_XI_get (
   }
 
   /* set the MSE_XI var here, change EMPTY_STRING */
-  MSE_XI = EMPTY_STRING;
+  int MSE_XI_int=pt_monitor_struct->txp_struct.txp_mse.fields.mse_xi;
+  char buf[30];
+  sprintf(buf, "%d", MSE_XI_int);
+  MSE_XI = (const xmlChar *)buf;
+
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4699,7 +4703,10 @@ static status_t cli_mxp_mux_state_dsp_MSE_XQ_get (
   }
 
   /* set the MSE_XQ var here, change EMPTY_STRING */
-  MSE_XQ = EMPTY_STRING;
+  int MSE_XQ_int=pt_monitor_struct->txp_struct.txp_mse.fields.mse_xq;
+  char buf[30];
+  sprintf(buf, "%d", MSE_XQ_int);
+  MSE_XQ = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4747,7 +4754,10 @@ static status_t cli_mxp_mux_state_dsp_MSE_YI_get (
   }
 
   /* set the MSE_YI var here, change EMPTY_STRING */
-  MSE_YI = EMPTY_STRING;
+  int MSE_YI_int=pt_monitor_struct->txp_struct.txp_mse.fields.mse_yi;
+  char buf[30];
+  sprintf(buf, "%d", MSE_YI_int);
+  MSE_YI = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4795,7 +4805,10 @@ static status_t cli_mxp_mux_state_dsp_MSE_YQ_get (
   }
 
   /* set the MSE_YQ var here, change EMPTY_STRING */
-  MSE_YQ = EMPTY_STRING;
+  int MSE_YQ_int=pt_monitor_struct->txp_struct.txp_mse.fields.mse_yq;
+  char buf[30];
+  sprintf(buf, "%d", MSE_YQ_int);
+  MSE_YQ = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4843,7 +4856,10 @@ static status_t cli_mxp_mux_state_dsp_BER_Estimate_get (
   }
 
   /* set the BER_Estimate var here, change EMPTY_STRING */
-  BER_Estimate = EMPTY_STRING;
+  float BER_Estimate_int=pt_monitor_struct->txp_struct.txp_ber_estimate;
+  char buf[30];
+  sprintf(buf, "%.4e", BER_Estimate_int);
+  BER_Estimate = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4891,7 +4907,10 @@ static status_t cli_mxp_mux_state_dsp_Min_Bulk_CD_Compensation_ps_nm_get (
   }
 
   /* set the Min_Bulk_CD_Compensation_ps_nm var here, change EMPTY_STRING */
-  Min_Bulk_CD_Compensation_ps_nm = EMPTY_STRING;
+  int Min_Bulk_CD_Compensation_ps_nm_int=pt_monitor_struct->txp_struct.txp_bulk_cd.fields.minimum_compensation;
+  char buf[30];
+  sprintf(buf, "%d", Min_Bulk_CD_Compensation_ps_nm_int);
+  Min_Bulk_CD_Compensation_ps_nm = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4939,7 +4958,10 @@ static status_t cli_mxp_mux_state_dsp_Max_Bulk_CD_Compensation_ps_nm_get (
   }
 
   /* set the Max_Bulk_CD_Compensation_ps_nm var here, change EMPTY_STRING */
-  Max_Bulk_CD_Compensation_ps_nm = EMPTY_STRING;
+  int Max_Bulk_CD_Compensation_ps_nm_int=pt_monitor_struct->txp_struct.txp_bulk_cd.fields.maximum_compensation;
+  char buf[30];
+  sprintf(buf, "%d", Max_Bulk_CD_Compensation_ps_nm_int);
+  Max_Bulk_CD_Compensation_ps_nm = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -4987,7 +5009,10 @@ static status_t cli_mxp_mux_state_dsp_Step_Size_ps_nm_get (
   }
 
   /* set the Step_Size_ps_nm var here, change EMPTY_STRING */
-  Step_Size_ps_nm = EMPTY_STRING;
+  int Step_Size_ps_nm_int=pt_monitor_struct->txp_struct.txp_bulk_cd.fields.step_size;
+  char buf[30];
+  sprintf(buf, "%d", Step_Size_ps_nm_int);
+  Step_Size_ps_nm = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
@@ -5035,7 +5060,10 @@ static status_t cli_mxp_mux_state_dsp_CD_Compensation_ps_nm_get (
   }
 
   /* set the CD_Compensation_ps_nm var here, change EMPTY_STRING */
-  CD_Compensation_ps_nm = EMPTY_STRING;
+  float CD_Compensation_ps_nm_float=pt_monitor_struct->txp_struct.txp_chromatic_dispersion;
+  char buf[30];
+  sprintf(buf, "%.3f", CD_Compensation_ps_nm_float);
+  CD_Compensation_ps_nm = (const xmlChar *)buf;
   res = val_set_simval_obj(
     dstval,
     dstval->obj,
