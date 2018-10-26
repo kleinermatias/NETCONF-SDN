@@ -47,6 +47,7 @@ static obj_template_t *mux_config_obj;
 static obj_template_t *mux_state_obj;
 static obj_template_t *mux_state_misc_obj;
 static obj_template_t *mux_state_TX_RX_alarms_obj;
+static obj_template_t *mux_state_power_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -70,6 +71,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_state_obj = NULL;
   mux_state_misc_obj = NULL;
   mux_state_TX_RX_alarms_obj = NULL;
+  mux_state_power_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -3293,6 +3295,453 @@ static status_t
 } /* cli_mxp_mux_state_TX_RX_alarms_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_power_PSUMMARY_get
+* 
+* Get database object callback
+* Path: /mux-state-power/PSUMMARY
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_PSUMMARY_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *PSUMMARY;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_PSUMMARY_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the PSUMMARY var here, change EMPTY_STRING */
+  PSUMMARY = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    PSUMMARY);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_PSUMMARY_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_P5VANALOG_get
+* 
+* Get database object callback
+* Path: /mux-state-power/P5VANALOG
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_P5VANALOG_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *P5VANALOG;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_P5VANALOG_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the P5VANALOG var here, change EMPTY_STRING */
+  P5VANALOG = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    P5VANALOG);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_P5VANALOG_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_N5V2ANALOG_get
+* 
+* Get database object callback
+* Path: /mux-state-power/N5V2ANALOG
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_N5V2ANALOG_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *N5V2ANALOG;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_N5V2ANALOG_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the N5V2ANALOG var here, change EMPTY_STRING */
+  N5V2ANALOG = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    N5V2ANALOG);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_N5V2ANALOG_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_P3P3VANALOG_get
+* 
+* Get database object callback
+* Path: /mux-state-power/P3P3VANALOG
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_P3P3VANALOG_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *P3P3VANALOG;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_P3P3VANALOG_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the P3P3VANALOG var here, change EMPTY_STRING */
+  P3P3VANALOG = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    P3P3VANALOG);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_P3P3VANALOG_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_P3P3VDIGITAL_get
+* 
+* Get database object callback
+* Path: /mux-state-power/P3P3VDIGITAL
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_P3P3VDIGITAL_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *P3P3VDIGITAL;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_P3P3VDIGITAL_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the P3P3VDIGITAL var here, change EMPTY_STRING */
+  P3P3VDIGITAL = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    P3P3VDIGITAL);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_P3P3VDIGITAL_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_LVDIGITAL_get
+* 
+* Get database object callback
+* Path: /mux-state-power/LVDIGITAL
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_LVDIGITAL_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LVDIGITAL;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_LVDIGITAL_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LVDIGITAL var here, change EMPTY_STRING */
+  LVDIGITAL = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LVDIGITAL);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_LVDIGITAL_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_N5P2VDIGITAL_get
+* 
+* Get database object callback
+* Path: /mux-state-power/N5P2VDIGITAL
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_power_N5P2VDIGITAL_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *N5P2VDIGITAL;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_power_N5P2VDIGITAL_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the N5P2VDIGITAL var here, change EMPTY_STRING */
+  N5P2VDIGITAL = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    N5P2VDIGITAL);
+
+  return res;
+
+} /* cli_mxp_mux_state_power_N5P2VDIGITAL_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_power_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-power
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_power_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-power */
+  res = agt_add_top_container(mux_state_power_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-power/PSUMMARY */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_PSUMMARY,
+    cli_mxp_mux_state_power_PSUMMARY_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-power/P5VANALOG */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_P5VANALOG,
+    cli_mxp_mux_state_power_P5VANALOG_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-power/N5V2ANALOG */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_N5V2ANALOG,
+    cli_mxp_mux_state_power_N5V2ANALOG_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-power/P3P3VANALOG */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_P3P3VANALOG,
+    cli_mxp_mux_state_power_P3P3VANALOG_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-power/P3P3VDIGITAL */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_P3P3VDIGITAL,
+    cli_mxp_mux_state_power_P3P3VDIGITAL_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-power/LVDIGITAL */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LVDIGITAL,
+    cli_mxp_mux_state_power_LVDIGITAL_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-power/N5P2VDIGITAL */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_N5P2VDIGITAL,
+    cli_mxp_mux_state_power_N5P2VDIGITAL_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_power_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -3791,6 +4240,12 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
+  mux_state_power_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_power);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
   mux_optical_line_status_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_optical_line_status);
@@ -4040,6 +4495,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_misc_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_power_mro();
   if (res != NO_ERR) {
     return res;
   }

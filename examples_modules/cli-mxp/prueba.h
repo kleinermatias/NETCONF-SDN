@@ -43,9 +43,16 @@ extern "C" {
 #define y_cli_mxp_N_LS_POW_ALM (const xmlChar *)"LS_POW_ALM"
 #define y_cli_mxp_N_LS_TEMP_ALM (const xmlChar *)"LS_TEMP_ALM"
 #define y_cli_mxp_N_LS_WAV_ALM (const xmlChar *)"LS_WAV_ALM"
+#define y_cli_mxp_N_LVDIGITAL (const xmlChar *)"LVDIGITAL"
 #define y_cli_mxp_N_MOD_BIAS_ALM (const xmlChar *)"MOD_BIAS_ALM"
 #define y_cli_mxp_N_MOD_TEMP_ALM (const xmlChar *)"MOD_TEMP_ALM"
+#define y_cli_mxp_N_N5P2VDIGITAL (const xmlChar *)"N5P2VDIGITAL"
+#define y_cli_mxp_N_N5V2ANALOG (const xmlChar *)"N5V2ANALOG"
+#define y_cli_mxp_N_P3P3VANALOG (const xmlChar *)"P3P3VANALOG"
+#define y_cli_mxp_N_P3P3VDIGITAL (const xmlChar *)"P3P3VDIGITAL"
+#define y_cli_mxp_N_P5VANALOG (const xmlChar *)"P5VANALOG"
 #define y_cli_mxp_N_PRBS_ERR_DET (const xmlChar *)"PRBS_ERR_DET"
+#define y_cli_mxp_N_PSUMMARY (const xmlChar *)"PSUMMARY"
 #define y_cli_mxp_N_RXALM_INT (const xmlChar *)"RXALM_INT"
 #define y_cli_mxp_N_RXPOW_ALM (const xmlChar *)"RXPOW_ALM"
 #define y_cli_mxp_N_RXS (const xmlChar *)"RXS"
@@ -81,6 +88,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_mux_state_TX_RX_alarms (const xmlChar *)"mux-state-TX-RX-alarms"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
+#define y_cli_mxp_N_mux_state_power (const xmlChar *)"mux-state-power"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
 #define y_cli_mxp_N_respuesta_mux_apply_config (const xmlChar *)"respuesta-mux-apply-config"
 #define y_cli_mxp_N_respuesta_mux_settings (const xmlChar *)"respuesta-mux-settings"
@@ -168,6 +176,17 @@ typedef struct y_cli_mxp_T_mux_state_TX_RX_alarms_ {
   xmlChar *RXS;
   xmlChar *PRBS_ERR_DET;
 } y_cli_mxp_T_mux_state_TX_RX_alarms;
+
+/* container /mux-state-power */
+typedef struct y_cli_mxp_T_mux_state_power_ {
+  xmlChar *PSUMMARY;
+  xmlChar *P5VANALOG;
+  xmlChar *N5V2ANALOG;
+  xmlChar *P3P3VANALOG;
+  xmlChar *P3P3VDIGITAL;
+  xmlChar *LVDIGITAL;
+  xmlChar *N5P2VDIGITAL;
+} y_cli_mxp_T_mux_state_power;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {
