@@ -78,10 +78,16 @@ static int latchedtxfifoerr_anterior = 1;
 static int rxalmint_anterior = 1;
 static int rxpowalm_anterior = 1;
 static int rxlos_anterior = 1;
-static int rxlockerr_anterior = 1;
-static int rxs_anterior = 1;
-static int prbserrdet_anterior = 1;
-
+static int rxlockerr_anterior =          1;
+static int rxs_anterior =                1;
+static int prbserrdet_anterior =         1;
+static int psummary_anterior =           1;
+static int p5vanalog_anterior =          1;
+static int n5v2analog_anterior =         1;
+static int p3p3vanalog_anterior =        1;
+static int p3p3vdigital_anterior =       1;
+static int lvdigital_anterior =          1;
+static int n5p2vdigital_anterior =       1;
 
 struct Device_info {
     char  device_manufacturer[50];
