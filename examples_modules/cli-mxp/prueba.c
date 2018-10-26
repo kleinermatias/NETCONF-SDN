@@ -53,7 +53,6 @@ static obj_template_t *mux_notify_deactivate_obj;
 static obj_template_t *mux_apply_config_obj;
 static obj_template_t *mux_settings_obj;
 static obj_template_t *mux_notify_obj;
-static obj_template_t *mux_notify_TxOOA_obj;
 static val_value_t *mux_config_val;
 
 /* put your static variables here */
@@ -77,7 +76,6 @@ static void y_cli_mxp_init_static_vars (void)
   mux_apply_config_obj = NULL;
   mux_settings_obj = NULL;
   mux_notify_obj = NULL;
-  mux_notify_TxOOA_obj = NULL;
   mux_config_val = NULL;
 
   /* init your static variables here */
@@ -776,160 +774,6 @@ static status_t cli_mxp_mux_config_time_notify_config_edit (
   return res;
 
 } /* cli_mxp_mux_config_time_notify_config_edit */
-
-
-/********************************************************************
-* FUNCTION cli_mxp_mux_config_value_notify_config_edit
-* 
-* Edit database object callback
-* Path: /mux-config/value_notify_config
-* Add object instrumentation in COMMIT phase.
-* 
-* INPUTS:
-*     see agt/agt_cb.h for details
-* 
-* RETURNS:
-*     error status
-********************************************************************/
-static status_t cli_mxp_mux_config_value_notify_config_edit (
-  ses_cb_t *scb,
-  rpc_msg_t *msg,
-  agt_cbtyp_t cbtyp,
-  op_editop_t editop,
-  val_value_t *newval,
-  val_value_t *curval)
-{
-  status_t res = NO_ERR;
-  val_value_t *errorval = (curval) ? curval : newval;
-
-  if (LOGDEBUG) {
-    log_debug("\nEnter cli_mxp_mux_config_value_notify_config_edit callback for %s phase",
-      agt_cbtype_name(cbtyp));
-  }
-
-  switch (cbtyp) {
-  case AGT_CB_VALIDATE:
-    /* description-stmt validation here */
-    break;
-  case AGT_CB_APPLY:
-    /* database manipulation done here */
-    break;
-  case AGT_CB_COMMIT:
-    /* device instrumentation done here */
-    switch (editop) {
-    case OP_EDITOP_LOAD:
-      break;
-    case OP_EDITOP_MERGE:
-      break;
-    case OP_EDITOP_REPLACE:
-      break;
-    case OP_EDITOP_CREATE:
-      break;
-    case OP_EDITOP_DELETE:
-      break;
-    default:
-      res = SET_ERROR(ERR_INTERNAL_VAL);
-    }
-    break;
-  case AGT_CB_ROLLBACK:
-    /* undo device instrumentation here */
-    break;
-  default:
-    res = SET_ERROR(ERR_INTERNAL_VAL);
-  }
-
-  if (res != NO_ERR) {
-    agt_record_error(
-      scb,
-      &msg->mhdr,
-      NCX_LAYER_CONTENT,
-      res,
-      NULL,
-      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
-      errorval,
-      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
-      errorval);
-  }
-  return res;
-
-} /* cli_mxp_mux_config_value_notify_config_edit */
-
-
-/********************************************************************
-* FUNCTION cli_mxp_mux_config_value_rx_power_notify_config_edit
-* 
-* Edit database object callback
-* Path: /mux-config/value_rx_power_notify_config
-* Add object instrumentation in COMMIT phase.
-* 
-* INPUTS:
-*     see agt/agt_cb.h for details
-* 
-* RETURNS:
-*     error status
-********************************************************************/
-static status_t cli_mxp_mux_config_value_rx_power_notify_config_edit (
-  ses_cb_t *scb,
-  rpc_msg_t *msg,
-  agt_cbtyp_t cbtyp,
-  op_editop_t editop,
-  val_value_t *newval,
-  val_value_t *curval)
-{
-  status_t res = NO_ERR;
-  val_value_t *errorval = (curval) ? curval : newval;
-
-  if (LOGDEBUG) {
-    log_debug("\nEnter cli_mxp_mux_config_value_rx_power_notify_config_edit callback for %s phase",
-      agt_cbtype_name(cbtyp));
-  }
-
-  switch (cbtyp) {
-  case AGT_CB_VALIDATE:
-    /* description-stmt validation here */
-    break;
-  case AGT_CB_APPLY:
-    /* database manipulation done here */
-    break;
-  case AGT_CB_COMMIT:
-    /* device instrumentation done here */
-    switch (editop) {
-    case OP_EDITOP_LOAD:
-      break;
-    case OP_EDITOP_MERGE:
-      break;
-    case OP_EDITOP_REPLACE:
-      break;
-    case OP_EDITOP_CREATE:
-      break;
-    case OP_EDITOP_DELETE:
-      break;
-    default:
-      res = SET_ERROR(ERR_INTERNAL_VAL);
-    }
-    break;
-  case AGT_CB_ROLLBACK:
-    /* undo device instrumentation here */
-    break;
-  default:
-    res = SET_ERROR(ERR_INTERNAL_VAL);
-  }
-
-  if (res != NO_ERR) {
-    agt_record_error(
-      scb,
-      &msg->mhdr,
-      NCX_LAYER_CONTENT,
-      res,
-      NULL,
-      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
-      errorval,
-      (errorval) ? NCX_NT_VAL : NCX_NT_NONE,
-      errorval);
-  }
-  return res;
-
-} /* cli_mxp_mux_config_value_rx_power_notify_config_edit */
 
 
 /********************************************************************
@@ -3885,52 +3729,6 @@ void y_cli_mxp_mux_notify_send (
   
 } /* y_cli_mxp_mux_notify_send */
 
-
-/********************************************************************
-* FUNCTION y_cli_mxp_mux_notify_TxOOA_send
-* 
-* Send a y_cli_mxp_mux_notify_TxOOA notification
-* Called by your code when notification event occurs
-* 
-********************************************************************/
-void y_cli_mxp_mux_notify_TxOOA_send (
-  const xmlChar *INFO_TxOOA)
-{
-  agt_not_msg_t *notif;
-  val_value_t *parmval;
-  status_t res = NO_ERR;
-
-
-  if (LOGDEBUG) {
-    log_debug("\nGenerating <mux-notify-TxOOA> notification");
-  }
-  
-  notif = agt_not_new_notification(mux_notify_TxOOA_obj);
-  if (notif == NULL) {
-    log_error("\nError: malloc failed, cannot send "
-    "<mux-notify-TxOOA> notification");
-    return;
-  }
-  
-  /* add INFO_TxOOA to payload */
-  parmval = agt_make_leaf(
-    mux_notify_TxOOA_obj,
-    y_cli_mxp_N_INFO_TxOOA,
-    INFO_TxOOA,
-    &res);
-  if (parmval == NULL) {
-    log_error(
-      "\nError: make leaf failed (%s), cannot send "
-      "<mux-notify-TxOOA> notification",
-      get_error_string(res));
-  } else {
-    agt_not_add_to_payload(notif, parmval);
-  }
-  
-  agt_not_queue_notification(notif);
-  
-} /* y_cli_mxp_mux_notify_TxOOA_send */
-
 /********************************************************************
 * FUNCTION y_cli_mxp_init
 * 
@@ -4026,12 +3824,6 @@ status_t y_cli_mxp_init (
   mux_notify_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_notify);
-  if (cli_mxp_mod == NULL) {
-    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
-  }
-  mux_notify_TxOOA_obj = ncx_find_object(
-    cli_mxp_mod,
-    y_cli_mxp_N_mux_notify_TxOOA);
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
@@ -4199,24 +3991,6 @@ status_t y_cli_mxp_init (
 
   res = agt_cb_register_callback(
     y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/value_notify_config",
-    y_cli_mxp_R_cli_mxp,
-    cli_mxp_mux_config_value_notify_config_edit);
-  if (res != NO_ERR) {
-    return res;
-  }
-
-  res = agt_cb_register_callback(
-    y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/value_rx_power_notify_config",
-    y_cli_mxp_R_cli_mxp,
-    cli_mxp_mux_config_value_rx_power_notify_config_edit);
-  if (res != NO_ERR) {
-    return res;
-  }
-
-  res = agt_cb_register_callback(
-    y_cli_mxp_M_cli_mxp,
     (const xmlChar *)"/mux-config/deviceneighbors",
     y_cli_mxp_R_cli_mxp,
     cli_mxp_mux_config_deviceneighbors_edit);
@@ -4337,14 +4111,6 @@ void y_cli_mxp_cleanup (void)
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,
     (const xmlChar *)"/mux-config/time_notify_config");
-
-  agt_cb_unregister_callbacks(
-    y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/value_notify_config");
-
-  agt_cb_unregister_callbacks(
-    y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/value_rx_power_notify_config");
 
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,
