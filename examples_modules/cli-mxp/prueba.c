@@ -48,6 +48,7 @@ static obj_template_t *mux_state_obj;
 static obj_template_t *mux_state_misc_obj;
 static obj_template_t *mux_state_TX_RX_alarms_obj;
 static obj_template_t *mux_state_power_obj;
+static obj_template_t *mux_state_dsp_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -72,6 +73,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_state_misc_obj = NULL;
   mux_state_TX_RX_alarms_obj = NULL;
   mux_state_power_obj = NULL;
+  mux_state_dsp_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -3742,6 +3744,1173 @@ static status_t
 } /* cli_mxp_mux_state_power_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_DSP_running_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/DSP_running
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_DSP_running_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *DSP_running;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_DSP_running_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the DSP_running var here, change EMPTY_STRING */
+  DSP_running = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    DSP_running);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_DSP_running_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_CONVERGED_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/CONVERGED
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_CONVERGED_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *CONVERGED;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_CONVERGED_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the CONVERGED var here, change EMPTY_STRING */
+  CONVERGED = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    CONVERGED);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_CONVERGED_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_MSE_below_threshold_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/MSE_below_threshold
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_MSE_below_threshold_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MSE_below_threshold;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_MSE_below_threshold_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MSE_below_threshold var here, change EMPTY_STRING */
+  MSE_below_threshold = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MSE_below_threshold);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_MSE_below_threshold_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_BCD_Enabled_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/BCD_Enabled
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_BCD_Enabled_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *BCD_Enabled;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_BCD_Enabled_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the BCD_Enabled var here, change EMPTY_STRING */
+  BCD_Enabled = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    BCD_Enabled);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_BCD_Enabled_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Coarse_Carrier_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Coarse_Carrier_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Coarse_Carrier_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Coarse_Carrier_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Coarse_Carrier_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Coarse_Carrier_Lock var here, change EMPTY_STRING */
+  Coarse_Carrier_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Coarse_Carrier_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Coarse_Carrier_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Collision_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Collision
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Collision_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Collision;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Collision_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Collision var here, change EMPTY_STRING */
+  Collision = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Collision);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Collision_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_DSP_Initialized_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/DSP_Initialized
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_DSP_Initialized_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *DSP_Initialized;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_DSP_Initialized_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the DSP_Initialized var here, change EMPTY_STRING */
+  DSP_Initialized = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    DSP_Initialized);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_DSP_Initialized_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Presence_of_light_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Presence_of_light
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Presence_of_light_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Presence_of_light;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Presence_of_light_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Presence_of_light var here, change EMPTY_STRING */
+  Presence_of_light = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Presence_of_light);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Presence_of_light_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Local_Oscillator_running_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Local_Oscillator_running
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Local_Oscillator_running_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Local_Oscillator_running;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Local_Oscillator_running_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Local_Oscillator_running var here, change EMPTY_STRING */
+  Local_Oscillator_running = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Local_Oscillator_running);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Local_Oscillator_running_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Transmit_Laser_running_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Transmit_Laser_running
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Transmit_Laser_running_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Transmit_Laser_running;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Transmit_Laser_running_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Transmit_Laser_running var here, change EMPTY_STRING */
+  Transmit_Laser_running = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Transmit_Laser_running);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Transmit_Laser_running_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_MSE_XI_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/MSE_XI
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_MSE_XI_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MSE_XI;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_MSE_XI_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MSE_XI var here, change EMPTY_STRING */
+  MSE_XI = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MSE_XI);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_MSE_XI_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_MSE_XQ_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/MSE_XQ
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_MSE_XQ_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MSE_XQ;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_MSE_XQ_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MSE_XQ var here, change EMPTY_STRING */
+  MSE_XQ = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MSE_XQ);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_MSE_XQ_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_MSE_YI_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/MSE_YI
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_MSE_YI_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MSE_YI;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_MSE_YI_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MSE_YI var here, change EMPTY_STRING */
+  MSE_YI = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MSE_YI);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_MSE_YI_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_MSE_YQ_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/MSE_YQ
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_MSE_YQ_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *MSE_YQ;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_MSE_YQ_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the MSE_YQ var here, change EMPTY_STRING */
+  MSE_YQ = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    MSE_YQ);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_MSE_YQ_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_BER_Estimate_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/BER_Estimate
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_BER_Estimate_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *BER_Estimate;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_BER_Estimate_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the BER_Estimate var here, change EMPTY_STRING */
+  BER_Estimate = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    BER_Estimate);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_BER_Estimate_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Min_Bulk_CD_Compensation_ps_nm_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Min_Bulk_CD_Compensation_ps_nm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Min_Bulk_CD_Compensation_ps_nm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Min_Bulk_CD_Compensation_ps_nm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Min_Bulk_CD_Compensation_ps_nm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Min_Bulk_CD_Compensation_ps_nm var here, change EMPTY_STRING */
+  Min_Bulk_CD_Compensation_ps_nm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Min_Bulk_CD_Compensation_ps_nm);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Min_Bulk_CD_Compensation_ps_nm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Max_Bulk_CD_Compensation_ps_nm_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Max_Bulk_CD_Compensation_ps_nm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Max_Bulk_CD_Compensation_ps_nm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Max_Bulk_CD_Compensation_ps_nm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Max_Bulk_CD_Compensation_ps_nm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Max_Bulk_CD_Compensation_ps_nm var here, change EMPTY_STRING */
+  Max_Bulk_CD_Compensation_ps_nm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Max_Bulk_CD_Compensation_ps_nm);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Max_Bulk_CD_Compensation_ps_nm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_Step_Size_ps_nm_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/Step_Size_ps_nm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_Step_Size_ps_nm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Step_Size_ps_nm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_Step_Size_ps_nm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Step_Size_ps_nm var here, change EMPTY_STRING */
+  Step_Size_ps_nm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Step_Size_ps_nm);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_Step_Size_ps_nm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_CD_Compensation_ps_nm_get
+* 
+* Get database object callback
+* Path: /mux-state-dsp/CD_Compensation_ps_nm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_dsp_CD_Compensation_ps_nm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *CD_Compensation_ps_nm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_dsp_CD_Compensation_ps_nm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the CD_Compensation_ps_nm var here, change EMPTY_STRING */
+  CD_Compensation_ps_nm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    CD_Compensation_ps_nm);
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_CD_Compensation_ps_nm_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_dsp_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-dsp
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_dsp_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-dsp */
+  res = agt_add_top_container(mux_state_dsp_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-dsp/DSP_running */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_DSP_running,
+    cli_mxp_mux_state_dsp_DSP_running_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/CONVERGED */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_CONVERGED,
+    cli_mxp_mux_state_dsp_CONVERGED_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/MSE_below_threshold */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MSE_below_threshold,
+    cli_mxp_mux_state_dsp_MSE_below_threshold_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/BCD_Enabled */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_BCD_Enabled,
+    cli_mxp_mux_state_dsp_BCD_Enabled_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Coarse_Carrier_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Coarse_Carrier_Lock,
+    cli_mxp_mux_state_dsp_Coarse_Carrier_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Collision */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Collision,
+    cli_mxp_mux_state_dsp_Collision_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/DSP_Initialized */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_DSP_Initialized,
+    cli_mxp_mux_state_dsp_DSP_Initialized_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Presence_of_light */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Presence_of_light,
+    cli_mxp_mux_state_dsp_Presence_of_light_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Local_Oscillator_running */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Local_Oscillator_running,
+    cli_mxp_mux_state_dsp_Local_Oscillator_running_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Transmit_Laser_running */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Transmit_Laser_running,
+    cli_mxp_mux_state_dsp_Transmit_Laser_running_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/MSE_XI */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MSE_XI,
+    cli_mxp_mux_state_dsp_MSE_XI_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/MSE_XQ */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MSE_XQ,
+    cli_mxp_mux_state_dsp_MSE_XQ_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/MSE_YI */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MSE_YI,
+    cli_mxp_mux_state_dsp_MSE_YI_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/MSE_YQ */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_MSE_YQ,
+    cli_mxp_mux_state_dsp_MSE_YQ_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/BER_Estimate */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_BER_Estimate,
+    cli_mxp_mux_state_dsp_BER_Estimate_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Min_Bulk_CD_Compensation_ps_nm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Min_Bulk_CD_Compensation_ps_nm,
+    cli_mxp_mux_state_dsp_Min_Bulk_CD_Compensation_ps_nm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Max_Bulk_CD_Compensation_ps_nm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Max_Bulk_CD_Compensation_ps_nm,
+    cli_mxp_mux_state_dsp_Max_Bulk_CD_Compensation_ps_nm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/Step_Size_ps_nm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Step_Size_ps_nm,
+    cli_mxp_mux_state_dsp_Step_Size_ps_nm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-dsp/CD_Compensation_ps_nm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_CD_Compensation_ps_nm,
+    cli_mxp_mux_state_dsp_CD_Compensation_ps_nm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_dsp_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -4246,6 +5415,12 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
+  mux_state_dsp_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_dsp);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
   mux_optical_line_status_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_optical_line_status);
@@ -4490,6 +5665,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_TX_RX_alarms_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_dsp_mro();
   if (res != NO_ERR) {
     return res;
   }
