@@ -5,8 +5,7 @@
     <tipo_fec_linea>cerofec</tipo_fec_linea>
     <tipo_fec_cliente>cerofec_cliente</tipo_fec_cliente>
     <time_notify_config>3</time_notify_config>
-    <value_notify_config>5.0</value_notify_config>
-    <value_rx_power_notify_config>-35</value_rx_power_notify_config>
+    <deviceneighbors>142</deviceneighbors>
   </mux-config>
   <nacm xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-acm">
   </nacm>

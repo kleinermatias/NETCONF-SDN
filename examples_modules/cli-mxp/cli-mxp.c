@@ -27,6 +27,7 @@ static obj_template_t *mux_state_misc_obj;
 static obj_template_t *mux_state_TX_RX_alarms_obj;
 static obj_template_t *mux_state_power_obj;
 static obj_template_t *mux_state_dsp_obj;
+static obj_template_t *mux_state_edfa_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -56,7 +57,7 @@ Monitor *pt_monitor_struct;
 int shmfd;
 float edfa_output_power_conf;
 int time_notify_conf;
-volatile pthread_t alarma_tid;
+static pthread_t alarma_tid;
 const xmlChar *tipo_trafico_var;
 const xmlChar *tipo_fec_linea_var;
 const xmlChar *tipo_fec_cliente_var;
@@ -89,6 +90,7 @@ static int p3p3vanalog_anterior =        1;
 static int p3p3vdigital_anterior =       1;
 static int lvdigital_anterior =          1;
 static int n5p2vdigital_anterior =       1;
+static int contador_tiempo_alarma =       0;
 
 struct Device_info {
     char  device_manufacturer[50];
@@ -104,9 +106,9 @@ alarmas_thread(void *arg)
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     while (alarma_tid) {
 
-        if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != eolalm_anterior )
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != eolalm_anterior) )
         {   
-            if( eolalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] EOL ALM");
             }
             else {
@@ -114,9 +116,9 @@ alarmas_thread(void *arg)
             }   
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm != modtempalm_anterior )
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm != modtempalm_anterior) )
         {    
-            if( modtempalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod TEMP ALM");
             }
             else {
@@ -124,9 +126,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa != txooa_anterior )
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa != txooa_anterior) )
         {   
-            if( txooa_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] TxOOA");
             }
             else {
@@ -134,9 +136,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm != txlofalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm != txlofalm_anterior) )
         {   
-            if( txlofalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOF ALM");
             }
             else {
@@ -144,9 +146,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr != txdscerr_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr != txdscerr_anterior) )
         {   
-            if( txdscerr_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx DSC ERR");
             }
             else {
@@ -154,9 +156,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm != lswavalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm != lswavalm_anterior) )
         {   
-            if( lswavalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls WAV ALM");
             }
             else {
@@ -164,9 +166,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint != txalmint_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint != txalmint_anterior) )
         {   
-            if( txalmint_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx ALM INT");
             }
             else {
@@ -174,9 +176,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm != lsbiasalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm != lsbiasalm_anterior) )
         {   
-            if( lsbiasalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls BIAS ALM");
             }
             else {
@@ -184,9 +186,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm != lstempalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm != lstempalm_anterior) )
         {   
-            if( lstempalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls TEMP ALM");
             }
             else {
@@ -194,9 +196,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr != txlockerr_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr != txlockerr_anterior) )
         {   
-            if( txlockerr_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOCK ERR");
             }
             else {
@@ -204,9 +206,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm != lspowalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm != lspowalm_anterior) )
         {   
-            if( lspowalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls POW ALM");
             }
             else {
@@ -214,9 +216,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm != modbiasalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm != modbiasalm_anterior) )
         {   
-            if( modbiasalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod BIAS ALM");
             }
             else {
@@ -224,9 +226,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr != latchedtxfifoerr_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr != latchedtxfifoerr_anterior) )
         {   
-            if( latchedtxfifoerr_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LATCHED TxFIFO ERR");
             }
             else {
@@ -234,9 +236,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint != rxalmint_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint != rxalmint_anterior) )
         {   
-            if( rxalmint_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RxALM INT");
             }
             else {
@@ -244,9 +246,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm != rxpowalm_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm != rxpowalm_anterior) )
         {   
-            if( rxpowalm_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx POW ALM");
             }
             else {
@@ -254,9 +256,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos != rxlos_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos != rxlos_anterior) )
         {   
-            if( rxlos_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOS");
             }
             else {
@@ -264,9 +266,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr != rxlockerr_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr != rxlockerr_anterior) )
         {   
-            if( rxlockerr_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOCK ERR");
             }
             else {
@@ -274,9 +276,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs != rxs_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs != rxs_anterior) )
         {   
-            if( rxs_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RXS");
             }
             else {
@@ -284,9 +286,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != prbserrdet_anterior )
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != prbserrdet_anterior) )
         {   
-            if( prbserrdet_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PRBS ERR DET");
             }
             else {
@@ -294,9 +296,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary != psummary_anterior )
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary != psummary_anterior) )
         {   
-            if( psummary_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PSUMMARY");
             }
             else {
@@ -304,9 +306,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog != p5vanalog_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog != p5vanalog_anterior) )
         {   
-            if( p5vanalog_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P5VANALOG");
             }
             else {
@@ -314,9 +316,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog != n5v2analog_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog != n5v2analog_anterior) )
         {   
-            if( n5v2analog_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5V2ANALOG");
             }
             else {
@@ -324,9 +326,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog != p3p3vanalog_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog != p3p3vanalog_anterior) )
         {   
-            if( p3p3vanalog_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VANALOG");
             }
             else {
@@ -334,9 +336,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital != p3p3vdigital_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital != p3p3vdigital_anterior) )
         {   
-            if( p3p3vdigital_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VDIGITAL");
             }
             else {
@@ -344,9 +346,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital != lvdigital_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital != lvdigital_anterior) )
         {   
-            if( lvdigital_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LVDIGITAL");
             }
             else {
@@ -354,9 +356,9 @@ alarmas_thread(void *arg)
             }
         }
 
-        if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital != n5p2vdigital_anterior)
+        if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital != n5p2vdigital_anterior) )
         {   
-            if( n5p2vdigital_anterior == 1) {
+            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital == 0) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5P2VDIGITAL");
             }
             else {
@@ -390,7 +392,10 @@ alarmas_thread(void *arg)
         p3p3vdigital_anterior =       (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital;
         lvdigital_anterior =          (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital;
         n5p2vdigital_anterior =       (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital;
- 
+        contador_tiempo_alarma++;
+        if( contador_tiempo_alarma==11 ){
+          contador_tiempo_alarma=0;
+        }
         sleep(10);
         //sleep(time_notify_conf);
     }
@@ -473,6 +478,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_state_TX_RX_alarms_obj = NULL;
   mux_state_power_obj = NULL;
   mux_state_dsp_obj = NULL;
+  mux_state_edfa_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -5329,6 +5335,393 @@ static status_t
 } /* cli_mxp_mux_state_dsp_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_POUT_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/POUT
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_POUT_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *POUT;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_POUT_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the POUT var here, change EMPTY_STRING */
+  POUT = (const xmlChar *) pt_monitor_struct->edfa_struct.edfa_output_power;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    POUT);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_POUT_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_PIN_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/PIN
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_PIN_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *PIN;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_PIN_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the PIN var here, change EMPTY_STRING */
+  PIN = (const xmlChar *) pt_monitor_struct->edfa_struct.edfa_input_power;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    PIN);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_PIN_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_Temp_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/Temp
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_Temp_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Temp;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_Temp_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Temp var here, change EMPTY_STRING */
+  Temp = (const xmlChar *) pt_monitor_struct->edfa_struct.edfa_temperature;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Temp);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_Temp_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_LOS_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/LOS
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_LOS_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LOS;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_LOS_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LOS var here, change EMPTY_STRING */
+  LOS = (const xmlChar *) pt_monitor_struct->edfa_struct.edfa_los;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LOS);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_LOS_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_LOP_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/LOP
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_LOP_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LOP;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_LOP_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LOP var here, change EMPTY_STRING */
+  LOP = (const xmlChar *) pt_monitor_struct->edfa_struct.edfa_lop;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LOP);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_LOP_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_Amp_stat_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/Amp_stat
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_Amp_stat_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Amp_stat;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_Amp_stat_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Amp_stat var here, change EMPTY_STRING */
+  Amp_stat = (const xmlChar *) pt_monitor_struct->edfa_struct.edfa_amp_status;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Amp_stat);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_Amp_stat_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-edfa
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_edfa_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-edfa */
+  res = agt_add_top_container(mux_state_edfa_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-edfa/POUT */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_POUT,
+    cli_mxp_mux_state_edfa_POUT_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/PIN */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_PIN,
+    cli_mxp_mux_state_edfa_PIN_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/Temp */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Temp,
+    cli_mxp_mux_state_edfa_Temp_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/LOS */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LOS,
+    cli_mxp_mux_state_edfa_LOS_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/LOP */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LOP,
+    cli_mxp_mux_state_edfa_LOP_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/Amp_stat */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Amp_stat,
+    cli_mxp_mux_state_edfa_Amp_stat_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -5639,11 +6032,13 @@ static status_t y_cli_mxp_mux_notify_activate_invoke (
   /* invoke your device instrumentation code here */
   
 
+  /*
   if (alarma_tid == 0) {
     log_debug("\n******ALARMA ACTIVADA******");
     pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
     } 
-    
+  */
+
   return res;
 
 } /* y_cli_mxp_mux_notify_activate_invoke */
@@ -5812,7 +6207,7 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   char str[80];
   char buff[80];
   int system_status;
-  strcpy (str,"muxponder ");
+  strcpy (str,"cd /mxp/app/cli && ./muxponder ");
   strcat (str,"--configuracion ");
   strcat (str,"--");
   strcat (str, tipo_trafico_var);
@@ -5917,7 +6312,7 @@ static status_t y_cli_mxp_mux_settings_invoke (
 
   ftoa(edfa_output_power_conf, buff, 2);
 
-  strcpy (str,"settings ");
+  strcpy (str,"cd /mxp/app/cli && ./settings ");
   strcat (str,"--potencia ");
   strcat (str,buff);
   printf("\n COMANDO : %s\n", str);
@@ -6056,6 +6451,12 @@ status_t y_cli_mxp_init (
   mux_state_dsp_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_state_dsp);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_state_edfa_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_edfa);
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
@@ -6285,6 +6686,11 @@ status_t y_cli_mxp_init (
     exit(1);
   }
 
+  if (alarma_tid == 0) {
+      log_debug("\n******ALARMA ACTIVADA******");
+      pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
+  }
+
   return res;
 } /* y_cli_mxp_init */
 
@@ -6325,6 +6731,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_dsp_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_edfa_mro();
   if (res != NO_ERR) {
     return res;
   }

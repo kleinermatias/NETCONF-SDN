@@ -102,7 +102,7 @@ module cli-mxp {
             }
         }
 
-        leaf-list deviceneighbors  { // falta JAVA
+        leaf deviceneighbors  { // falta JAVA
          type string;
          description "Lista de vecinos del dispositivo";
         }
@@ -489,6 +489,41 @@ module cli-mxp {
                 description "State de la variable CD Compensation [ps/nm]";
                 type string;
             }
+    }
+
+    container mux-state-edfa {
+        description "Container EDFA";
+        config false;
+        
+        leaf POUT {
+            description "State de la variable POUT";
+            type string;
+        }
+
+        leaf PIN {
+            description "State de la variable PIN";
+            type string;
+        }
+
+        leaf Temp {
+            description "State de la variable Temp";
+            type string;
+        }
+
+        leaf LOS {
+            description "State de la variable LOS";
+            type string;
+        }
+
+        leaf LOP {
+            description "State de la variable LOP";
+            type string;
+        }
+
+        leaf Amp_stat {
+            description "State de la variable Amp stat";
+            type string;
+        }
     }
 
     container mux-optical-line-status {

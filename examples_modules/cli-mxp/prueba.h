@@ -36,6 +36,7 @@ extern "C" {
 #define y_cli_mxp_M_cli_mxp (const xmlChar *)"cli-mxp"
 #define y_cli_mxp_R_cli_mxp (const xmlChar *)"2018-06-24"
 
+#define y_cli_mxp_N_Amp_stat (const xmlChar *)"Amp_stat"
 #define y_cli_mxp_N_BCD_Enabled (const xmlChar *)"BCD_Enabled"
 #define y_cli_mxp_N_BER_Estimate (const xmlChar *)"BER_Estimate"
 #define y_cli_mxp_N_CD_Compensation_ps_nm (const xmlChar *)"CD_Compensation_ps_nm"
@@ -47,6 +48,8 @@ extern "C" {
 #define y_cli_mxp_N_EOL_ALM (const xmlChar *)"EOL_ALM"
 #define y_cli_mxp_N_INFO (const xmlChar *)"INFO"
 #define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
+#define y_cli_mxp_N_LOP (const xmlChar *)"LOP"
+#define y_cli_mxp_N_LOS (const xmlChar *)"LOS"
 #define y_cli_mxp_N_LS_BIAS_ALM (const xmlChar *)"LS_BIAS_ALM"
 #define y_cli_mxp_N_LS_POW_ALM (const xmlChar *)"LS_POW_ALM"
 #define y_cli_mxp_N_LS_TEMP_ALM (const xmlChar *)"LS_TEMP_ALM"
@@ -67,6 +70,8 @@ extern "C" {
 #define y_cli_mxp_N_P3P3VANALOG (const xmlChar *)"P3P3VANALOG"
 #define y_cli_mxp_N_P3P3VDIGITAL (const xmlChar *)"P3P3VDIGITAL"
 #define y_cli_mxp_N_P5VANALOG (const xmlChar *)"P5VANALOG"
+#define y_cli_mxp_N_PIN (const xmlChar *)"PIN"
+#define y_cli_mxp_N_POUT (const xmlChar *)"POUT"
 #define y_cli_mxp_N_PRBS_ERR_DET (const xmlChar *)"PRBS_ERR_DET"
 #define y_cli_mxp_N_PSUMMARY (const xmlChar *)"PSUMMARY"
 #define y_cli_mxp_N_Presence_of_light (const xmlChar *)"Presence_of_light"
@@ -81,6 +86,7 @@ extern "C" {
 #define y_cli_mxp_N_TX_LOCK_ERR (const xmlChar *)"TX_LOCK_ERR"
 #define y_cli_mxp_N_TX_LOF_ALM (const xmlChar *)"TX_LOF_ALM"
 #define y_cli_mxp_N_TX_OOA (const xmlChar *)"TX_OOA"
+#define y_cli_mxp_N_Temp (const xmlChar *)"Temp"
 #define y_cli_mxp_N_Transmit_Laser_running (const xmlChar *)"Transmit_Laser_running"
 #define y_cli_mxp_N_board_humidity_state (const xmlChar *)"board_humidity_state"
 #define y_cli_mxp_N_brctl_showstp_br0 (const xmlChar *)"brctl_showstp_br0"
@@ -107,6 +113,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_mux_state_TX_RX_alarms (const xmlChar *)"mux-state-TX-RX-alarms"
 #define y_cli_mxp_N_mux_state_dsp (const xmlChar *)"mux-state-dsp"
+#define y_cli_mxp_N_mux_state_edfa (const xmlChar *)"mux-state-edfa"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
 #define y_cli_mxp_N_mux_state_power (const xmlChar *)"mux-state-power"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
@@ -127,12 +134,6 @@ extern "C" {
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
 #define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
 
-/* leaf-list /mux-config/deviceneighbors */
-typedef struct y_cli_mxp_T_mux_config_deviceneighbors_ {
-  dlq_hdr_t qhdr;
-  xmlChar *deviceneighbors;
-} y_cli_mxp_T_mux_config_deviceneighbors;
-
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *configuracion;
@@ -144,7 +145,7 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *cd_compensacion;
   int64 edfa_output_power_config;
   int16 time_notify_config;
-  dlq_hdr_t deviceneighbors;
+  xmlChar *deviceneighbors;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */
@@ -230,6 +231,16 @@ typedef struct y_cli_mxp_T_mux_state_dsp_ {
   xmlChar *Step_Size_ps_nm;
   xmlChar *CD_Compensation_ps_nm;
 } y_cli_mxp_T_mux_state_dsp;
+
+/* container /mux-state-edfa */
+typedef struct y_cli_mxp_T_mux_state_edfa_ {
+  xmlChar *POUT;
+  xmlChar *PIN;
+  xmlChar *Temp;
+  xmlChar *LOS;
+  xmlChar *LOP;
+  xmlChar *Amp_stat;
+} y_cli_mxp_T_mux_state_edfa;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {

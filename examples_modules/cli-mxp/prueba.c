@@ -49,6 +49,7 @@ static obj_template_t *mux_state_misc_obj;
 static obj_template_t *mux_state_TX_RX_alarms_obj;
 static obj_template_t *mux_state_power_obj;
 static obj_template_t *mux_state_dsp_obj;
+static obj_template_t *mux_state_edfa_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -74,6 +75,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_state_TX_RX_alarms_obj = NULL;
   mux_state_power_obj = NULL;
   mux_state_dsp_obj = NULL;
+  mux_state_edfa_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -4911,6 +4913,393 @@ static status_t
 } /* cli_mxp_mux_state_dsp_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_POUT_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/POUT
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_POUT_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *POUT;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_POUT_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the POUT var here, change EMPTY_STRING */
+  POUT = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    POUT);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_POUT_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_PIN_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/PIN
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_PIN_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *PIN;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_PIN_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the PIN var here, change EMPTY_STRING */
+  PIN = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    PIN);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_PIN_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_Temp_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/Temp
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_Temp_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Temp;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_Temp_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Temp var here, change EMPTY_STRING */
+  Temp = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Temp);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_Temp_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_LOS_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/LOS
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_LOS_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LOS;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_LOS_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LOS var here, change EMPTY_STRING */
+  LOS = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LOS);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_LOS_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_LOP_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/LOP
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_LOP_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *LOP;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_LOP_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the LOP var here, change EMPTY_STRING */
+  LOP = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    LOP);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_LOP_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_Amp_stat_get
+* 
+* Get database object callback
+* Path: /mux-state-edfa/Amp_stat
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_edfa_Amp_stat_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Amp_stat;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_edfa_Amp_stat_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Amp_stat var here, change EMPTY_STRING */
+  Amp_stat = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Amp_stat);
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_Amp_stat_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_edfa_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-edfa
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_edfa_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-edfa */
+  res = agt_add_top_container(mux_state_edfa_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-edfa/POUT */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_POUT,
+    cli_mxp_mux_state_edfa_POUT_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/PIN */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_PIN,
+    cli_mxp_mux_state_edfa_PIN_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/Temp */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Temp,
+    cli_mxp_mux_state_edfa_Temp_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/LOS */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LOS,
+    cli_mxp_mux_state_edfa_LOS_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/LOP */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_LOP,
+    cli_mxp_mux_state_edfa_LOP_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-edfa/Amp_stat */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Amp_stat,
+    cli_mxp_mux_state_edfa_Amp_stat_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_edfa_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -5421,6 +5810,12 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
+  mux_state_edfa_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_edfa);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
   mux_optical_line_status_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_optical_line_status);
@@ -5670,6 +6065,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_dsp_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_edfa_mro();
   if (res != NO_ERR) {
     return res;
   }
