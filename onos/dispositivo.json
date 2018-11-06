@@ -6,8 +6,8 @@
                 "port": 830,
                 "username": "root",
                 "password": "123",
-                "connect-timeout": 30,
-		"reply-timeout": 180,
+                "connect-timeout": 20,
+		"reply-timeout": 120,
 		"ssh-client": "ethz-ssh2"
             },
             "basic": {
@@ -21,8 +21,8 @@
                 "port": 830,
                 "username": "root",
                 "password": "123",
-                "connect-timeout": 30,
-                "reply-timeout": 160,
+                "connect-timeout": 20,
+                "reply-timeout": 120,
 		"ssh-client": "ethz-ssh2"
             },
             "basic": {
