@@ -526,6 +526,47 @@ module cli-mxp {
         }
     }
 
+    container mux-state-temp-hum {
+        description "State temperatura y humedad";
+        config false;
+        
+        leaf T41_Around {
+            description "State de la variable T41_Around";
+            type string;
+        }
+
+        leaf T41_TS0 {
+            description "State de la variable T41_TS0";
+            type string;
+        }
+
+        leaf T41_TS1 {
+            description "State de la variable T41_TS1";
+            type string;
+        }
+
+        leaf T41_TS2 {
+            description "State de la variable T41_TS2";
+            type string;
+        }
+
+        leaf FPGA {
+            description "State de la variable FPGA";
+            type string;
+        }
+
+        leaf BOARD_TEMP {
+            description "State de la variable BOARD_TEMP";
+            type string;
+        }
+
+        leaf BOARD_HUM {
+            description "State de la variable BOARD_HUM";
+            type string;
+        }
+
+    }
+
     container mux-optical-line-status {
         description "Para determinar estado del enlace";
         config false;

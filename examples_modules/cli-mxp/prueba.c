@@ -50,6 +50,7 @@ static obj_template_t *mux_state_TX_RX_alarms_obj;
 static obj_template_t *mux_state_power_obj;
 static obj_template_t *mux_state_dsp_obj;
 static obj_template_t *mux_state_edfa_obj;
+static obj_template_t *mux_state_temp_hum_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -76,6 +77,7 @@ static void y_cli_mxp_init_static_vars (void)
   mux_state_power_obj = NULL;
   mux_state_dsp_obj = NULL;
   mux_state_edfa_obj = NULL;
+  mux_state_temp_hum_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -5300,6 +5302,453 @@ static status_t
 } /* cli_mxp_mux_state_edfa_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_T41_Around_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/T41_Around
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_T41_Around_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *T41_Around;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_T41_Around_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the T41_Around var here, change EMPTY_STRING */
+  T41_Around = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    T41_Around);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_T41_Around_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_T41_TS0_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/T41_TS0
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_T41_TS0_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *T41_TS0;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_T41_TS0_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the T41_TS0 var here, change EMPTY_STRING */
+  T41_TS0 = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    T41_TS0);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_T41_TS0_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_T41_TS1_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/T41_TS1
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_T41_TS1_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *T41_TS1;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_T41_TS1_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the T41_TS1 var here, change EMPTY_STRING */
+  T41_TS1 = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    T41_TS1);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_T41_TS1_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_T41_TS2_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/T41_TS2
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_T41_TS2_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *T41_TS2;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_T41_TS2_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the T41_TS2 var here, change EMPTY_STRING */
+  T41_TS2 = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    T41_TS2);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_T41_TS2_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_FPGA_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/FPGA
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_FPGA_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *FPGA;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_FPGA_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the FPGA var here, change EMPTY_STRING */
+  FPGA = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    FPGA);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_FPGA_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_BOARD_TEMP_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/BOARD_TEMP
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_BOARD_TEMP_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *BOARD_TEMP;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_BOARD_TEMP_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the BOARD_TEMP var here, change EMPTY_STRING */
+  BOARD_TEMP = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    BOARD_TEMP);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_BOARD_TEMP_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_BOARD_HUM_get
+* 
+* Get database object callback
+* Path: /mux-state-temp-hum/BOARD_HUM
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_temp_hum_BOARD_HUM_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *BOARD_HUM;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_temp_hum_BOARD_HUM_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the BOARD_HUM var here, change EMPTY_STRING */
+  BOARD_HUM = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    BOARD_HUM);
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_BOARD_HUM_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_temp_hum_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-temp-hum
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_temp_hum_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-temp-hum */
+  res = agt_add_top_container(mux_state_temp_hum_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/T41_Around */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_T41_Around,
+    cli_mxp_mux_state_temp_hum_T41_Around_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/T41_TS0 */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_T41_TS0,
+    cli_mxp_mux_state_temp_hum_T41_TS0_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/T41_TS1 */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_T41_TS1,
+    cli_mxp_mux_state_temp_hum_T41_TS1_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/T41_TS2 */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_T41_TS2,
+    cli_mxp_mux_state_temp_hum_T41_TS2_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/FPGA */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_FPGA,
+    cli_mxp_mux_state_temp_hum_FPGA_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/BOARD_TEMP */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_BOARD_TEMP,
+    cli_mxp_mux_state_temp_hum_BOARD_TEMP_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-temp-hum/BOARD_HUM */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_BOARD_HUM,
+    cli_mxp_mux_state_temp_hum_BOARD_HUM_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_temp_hum_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -5816,6 +6265,12 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
+  mux_state_temp_hum_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_temp_hum);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
   mux_optical_line_status_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_optical_line_status);
@@ -6080,6 +6535,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_power_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_temp_hum_mro();
   if (res != NO_ERR) {
     return res;
   }

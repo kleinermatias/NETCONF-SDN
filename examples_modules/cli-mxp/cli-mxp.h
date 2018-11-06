@@ -38,6 +38,8 @@ extern "C" {
 #define y_cli_mxp_N_Amp_stat (const xmlChar *)"Amp_stat"
 #define y_cli_mxp_N_BCD_Enabled (const xmlChar *)"BCD_Enabled"
 #define y_cli_mxp_N_BER_Estimate (const xmlChar *)"BER_Estimate"
+#define y_cli_mxp_N_BOARD_HUM (const xmlChar *)"BOARD_HUM"
+#define y_cli_mxp_N_BOARD_TEMP (const xmlChar *)"BOARD_TEMP"
 #define y_cli_mxp_N_CD_Compensation_ps_nm (const xmlChar *)"CD_Compensation_ps_nm"
 #define y_cli_mxp_N_CONVERGED (const xmlChar *)"CONVERGED"
 #define y_cli_mxp_N_Coarse_Carrier_Lock (const xmlChar *)"Coarse_Carrier_Lock"
@@ -45,6 +47,7 @@ extern "C" {
 #define y_cli_mxp_N_DSP_Initialized (const xmlChar *)"DSP_Initialized"
 #define y_cli_mxp_N_DSP_running (const xmlChar *)"DSP_running"
 #define y_cli_mxp_N_EOL_ALM (const xmlChar *)"EOL_ALM"
+#define y_cli_mxp_N_FPGA (const xmlChar *)"FPGA"
 #define y_cli_mxp_N_INFO (const xmlChar *)"INFO"
 #define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
 #define y_cli_mxp_N_LOP (const xmlChar *)"LOP"
@@ -80,6 +83,10 @@ extern "C" {
 #define y_cli_mxp_N_RX_LOCK_ERR (const xmlChar *)"RX_LOCK_ERR"
 #define y_cli_mxp_N_RX_LOS (const xmlChar *)"RX_LOS"
 #define y_cli_mxp_N_Step_Size_ps_nm (const xmlChar *)"Step_Size_ps_nm"
+#define y_cli_mxp_N_T41_Around (const xmlChar *)"T41_Around"
+#define y_cli_mxp_N_T41_TS0 (const xmlChar *)"T41_TS0"
+#define y_cli_mxp_N_T41_TS1 (const xmlChar *)"T41_TS1"
+#define y_cli_mxp_N_T41_TS2 (const xmlChar *)"T41_TS2"
 #define y_cli_mxp_N_TX_ALM_INT (const xmlChar *)"TX_ALM_INT"
 #define y_cli_mxp_N_TX_DSC_ERR (const xmlChar *)"TX_DSC_ERR"
 #define y_cli_mxp_N_TX_LOCK_ERR (const xmlChar *)"TX_LOCK_ERR"
@@ -115,6 +122,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_state_edfa (const xmlChar *)"mux-state-edfa"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
 #define y_cli_mxp_N_mux_state_power (const xmlChar *)"mux-state-power"
+#define y_cli_mxp_N_mux_state_temp_hum (const xmlChar *)"mux-state-temp-hum"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
 #define y_cli_mxp_N_respuesta_mux_apply_config (const xmlChar *)"respuesta-mux-apply-config"
 #define y_cli_mxp_N_respuesta_mux_settings (const xmlChar *)"respuesta-mux-settings"
@@ -244,6 +252,17 @@ typedef struct y_cli_mxp_T_mux_state_edfa_ {
   xmlChar *LOP;
   xmlChar *Amp_stat;
 } y_cli_mxp_T_mux_state_edfa;
+
+/* container /mux-state-temp-hum */
+typedef struct y_cli_mxp_T_mux_state_temp_hum_ {
+  xmlChar *T41_Around;
+  xmlChar *T41_TS0;
+  xmlChar *T41_TS1;
+  xmlChar *T41_TS2;
+  xmlChar *FPGA;
+  xmlChar *BOARD_TEMP;
+  xmlChar *BOARD_HUM;
+} y_cli_mxp_T_mux_state_temp_hum;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {
