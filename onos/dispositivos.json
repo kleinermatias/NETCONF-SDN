@@ -1,0 +1,33 @@
+{
+    "devices": {
+        "netconf:172.17.0.2:830": {
+            "netconf": {
+                "ip": "172.17.0.2",
+                "port": 830,
+                "username": "root",
+                "password": "fulgor",
+                "connect-timeout": 20,
+		"reply-timeout": 120,
+		"ssh-client": "ethz-ssh2"
+            },
+            "basic": {
+                "driver": "altura-netconf"
+            }
+        },
+
+        "netconf:172.17.0.3:830": {
+            "netconf": {
+                "ip": "172.17.0.3",
+                "port": 830,
+                "username": "root",
+                "password": "fulgor",
+                "connect-timeout": 20,
+                "reply-timeout": 120,
+		"ssh-client": "ethz-ssh2"
+            },
+            "basic": {
+                "driver": "altura-netconf"
+            }
+        }
+    }
+}
