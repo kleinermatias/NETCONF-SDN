@@ -49,6 +49,8 @@ extern "C" {
 #define y_cli_mxp_N_DSP_running (const xmlChar *)"DSP_running"
 #define y_cli_mxp_N_EOL_ALM (const xmlChar *)"EOL_ALM"
 #define y_cli_mxp_N_FPGA (const xmlChar *)"FPGA"
+#define y_cli_mxp_N_High_Rx_Power_Alarm (const xmlChar *)"High_Rx_Power_Alarm"
+#define y_cli_mxp_N_High_Tx_Power_Alarm (const xmlChar *)"High_Tx_Power_Alarm"
 #define y_cli_mxp_N_INFO (const xmlChar *)"INFO"
 #define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
 #define y_cli_mxp_N_LOP (const xmlChar *)"LOP"
@@ -58,7 +60,11 @@ extern "C" {
 #define y_cli_mxp_N_LS_TEMP_ALM (const xmlChar *)"LS_TEMP_ALM"
 #define y_cli_mxp_N_LS_WAV_ALM (const xmlChar *)"LS_WAV_ALM"
 #define y_cli_mxp_N_LVDIGITAL (const xmlChar *)"LVDIGITAL"
+#define y_cli_mxp_N_Laser_Fault (const xmlChar *)"Laser_Fault"
 #define y_cli_mxp_N_Local_Oscillator_running (const xmlChar *)"Local_Oscillator_running"
+#define y_cli_mxp_N_Loss (const xmlChar *)"Loss"
+#define y_cli_mxp_N_Low_Rx_Power_Alarm (const xmlChar *)"Low_Rx_Power_Alarm"
+#define y_cli_mxp_N_Low_Tx_Power_Alarm (const xmlChar *)"Low_Tx_Power_Alarm"
 #define y_cli_mxp_N_MOD_BIAS_ALM (const xmlChar *)"MOD_BIAS_ALM"
 #define y_cli_mxp_N_MOD_TEMP_ALM (const xmlChar *)"MOD_TEMP_ALM"
 #define y_cli_mxp_N_MSE_XI (const xmlChar *)"MSE_XI"
@@ -77,12 +83,16 @@ extern "C" {
 #define y_cli_mxp_N_POUT (const xmlChar *)"POUT"
 #define y_cli_mxp_N_PRBS_ERR_DET (const xmlChar *)"PRBS_ERR_DET"
 #define y_cli_mxp_N_PSUMMARY (const xmlChar *)"PSUMMARY"
+#define y_cli_mxp_N_Presence (const xmlChar *)"Presence"
 #define y_cli_mxp_N_Presence_of_light (const xmlChar *)"Presence_of_light"
 #define y_cli_mxp_N_RXALM_INT (const xmlChar *)"RXALM_INT"
 #define y_cli_mxp_N_RXPOW_ALM (const xmlChar *)"RXPOW_ALM"
 #define y_cli_mxp_N_RXS (const xmlChar *)"RXS"
 #define y_cli_mxp_N_RX_LOCK_ERR (const xmlChar *)"RX_LOCK_ERR"
 #define y_cli_mxp_N_RX_LOS (const xmlChar *)"RX_LOS"
+#define y_cli_mxp_N_Ready (const xmlChar *)"Ready"
+#define y_cli_mxp_N_Rx_CDR_Loss_of_Lock (const xmlChar *)"Rx_CDR_Loss_of_Lock"
+#define y_cli_mxp_N_Rx_Power_dBm (const xmlChar *)"Rx_Power_dBm"
 #define y_cli_mxp_N_Step_Size_ps_nm (const xmlChar *)"Step_Size_ps_nm"
 #define y_cli_mxp_N_T41_Around (const xmlChar *)"T41_Around"
 #define y_cli_mxp_N_T41_TS0 (const xmlChar *)"T41_TS0"
@@ -94,7 +104,10 @@ extern "C" {
 #define y_cli_mxp_N_TX_LOF_ALM (const xmlChar *)"TX_LOF_ALM"
 #define y_cli_mxp_N_TX_OOA (const xmlChar *)"TX_OOA"
 #define y_cli_mxp_N_Temp (const xmlChar *)"Temp"
+#define y_cli_mxp_N_Temp_c (const xmlChar *)"Temp_c"
 #define y_cli_mxp_N_Transmit_Laser_running (const xmlChar *)"Transmit_Laser_running"
+#define y_cli_mxp_N_Tx_CDR_Loss_of_Lock (const xmlChar *)"Tx_CDR_Loss_of_Lock"
+#define y_cli_mxp_N_Tx_Power_dBm (const xmlChar *)"Tx_Power_dBm"
 #define y_cli_mxp_N_board_humidity_state (const xmlChar *)"board_humidity_state"
 #define y_cli_mxp_N_brctl_showstp_br0 (const xmlChar *)"brctl_showstp_br0"
 #define y_cli_mxp_N_canal (const xmlChar *)"canal"
@@ -119,6 +132,7 @@ extern "C" {
 #define y_cli_mxp_N_mux_settings (const xmlChar *)"mux-settings"
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_mux_state_TX_RX_alarms (const xmlChar *)"mux-state-TX-RX-alarms"
+#define y_cli_mxp_N_mux_state_XFP1 (const xmlChar *)"mux-state-XFP1"
 #define y_cli_mxp_N_mux_state_dsp (const xmlChar *)"mux-state-dsp"
 #define y_cli_mxp_N_mux_state_edfa (const xmlChar *)"mux-state-edfa"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
@@ -260,6 +274,23 @@ typedef struct y_cli_mxp_T_mux_state_temp_hum_ {
   xmlChar *BOARD_TEMP;
   xmlChar *BOARD_HUM;
 } y_cli_mxp_T_mux_state_temp_hum;
+
+/* container /mux-state-XFP1 */
+typedef struct y_cli_mxp_T_mux_state_XFP1_ {
+  xmlChar *Presence;
+  xmlChar *Loss;
+  xmlChar *Ready;
+  xmlChar *Tx_Power_dBm;
+  xmlChar *Rx_Power_dBm;
+  xmlChar *Temp_c;
+  xmlChar *Low_Tx_Power_Alarm;
+  xmlChar *High_Tx_Power_Alarm;
+  xmlChar *Low_Rx_Power_Alarm;
+  xmlChar *High_Rx_Power_Alarm;
+  xmlChar *Rx_CDR_Loss_of_Lock;
+  xmlChar *Tx_CDR_Loss_of_Lock;
+  xmlChar *Laser_Fault;
+} y_cli_mxp_T_mux_state_XFP1;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {
