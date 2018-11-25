@@ -52,6 +52,9 @@ static obj_template_t *mux_state_dsp_obj;
 static obj_template_t *mux_state_edfa_obj;
 static obj_template_t *mux_state_temp_hum_obj;
 static obj_template_t *mux_state_XFP1_obj;
+static obj_template_t *mux_state_XFP2_obj;
+static obj_template_t *mux_state_XFP3_obj;
+static obj_template_t *mux_state_XFP4_obj;
 static obj_template_t *mux_optical_line_status_obj;
 static obj_template_t *mux_notify_activate_obj;
 static obj_template_t *mux_notify_deactivate_obj;
@@ -80,6 +83,9 @@ static void y_cli_mxp_init_static_vars (void)
   mux_state_edfa_obj = NULL;
   mux_state_temp_hum_obj = NULL;
   mux_state_XFP1_obj = NULL;
+  mux_state_XFP2_obj = NULL;
+  mux_state_XFP3_obj = NULL;
+  mux_state_XFP4_obj = NULL;
   mux_optical_line_status_obj = NULL;
   mux_notify_activate_obj = NULL;
   mux_notify_deactivate_obj = NULL;
@@ -6618,6 +6624,2607 @@ static status_t
 } /* cli_mxp_mux_state_XFP1_mro */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Presence_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Presence
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Presence_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Presence;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Presence_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Presence var here, change EMPTY_STRING */
+  Presence = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Presence);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Presence_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Loss_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Loss
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Loss_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Loss;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Loss_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Loss var here, change EMPTY_STRING */
+  Loss = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Loss);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Loss_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Ready_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Ready
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Ready_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Ready;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Ready_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Ready var here, change EMPTY_STRING */
+  Ready = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Ready);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Ready_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Interrupt_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Interrupt
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Interrupt_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Interrupt;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Interrupt_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Interrupt var here, change EMPTY_STRING */
+  Interrupt = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Interrupt);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Interrupt_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Tx_Power_dBm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Tx_Power_dBm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Tx_Power_dBm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Tx_Power_dBm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Tx_Power_dBm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Tx_Power_dBm var here, change EMPTY_STRING */
+  Tx_Power_dBm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Tx_Power_dBm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Tx_Power_dBm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Rx_Power_dBm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Rx_Power_dBm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Rx_Power_dBm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Rx_Power_dBm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Rx_Power_dBm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Rx_Power_dBm var here, change EMPTY_STRING */
+  Rx_Power_dBm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Rx_Power_dBm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Rx_Power_dBm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Temp_c_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Temp_c
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Temp_c_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Temp_c;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Temp_c_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Temp_c var here, change EMPTY_STRING */
+  Temp_c = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Temp_c);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Temp_c_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Low_Tx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Low_Tx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Low_Tx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Low_Tx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Low_Tx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Low_Tx_Power_Alarm var here, change EMPTY_STRING */
+  Low_Tx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Low_Tx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Low_Tx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_High_Tx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/High_Tx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_High_Tx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *High_Tx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_High_Tx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the High_Tx_Power_Alarm var here, change EMPTY_STRING */
+  High_Tx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    High_Tx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_High_Tx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Low_Rx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Low_Rx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Low_Rx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Low_Rx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Low_Rx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Low_Rx_Power_Alarm var here, change EMPTY_STRING */
+  Low_Rx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Low_Rx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Low_Rx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_High_Rx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/High_Rx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_High_Rx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *High_Rx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_High_Rx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the High_Rx_Power_Alarm var here, change EMPTY_STRING */
+  High_Rx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    High_Rx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_High_Rx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Rx_CDR_Loss_of_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Rx_CDR_Loss_of_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Rx_CDR_Loss_of_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Rx_CDR_Loss_of_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Rx_CDR_Loss_of_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Rx_CDR_Loss_of_Lock var here, change EMPTY_STRING */
+  Rx_CDR_Loss_of_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Rx_CDR_Loss_of_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Rx_CDR_Loss_of_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Tx_CDR_Loss_of_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Tx_CDR_Loss_of_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Tx_CDR_Loss_of_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Tx_CDR_Loss_of_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Tx_CDR_Loss_of_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Tx_CDR_Loss_of_Lock var here, change EMPTY_STRING */
+  Tx_CDR_Loss_of_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Tx_CDR_Loss_of_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Tx_CDR_Loss_of_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_Laser_Fault_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP2/Laser_Fault
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP2_Laser_Fault_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Laser_Fault;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP2_Laser_Fault_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Laser_Fault var here, change EMPTY_STRING */
+  Laser_Fault = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Laser_Fault);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_Laser_Fault_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP2_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-XFP2
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_XFP2_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-XFP2 */
+  res = agt_add_top_container(mux_state_XFP2_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Presence */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Presence,
+    cli_mxp_mux_state_XFP2_Presence_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Loss */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Loss,
+    cli_mxp_mux_state_XFP2_Loss_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Ready */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Ready,
+    cli_mxp_mux_state_XFP2_Ready_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Interrupt */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Interrupt,
+    cli_mxp_mux_state_XFP2_Interrupt_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Tx_Power_dBm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Tx_Power_dBm,
+    cli_mxp_mux_state_XFP2_Tx_Power_dBm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Rx_Power_dBm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Rx_Power_dBm,
+    cli_mxp_mux_state_XFP2_Rx_Power_dBm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Temp_c */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Temp_c,
+    cli_mxp_mux_state_XFP2_Temp_c_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Low_Tx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Low_Tx_Power_Alarm,
+    cli_mxp_mux_state_XFP2_Low_Tx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/High_Tx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_High_Tx_Power_Alarm,
+    cli_mxp_mux_state_XFP2_High_Tx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Low_Rx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Low_Rx_Power_Alarm,
+    cli_mxp_mux_state_XFP2_Low_Rx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/High_Rx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_High_Rx_Power_Alarm,
+    cli_mxp_mux_state_XFP2_High_Rx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Rx_CDR_Loss_of_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Rx_CDR_Loss_of_Lock,
+    cli_mxp_mux_state_XFP2_Rx_CDR_Loss_of_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Tx_CDR_Loss_of_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Tx_CDR_Loss_of_Lock,
+    cli_mxp_mux_state_XFP2_Tx_CDR_Loss_of_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP2/Laser_Fault */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Laser_Fault,
+    cli_mxp_mux_state_XFP2_Laser_Fault_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP2_mro */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Presence_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Presence
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Presence_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Presence;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Presence_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Presence var here, change EMPTY_STRING */
+  Presence = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Presence);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Presence_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Loss_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Loss
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Loss_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Loss;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Loss_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Loss var here, change EMPTY_STRING */
+  Loss = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Loss);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Loss_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Ready_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Ready
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Ready_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Ready;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Ready_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Ready var here, change EMPTY_STRING */
+  Ready = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Ready);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Ready_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Interrupt_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Interrupt
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Interrupt_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Interrupt;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Interrupt_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Interrupt var here, change EMPTY_STRING */
+  Interrupt = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Interrupt);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Interrupt_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Tx_Power_dBm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Tx_Power_dBm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Tx_Power_dBm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Tx_Power_dBm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Tx_Power_dBm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Tx_Power_dBm var here, change EMPTY_STRING */
+  Tx_Power_dBm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Tx_Power_dBm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Tx_Power_dBm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Rx_Power_dBm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Rx_Power_dBm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Rx_Power_dBm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Rx_Power_dBm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Rx_Power_dBm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Rx_Power_dBm var here, change EMPTY_STRING */
+  Rx_Power_dBm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Rx_Power_dBm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Rx_Power_dBm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Temp_c_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Temp_c
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Temp_c_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Temp_c;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Temp_c_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Temp_c var here, change EMPTY_STRING */
+  Temp_c = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Temp_c);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Temp_c_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Low_Tx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Low_Tx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Low_Tx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Low_Tx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Low_Tx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Low_Tx_Power_Alarm var here, change EMPTY_STRING */
+  Low_Tx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Low_Tx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Low_Tx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_High_Tx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/High_Tx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_High_Tx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *High_Tx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_High_Tx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the High_Tx_Power_Alarm var here, change EMPTY_STRING */
+  High_Tx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    High_Tx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_High_Tx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Low_Rx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Low_Rx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Low_Rx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Low_Rx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Low_Rx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Low_Rx_Power_Alarm var here, change EMPTY_STRING */
+  Low_Rx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Low_Rx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Low_Rx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_High_Rx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/High_Rx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_High_Rx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *High_Rx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_High_Rx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the High_Rx_Power_Alarm var here, change EMPTY_STRING */
+  High_Rx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    High_Rx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_High_Rx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Rx_CDR_Loss_of_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Rx_CDR_Loss_of_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Rx_CDR_Loss_of_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Rx_CDR_Loss_of_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Rx_CDR_Loss_of_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Rx_CDR_Loss_of_Lock var here, change EMPTY_STRING */
+  Rx_CDR_Loss_of_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Rx_CDR_Loss_of_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Rx_CDR_Loss_of_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Tx_CDR_Loss_of_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Tx_CDR_Loss_of_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Tx_CDR_Loss_of_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Tx_CDR_Loss_of_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Tx_CDR_Loss_of_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Tx_CDR_Loss_of_Lock var here, change EMPTY_STRING */
+  Tx_CDR_Loss_of_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Tx_CDR_Loss_of_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Tx_CDR_Loss_of_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_Laser_Fault_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP3/Laser_Fault
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP3_Laser_Fault_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Laser_Fault;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP3_Laser_Fault_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Laser_Fault var here, change EMPTY_STRING */
+  Laser_Fault = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Laser_Fault);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_Laser_Fault_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP3_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-XFP3
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_XFP3_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-XFP3 */
+  res = agt_add_top_container(mux_state_XFP3_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Presence */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Presence,
+    cli_mxp_mux_state_XFP3_Presence_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Loss */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Loss,
+    cli_mxp_mux_state_XFP3_Loss_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Ready */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Ready,
+    cli_mxp_mux_state_XFP3_Ready_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Interrupt */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Interrupt,
+    cli_mxp_mux_state_XFP3_Interrupt_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Tx_Power_dBm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Tx_Power_dBm,
+    cli_mxp_mux_state_XFP3_Tx_Power_dBm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Rx_Power_dBm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Rx_Power_dBm,
+    cli_mxp_mux_state_XFP3_Rx_Power_dBm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Temp_c */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Temp_c,
+    cli_mxp_mux_state_XFP3_Temp_c_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Low_Tx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Low_Tx_Power_Alarm,
+    cli_mxp_mux_state_XFP3_Low_Tx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/High_Tx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_High_Tx_Power_Alarm,
+    cli_mxp_mux_state_XFP3_High_Tx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Low_Rx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Low_Rx_Power_Alarm,
+    cli_mxp_mux_state_XFP3_Low_Rx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/High_Rx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_High_Rx_Power_Alarm,
+    cli_mxp_mux_state_XFP3_High_Rx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Rx_CDR_Loss_of_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Rx_CDR_Loss_of_Lock,
+    cli_mxp_mux_state_XFP3_Rx_CDR_Loss_of_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Tx_CDR_Loss_of_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Tx_CDR_Loss_of_Lock,
+    cli_mxp_mux_state_XFP3_Tx_CDR_Loss_of_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP3/Laser_Fault */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Laser_Fault,
+    cli_mxp_mux_state_XFP3_Laser_Fault_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP3_mro */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Presence_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Presence
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Presence_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Presence;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Presence_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Presence var here, change EMPTY_STRING */
+  Presence = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Presence);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Presence_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Loss_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Loss
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Loss_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Loss;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Loss_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Loss var here, change EMPTY_STRING */
+  Loss = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Loss);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Loss_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Ready_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Ready
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Ready_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Ready;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Ready_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Ready var here, change EMPTY_STRING */
+  Ready = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Ready);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Ready_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Interrupt_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Interrupt
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Interrupt_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Interrupt;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Interrupt_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Interrupt var here, change EMPTY_STRING */
+  Interrupt = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Interrupt);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Interrupt_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Tx_Power_dBm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Tx_Power_dBm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Tx_Power_dBm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Tx_Power_dBm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Tx_Power_dBm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Tx_Power_dBm var here, change EMPTY_STRING */
+  Tx_Power_dBm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Tx_Power_dBm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Tx_Power_dBm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Rx_Power_dBm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Rx_Power_dBm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Rx_Power_dBm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Rx_Power_dBm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Rx_Power_dBm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Rx_Power_dBm var here, change EMPTY_STRING */
+  Rx_Power_dBm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Rx_Power_dBm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Rx_Power_dBm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Temp_c_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Temp_c
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Temp_c_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Temp_c;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Temp_c_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Temp_c var here, change EMPTY_STRING */
+  Temp_c = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Temp_c);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Temp_c_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Low_Tx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Low_Tx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Low_Tx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Low_Tx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Low_Tx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Low_Tx_Power_Alarm var here, change EMPTY_STRING */
+  Low_Tx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Low_Tx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Low_Tx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_High_Tx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/High_Tx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_High_Tx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *High_Tx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_High_Tx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the High_Tx_Power_Alarm var here, change EMPTY_STRING */
+  High_Tx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    High_Tx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_High_Tx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Low_Rx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Low_Rx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Low_Rx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Low_Rx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Low_Rx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Low_Rx_Power_Alarm var here, change EMPTY_STRING */
+  Low_Rx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Low_Rx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Low_Rx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_High_Rx_Power_Alarm_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/High_Rx_Power_Alarm
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_High_Rx_Power_Alarm_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *High_Rx_Power_Alarm;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_High_Rx_Power_Alarm_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the High_Rx_Power_Alarm var here, change EMPTY_STRING */
+  High_Rx_Power_Alarm = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    High_Rx_Power_Alarm);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_High_Rx_Power_Alarm_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Rx_CDR_Loss_of_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Rx_CDR_Loss_of_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Rx_CDR_Loss_of_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Rx_CDR_Loss_of_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Rx_CDR_Loss_of_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Rx_CDR_Loss_of_Lock var here, change EMPTY_STRING */
+  Rx_CDR_Loss_of_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Rx_CDR_Loss_of_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Rx_CDR_Loss_of_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Tx_CDR_Loss_of_Lock_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Tx_CDR_Loss_of_Lock
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Tx_CDR_Loss_of_Lock_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Tx_CDR_Loss_of_Lock;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Tx_CDR_Loss_of_Lock_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Tx_CDR_Loss_of_Lock var here, change EMPTY_STRING */
+  Tx_CDR_Loss_of_Lock = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Tx_CDR_Loss_of_Lock);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Tx_CDR_Loss_of_Lock_get */
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_Laser_Fault_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP4/Laser_Fault
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP4_Laser_Fault_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Laser_Fault;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP4_Laser_Fault_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Laser_Fault var here, change EMPTY_STRING */
+  Laser_Fault = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Laser_Fault);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_Laser_Fault_get */
+
+
+/********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP4_mro
+* 
+* Make read-only top-level node
+* Path: /mux-state-XFP4
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t
+  cli_mxp_mux_state_XFP4_mro (void)
+{
+  val_value_t *parentval = NULL, *childval = NULL;
+  status_t res = NO_ERR;
+
+
+  /* add /mux-state-XFP4 */
+  res = agt_add_top_container(mux_state_XFP4_obj, &parentval);
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Presence */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Presence,
+    cli_mxp_mux_state_XFP4_Presence_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Loss */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Loss,
+    cli_mxp_mux_state_XFP4_Loss_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Ready */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Ready,
+    cli_mxp_mux_state_XFP4_Ready_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Interrupt */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Interrupt,
+    cli_mxp_mux_state_XFP4_Interrupt_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Tx_Power_dBm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Tx_Power_dBm,
+    cli_mxp_mux_state_XFP4_Tx_Power_dBm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Rx_Power_dBm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Rx_Power_dBm,
+    cli_mxp_mux_state_XFP4_Rx_Power_dBm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Temp_c */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Temp_c,
+    cli_mxp_mux_state_XFP4_Temp_c_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Low_Tx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Low_Tx_Power_Alarm,
+    cli_mxp_mux_state_XFP4_Low_Tx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/High_Tx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_High_Tx_Power_Alarm,
+    cli_mxp_mux_state_XFP4_High_Tx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Low_Rx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Low_Rx_Power_Alarm,
+    cli_mxp_mux_state_XFP4_Low_Rx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/High_Rx_Power_Alarm */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_High_Rx_Power_Alarm,
+    cli_mxp_mux_state_XFP4_High_Rx_Power_Alarm_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Rx_CDR_Loss_of_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Rx_CDR_Loss_of_Lock,
+    cli_mxp_mux_state_XFP4_Rx_CDR_Loss_of_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Tx_CDR_Loss_of_Lock */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Tx_CDR_Loss_of_Lock,
+    cli_mxp_mux_state_XFP4_Tx_CDR_Loss_of_Lock_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP4/Laser_Fault */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Laser_Fault,
+    cli_mxp_mux_state_XFP4_Laser_Fault_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP4_mro */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_optical_line_status_brctl_showstp_br0_get
 * 
 * Get database object callback
@@ -7146,6 +9753,24 @@ status_t y_cli_mxp_init (
   if (cli_mxp_mod == NULL) {
     return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
   }
+  mux_state_XFP2_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_XFP2);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_state_XFP3_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_XFP3);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
+  mux_state_XFP4_obj = ncx_find_object(
+    cli_mxp_mod,
+    y_cli_mxp_N_mux_state_XFP4);
+  if (cli_mxp_mod == NULL) {
+    return SET_ERROR(ERR_NCX_DEF_NOT_FOUND);
+  }
   mux_optical_line_status_obj = ncx_find_object(
     cli_mxp_mod,
     y_cli_mxp_N_mux_optical_line_status);
@@ -7395,6 +10020,21 @@ status_t y_cli_mxp_init2 (void)
   }
 
   res = cli_mxp_mux_state_XFP1_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_XFP2_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_XFP3_mro();
+  if (res != NO_ERR) {
+    return res;
+  }
+
+  res = cli_mxp_mux_state_XFP4_mro();
   if (res != NO_ERR) {
     return res;
   }

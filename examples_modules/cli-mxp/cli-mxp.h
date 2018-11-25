@@ -133,6 +133,9 @@ extern "C" {
 #define y_cli_mxp_N_mux_state (const xmlChar *)"mux-state"
 #define y_cli_mxp_N_mux_state_TX_RX_alarms (const xmlChar *)"mux-state-TX-RX-alarms"
 #define y_cli_mxp_N_mux_state_XFP1 (const xmlChar *)"mux-state-XFP1"
+#define y_cli_mxp_N_mux_state_XFP2 (const xmlChar *)"mux-state-XFP2"
+#define y_cli_mxp_N_mux_state_XFP3 (const xmlChar *)"mux-state-XFP3"
+#define y_cli_mxp_N_mux_state_XFP4 (const xmlChar *)"mux-state-XFP4"
 #define y_cli_mxp_N_mux_state_dsp (const xmlChar *)"mux-state-dsp"
 #define y_cli_mxp_N_mux_state_edfa (const xmlChar *)"mux-state-edfa"
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
@@ -296,6 +299,60 @@ typedef struct y_cli_mxp_T_mux_state_XFP1_ {
   xmlChar *Tx_CDR_Loss_of_Lock;
   xmlChar *Laser_Fault;
 } y_cli_mxp_T_mux_state_XFP1;
+
+/* container /mux-state-XFP2 */
+typedef struct y_cli_mxp_T_mux_state_XFP2_ {
+  xmlChar *Presence;
+  xmlChar *Loss;
+  xmlChar *Ready;
+  xmlChar *Interrupt;
+  xmlChar *Tx_Power_dBm;
+  xmlChar *Rx_Power_dBm;
+  xmlChar *Temp_c;
+  xmlChar *Low_Tx_Power_Alarm;
+  xmlChar *High_Tx_Power_Alarm;
+  xmlChar *Low_Rx_Power_Alarm;
+  xmlChar *High_Rx_Power_Alarm;
+  xmlChar *Rx_CDR_Loss_of_Lock;
+  xmlChar *Tx_CDR_Loss_of_Lock;
+  xmlChar *Laser_Fault;
+} y_cli_mxp_T_mux_state_XFP2;
+
+/* container /mux-state-XFP3 */
+typedef struct y_cli_mxp_T_mux_state_XFP3_ {
+  xmlChar *Presence;
+  xmlChar *Loss;
+  xmlChar *Ready;
+  xmlChar *Interrupt;
+  xmlChar *Tx_Power_dBm;
+  xmlChar *Rx_Power_dBm;
+  xmlChar *Temp_c;
+  xmlChar *Low_Tx_Power_Alarm;
+  xmlChar *High_Tx_Power_Alarm;
+  xmlChar *Low_Rx_Power_Alarm;
+  xmlChar *High_Rx_Power_Alarm;
+  xmlChar *Rx_CDR_Loss_of_Lock;
+  xmlChar *Tx_CDR_Loss_of_Lock;
+  xmlChar *Laser_Fault;
+} y_cli_mxp_T_mux_state_XFP3;
+
+/* container /mux-state-XFP4 */
+typedef struct y_cli_mxp_T_mux_state_XFP4_ {
+  xmlChar *Presence;
+  xmlChar *Loss;
+  xmlChar *Ready;
+  xmlChar *Interrupt;
+  xmlChar *Tx_Power_dBm;
+  xmlChar *Rx_Power_dBm;
+  xmlChar *Temp_c;
+  xmlChar *Low_Tx_Power_Alarm;
+  xmlChar *High_Tx_Power_Alarm;
+  xmlChar *Low_Rx_Power_Alarm;
+  xmlChar *High_Rx_Power_Alarm;
+  xmlChar *Rx_CDR_Loss_of_Lock;
+  xmlChar *Tx_CDR_Loss_of_Lock;
+  xmlChar *Laser_Fault;
+} y_cli_mxp_T_mux_state_XFP4;
 
 /* container /mux-optical-line-status */
 typedef struct y_cli_mxp_T_mux_optical_line_status_ {
