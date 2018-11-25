@@ -52,9 +52,11 @@ static val_value_t *mux_config_val;
 #include <signal.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 
 /* put your static variables here */
+sem_t mutex;
 Monitor *pt_monitor_struct;
 int shmfd;
 float edfa_output_power_conf;
@@ -107,6 +109,7 @@ alarmas_thread(void *arg)
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
     while (alarma_tid) {
+        sem_wait(&mutex); 
 
         if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != eolalm_anterior) )
         {   
@@ -398,8 +401,8 @@ alarmas_thread(void *arg)
         if( contador_tiempo_alarma==11 ){
           contador_tiempo_alarma=0;
         }
-        sleep(10);
-        //sleep(time_notify_conf);
+        sem_post(&mutex); 
+        sleep(1);
     }
     return NULL;
 }
@@ -493,7 +496,8 @@ static void y_cli_mxp_init_static_vars (void)
 
   /* init your static variables here */
   edfa_output_power_conf=0.0;
-  
+  sem_init(&mutex, 0, 1); 
+
   /* PRUEBA */
   FILE* fp;
   char aux_buf[1024];
@@ -6334,6 +6338,55 @@ static status_t cli_mxp_mux_state_XFP1_Ready_get (
 } /* cli_mxp_mux_state_XFP1_Ready_get */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP1_Interrupt_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP1/Interrupt
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP1_Interrupt_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Interrupt;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP1_Interrupt_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Interrupt var here, change EMPTY_STRING */
+  int Interrupt_int = pt_monitor_struct->xfp_struct.xfp_interrupt[0];
+  Interrupt=(const xmlChar *)general_status[Interrupt_int];
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Interrupt);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP1_Interrupt_get */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_state_XFP1_Tx_Power_dBm_get
 * 
 * Get database object callback
@@ -6871,6 +6924,18 @@ static status_t
     parentval->obj,
     y_cli_mxp_N_Ready,
     cli_mxp_mux_state_XFP1_Ready_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP1/Interrupt */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Interrupt,
+    cli_mxp_mux_state_XFP1_Interrupt_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);
@@ -7497,6 +7562,8 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
   strcat (str," --");
   strcat (str, tipo_fec_cliente_var);
   printf("\n COMANDO : %s\n", str);
+
+  sem_wait(&mutex); 
   system_status = system(str);
 
   val_value_t *respuesta_mux_apply;
@@ -7510,7 +7577,7 @@ static status_t y_cli_mxp_mux_apply_config_invoke (
 
   dlq_enque(respuesta_mux_apply, &msg->rpc_dataQ);
   msg->rpc_data_type = RPC_DATA_YANG;
-
+  sem_post(&mutex);
   return res;
 
 } /* y_cli_mxp_mux_apply_config_invoke */
@@ -7979,11 +8046,6 @@ status_t y_cli_mxp_init (
     exit(1);
   }
 
-  if (alarma_tid == 0) {
-      log_debug("\n******ALARMA ACTIVADA******");
-      pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
-  }
-
   return res;
 } /* y_cli_mxp_init */
 
@@ -8054,6 +8116,11 @@ status_t y_cli_mxp_init2 (void)
   }
 
   /* put your init2 code here */
+  
+  if (alarma_tid == 0) {
+      pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
+      log_debug("\n******ALARMA ACTIVADA******");
+  }
 
   return res;
 } /* y_cli_mxp_init2 */

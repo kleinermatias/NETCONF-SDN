@@ -5895,6 +5895,54 @@ static status_t cli_mxp_mux_state_XFP1_Ready_get (
 } /* cli_mxp_mux_state_XFP1_Ready_get */
 
 /********************************************************************
+* FUNCTION cli_mxp_mux_state_XFP1_Interrupt_get
+* 
+* Get database object callback
+* Path: /mux-state-XFP1/Interrupt
+* Fill in 'dstval' contents
+* 
+* INPUTS:
+*     see ncx/getcb.h for details
+* 
+* RETURNS:
+*     error status
+********************************************************************/
+static status_t cli_mxp_mux_state_XFP1_Interrupt_get (
+  ses_cb_t *scb,
+  getcb_mode_t cbmode,
+  const val_value_t *virval,
+  val_value_t *dstval)
+{
+  status_t res = NO_ERR;
+  const xmlChar *Interrupt;
+
+  if (LOGDEBUG) {
+    log_debug("\nEnter cli_mxp_mux_state_XFP1_Interrupt_get callback");
+  }
+
+
+  /* remove the next line if scb is used */
+  (void)scb;
+
+  /* remove the next line if virval is used */
+  (void)virval;
+
+  if (cbmode != GETCB_GET_VALUE) {
+    return ERR_NCX_OPERATION_NOT_SUPPORTED;
+  }
+
+  /* set the Interrupt var here, change EMPTY_STRING */
+  Interrupt = EMPTY_STRING;
+  res = val_set_simval_obj(
+    dstval,
+    dstval->obj,
+    Interrupt);
+
+  return res;
+
+} /* cli_mxp_mux_state_XFP1_Interrupt_get */
+
+/********************************************************************
 * FUNCTION cli_mxp_mux_state_XFP1_Tx_Power_dBm_get
 * 
 * Get database object callback
@@ -6426,6 +6474,18 @@ static status_t
     parentval->obj,
     y_cli_mxp_N_Ready,
     cli_mxp_mux_state_XFP1_Ready_get,
+    &res);
+  if (childval != NULL) {
+    val_add_child(childval, parentval);
+  } else {
+    return res;
+  }
+
+  /* add /mux-state-XFP1/Interrupt */
+  childval = agt_make_virtual_leaf(
+    parentval->obj,
+    y_cli_mxp_N_Interrupt,
+    cli_mxp_mux_state_XFP1_Interrupt_get,
     &res);
   if (childval != NULL) {
     val_add_child(childval, parentval);

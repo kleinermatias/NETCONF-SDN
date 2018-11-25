@@ -51,6 +51,7 @@ extern "C" {
 #define y_cli_mxp_N_High_Rx_Power_Alarm (const xmlChar *)"High_Rx_Power_Alarm"
 #define y_cli_mxp_N_High_Tx_Power_Alarm (const xmlChar *)"High_Tx_Power_Alarm"
 #define y_cli_mxp_N_INFO (const xmlChar *)"INFO"
+#define y_cli_mxp_N_Interrupt (const xmlChar *)"Interrupt"
 #define y_cli_mxp_N_LATCHED_TXFIFO_ERR (const xmlChar *)"LATCHED_TXFIFO_ERR"
 #define y_cli_mxp_N_LOP (const xmlChar *)"LOP"
 #define y_cli_mxp_N_LOS (const xmlChar *)"LOS"
@@ -283,6 +284,7 @@ typedef struct y_cli_mxp_T_mux_state_XFP1_ {
   xmlChar *Presence;
   xmlChar *Loss;
   xmlChar *Ready;
+  xmlChar *Interrupt;
   xmlChar *Tx_Power_dBm;
   xmlChar *Rx_Power_dBm;
   xmlChar *Temp_c;

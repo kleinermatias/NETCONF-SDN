@@ -43,37 +43,37 @@ module cli-mxp {
         // @ MUXPONDER: ./muxponder --configuracion --[otu2|xge] --[gfec|cerofec] --[gfec_cliente|cerofec_cliente|nulofec_cliente] --canal "value" --potencia "value" --cd_compensacion "value"
         // ./muxponder --guardar --[otu2|xge] --[gfec|cerofec] --[gfec_cliente|cerofec_cliente|nulofec_cliente] --canal "value" --potencia "value" --cd_compensacion "value"
         
-        leaf configuracion { //no implementado en C ni en JAVA
+        leaf configuracion { 
             description
               "para configuración completa en modo muxponder (--configuracion) o guardar configuración en archivo de inicio (--guardar).";
             type string;
         }
 
-        leaf tipo_trafico { // C y JAVA OK
+        leaf tipo_trafico { 
             description
               "[otu2|xge] especifica el tipo de tráfico.";
             type restricted-tipo-trafico;
         }
 
-        leaf tipo_fec_linea { // C y JAVA OK
+        leaf tipo_fec_linea {
             description
               "[gfec|cerofec] especifica el uso de fec.";
             type restricted-tipo-fec-linea;
         }
 
-        leaf tipo_fec_cliente { // C y JAVA OK
+        leaf tipo_fec_cliente {
             description
               "[gfec_cliente|cerofec_cliente|nulofec_cliente] especifica el uso de fec.";
             type restricted-tipo-fec-cliente;
         }
 
-        leaf canal { //no implementado en C ni en JAVA
+        leaf canal {
             description
               "canal especifica el canal óptico del módulo transponder.";
             type string;
         }
 
-        leaf potencia { //no implementado en C ni en JAVA
+        leaf potencia {
             description
               "potencia especifica la potencia de salida del amplificador óptico (edfa).";
             type string;
@@ -85,7 +85,7 @@ module cli-mxp {
             type string;
         }
 
-        leaf edfa_output_power_config { // C y JAVA OK
+        leaf edfa_output_power_config {
             description
               "Potencia de salida de EDFA.";
             type decimal64 {
@@ -102,7 +102,7 @@ module cli-mxp {
             }
         }
 
-        leaf deviceneighbors  { // falta JAVA
+        leaf deviceneighbors  {
          type string;
          description "Lista de vecinos del dispositivo";
         }
@@ -586,6 +586,11 @@ module cli-mxp {
             type string;
         }
 
+        leaf Interrupt {
+            description "State de la variable Interrupt";
+            type string;
+        }
+
         leaf Tx_Power_dBm {
             description "State de la variable Tx_Power_dBm";
             type string;
@@ -611,7 +616,7 @@ module cli-mxp {
             type string;
         }
 
-        leaf Low_Rx_Power_Alarm {
+        leaf Low_Rx_Power_Alarm {   
             description "State de la variable Low_Rx_Power_Alarm";
             type string;
         }
