@@ -30,4 +30,19 @@ Se pretende completar las tareas 1, 2 y 3.
 
 PING:
 
-    $ sudo ping6 -f -I enp1s0f0 2607:f0d0:2001:a::3
+    $ sudo ping6 -f -I enp1s0f0 2607:f0d0:2001:a::
+    
+    
+    
+
+    NOTA1: Para correr los test:
+    $ cd $ONOS_ROOT && tools/build/onos-buck test
+
+    NOTA2: Para compilar y correr el onos localmente (sin docker):
+    $ cd $ONOS_ROOT && tools/build/onos-buck run onos-local -- clean debug
+
+    NOTA3: To attach to the ONOS CLI console, run:
+    $ cd $ONOS_ROOT && tools/test/bin/onos karaf@localhost
+
+curl -X POST -H "content-type:application/json" http://127.0.0.1:8181/onos/v1/network/configuration -d @/home/mkleiner/Escritorio/NETCONF-SDN/onos/dispositivo.json --user onos:rocks
+
