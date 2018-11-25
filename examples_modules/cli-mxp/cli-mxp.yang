@@ -640,7 +640,231 @@ module cli-mxp {
             description "State de la variable Laser_Fault";
             type string;
         }
+    }
 
+    container mux-state-XFP2 {
+        description "State XFP2";
+        config false;
+        
+        leaf Presence {
+            description "State de la variable Presence";
+            type string;
+        }
+
+        leaf Loss {
+            description "State de la variable Loss";
+            type string;
+        }
+
+        leaf Ready {
+            description "State de la variable Ready";
+            type string;
+        }
+
+        leaf Interrupt {
+            description "State de la variable Interrupt";
+            type string;
+        }
+
+        leaf Tx_Power_dBm {
+            description "State de la variable Tx_Power_dBm";
+            type string;
+        }
+
+        leaf Rx_Power_dBm {
+            description "State de la variable Rx_Power_dBm";
+            type string;
+        }
+
+        leaf Temp_c {
+            description "State de la variable Temp_c";
+            type string;
+        }
+
+        leaf Low_Tx_Power_Alarm {
+            description "State de la variable Low_Tx_Power_Alarm";
+            type string;
+        }
+
+        leaf High_Tx_Power_Alarm {
+            description "State de la variable High_Tx_Power_Alarm";
+            type string;
+        }
+
+        leaf Low_Rx_Power_Alarm {   
+            description "State de la variable Low_Rx_Power_Alarm";
+            type string;
+        }
+
+        leaf High_Rx_Power_Alarm {
+            description "State de la variable High_Rx_Power_Alarm";
+            type string;
+        }
+
+        leaf Rx_CDR_Loss_of_Lock {
+            description "State de la variable Rx_CDR_Loss_of_Lock";
+            type string;
+        }
+
+        leaf Tx_CDR_Loss_of_Lock {
+            description "State de la variable Tx_CDR_Loss_of_Lock";
+            type string;
+        }
+
+        leaf Laser_Fault {
+            description "State de la variable Laser_Fault";
+            type string;
+        }
+    }
+
+        container mux-state-XFP3 {
+        description "State XFP3";
+        config false;
+        
+        leaf Presence {
+            description "State de la variable Presence";
+            type string;
+        }
+
+        leaf Loss {
+            description "State de la variable Loss";
+            type string;
+        }
+
+        leaf Ready {
+            description "State de la variable Ready";
+            type string;
+        }
+
+        leaf Interrupt {
+            description "State de la variable Interrupt";
+            type string;
+        }
+
+        leaf Tx_Power_dBm {
+            description "State de la variable Tx_Power_dBm";
+            type string;
+        }
+
+        leaf Rx_Power_dBm {
+            description "State de la variable Rx_Power_dBm";
+            type string;
+        }
+
+        leaf Temp_c {
+            description "State de la variable Temp_c";
+            type string;
+        }
+
+        leaf Low_Tx_Power_Alarm {
+            description "State de la variable Low_Tx_Power_Alarm";
+            type string;
+        }
+
+        leaf High_Tx_Power_Alarm {
+            description "State de la variable High_Tx_Power_Alarm";
+            type string;
+        }
+
+        leaf Low_Rx_Power_Alarm {   
+            description "State de la variable Low_Rx_Power_Alarm";
+            type string;
+        }
+
+        leaf High_Rx_Power_Alarm {
+            description "State de la variable High_Rx_Power_Alarm";
+            type string;
+        }
+
+        leaf Rx_CDR_Loss_of_Lock {
+            description "State de la variable Rx_CDR_Loss_of_Lock";
+            type string;
+        }
+
+        leaf Tx_CDR_Loss_of_Lock {
+            description "State de la variable Tx_CDR_Loss_of_Lock";
+            type string;
+        }
+
+        leaf Laser_Fault {
+            description "State de la variable Laser_Fault";
+            type string;
+        }
+    }
+
+        container mux-state-XFP4 {
+        description "State XFP4";
+        config false;
+        
+        leaf Presence {
+            description "State de la variable Presence";
+            type string;
+        }
+
+        leaf Loss {
+            description "State de la variable Loss";
+            type string;
+        }
+
+        leaf Ready {
+            description "State de la variable Ready";
+            type string;
+        }
+
+        leaf Interrupt {
+            description "State de la variable Interrupt";
+            type string;
+        }
+
+        leaf Tx_Power_dBm {
+            description "State de la variable Tx_Power_dBm";
+            type string;
+        }
+
+        leaf Rx_Power_dBm {
+            description "State de la variable Rx_Power_dBm";
+            type string;
+        }
+
+        leaf Temp_c {
+            description "State de la variable Temp_c";
+            type string;
+        }
+
+        leaf Low_Tx_Power_Alarm {
+            description "State de la variable Low_Tx_Power_Alarm";
+            type string;
+        }
+
+        leaf High_Tx_Power_Alarm {
+            description "State de la variable High_Tx_Power_Alarm";
+            type string;
+        }
+
+        leaf Low_Rx_Power_Alarm {   
+            description "State de la variable Low_Rx_Power_Alarm";
+            type string;
+        }
+
+        leaf High_Rx_Power_Alarm {
+            description "State de la variable High_Rx_Power_Alarm";
+            type string;
+        }
+
+        leaf Rx_CDR_Loss_of_Lock {
+            description "State de la variable Rx_CDR_Loss_of_Lock";
+            type string;
+        }
+
+        leaf Tx_CDR_Loss_of_Lock {
+            description "State de la variable Tx_CDR_Loss_of_Lock";
+            type string;
+        }
+
+        leaf Laser_Fault {
+            description "State de la variable Laser_Fault";
+            type string;
+        }
     }
 
     container mux-optical-line-status {
