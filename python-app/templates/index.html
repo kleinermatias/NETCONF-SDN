@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+<!-- Content Block -->
+{% block page_title %} Dispositivos {% endblock %}
+
+<!-- Content -->
+{% block content %}
+
+<div class="container">
+		<div class="header"><h1>Dispositivos</h1></div>
+		<hr />
+    <form action="/" method="POST">
+        <div class="form-group">
+          <div class="input-group">
+              <span class="input-group-addon">Please select</span>
+                  <select name="comp_select" id="comp_select" class="selectpicker form-control" style="width:auto;">
+                    <option value="" selected>Choose here</option>
+                    {% for id_devices_html in diccionario_id_devices %}
+                    <option>{{ id_devices_html }}</option>
+                    {% endfor %}
+                  </select>
+                  <button type="submit" class="btn btn-default">GO</button>
+          </div>
+        </div>
+      </form>
+  </div>
+  
+  
+  <div class="row">
+      <div class="col-sm-4" style="background-color: rgb(87, 165, 175);"> <center><strong><b>CONFIGURACION</b></strong></center></div>
+      <div class="col-sm-4" style="background-color: rgb(87, 165, 175);"> <center><strong><b>ALARMAS</b></strong></center>
+        <div class="row">
+            <form action="/" method="GET">
+              {% for holis in hola %}
+                <div class="row" style="background-color:lightcoral;"> <center><strong><b>{{ holis }}</b></strong></center></div>
+              {% endfor %}
+            </form>
+          </div> </div>
+      <div class="col-sm-4" style="background-color: rgb(87, 165, 175);"> <center><strong><b>ESTADO</b></strong></center></div>
+  </div> 
+
+  
+  
+
+{% endblock %}
+
