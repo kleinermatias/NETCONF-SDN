@@ -127,6 +127,17 @@ def configuracion():
     return render_template('configuracion.html', devices=devices, id_devices_html=devices , configuracion=matches)
 
 
+@app.route('/alarmas', methods=['GET','POST'])
+def alarma():
+    global devices
+    global dispositivo_seleccionado
+    global params
+    global alarmas
+    global matches
+    alarmas = alarms()
+    return render_template('alarmas.html', devices=devices, id_devices_html=devices , alarmas=alarmas)
+
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
