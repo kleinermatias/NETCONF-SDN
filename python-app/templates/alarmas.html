@@ -8,52 +8,45 @@
 <head>
   <meta charset="utf-8">   
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 <div class="container">
-		<div class="header"><h1>Dispositivos</h1></div>
 		<hr />
-    <form action="/" method="POST">
+    <form action="/alarmas" method="POST">
         <div class="form-group">
           <div class="input-group">
-              <span class="input-group-addon">Please select</span>
+              <span class="input-group-text" id="basic-addon1">Filtro</span>
                   <select name="comp_select" id="comp_select" class="selectpicker form-control" style="width:auto;">  
-                    <option value="" selected>Choose here</option>
+                    <option value="" selected>Todos los dispositivos</option>
                     {% for id_devices_html in devices %}
                     <option>{{ id_devices_html }}</option>
                     {% endfor %}
                   </select>
-                  <button type="submit" name="btngo" id="btngo" class="btn btn-default">GO</button>
+                  <button type="submit" name="btngo" id="btngo" class="btn btn-primary">GO</button>
           </div>
-          <a class="btn" href="/configuracion">CONFIGURACION</a>
-          <a class="btn" href="/alarmas">ALARMAS</a>
         </div>
       </form>
   </div>
   
-
-  
-  <div class="row">
-      <div class="col-sm-4" style="background-color: rgb(87, 165, 175);"> <center><strong><b>ESTADO</b></strong></center></div>
-      <div class="col-sm-4" style="background-color: rgb(87, 165, 175);"> <center><strong><b>ALARMAS</b></strong></center>
-        <div class="row">
-            <form action="/" method="GET">
-              {% for a in alarmas %}
-                <div class="row" style="background-color:lightcoral;"> <center><strong><b>{{ a }}</b></strong></center></div>
-              {% endfor %}
-            </form>
-          </div> </div>
-      <div class="col-sm-4" style="background-color: rgb(87, 165, 175);"> <center><strong><b>CONFIGURACION</b></strong></center>
-        <div class="row">
-        </div>
-      </div>
-  </div> 
-
-  
+<div class="container">
+    <hr />
+  <center>
+    <div class="card mb-1" style="max-width: 50rem;">
+      <div class="card-header text-white" style="background-color:firebrick;">ALARMAS</div>
+      <ul class="list-group list-group-flush">
+        {% for b in alarmas %}
+          <li class="list-group-item">{{ b }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </center>
+</div>
 
 {% endblock %}
 

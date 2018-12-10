@@ -1,23 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Blueprint
 from flask_bootstrap import Bootstrap
 import json
 import requests
 import re
 
+
 #globales
-dispositivo_seleccionado = 0
+dispositivo_seleccionado = ""
 devices = [] #armo lista de dispositivos
 alarmas = [] #armo lista de alarmas
 matches = []
+parejas = []
+cantidad_alarmas = 0
+cantidad_link_logico = 0
 headers = {
     'Accept': 'application/json',
 }
 
 params = (
-        ('devId', dispositivo_seleccionado),
+        ('devId', ""),
     )
 
-
+recipes_blueprint = Blueprint('index', __name__, template_folder='templates')
 
 #globales
 
@@ -31,13 +35,14 @@ def dispositivos():
     data = json.loads(response) #paso respuesta del curl a json
     cantidad_dispositivos = len(data["devices"]) #obtengo la cantidad de los dispositivos
     for x in range(0, cantidad_dispositivos):
-        #if("netconf" in data["devices"][x]["id"]):
+        if("netconf" in data["devices"][x]["id"]):
             devices.append(data["devices"][x]["id"]) #en la lista de los dispositivos, guardo los diferentes id
     return devices
 
 def alarms():
     global params
     global alarmas
+    global cantidad_alarmas
     alarmas = requests.get('http://172.16.0.243:8181/onos/v1/fm/alarms', headers=headers, params=params, auth=('karaf', 'karaf')).text
     data_alarm = json.loads(alarmas) #paso respuesta del curl a json
     cantidad_alarmas = len(data_alarm["alarms"]) #obtengo la cantidad de los dispositivos
@@ -80,6 +85,60 @@ def config_all(bool,name):
         matches.append(tipo_fec_cliente)
         matches.append(vecino)
 
+def config_tipo_trafico(tipo,device):
+    global params
+    global alarmas
+    global devices
+    global matches
+    config = requests.put('http://172.16.0.243:8181/onos/altura/SET/Tipo%20de%20Trafico/'+str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
+
+def config_tipo_linea(tipo,device):
+    global params
+    global alarmas
+    global devices
+    global matches
+    config = requests.put('http://172.16.0.243:8181/onos/altura/SET/Tipo%20Fec%20de%20linea/'+str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
+
+def config_tipo_cliente(tipo,device):
+    global params
+    global alarmas
+    global devices
+    global matches
+    config = requests.put('http://172.16.0.243:8181/onos/altura/SET/Tipo%20Fec%20de%20Cliente/'+str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
+
+def rpc_apply_config(device):
+    global params
+    global alarmas
+    global devices
+    global matches
+    config = requests.put('http://172.16.0.243:8181/onos/altura/RPC/Apply%20Config/'+str(device), headers=headers, auth=('karaf', 'karaf')).text
+
+def pareja_dispositivos(device):
+    global params
+    global alarmas
+    global devices
+    global matches
+    global parejas
+    config = requests.get('http://172.16.0.243:8181/onos/altura/GET/Config%20Data/'+str(device), headers=headers, auth=('karaf', 'karaf')).text
+
+def estado_link_logico():
+    global params
+    global alarmas
+    global devices
+    global matches
+    global parejas
+    global cantidad_link_logico
+    config = requests.get('http://172.16.0.243:8181/onos/v1/links', headers=headers, auth=('karaf', 'karaf')).text
+    data_link = json.loads(config) #paso respuesta del curl a json
+    cantidad_links = len(data_link["links"]) #obtengo la cantidad de los dispositivos
+    links = []
+    for x in range(0, cantidad_links):
+        if("DIRECT" in data_link["links"][x]["type"]):
+            links.append(data_link["links"][x])
+    cantidad_link_logico=len(links)
+
+
+
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -88,23 +147,97 @@ def index():
     global params
     global alarmas
     global matches
-
+    global cantidad_alarmas
+    dispositivo_seleccionado=""
+    params = (
+                ('devId', dispositivo_seleccionado),
+            )
     devices = dispositivos()
     alarmas = alarms()
-    config_all(True,"a")
+    estado_link_logico()
     if request.method == 'POST':
-        dispositivo_seleccionado = request.form['comp_select']
-        if dispositivo_seleccionado == 'Choose here':
-            dispositivo_seleccionado = 0
-        params = (
-            ('devId', dispositivo_seleccionado),
-        )
-        alarmas = alarms()
-        if (dispositivo_seleccionado==0) | (dispositivo_seleccionado==""):
-            config_all(True,"")
-        else:
-            config_all(False,str(dispositivo_seleccionado))
-    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches)
+        dispositivo_seleccionado = request.form['selecta']
+
+    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico)
+
+
+@app.route('/boton_config', methods=['GET','POST'])
+def boton_config():
+    global devices
+    global dispositivo_seleccionado
+    global params
+    global alarmas
+    global matches
+    global cantidad_alarmas
+    dispositivo_seleccionado=""
+    params = (
+                ('devId', dispositivo_seleccionado),
+            )
+    devices = dispositivos()
+    alarmas = alarms()
+    estado_link_logico()
+    if request.method == 'POST':
+        dispositivo_seleccionado = request.form.getlist('selecta')
+        tipo_trafico = request.form['comp_select_tipo_trafico']
+        tipo_linea = request.form['comp_select_tipo_linea']
+        tipo_cliente = request.form['comp_select_tipo_cliente']
+        for x in dispositivo_seleccionado:
+            
+            config_tipo_trafico(tipo_trafico, str(x) )
+            config_tipo_linea(tipo_linea, str(x) )
+            config_tipo_cliente(tipo_cliente, str(x) )
+            #rpc_apply_config("netconf:172.16.0.141:830")
+        
+    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico)
+
+
+@app.route('/boton_agregar_dispositivo', methods=['GET','POST'])
+def boton_agregar_dispositivo():
+    global devices
+    global dispositivo_seleccionado
+    global params
+    global alarmas
+    global matches
+    global cantidad_alarmas
+    dispositivo_seleccionado=""
+    params = (
+                ('devId', dispositivo_seleccionado),
+            )
+    ip=request.form['ip']
+    port=request.form['puerto']
+    user=request.form['user']
+    passw=request.form['pass']
+    data = {
+        "devices": { 
+           "netconf:"+str(ip)+":"+str(port): {
+                "netconf": {
+                    "ip": str(ip),
+                    "port": int(port),
+                    "username": str(user),
+                    "password": str(passw),
+                    "connect-timeout": 120,
+                    "reply-timeout": 120,
+                    "ssh-client": "ethz-ssh2"
+                },
+                "basic": {
+                    "driver": "altura-netconf"
+                }
+            }
+        }
+    }
+
+    json_data = json.dumps(data)
+    devices = dispositivos()
+    alarmas = alarms()
+    estado_link_logico()
+    if request.method == 'POST':
+        f = open ('holamundo.json','w')
+        f.write(json_data)
+        f.close()
+        data = open('holamundo.json')
+        response = requests.post('http://172.16.0.243:8181/onos/v1/network/configuration', headers=headers, data=data, auth=('onos', 'rocks'))
+    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico)
+
 
 
 @app.route('/configuracion', methods=['GET','POST'])
@@ -114,6 +247,7 @@ def configuracion():
     global params
     global alarmas
     global matches
+    dispositivo_seleccionado=""
     devices = dispositivos()
     
     if request.method == 'POST':
@@ -134,7 +268,14 @@ def alarma():
     global params
     global alarmas
     global matches
-    alarmas = alarms()
+    dispositivo_seleccionado=""
+    devices = dispositivos()
+    if request.method == 'POST':
+        dispositivo_seleccionado = request.form['comp_select']
+        params = (
+                ('devId', dispositivo_seleccionado),
+            )
+    alarmas = alarms()   
     return render_template('alarmas.html', devices=devices, id_devices_html=devices , alarmas=alarmas)
 
 
