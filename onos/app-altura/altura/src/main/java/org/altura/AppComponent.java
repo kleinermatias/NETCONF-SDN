@@ -31,7 +31,6 @@ import org.onosproject.net.DeviceId;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Set;
-import org.onosproject.net.driver.AbstractHandlerBehaviour;
 
 /**
  * Skeletal ONOS application component.
@@ -41,6 +40,7 @@ public class AppComponent {
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected AlarmService alarmService;
+    protected DeviceService deviceService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -81,11 +81,12 @@ public class AppComponent {
         @Override
         public void event(AlarmEvent event) {
             log.info("Holis");
-            DriverHandler handler = handler();
-            DeviceService deviceService = this.handler().get(DeviceService.class);
+
             Device localdevice = deviceService.getDevice(event.subject().deviceId());
 
+            log.info(deviceService.getDevice(event.subject().deviceId()).toString());
             log.info(localdevice.manufacturer());
+
             if (localdevice.manufacturer().equals("ALTURA") && ( event.subject().description().contains("netconf-config-change") || event.subject().description().contains("netconf-session-start") || event.subject().description().contains("netconf-session-end") )){
                 log.info("PEPEEEEEEEEEEEE");
                 alarmService.remove(event.subject().id());
