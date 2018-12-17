@@ -82,7 +82,7 @@ public class AppComponent {
         @Override
         public void event(AlarmEvent event) {
             log.info("Holis");
-            log.info(event.subject().deviceId().toString());
+
 
             Device localdevice = deviceService.getDevice(event.subject().deviceId());
             log.info(localdevice.manufacturer());
