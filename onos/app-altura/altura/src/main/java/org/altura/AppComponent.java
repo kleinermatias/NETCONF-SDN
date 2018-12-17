@@ -91,13 +91,13 @@ public class AppComponent {
             log.info(deviceService.getDevice(event.subject().deviceId()).toString());
             log.info(localdevice.manufacturer());
 
-            /*
+
             if (localdevice.manufacturer().equals("ALTURA") && ( event.subject().description().contains("netconf-config-change") || event.subject().description().contains("netconf-session-start") || event.subject().description().contains("netconf-session-end") )){
                 log.info("PEPEEEEEEEEEEEE");
                 alarmService.remove(event.subject().id());
             }
 
-            */
+
         }
     }
 }
