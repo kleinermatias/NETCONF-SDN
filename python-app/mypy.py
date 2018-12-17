@@ -148,6 +148,7 @@ def index():
     global alarmas
     global matches
     global cantidad_alarmas
+    estadoconfig = 1
     dispositivo_seleccionado=""
     params = (
                 ('devId', dispositivo_seleccionado),
@@ -157,8 +158,12 @@ def index():
     estado_link_logico()
     if request.method == 'POST':
         dispositivo_seleccionado = request.form['selecta']
-
-    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico)
+    for x in alarmas:
+        if("WARNING CONFIG" in x):
+            estadoconfig = 2
+    return render_template('index.html', devices=devices, id_devices_html=devices, 
+    alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico,
+    estadoconfig=estadoconfig)
 
 
 @app.route('/boton_config', methods=['GET','POST'])
@@ -169,6 +174,7 @@ def boton_config():
     global alarmas
     global matches
     global cantidad_alarmas
+    estadoconfig = 1
     dispositivo_seleccionado=""
     params = (
                 ('devId', dispositivo_seleccionado),
@@ -176,6 +182,7 @@ def boton_config():
     devices = dispositivos()
     alarmas = alarms()
     estado_link_logico()
+    
     if request.method == 'POST':
         dispositivo_seleccionado = request.form.getlist('selecta')
         tipo_trafico = request.form['comp_select_tipo_trafico']
@@ -187,8 +194,13 @@ def boton_config():
             config_tipo_linea(tipo_linea, str(x) )
             config_tipo_cliente(tipo_cliente, str(x) )
             #rpc_apply_config("netconf:172.16.0.141:830")
+    print dispositivo_seleccionado
+    alarmas = alarms()
+    for x in alarmas:
+        if("WARNING CONFIG" in x):
+            estadoconfig = 2
         
-    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico)
+    return render_template('index.html',estadoconfig=estadoconfig ,devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico)
 
 
 @app.route('/boton_agregar_dispositivo', methods=['GET','POST'])
@@ -205,16 +217,14 @@ def boton_agregar_dispositivo():
             )
     ip=request.form['ip']
     port=request.form['puerto']
-    user=request.form['user']
-    passw=request.form['pass']
     data = {
         "devices": { 
            "netconf:"+str(ip)+":"+str(port): {
                 "netconf": {
                     "ip": str(ip),
                     "port": int(port),
-                    "username": str(user),
-                    "password": str(passw),
+                    "username": "root",
+                    "password": "123",
                     "connect-timeout": 120,
                     "reply-timeout": 120,
                     "ssh-client": "ethz-ssh2"
