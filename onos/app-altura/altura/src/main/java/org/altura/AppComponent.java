@@ -31,6 +31,7 @@ import org.onosproject.net.DeviceId;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Set;
+import org.onosproject.net.driver.AbstractHandlerBehaviour;
 
 /**
  * Skeletal ONOS application component.
