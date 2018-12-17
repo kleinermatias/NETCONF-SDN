@@ -18,6 +18,9 @@ package org.altura;
 import org.apache.felix.scr.annotations.*;
 import org.onosproject.incubator.net.faultmanagement.alarm.AlarmEvent;
 import org.onosproject.incubator.net.faultmanagement.alarm.AlarmListener;
+import org.onosproject.net.Device;
+import org.onosproject.net.device.DeviceService;
+import org.onosproject.net.driver.DriverHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,7 @@ public class AppComponent {
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected AlarmService alarmService;
+    protected DeviceService deviceService;
 
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -77,9 +81,14 @@ public class AppComponent {
     private class TopoAlarmListenerr implements AlarmListener {
         @Override
         public void event(AlarmEvent event) {
-            if (true) {
+            log.info("Holis");
+            log.info(event.subject().deviceId().toString());
+
+            Device localdevice = deviceService.getDevice(event.subject().deviceId());
+
+            if (localdevice.manufacturer().equals("ALTURA") && ( event.subject().description().contains("netconf-config-change") || event.subject().description().contains("netconf-session-start") || event.subject().description().contains("netconf-session-end") )){
                 log.info("PEPEEEEEEEEEEEE");
-                log.info(event.subject().deviceId().toString());
+                alarmService.remove(event.subject().id());
             }
         }
     }
