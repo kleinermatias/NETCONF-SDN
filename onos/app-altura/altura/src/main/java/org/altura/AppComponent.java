@@ -59,11 +59,11 @@ public class AppComponent {
 
     @Deactivate
     protected void deactivate() {
-        alarmService.removeListener(alarmListener);
+        //alarmService.removeListener(alarmListener);
         log.info("Stopped");
 
     }
-    
+
 
     //internal alarm listener
     private class TopoAlarmListenerr implements AlarmListener {
