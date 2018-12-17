@@ -16,6 +16,8 @@
 package org.altura;
 
 import org.apache.felix.scr.annotations.*;
+import org.onosproject.incubator.net.faultmanagement.alarm.AlarmEvent;
+import org.onosproject.incubator.net.faultmanagement.alarm.AlarmListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,10 +41,14 @@ public class AppComponent {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private Set<Alarm> alarms;
+    private final AlarmListener alarmListener = new TopoAlarmListenerr();
+
+
 
     @Activate
     protected void activate() {
         log.info("Started");
+        alarmService.addListener(alarmListener);
         getAlarms();
     }
 
@@ -65,5 +71,16 @@ public class AppComponent {
         alarms.forEach((alarm) -> {
             log.info(ToStringBuilder.reflectionToString(alarm, ToStringStyle.SHORT_PREFIX_STYLE));
         });
+    }
+
+    //internal alarm listener
+    private class TopoAlarmListenerr implements AlarmListener {
+        @Override
+        public void event(AlarmEvent event) {
+            if (true) {
+                log.info("PEPEEEEEEEEEEEE");
+                log.info(event.subject().deviceId().toString());
+            }
+        }
     }
 }

@@ -185,9 +185,16 @@ def boton_config():
     
     if request.method == 'POST':
         dispositivo_seleccionado = request.form.getlist('selecta')
-        tipo_trafico = request.form['comp_select_tipo_trafico']
-        tipo_linea = request.form['comp_select_tipo_linea']
-        tipo_cliente = request.form['comp_select_tipo_cliente']
+        perfil = request.form['comp_select_perfil']
+        if (perfil=='p1'):
+            tipo_trafico = str("xge")
+            tipo_linea = str("cerofec")
+            tipo_cliente = str("cerofec_cliente")
+        else:
+            tipo_trafico = str("otu2")
+            tipo_linea = str("cerofec")
+            tipo_cliente = str("cerofec_cliente")
+        
         for x in dispositivo_seleccionado:
             
             config_tipo_trafico(tipo_trafico, str(x) )
