@@ -53,7 +53,6 @@ public class AppComponent {
     protected void activate() {
         log.info("Started");
         alarmService.addListener(alarmListener);
-        getAlarms();
     }
 
     @Deactivate
