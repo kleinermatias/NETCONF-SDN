@@ -82,6 +82,8 @@ public class AppComponent {
         public void event(AlarmEvent event) {
             log.info("Holis");
 
+
+            /*
             Device localdevice = deviceService.getDevice(event.subject().deviceId());
 
             log.info(deviceService.getDevice(event.subject().deviceId()).toString());
@@ -91,6 +93,8 @@ public class AppComponent {
                 log.info("PEPEEEEEEEEEEEE");
                 alarmService.remove(event.subject().id());
             }
+
+            */
         }
     }
 }
