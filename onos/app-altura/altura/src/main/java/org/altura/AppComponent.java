@@ -63,22 +63,7 @@ public class AppComponent {
         log.info("Stopped");
 
     }
-
-
-    private void getAlarms() {
-
-        alarms = alarmService.getActiveAlarms();
-
-        printAlarms(alarms);
-        log.info("PRINT DE ALARMAS");
-    }
-
-    void printAlarms(Set<Alarm> alarms) {
-        //FIXME this can be better formatted
-        alarms.forEach((alarm) -> {
-            log.info(ToStringBuilder.reflectionToString(alarm, ToStringStyle.SHORT_PREFIX_STYLE));
-        });
-    }
+    
 
     //internal alarm listener
     private class TopoAlarmListenerr implements AlarmListener {
