@@ -40,10 +40,13 @@ import org.onosproject.net.device.DeviceService;
 
 import static org.onlab.util.Tools.nullIsNotFound;
 
+import org.json.JSONObject;
+import org.json.XML;
+
 /**
- * Sample web resource.
+ * Obtiene datos de estado y configuracion de los diferentes container.
  */
-@Path("altura-api")
+@Path("GET")
 public class AppWebResource extends AbstractWebResource {
 
     /**
@@ -52,23 +55,223 @@ public class AppWebResource extends AbstractWebResource {
      * @return 200 OK
      */
     @GET
-    @Path("getAll/{uri}")
+    @Path("ALL/{uri}")
     public Response getAll(@PathParam("uri") String uri) {
         DriverService service = get(DriverService.class);
-        Iterable<Device> devices = get(DeviceService.class).getDevices();
-        String reply = null;
-
-
         DeviceId deviceId = DeviceId.deviceId(uri);
         DriverHandler h = service.createHandler(deviceId);
         MxpGetAll mxp = h.behaviour(MxpGetAll.class);
-        reply = mxp.getAll();
-
-        ObjectNode node = mapper().createObjectNode().put("getAll:", reply);
+        String reply = mxp.getAll();
+        String text = reply.replace("\n", "").replace("\r", "");
+        String m = text.replaceAll("\\s","");
+        //JSONObject xmlJSONObj = XML.toJSONObject(m);
+        ObjectNode node = mapper().createObjectNode().put("getAll:", m);
         return ok(node).build();
     }
 
+    /**
+     * Get config data in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("Config Data/{uri}")
+    public Response getConfigContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getConfigContainer();
+        ObjectNode node = mapper().createObjectNode().put("getConfigContainer:", reply);
+        return ok(node).build();
+    }
 
+    /**
+     * Get state container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("State Container/{uri}")
+    public Response getStateContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getStateContainer();
+        ObjectNode node = mapper().createObjectNode().put("getStateContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state dsp container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("DSP Container/{uri}")
+    public Response getDspContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getDspContainer();
+        ObjectNode node = mapper().createObjectNode().put("getDspContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state edfa container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("EDFA Container/{uri}")
+    public Response getEdfaContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getEdfaContainer();
+        ObjectNode node = mapper().createObjectNode().put("getEdfaContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state misc container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("Misc Container/{uri}")
+    public Response getStateMiscContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getStateMiscContainer();
+        ObjectNode node = mapper().createObjectNode().put("getStateMiscContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state temp/hum container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("Temp&Hum Container/{uri}")
+    public Response getTempHumContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getTempHumContainer();
+        ObjectNode node = mapper().createObjectNode().put("getTempHumContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state power container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("Power Container/{uri}")
+    public Response getStatePowerContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getStatePowerContainer();
+        ObjectNode node = mapper().createObjectNode().put("getStatePowerContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state tx/rx alarm container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("Tx&Rx Alarms Container/{uri}")
+    public Response getStateTxRxAlarmContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getStateTxRxAlarmContainer();
+        ObjectNode node = mapper().createObjectNode().put("getStateTxRxAlarmContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state xfp1 container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("XFP1 Container/{uri}")
+    public Response getXFPOneContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getXFPOneContainer();
+        ObjectNode node = mapper().createObjectNode().put("getXFPOneContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state xfp2 container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("XFP2 Container/{uri}")
+    public Response getXFPTwoContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getXFPTwoContainer();
+        ObjectNode node = mapper().createObjectNode().put("getXFPTwoContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state xfp3 container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("XFP3 Container/{uri}")
+    public Response getXFPThreeContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getXFPThreeContainer();
+        ObjectNode node = mapper().createObjectNode().put("getXFPThreeContainer:", reply);
+        return ok(node).build();
+    }
+
+    /**
+     * Get state xfp4 container in mxp.
+     *
+     * @return 200 OK
+     */
+    @GET
+    @Path("XFP4 Container/{uri}")
+    public Response getXFPFourContainer(@PathParam("uri") String uri) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpGetAll mxp = h.behaviour(MxpGetAll.class);
+        String reply = mxp.getXFPFourContainer();
+        ObjectNode node = mapper().createObjectNode().put("getXFPFourContainer:", reply);
+        return ok(node).build();
+    }
 
     /**
      * Load module in mxp.
@@ -84,41 +287,6 @@ public class AppWebResource extends AbstractWebResource {
         MxpLoadModule mxp = h.behaviour(MxpLoadModule.class);
         String reply = mxp.loadModule(module);
         ObjectNode node = mapper().createObjectNode().put("loadModule:", reply);
-        return ok(node).build();
-    }
-
-
-    /**
-     * setValueEdfaNotify in mxp.
-     *
-     * @return 200 OK
-     */
-    @GET
-    @Path("setValueEdfaNotify/{uri},{value_notify_config}")
-    public Response setValueEdfaNotify(@PathParam("uri") String uri, @PathParam("value_notify_config") String value_notify_config) {
-        DriverService service = get(DriverService.class);
-        DeviceId deviceId = DeviceId.deviceId(uri);
-        DriverHandler h = service.createHandler(deviceId);
-        MxpConfig mxp = h.behaviour(MxpConfig.class);
-        String reply = mxp.setValueEdfaNotify(value_notify_config);
-        ObjectNode node = mapper().createObjectNode().put("setValueEdfaNotify:", reply);
-        return ok(node).build();
-    }
-
-    /**
-     * setEdfaOutPower in mxp.
-     *
-     * @return 200 OK
-     */
-    @GET
-    @Path("setEdfaOutPower/{uri},{edfa_output_power}")
-    public Response setEdfaOutPower(@PathParam("uri") String uri, @PathParam("edfa_output_power") String edfa_output_power) {
-        DriverService service = get(DriverService.class);
-        DeviceId deviceId = DeviceId.deviceId(uri);
-        DriverHandler h = service.createHandler(deviceId);
-        MxpConfig mxp = h.behaviour(MxpConfig.class);
-        String reply = mxp.setValueEdfaNotify(edfa_output_power);
-        ObjectNode node = mapper().createObjectNode().put("setEdfaOutPower:", reply);
         return ok(node).build();
     }
 

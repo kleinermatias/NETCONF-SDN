@@ -26,21 +26,37 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <onos.version>1.13.4-SNAPSHOT</onos.version>
+        <onos.version>1.13.6</onos.version>
         <api.version>1.0.0</api.version>
         <onos.app.name>org.altura.app</onos.app.name>
         <onos.app.title>Altura App</onos.app.title>
         <onos.app.origin>Altura, Inc.</onos.app.origin>
         <onos.app.category>default</onos.app.category>
-        <api.description>Sample application REST API</api.description>
+        <api.description>REST API PARA ADMINISTRAR MXP40GB</api.description>
         <web.context>/onos/altura</web.context>
-        <api.title>Sample app REST API</api.title>
+        <api.title>Altura APP</api.title>
         <onos.app.url>http://onosproject.org</onos.app.url>
         <api.package>org.altura</api.package>
         <onos.app.readme>ONOS OSGi bundle archetype.</onos.app.readme>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180130</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
         <dependency>
             <groupId>org.onosproject</groupId>
             <artifactId>onos-api</artifactId>

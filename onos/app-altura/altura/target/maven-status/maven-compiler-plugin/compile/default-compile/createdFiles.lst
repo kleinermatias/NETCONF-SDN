@@ -1,4 +1,6 @@
+org/altura/SetWebResource.class
 org/altura/AppWebApplication.class
 org/altura/AppWebResource.class
+org/altura/RpcWebResource.class
 org/altura/ApiDocRegistrator.class
 org/altura/AppComponent.class

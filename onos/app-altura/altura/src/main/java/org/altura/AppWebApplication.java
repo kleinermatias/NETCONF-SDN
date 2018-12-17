@@ -18,6 +18,8 @@ package org.altura;
 
 import org.onlab.rest.AbstractWebApplication;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,6 +28,10 @@ import java.util.Set;
 public class AppWebApplication extends AbstractWebApplication {
     @Override
     public Set<Class<?>> getClasses() {
-        return getClasses(AppWebResource.class);
+        Set<Class<?>> prueba = new HashSet<>();
+        prueba.addAll(getClasses(AppWebResource.class));
+        prueba.addAll(getClasses(RpcWebResource.class));
+        prueba.addAll(getClasses(SetWebResource.class));
+        return prueba;
     }
 }

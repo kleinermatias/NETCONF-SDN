@@ -25,7 +25,7 @@ import org.onosproject.rest.ApiDocProvider;
 public class ApiDocRegistrator extends AbstractApiDocRegistrator {
     public ApiDocRegistrator() {
         super(new ApiDocProvider("/onos/altura",
-                                 "Sample app REST API",
+                                 "Altura APP",
                                  ApiDocRegistrator.class.getClassLoader()));
     }
 }
