@@ -59,7 +59,9 @@ public class AppComponent {
 
     @Deactivate
     protected void deactivate() {
+        alarmService.removeListener(alarmListener);
         log.info("Stopped");
+
     }
 
 
@@ -82,18 +84,11 @@ public class AppComponent {
     private class TopoAlarmListenerr implements AlarmListener {
         @Override
         public void event(AlarmEvent event) {
-            log.info("Holis");
-
-
 
             Device localdevice = deviceService.getDevice(event.subject().deviceId());
 
-            log.info(deviceService.getDevice(event.subject().deviceId()).toString());
-            log.info(localdevice.manufacturer());
-
-
             if (localdevice.manufacturer().equals("ALTURA") && ( event.subject().description().contains("netconf-config-change") || event.subject().description().contains("netconf-session-start") || event.subject().description().contains("netconf-session-end") )){
-                log.info("PEPEEEEEEEEEEEE");
+                log.info("Se borra alarma {}",event.subject().id());
                 alarmService.remove(event.subject().id());
             }
 
