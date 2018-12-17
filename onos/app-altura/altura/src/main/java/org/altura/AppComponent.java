@@ -40,6 +40,8 @@ public class AppComponent {
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected AlarmService alarmService;
+
+    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected DeviceService deviceService;
 
 
@@ -83,12 +85,13 @@ public class AppComponent {
             log.info("Holis");
 
 
-            /*
+
             Device localdevice = deviceService.getDevice(event.subject().deviceId());
 
             log.info(deviceService.getDevice(event.subject().deviceId()).toString());
             log.info(localdevice.manufacturer());
 
+            /*
             if (localdevice.manufacturer().equals("ALTURA") && ( event.subject().description().contains("netconf-config-change") || event.subject().description().contains("netconf-session-start") || event.subject().description().contains("netconf-session-end") )){
                 log.info("PEPEEEEEEEEEEEE");
                 alarmService.remove(event.subject().id());
