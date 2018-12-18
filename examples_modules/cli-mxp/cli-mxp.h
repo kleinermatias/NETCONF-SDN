@@ -159,6 +159,12 @@ extern "C" {
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
 #define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
 
+/* leaf-list /mux-config/deviceneighbors */
+typedef struct y_cli_mxp_T_mux_config_deviceneighbors_ {
+  dlq_hdr_t qhdr;
+  xmlChar *deviceneighbors;
+} y_cli_mxp_T_mux_config_deviceneighbors;
+
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *configuracion;
@@ -170,7 +176,7 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *cd_compensacion;
   int64 edfa_output_power_config;
   int16 time_notify_config;
-  xmlChar *deviceneighbors;
+  dlq_hdr_t deviceneighbors;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */
