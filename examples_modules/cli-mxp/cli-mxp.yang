@@ -102,7 +102,7 @@ module cli-mxp {
             }
         }
 
-        leaf deviceneighbors  {
+        leaf-list deviceneighbors  {
          type string;
          description "Lista de vecinos del dispositivo";
         }
