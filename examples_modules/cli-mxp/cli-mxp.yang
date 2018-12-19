@@ -102,6 +102,19 @@ module cli-mxp {
             }
         }
 
+        list ports {
+            key "port";
+            leaf port {
+                type string;
+            }
+            leaf neighbor {
+                type string;
+            }
+            leaf port_neighbor {
+                type string;
+            }
+        }
+
         leaf-list deviceneighbors  {
          type string;
          description "Lista de vecinos del dispositivo";
