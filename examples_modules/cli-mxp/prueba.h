@@ -142,6 +142,10 @@ extern "C" {
 #define y_cli_mxp_N_mux_state_misc (const xmlChar *)"mux-state-misc"
 #define y_cli_mxp_N_mux_state_power (const xmlChar *)"mux-state-power"
 #define y_cli_mxp_N_mux_state_temp_hum (const xmlChar *)"mux-state-temp-hum"
+#define y_cli_mxp_N_neighbor (const xmlChar *)"neighbor"
+#define y_cli_mxp_N_port (const xmlChar *)"port"
+#define y_cli_mxp_N_port_neighbor (const xmlChar *)"port_neighbor"
+#define y_cli_mxp_N_ports (const xmlChar *)"ports"
 #define y_cli_mxp_N_potencia (const xmlChar *)"potencia"
 #define y_cli_mxp_N_respuesta_mux_apply_config (const xmlChar *)"respuesta-mux-apply-config"
 #define y_cli_mxp_N_respuesta_mux_settings (const xmlChar *)"respuesta-mux-settings"
@@ -160,6 +164,20 @@ extern "C" {
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
 #define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
 
+/* list /mux-config/ports */
+typedef struct y_cli_mxp_T_mux_config_ports_ {
+  dlq_hdr_t qhdr;
+  xmlChar *port;
+  xmlChar *neighbor;
+  xmlChar *port_neighbor;
+} y_cli_mxp_T_mux_config_ports;
+
+/* leaf-list /mux-config/deviceneighbors */
+typedef struct y_cli_mxp_T_mux_config_deviceneighbors_ {
+  dlq_hdr_t qhdr;
+  xmlChar *deviceneighbors;
+} y_cli_mxp_T_mux_config_deviceneighbors;
+
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *configuracion;
@@ -171,7 +189,8 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *cd_compensacion;
   int64 edfa_output_power_config;
   int16 time_notify_config;
-  xmlChar *deviceneighbors;
+  dlq_hdr_t ports;
+  dlq_hdr_t deviceneighbors;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */
