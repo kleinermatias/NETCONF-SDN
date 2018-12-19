@@ -144,7 +144,7 @@ alarmas_thread(void *arg)
 {
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
-    while (alarma_tid) {
+    while (0) {
         sem_wait(&mutex); 
 
         if( (contador_tiempo_alarma==10) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != eolalm_anterior) )
