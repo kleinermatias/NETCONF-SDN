@@ -167,7 +167,7 @@ extern "C" {
 /* list /mux-config/ports */
 typedef struct y_cli_mxp_T_mux_config_ports_ {
   dlq_hdr_t qhdr;
-  xmlChar *port;
+  int16 port;
   xmlChar *neighbor;
   xmlChar *port_neighbor;
 } y_cli_mxp_T_mux_config_ports;
