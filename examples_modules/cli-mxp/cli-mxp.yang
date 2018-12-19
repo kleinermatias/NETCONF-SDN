@@ -104,13 +104,22 @@ module cli-mxp {
 
         list ports {
             key "port";
+            unique "neighbor port_neighbor";
+            max-elements 6;
+
             leaf port {
-                type string;
+                type int16{
+                    range "0 .. 5";
+                }
             }
+
             leaf neighbor {
+                mandatory true;
                 type string;
             }
+            
             leaf port_neighbor {
+                mandatory true;
                 type string;
             }
         }
