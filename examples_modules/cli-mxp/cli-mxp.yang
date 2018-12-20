@@ -103,7 +103,7 @@ module cli-mxp {
         }
 
         list ports {
-
+            key "port";
             leaf port {
                 type int16{
                     range "0 .. 6";
