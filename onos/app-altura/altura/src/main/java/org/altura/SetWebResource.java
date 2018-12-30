@@ -60,15 +60,15 @@ public class SetWebResource extends AbstractWebResource {
      * @return 200 OK
      */
     @PUT
-    @Path("Neighbor/{uri},{Neighbor}")
+    @Path("Neighbor/{uri},{puerto_local},{puerto_local},{vecino},{puerto_vecino}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response setDeviceNeighbors(@PathParam("uri") String uri, @PathParam("Neighbor") String Neighbor) {
+    public Response setDeviceNeighbors(@PathParam("uri") String uri, @PathParam("puerto_local") String puerto_local, @PathParam("vecino") String vecino, @PathParam("puerto_vecino") String puerto_vecino) {
         DriverService service = get(DriverService.class);
         DeviceId deviceId = DeviceId.deviceId(uri);
         DriverHandler h = service.createHandler(deviceId);
         MxpConfig mxp = h.behaviour(MxpConfig.class);
-        String reply = mxp.setDeviceNeighbors(Neighbor);
+        String reply = mxp.createOrReplaceNeighbor(puerto_local,vecino,puerto_vecino);
         ObjectNode node = mapper().createObjectNode().put("setDeviceNeighbors:", reply);
         return ok(node).build();
     }
