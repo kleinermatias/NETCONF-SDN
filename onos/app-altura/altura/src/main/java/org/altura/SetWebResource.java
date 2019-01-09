@@ -79,7 +79,7 @@ public class SetWebResource extends AbstractWebResource {
      * @return 200 OK
      */
     @PUT
-    @Path("Tipo Fec de Cliente/{uri},{puerto_local}")
+    @Path("RemoveNeighbor/{uri},{puerto_local}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response setRemoveDeviceNeighbor(@PathParam("uri") String uri, @PathParam("puerto_local") String puerto_local) {
