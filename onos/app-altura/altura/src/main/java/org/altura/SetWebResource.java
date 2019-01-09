@@ -74,6 +74,25 @@ public class SetWebResource extends AbstractWebResource {
     }
 
     /**
+     * Elimina un vecino del mxp, especificado por el puerto del dispositivo local.
+     *
+     * @return 200 OK
+     */
+    @PUT
+    @Path("Tipo Fec de Cliente/{uri},{puerto_local}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response setRemoveDeviceNeighbor(@PathParam("uri") String uri, @PathParam("puerto_local") String puerto_local) {
+        DriverService service = get(DriverService.class);
+        DeviceId deviceId = DeviceId.deviceId(uri);
+        DriverHandler h = service.createHandler(deviceId);
+        MxpConfig mxp = h.behaviour(MxpConfig.class);
+        String reply = mxp.removeNeighbor(puerto_local);
+        ObjectNode node = mapper().createObjectNode().put("setRemoveDeviceNeighbor:", reply);
+        return ok(node).build();
+    }
+
+    /**
      * Setea tipo fec cliente.
      *
      * @return 200 OK
