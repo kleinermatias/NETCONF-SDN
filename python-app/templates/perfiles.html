@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+{% extends 'bootstrap/base.html' %}
+{% block cantidad_alarmas %}2{% endblock %}
+<!-- Content -->
+{% block content %}
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">   
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="container">
+
+    <hr />
+
+    <div class="container">
+        <h1>Administrador de perfiles de configuracion.</h1>
+        
+        
+        <p class="text-primary">Esta seccion permite agregar un nuevo perfil, eliminarlo o ver que configuracion aplica el mismo.</p>
+        
+    </div>
+
+
+
+
+		<hr />
+    <form action="/perfiles" method="POST">
+        
+      <div class="container" id="test">
+          <div class="row justify-content-center">
+            <div class="col">
+              <div class="card">
+                <div class="card-header"><button class="btn btn-primary" type="submit" name="boton_agregar_perfil" id="boton_agregar_perfil">Agregar nuevo perfil</button></div>
+                <div class="card-body">
+                    <div class="form-group row">
+                      
+                      <div class="col">
+                          <span class="input-group-text" id="basic-addon1" style="width:250px;">Nombre del perfil</span>
+                        <input class="form-control" name="nombre_perfil" id="nombre_perfil" type="text" placeholder="AaBbCcDd">
+                      </div>
+
+                      <div class="col">
+                          <span class="input-group-text" id="basic-addon1" style="width:180px;">Tipo de trafico</span><select class="input-xlarge" name="comp_select_ttrafico" id="comp_select_ttrafico" style="width:180px;"> 
+                              <option >xge</option>
+                              <option>otu2</option>
+                        </select>
+                      </div>
+
+                      <div class="col">
+                          <span class="input-group-text" id="basic-addon1" style="width:180px;">Tipo fec de linea</span><select class="input-xlarge" name="comp_select_tflinea" id="comp_select_tflinea" style="width:180px;"> 
+                              <option>cerofec</option>
+                              <option>gfec</option>
+                          </select>
+                        </div>
+
+                        <div class="col">
+                            <span class="input-group-text" id="basic-addon1" style="width:180px;">Tipo fec de cliente</span><select class="input-xlarge" name="comp_select_tfcliente" id="comp_select_tfcliente" style="width:180px;"> 
+                                <option>cerofec_cliente</option>
+                                <option>gfec_cliente</option>
+                                <option>nulofec_cliente</option>
+                            </select>
+                          </div>
+                        
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+      
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="card border-danger mb-1" style="max-width: 80rem;">
+            <div class="card-header"> 
+                <form action="/boton_eliminar_config" method="POST">
+                  <div class="form-group">
+                    <div class="input-group"> 
+                      <button class="btn btn-primary" type="submit" name="comp_selec" id="comp_selec">Eliminar perfil</button>   
+                    </div>
+                    
+                    <div class="card-body text-danger">
+                      <div class="input-group">
+                        <select class="input-xlarge" name="comp_select_perfil" id="comp_select_perfil" style="width:auto;"> 
+                          {% for id_perfil in perfiles %}
+                            <option>{{ id_perfil }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <hr />
+                      <p class="card-text">Seleccione el perfil que desea eliminar.</p>
+                    </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>        
+
+<hr />
+
+<div class="container">
+  <div class="row justify-content-center">
+      <div class="card border-primary mb-1" style="max-width: 80rem;">
+          <div class="card-header"> 
+              <form action="/boton_mostrar_config" method="POST">
+                <div class="form-group row">
+                  <div class="input-group"> 
+                    <button class="btn btn-primary" type="submit" name="mostrar_config" id="mostrar_config">Mostrar configuracion del perfil</button>   
+                  </div>
+                  
+                  <div class="card-body text-primary">
+                    <div class="input-group">
+                      <select class="input-xlarge" name="select_mostrar_config" id="select_mostrar_config" style="width:auto;"> 
+                        {% for id_perfil in perfiles %}
+                          <option>{{ id_perfil }}</option>
+                        {% endfor %}
+                      </select>
+
+
+                      {% for id_perfil in tipo_trafico %}
+                      <div class="col">
+                        <span class="input-group-text" id="basic-addon1" style="width:250px;">Tipo de trafico: {{ id_perfil }}</span>
+                    </div>
+                    {% endfor %}
+
+                    {% for id_perfil in tipo_fec_linea %}
+                      <div class="col">
+                        <span class="input-group-text" id="basic-addon1" style="width:250px;">Tipo fec de linea: {{ id_perfil }}</span>
+                    </div>
+                    {% endfor %}
+
+                    {% for id_perfil in tipo_fec_cliente %}
+                      <div class="col">
+                        <span class="input-group-text" id="basic-addon1" style="width:250px;">Tipo fec cliente: {{ id_perfil }}</span>
+                    </div>
+                    {% endfor %}
+                    </div>
+                      
+                    
+                    <hr />
+                    <p class="card-text">Seleccione el perfil que desea mostrar la configuracion.</p>
+                  </div>
+                </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>   
+
+<hr />
+
+</div>
+
+{% endblock %}
+
