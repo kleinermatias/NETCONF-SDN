@@ -1,6 +1,6 @@
 org/altura/AppWebApplication.class
-org/altura/AppWebResource.class
 org/altura/AppComponent$1.class
+org/altura/AppWebResource.class
 org/altura/AppComponent.class
 org/altura/SetWebResource.class
 org/altura/RpcWebResource.class
