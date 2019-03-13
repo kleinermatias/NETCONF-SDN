@@ -63,7 +63,6 @@ sem_t mutex;
 Monitor *pt_monitor_struct;
 int shmfd;
 float edfa_output_power_conf;
-int time_notify_conf;
 static pthread_t alarma_tid;
 const xmlChar *tipo_trafico_var;
 const xmlChar *tipo_fec_linea_var;
@@ -130,7 +129,16 @@ static int Rx_CDR_Loss_of_Lock_XFP4_anterior =       0;
 static int Tx_CDR_Loss_of_Lock_XFP4_anterior =       0;
 static int Laser_Fault_XFP4_anterior =       0;
 
+
+static int warning_config_actual = 0;
+static int warning_config_anterior = 0;
+char buffa[100];
+char buffb[100];
+
 static int contador_tiempo_alarma =       0;
+
+
+
 
 struct Device_info {
     char  device_manufacturer[50];
@@ -688,6 +696,15 @@ alarmas_thread(void *arg)
         }
 
 
+        if( (warning_config_actual != warning_config_anterior) )
+        {   
+            strcpy(buffa,  "[WARNING] mux-notify xmlns; Inconsistent config with neighbor ");
+            sprintf(buffb, "%d", warning_config_actual);
+            strcat(buffa, buffb);
+            y_cli_mxp_mux_notify_send((const xmlChar *)buffa);
+        }
+
+
         eolalm_anterior =             (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
         modtempalm_anterior =         (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm;
         txooa_anterior =              (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa;
@@ -747,9 +764,10 @@ alarmas_thread(void *arg)
         Tx_CDR_Loss_of_Lock_XFP4_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5];
         Laser_Fault_XFP4_anterior =               (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
 
+        warning_config_anterior = warning_config_actual;
 
         contador_tiempo_alarma++;
-        if( contador_tiempo_alarma==30 ){
+        if( contador_tiempo_alarma==100 ){
           contador_tiempo_alarma=0;
         }
         sem_post(&mutex); 
@@ -1508,10 +1526,10 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
 
 
 /********************************************************************
-* FUNCTION cli_mxp_mux_config_time_notify_config_edit
+* FUNCTION cli_mxp_mux_config_warning_config_edit
 * 
 * Edit database object callback
-* Path: /mux-config/time_notify_config
+* Path: /mux-config/warning_config
 * Add object instrumentation in COMMIT phase.
 * 
 * INPUTS:
@@ -1520,7 +1538,7 @@ static status_t cli_mxp_mux_config_edfa_output_power_config_edit (
 * RETURNS:
 *     error status
 ********************************************************************/
-static status_t cli_mxp_mux_config_time_notify_config_edit (
+static status_t cli_mxp_mux_config_warning_config_edit (
   ses_cb_t *scb,
   rpc_msg_t *msg,
   agt_cbtyp_t cbtyp,
@@ -1532,7 +1550,7 @@ static status_t cli_mxp_mux_config_time_notify_config_edit (
   val_value_t *errorval = (curval) ? curval : newval;
 
   if (LOGDEBUG) {
-    log_debug("\nEnter cli_mxp_mux_config_time_notify_config_edit callback for %s phase",
+    log_debug("\nEnter cli_mxp_mux_config_warning_config_edit callback for %s phase",
       agt_cbtype_name(cbtyp));
   }
 
@@ -1545,7 +1563,7 @@ static status_t cli_mxp_mux_config_time_notify_config_edit (
     break;
   case AGT_CB_COMMIT:
     /* device instrumentation done here */
-    time_notify_conf = VAL_INT(newval);
+    warning_config_actual = VAL_INT(newval);
     
     switch (editop) {
     case OP_EDITOP_LOAD:
@@ -1583,7 +1601,7 @@ static status_t cli_mxp_mux_config_time_notify_config_edit (
   }
   return res;
 
-} /* cli_mxp_mux_config_time_notify_config_edit */
+} /* cli_mxp_mux_config_warning_config_edit */
 
 /********************************************************************
 * FUNCTION cli_mxp_mux_config_ports_port_edit
@@ -11348,9 +11366,9 @@ status_t y_cli_mxp_init (
 
   res = agt_cb_register_callback(
     y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/time_notify_config",
+    (const xmlChar *)"/mux-config/warning_config",
     y_cli_mxp_R_cli_mxp,
-    cli_mxp_mux_config_time_notify_config_edit);
+    cli_mxp_mux_config_warning_config_edit);
   if (res != NO_ERR) {
     return res;
   }
@@ -11574,7 +11592,7 @@ void y_cli_mxp_cleanup (void)
 
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,
-    (const xmlChar *)"/mux-config/time_notify_config");
+    (const xmlChar *)"/mux-config/warning_config");
 
   agt_cb_unregister_callbacks(
     y_cli_mxp_M_cli_mxp,

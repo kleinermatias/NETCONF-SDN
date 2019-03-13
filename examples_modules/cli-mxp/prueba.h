@@ -118,7 +118,6 @@ extern "C" {
 #define y_cli_mxp_N_device_hwVersion (const xmlChar *)"device_hwVersion"
 #define y_cli_mxp_N_device_manufacturer (const xmlChar *)"device_manufacturer"
 #define y_cli_mxp_N_device_swVersion (const xmlChar *)"device_swVersion"
-#define y_cli_mxp_N_deviceneighbors (const xmlChar *)"deviceneighbors"
 #define y_cli_mxp_N_edfa_output_power_config (const xmlChar *)"edfa_output_power_config"
 #define y_cli_mxp_N_edfa_output_power_state (const xmlChar *)"edfa_output_power_state"
 #define y_cli_mxp_N_fpga_temperature_state (const xmlChar *)"fpga_temperature_state"
@@ -155,12 +154,12 @@ extern "C" {
 #define y_cli_mxp_N_temp_case (const xmlChar *)"temp_case"
 #define y_cli_mxp_N_temp_rx_laser (const xmlChar *)"temp_rx_laser"
 #define y_cli_mxp_N_temp_tx_laser (const xmlChar *)"temp_tx_laser"
-#define y_cli_mxp_N_time_notify_config (const xmlChar *)"time_notify_config"
 #define y_cli_mxp_N_tipo_fec_cliente (const xmlChar *)"tipo_fec_cliente"
 #define y_cli_mxp_N_tipo_fec_linea (const xmlChar *)"tipo_fec_linea"
 #define y_cli_mxp_N_tipo_trafico (const xmlChar *)"tipo_trafico"
 #define y_cli_mxp_N_tx_laser_itu_band (const xmlChar *)"tx_laser_itu_band"
 #define y_cli_mxp_N_tx_laser_itu_channel (const xmlChar *)"tx_laser_itu_channel"
+#define y_cli_mxp_N_warning_config (const xmlChar *)"warning_config"
 #define y_cli_mxp_N_xfp_rx_power (const xmlChar *)"xfp_rx_power"
 #define y_cli_mxp_N_xfp_tx_power (const xmlChar *)"xfp_tx_power"
 
@@ -172,12 +171,6 @@ typedef struct y_cli_mxp_T_mux_config_ports_ {
   xmlChar *port_neighbor;
 } y_cli_mxp_T_mux_config_ports;
 
-/* leaf-list /mux-config/deviceneighbors */
-typedef struct y_cli_mxp_T_mux_config_deviceneighbors_ {
-  dlq_hdr_t qhdr;
-  xmlChar *deviceneighbors;
-} y_cli_mxp_T_mux_config_deviceneighbors;
-
 /* container /mux-config */
 typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *configuracion;
@@ -188,9 +181,8 @@ typedef struct y_cli_mxp_T_mux_config_ {
   xmlChar *potencia;
   xmlChar *cd_compensacion;
   int64 edfa_output_power_config;
-  int16 time_notify_config;
+  int16 warning_config;
   dlq_hdr_t ports;
-  dlq_hdr_t deviceneighbors;
 } y_cli_mxp_T_mux_config;
 
 /* container /mux-state */

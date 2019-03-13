@@ -94,11 +94,11 @@ module cli-mxp {
             }
         }
 
-        leaf time_notify_config {
+        leaf warning_config {
             description
-              "Cada cuantos segundos manda notificacion.";
+              "Un 0 indica que no se genera alarma por configuracion, 1 activa alarma por configuracion.";
             type int16 {
-                range "1 .. 100";
+                range "0 .. 1000";
             }
         }
 
@@ -120,11 +120,6 @@ module cli-mxp {
                 mandatory true;
                 type string;
             }
-        }
-
-        leaf-list deviceneighbors  {
-         type string;
-         description "Lista de vecinos del dispositivo";
         }
 
     }

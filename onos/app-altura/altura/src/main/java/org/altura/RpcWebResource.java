@@ -16,36 +16,22 @@
 package org.altura;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.Iterables;
-import org.apache.commons.lang.StringUtils;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.onosproject.incubator.net.faultmanagement.alarm.*;
-import org.onosproject.net.Device;
 import org.onosproject.net.DeviceId;
 import org.onosproject.net.behaviour.MxpConfig;
-import org.onosproject.net.behaviour.MxpGetAll;
-import org.onosproject.net.device.DeviceService;
 import org.onosproject.net.driver.DriverHandler;
 import org.onosproject.net.driver.DriverService;
 import org.onosproject.rest.AbstractWebResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
-
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.ListIterator;
+import java.util.List;
+
 
 /**
  * Diferentes RPC disponibles a ejecutar en MXP40GB
@@ -53,13 +39,7 @@ import java.util.ListIterator;
 @Path("RPC")
 public class RpcWebResource extends AbstractWebResource {
 
-
-    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected AlarmProviderService providerService;
-
-
-
-
 
     /**
      * Aplica la configuracion en el MXP40GB.
@@ -78,100 +58,18 @@ public class RpcWebResource extends AbstractWebResource {
         MxpConfig mxp = h.behaviour(MxpConfig.class);
         String reply = mxp.rpcApplyConfig();
 
-        Collection<Alarm> alarms = new ArrayList<>();
+
+
+        List<Alarm> alarms = new ArrayList<>();
         alarms.add(new DefaultAlarm.Builder(AlarmId.alarmId(deviceId, "WARNING CONFIG"),
-                deviceId, "[ALARM] mux-notify xmlns; Inconsistent config with neighbor ",
+                deviceId, "[ALARM] mux-notify xmlns; ssssssssssssssss",
                 Alarm.SeverityLevel.MINOR,
                 System.currentTimeMillis()).build());
-
         providerService.updateAlarmList(deviceId,alarms);
 
 
         ObjectNode node = mapper().createObjectNode().put("rpcApplyConfig:", reply);
         return ok(node).build();
-
-        /**
-
-         DriverService service = get(DriverService.class);
-         DeviceId deviceId = DeviceId.deviceId(uri);
-         DriverHandler local_device = service.createHandler(deviceId);
-         MxpConfig local_mxp = local_device.behaviour(MxpConfig.class);
-         MxpGetAll local_mxp_get = local_device.behaviour(MxpGetAll.class);
-         DeviceService deviceService = get(DeviceService.class);
-         String reply = local_mxp.rpcApplyConfig();
-
-
-
-
-
-         String local_config = local_mxp_get.getConfigContainer();
-         ArrayList<String> lista_vecinos = getVecino(local_config);
-
-         if ( !lista_vecinos.isEmpty() ) {
-
-         ListIterator<String> vecinosIterator = lista_vecinos.listIterator();
-
-         whileIteratorVecinos: while ( vecinosIterator.hasNext() ) {
-
-         String vecino = vecinosIterator.next();
-
-
-         // Se busca en los dispositivos actualmente conectados si hay alguno con un numero de serie que coincida con el indicado por el dispositivo como vecino.
-
-         com.google.common.base.Optional<Device> dev = Iterables.tryFind(
-         deviceService.getAvailableDevices(),
-         input -> input.serialNumber().equals(vecino));
-
-         if (!dev.isPresent()) {
-         log.info("Device with chassis ID {} does not exist");
-         continue whileIteratorVecinos;
-         }
-
-         else {
-
-         DriverHandler remote_device = service.createHandler(dev.get().id());
-         MxpGetAll remote_mxp_get = remote_device.behaviour(MxpGetAll.class);
-         String remote_config = remote_mxp_get.getConfigContainer();
-
-         if (getTipoTrafico(local_config).equals(getTipoTrafico(remote_config))) {
-         log.info("Config iguales, se elimina alarma del dispositivo");
-
-
-         while (alarmService.getActiveAlarms(deviceId).iterator().hasNext()) {
-         Alarm it = alarmService.getActiveAlarms(deviceId).iterator().next();
-         if ( (it.id().toString().contains("WARNING CONFIG")) && (it.description().equals("[ALARM] mux-notify xmlns; Inconsistent config with neighbor "+vecino))){
-         alarmService.remove(it.id());
-         }
-         }
-         }
-
-         else {
-         log.info("Config distintas, se crea alarma en el dispositivo");
-
-         Collection<Alarm> alarms = new ArrayList<>();
-         alarms.add(new DefaultAlarm.Builder(AlarmId.alarmId(deviceId, "WARNING CONFIG"),
-         deviceId, "[ALARM] mux-notify xmlns; Inconsistent config with neighbor " + vecino,
-         Alarm.SeverityLevel.MINOR,
-         System.currentTimeMillis()).build());
-
-         providerService.updateAlarmList(deviceId,alarms);
-         }
-         }
-         }
-
-         }
-         else {
-
-         }
-
-
-
-
-
-         ObjectNode node = mapper().createObjectNode().put("rpcApplyConfig:", reply);
-         return ok(node).build();
-
-         **/
 
     }
 
@@ -194,48 +92,6 @@ public class RpcWebResource extends AbstractWebResource {
         return ok(node).build();
     }
 
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Retrieving serial number version of device.
-     * @return the serial number of the device
-     */
-    private ArrayList<String> getVecino(String config) {
-
-
-
-        ArrayList<String> lista_vecinos = new ArrayList<String>();
-
-
-        while (config.contains("neighbor")) {
-            String vecino = StringUtils.substringBetween(config, "<neighbor>", "</neighbor>");
-            config = config.replaceFirst("(?s)<neighbor>.*?</neighbor>", ""); // Borro el primer vecino encontrado. (?s) significa que se aplica a todas las lineas del string.
-            lista_vecinos.add(vecino);
-        }
-
-        return lista_vecinos;
-    }
-
-
-    /**
-     * Retrieving serial number version of device.
-     * @param version the return of show version command
-     * @return the serial number of the device
-     */
-    private String getTipoTrafico(String version) {
-
-
-        String tipo_trafico = StringUtils.substringBetween(version, "<tipo_trafico>", "</tipo_trafico>");
-        return tipo_trafico;
-    }
 
 
 }
