@@ -1,32 +1,84 @@
-# NETCONF -  MXP - YUMA123
+# ONOS and NETCONF project.
+In this repository you can find the API code in C for the NETCONF server called "YUMA123".
 
-**REQUIERE INICIAR MONITOR EN EL MXP PREVIAMENTE**
+## About this repo.
 
-Iniciamos netconfd, especificando que levante desde el inicio el modulo del mxp.
+* [compile_yuma123](https://github.com/ragnar-l/NETCONF-SDN/tree/master/compile_yuma123) - Tools and misc to facilitate the compilation and installation of the YUMA123 server in the different devices.
+* [examples_modules](https://github.com/ragnar-l/NETCONF-SDN/tree/master/examples_modules) - API C to manage the configuration of the mxp40gb in YUMA123.
+* [mxp40G](https://github.com/ragnar-l/NETCONF-SDN/tree/master/mxp40G) - Headers and libs used by the API in c.
+* [onos](https://github.com/ragnar-l/NETCONF-SDN/tree/master/onos) - Northbound API Extension for ONOS controller to communicate with the device driver.
+* [python-app](https://github.com/ragnar-l/NETCONF-SDN/tree/master/python-app) - GUI (python web flask + bootstrap).
 
-    $ cd ~/usrapp/sbin/
-    $ ./netconfd --module=cli-mxp --log-level="debug4" --target=running --superuser=root --with-startup=true
-    
-Ruta al archivo startup:
-/root/.yuma/startup-cfg.xml  
 
-Nos conectamos al servidor NETCONF: 
+### Prerequisites
 
-    $ yangcli --user=root --server=172.16.0.41 --pass=123 --timeout=120
+ - Ver cuales son las dependencias de YUMA123 - 
 
-    
+```
+Give examples
+```
+
+### Installing
+
+1) Compile the NETCONF YUMA123 server for the desired architecture. In [compile_yuma123](https://github.com/ragnar-l/NETCONF-SDN/tree/master/compile_yuma123) you cand find a tutorial for this.
+Example for nios2 target:
+
+```
+$ cd .../NETCONF-SDN/compile_yuma123/
+$ make all TARGET=nios2
+```
+
+You must install the previously compiled server on the device. For this, you can use the script for remote installation. All the corresponding files are installed in ~/usrapp in the device.
+
+```
+$ cd .../NETCONF-SDN/compile_yuma123/utils_scripts/
+$ bash ./remote_install_yuma.sh @user @host @arch
+```
+
+2) Now you must install the module (API C) in the device. You can use the script to compile the C module and install it remotely on the device. (Requires having the netconf server compiled in the corresponding architecture). 
+
+```
+$ cd .../NETCONF-SDN/examples_modules/utils_scripts/
+$ bash ./remote_install_yuma.sh @user @host @module @arch
+```
+
+This is all! on the device you must start the server
+
+```
+$ cd ~/usrapp/sbin/
+$ ./netconfd --module=cli-mxp --log-level="debug4" --target=running --superuser=root --with-startup=true
+```
+
+And connect with some netconf client, for example YANGCLI.
+```
+$ yangcli --user=@user --server=@host --pass=@pass --timeout=@time_out_for_reply
+```
+
+## Authors
+
+* **Kleiner Matias** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+See also the list of [contributors](https://github.com/ragnar-l/NETCONF-SDN/graphs/contributors) who participated in this project.
+
+
 ## TODO. 
 
-1. Completar las variables faltantes del monitor - Modulo YANG.
-2. Completar las variables faltantes del monitor - Aplicacion C.
-3. Completar las variables faltantes del monitor - Driver behaviour.
-4. Conectar hosts al onos. **(?)**.
-5. Desarrollar aplicacion de usuario que muestre informacion del estado de los MXP en una GUI.
-
-
-## TODO 29/10. 
-Se pretende completar las tareas 1, 2 y 3. 
-
+| Task | Estimated date |
+| ------ | ------ |
+| Dar un valor inicial a las variables de NETCONF en startup. | 16/03/2019 |
+| ONOS debe borrar tanto las alarmas del device local como las del vecino, si la configuacion es la misma. | 16/03/2019 |
+| ONOS debe realizar una sola consulta al dispositivo local sobre el tipo de trafico y comparar con los tipos de traficos de sus vecinos. | 16/03/2019 |
+| Se debe corregir el problema de consistencia en las alarmas del mxp40gb. (API C) | -- |
+| Realizar SCRIPT y simulacion. | -- |
+| Terminar GUI. | -- |
+| Documentar. | -- |
+| Mover el driver ALTURA a una carpeta separada en ONOS. | -- |
+| Mover comportamientos fuera del core de ONOS. | -- |
+| Revisar el docker del MXP40gb. | -- |
+| Actualizar servidores yuma123. | -- |
+| Release en git. | -- |
+| Actualizar README en git. | -- |
+| Corregir linkDiscovery en ONOS. | -- |
+| El mxp40gb debe iniciar el servidor yuma123 y el modulo correspondiente. | -- |
 
 PING:
 
@@ -45,4 +97,5 @@ PING:
     $ cd $ONOS_ROOT && tools/test/bin/onos karaf@localhost
 
 curl -X POST -H "content-type:application/json" http://127.0.0.1:8181/onos/v1/network/configuration -d @/home/mkleiner/Escritorio/NETCONF-SDN/onos/dispositivo.json --user onos:rocks
+
 
