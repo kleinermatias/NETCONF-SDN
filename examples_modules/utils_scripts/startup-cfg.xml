@@ -4,8 +4,7 @@
     <tipo_trafico>xge</tipo_trafico>
     <tipo_fec_linea>cerofec</tipo_fec_linea>
     <tipo_fec_cliente>cerofec_cliente</tipo_fec_cliente>
-    <time_notify_config>3</time_notify_config>
-    <deviceneighbors>142</deviceneighbors>
+    <warning_config>0</warning_config>
   </mux-config>
   <nacm xmlns="urn:ietf:params:xml:ns:yang:ietf-netconf-acm">
   </nacm>

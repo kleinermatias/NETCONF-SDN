@@ -2,7 +2,5 @@
 FROM matiasragnar/dockermxp
 MAINTAINER Kleiner Matias <kleiner.matias@gmail.com>
 
-# Set the environment variables
-ENV HOME /root
+ENTRYPOINT service ssh restart && bash /config.sh && netconfd --module=cli-mxp --log-level="debug4" --target=running --superuser=root --with-startup=true && bash
 
-CMD ["server"]
