@@ -243,7 +243,8 @@ def boton_config():
             config_tipo_trafico(tipo_trafico, str(x) )
             config_tipo_linea(tipo_fec_linea, str(x) )
             config_tipo_cliente(tipo_fec_cliente, str(x) )
-            print str(x)
+        
+        for x in dispositivo_seleccionado:
             rpc_apply_config( str(x) )
     #print dispositivo_seleccionado
     alarmas = alarms()
