@@ -74,7 +74,22 @@ public class AppComponent {
 
             if (localdevice.manufacturer().equals("ALTURA") && ( event.subject().description().contains("netconf-config-change") || event.subject().description().contains("netconf-session-start") || event.subject().description().contains("netconf-session-end") )){
                 log.info("Se borra alarma {}",event.subject().id());
-                alarmService.remove(event.subject().id());
+                try {
+                    alarmService.remove(event.subject().id());
+                }
+                catch (Exception e){
+                    log.info("Error al borrar alarma, APP Altura");
+                }
+            }
+
+            else if (localdevice.manufacturer().equals("ALTURA") && event.subject().description().contains("[--]") && event.subject().description().contains("mux-notify xmlns")) {
+                log.info("Se borra alarma {}",event.subject().id());
+                try {
+                    alarmService.remove(event.subject().id());
+                }
+                catch (Exception e){
+                    log.info("Error al borrar alarma, APP Altura");
+                }
             }
 
 

@@ -61,6 +61,7 @@ static val_value_t *mux_config_val;
 /* put your static variables here */
 sem_t mutex;
 Monitor *pt_monitor_struct;
+Monitor pt_monitor_struct_anterior;
 int shmfd;
 float edfa_output_power_conf;
 static pthread_t alarma_tid;
@@ -70,64 +71,64 @@ const xmlChar *tipo_fec_cliente_var;
 static char alarms[2][100] = { "Alarm", "--" }; //al reve para xfp
 static char general_status[2][100] = { "Yes", "No" };
 
-static int eolalm_anterior =             1;
-static int modtempalm_anterior =         1;
-static int txooa_anterior =              1;
-static int txlofalm_anterior =           1;
-static int txdscerr_anterior =           1;
-static int lswavalm_anterior =           1;
-static int txalmint_anterior =           1;
-static int lsbiasalm_anterior =          1;
-static int lstempalm_anterior =          1;
-static int txlockerr_anterior =          1;
-static int lspowalm_anterior =           1;
-static int modbiasalm_anterior =         1;
-static int latchedtxfifoerr_anterior =   1;
-static int rxalmint_anterior =           1;
-static int rxpowalm_anterior =           1;
-static int rxlos_anterior =              1;
-static int rxlockerr_anterior =          1;
-static int rxs_anterior =                1;
-static int prbserrdet_anterior =         1;
-static int psummary_anterior =           1;
-static int p5vanalog_anterior =          1;
-static int n5v2analog_anterior =         1;
-static int p3p3vanalog_anterior =        1;
-static int p3p3vdigital_anterior =       1;
-static int lvdigital_anterior =          1;
-static int n5p2vdigital_anterior =       1;
 
-static int Low_Tx_Power_Alarm_XFP1_anterior =       0;
-static int High_Tx_Power_Alarm_XFP1_anterior =       0;
-static int Low_Rx_Power_Alarm_XFP1_anterior =       0;
-static int High_Rx_Power_Alarm_XFP1_anterior =       0;
-static int Rx_CDR_Loss_of_Lock_XFP1_anterior =       0;
-static int Tx_CDR_Loss_of_Lock_XFP1_anterior =       0;
-static int Laser_Fault_XFP1_anterior =       0;
+unsigned char modtempalm_anterior =         1;
+unsigned char txooa_anterior =              1;
+unsigned char txlofalm_anterior =           1;
+unsigned char txdscerr_anterior =           1;
+unsigned char lswavalm_anterior =           1;
+unsigned char txalmint_anterior =           1;
+unsigned char lsbiasalm_anterior =          1;
+unsigned char lstempalm_anterior =          1;
+unsigned char txlockerr_anterior =          1;
+unsigned char lspowalm_anterior =           1;
+unsigned char modbiasalm_anterior =         1;
+unsigned char latchedtxfifoerr_anterior =   1;
+unsigned char rxalmint_anterior =           1;
+unsigned char rxpowalm_anterior =           1;
+unsigned char rxlos_anterior =              1;
+unsigned char rxlockerr_anterior =          1;
+unsigned char rxs_anterior =                1;
+unsigned char prbserrdet_anterior =         1;
+unsigned char psummary_anterior =           1;
+unsigned char p5vanalog_anterior =          1;
+unsigned char n5v2analog_anterior =         1;
+unsigned char p3p3vanalog_anterior =        1;
+unsigned char p3p3vdigital_anterior =       1;
+unsigned char lvdigital_anterior =          1;
+unsigned char n5p2vdigital_anterior =       1;
 
-static int Low_Tx_Power_Alarm_XFP2_anterior =       0;
-static int High_Tx_Power_Alarm_XFP2_anterior =       0;
-static int Low_Rx_Power_Alarm_XFP2_anterior =       0;
-static int High_Rx_Power_Alarm_XFP2_anterior =       0;
-static int Rx_CDR_Loss_of_Lock_XFP2_anterior =       0;
-static int Tx_CDR_Loss_of_Lock_XFP2_anterior =       0;
-static int Laser_Fault_XFP2_anterior =       0;
+unsigned int Low_Tx_Power_Alarm_XFP1_anterior =       0;
+unsigned int High_Tx_Power_Alarm_XFP1_anterior =       0;
+unsigned int Low_Rx_Power_Alarm_XFP1_anterior =       0;
+unsigned int High_Rx_Power_Alarm_XFP1_anterior =       0;
+unsigned int Rx_CDR_Loss_of_Lock_XFP1_anterior =       0;
+unsigned int Tx_CDR_Loss_of_Lock_XFP1_anterior =       0;
+unsigned int Laser_Fault_XFP1_anterior =       0;
 
-static int Low_Tx_Power_Alarm_XFP3_anterior =       0;
-static int High_Tx_Power_Alarm_XFP3_anterior =       0;
-static int Low_Rx_Power_Alarm_XFP3_anterior =       0;
-static int High_Rx_Power_Alarm_XFP3_anterior =       0;
-static int Rx_CDR_Loss_of_Lock_XFP3_anterior =       0;
-static int Tx_CDR_Loss_of_Lock_XFP3_anterior =       0;
-static int Laser_Fault_XFP3_anterior =       0;
+unsigned int Low_Tx_Power_Alarm_XFP2_anterior =       0;
+unsigned int High_Tx_Power_Alarm_XFP2_anterior =       0;
+unsigned int Low_Rx_Power_Alarm_XFP2_anterior =       0;
+unsigned int High_Rx_Power_Alarm_XFP2_anterior =       0;
+unsigned int Rx_CDR_Loss_of_Lock_XFP2_anterior =       0;
+unsigned int Tx_CDR_Loss_of_Lock_XFP2_anterior =       0;
+unsigned int Laser_Fault_XFP2_anterior =       0;
 
-static int Low_Tx_Power_Alarm_XFP4_anterior =       0;
-static int High_Tx_Power_Alarm_XFP4_anterior =       0;
-static int Low_Rx_Power_Alarm_XFP4_anterior =       0;
-static int High_Rx_Power_Alarm_XFP4_anterior =       0;
-static int Rx_CDR_Loss_of_Lock_XFP4_anterior =       0;
-static int Tx_CDR_Loss_of_Lock_XFP4_anterior =       0;
-static int Laser_Fault_XFP4_anterior =       0;
+unsigned int Low_Tx_Power_Alarm_XFP3_anterior =       0;
+unsigned int High_Tx_Power_Alarm_XFP3_anterior =       0;
+unsigned int Low_Rx_Power_Alarm_XFP3_anterior =       0;
+unsigned int High_Rx_Power_Alarm_XFP3_anterior =       0;
+unsigned int Rx_CDR_Loss_of_Lock_XFP3_anterior =       0;
+unsigned int Tx_CDR_Loss_of_Lock_XFP3_anterior =       0;
+unsigned int Laser_Fault_XFP3_anterior =       0;
+
+unsigned int Low_Tx_Power_Alarm_XFP4_anterior =       0;
+unsigned int High_Tx_Power_Alarm_XFP4_anterior =       0;
+unsigned int Low_Rx_Power_Alarm_XFP4_anterior =       0;
+unsigned int High_Rx_Power_Alarm_XFP4_anterior =       0;
+unsigned int Rx_CDR_Loss_of_Lock_XFP4_anterior =       0;
+unsigned int Tx_CDR_Loss_of_Lock_XFP4_anterior =       0;
+unsigned int Laser_Fault_XFP4_anterior =       0;
 
 
 static int warning_config_actual = 0;
@@ -149,601 +150,602 @@ alarmas_thread(void *arg)
 {
     int rc;
     rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+
     while (alarma_tid) {
         sem_wait(&mutex); 
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != eolalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.eolalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] EOL ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] EOL ALM");
             }
-            eolalm_anterior =             (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.eolalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm != modtempalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.modtempalm) )
         {    
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod TEMP ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Mod TEMP ALM");
             }
-            modtempalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.modtempalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa != txooa_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txooa) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] TxOOA");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] TxOOA");
             }
-            txooa_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txooa = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm != txlofalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txlofalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOF ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx LOF ALM");
             }
-            txlofalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txlofalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr != txdscerr_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txdscerr) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx DSC ERR");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx DSC ERR");
             }
-            txdscerr_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txdscerr = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm != lswavalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lswavalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls WAV ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls WAV ALM");
             }
-            lswavalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lswavalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint != txalmint_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txalmint) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx ALM INT");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx ALM INT");
             }
-            txalmint_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txalmint = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm != lsbiasalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lsbiasalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls BIAS ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls BIAS ALM");
             }
-            lsbiasalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lsbiasalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm != lstempalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lstempalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls TEMP ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls TEMP ALM");
             }
-            lstempalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lstempalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr != txlockerr_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txlockerr) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOCK ERR");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx LOCK ERR");
             }
-            txlockerr_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txlockerr = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm != lspowalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lspowalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls POW ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls POW ALM");
             }
-            lspowalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lspowalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm != modbiasalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.modbiasalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod BIAS ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Mod BIAS ALM");
             }
-            modbiasalm_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.modbiasalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr != latchedtxfifoerr_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.latchedtxfifoerr) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr == 0) {
+            if( pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LATCHED TxFIFO ERR");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] LATCHED TxFIFO ERR");
             }
-            latchedtxfifoerr_anterior = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr;
+            pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.latchedtxfifoerr = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint != rxalmint_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxalmint) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint == 0) {
+            if( pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RxALM INT");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] RxALM INT");
             }
-            rxalmint_anterior = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint;
+            pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxalmint = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm != rxpowalm_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxpowalm) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm == 0) {
+            if( pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx POW ALM");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx POW ALM");
             }
-            rxpowalm_anterior = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm;
+            pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxpowalm = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos != rxlos_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxlos) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos == 0) {
+            if( pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOS");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx LOS");
             }
-            rxlos_anterior = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos;
+            pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxlos = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr != rxlockerr_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxlockerr) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr == 0) {
+            if( pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOCK ERR");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx LOCK ERR");
             }
-            rxlockerr_anterior = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr;
+            pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxlockerr = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs != rxs_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxs) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs == 0) {
+            if( pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RXS");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] RXS");
             }
-            rxs_anterior = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs;
+            pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxs = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != prbserrdet_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.prbserrdet) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet == 0) {
+            if( pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PRBS ERR DET");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] PRBS ERR DET");
             }
-            prbserrdet_anterior = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet;
+            pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.prbserrdet = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary != psummary_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.psummary) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PSUMMARY");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] PSUMMARY");
             }
-            psummary_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.psummary = pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog != p5vanalog_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p5vanalog) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P5VANALOG");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P5VANALOG");
             }
-            p5vanalog_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p5vanalog = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog != n5v2analog_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.n5v2analog) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5V2ANALOG");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] N5V2ANALOG");
             }
-            n5v2analog_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.n5v2analog = pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog != p3p3vanalog_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p3p3vanalog) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VANALOG");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P3P3VANALOG");
             }
-            p3p3vanalog_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p3p3vanalog = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital != p3p3vdigital_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p3p3vdigital) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VDIGITAL");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P3P3VDIGITAL");
             }
-            p3p3vdigital_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p3p3vdigital = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital != lvdigital_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.lvdigital) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LVDIGITAL");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] LVDIGITAL");
             }
-            lvdigital_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.lvdigital = pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital != n5p2vdigital_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital != pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.n5p2vdigital) )
         {   
-            if( (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital == 0) {
+            if( pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital == 0 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5P2VDIGITAL");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] N5P2VDIGITAL");
             }
-            n5p2vdigital_anterior = pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital;
+            pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.n5p2vdigital = pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital;
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] != Low_Tx_Power_Alarm_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][0]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP1");
             }
-            Low_Tx_Power_Alarm_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][0] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1] != High_Tx_Power_Alarm_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][1]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP1");
             }
-            High_Tx_Power_Alarm_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][1] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2] != Low_Rx_Power_Alarm_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][2]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP1");
             }
-            Low_Rx_Power_Alarm_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][2] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3] != High_Rx_Power_Alarm_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][3]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP1");
             }
-            High_Rx_Power_Alarm_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][3] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4] != Rx_CDR_Loss_of_Lock_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][4]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP1");
             }
-            Rx_CDR_Loss_of_Lock_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][4] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5] != Tx_CDR_Loss_of_Lock_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][5]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP1");
             }
-            Tx_CDR_Loss_of_Lock_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][5] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6] != Laser_Fault_XFP1_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][6]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP1");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP1");
             }
-            Laser_Fault_XFP1_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][6] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0] != Low_Tx_Power_Alarm_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][0]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP2");
             }
-            Low_Tx_Power_Alarm_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][0] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1] != High_Tx_Power_Alarm_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][1]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP2");
             }
-            High_Tx_Power_Alarm_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][1] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2] != Low_Rx_Power_Alarm_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][2]) )
         {   
-            if( (1&(int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2]) == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP2");
             }
-            Low_Rx_Power_Alarm_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][2] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3] != High_Rx_Power_Alarm_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][3]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP2");
             }
-            High_Rx_Power_Alarm_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][3] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4] != Rx_CDR_Loss_of_Lock_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][4]) )
         {   
-            if( (1&(int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4]) == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP2");
             }
-            Rx_CDR_Loss_of_Lock_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][4] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5] != Tx_CDR_Loss_of_Lock_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][5]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP2");
             }
-            Tx_CDR_Loss_of_Lock_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][5] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6] != Laser_Fault_XFP2_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][6]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP2");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP2");
             }
-            Laser_Fault_XFP2_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][6] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0] != Low_Tx_Power_Alarm_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][0]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP3");
             }
-            Low_Tx_Power_Alarm_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][0] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1] != High_Tx_Power_Alarm_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][1]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP3");
             }
-            High_Tx_Power_Alarm_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][1] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2] != Low_Rx_Power_Alarm_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][2]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP3");
             }
-            Low_Rx_Power_Alarm_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][2] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3] != High_Rx_Power_Alarm_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][3]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP3");
             }
-            High_Rx_Power_Alarm_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][3] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4] != Rx_CDR_Loss_of_Lock_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][4]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP3");
             }
-            Rx_CDR_Loss_of_Lock_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][4] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5] != Tx_CDR_Loss_of_Lock_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][5]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP3");
             }
-            Tx_CDR_Loss_of_Lock_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][5] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6] != Laser_Fault_XFP3_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][6]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP3");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP3");
             }
-            Laser_Fault_XFP3_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][6] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0] != Low_Tx_Power_Alarm_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][0]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP4");
             }
-            Low_Tx_Power_Alarm_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][0] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1] != High_Tx_Power_Alarm_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][1]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP4");
             }
-            High_Tx_Power_Alarm_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][1] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2] != Low_Rx_Power_Alarm_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][2]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP4");
             }
-            Low_Rx_Power_Alarm_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][2] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3] != High_Rx_Power_Alarm_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][3]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP4");
             }
-            High_Rx_Power_Alarm_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][3] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4] != Rx_CDR_Loss_of_Lock_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][4]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP4");
             }
-            Rx_CDR_Loss_of_Lock_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][4] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5] != Tx_CDR_Loss_of_Lock_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][5]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP4");
             }
-            Tx_CDR_Loss_of_Lock_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][5] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5];
         }
 
-        if( (initial_polling_alarms==1) || ((int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6] != Laser_Fault_XFP4_anterior) )
+        if( (initial_polling_alarms==1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][6]) )
         {   
-            if( (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6] == 1) {
+            if( pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6] == (unsigned int)1 ) {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP4");
             }
             else {
               y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP4");
             }
-            Laser_Fault_XFP4_anterior = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
+            pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][6] = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
         }
 
 
@@ -755,68 +757,7 @@ alarmas_thread(void *arg)
             y_cli_mxp_mux_notify_send((const xmlChar *)buffa);
             warning_config_actual=0;
             warning_config_anterior=0;
-            eolalm_anterior =             (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
         }
-
-
-        eolalm_anterior =             (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
-        modtempalm_anterior =         (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm;
-        txooa_anterior =              (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa;
-        txlofalm_anterior =           (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm;
-        txdscerr_anterior =           (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr;
-        lswavalm_anterior =           (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm;
-        txalmint_anterior =           (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint;
-        lsbiasalm_anterior =          (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm;
-        lstempalm_anterior =          (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm;
-        txlockerr_anterior =          (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr;
-        lspowalm_anterior =           (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm;
-        modbiasalm_anterior =         (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm;
-        latchedtxfifoerr_anterior =   (int)pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr;
-        rxalmint_anterior =           (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint;
-        rxpowalm_anterior =           (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm;
-        rxlos_anterior =              (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos;
-        rxlockerr_anterior =          (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr;
-        rxs_anterior =                (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs;
-        prbserrdet_anterior =         (int)pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet;
-        psummary_anterior =           (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary;
-        p5vanalog_anterior =          (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog;
-        n5v2analog_anterior =         (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog;
-        p3p3vanalog_anterior =        (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog;
-        p3p3vdigital_anterior =       (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital;
-        lvdigital_anterior =          (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital;
-        n5p2vdigital_anterior =       (int)pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital;
-
-        Low_Tx_Power_Alarm_XFP1_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0];
-        High_Tx_Power_Alarm_XFP1_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1];
-        Low_Rx_Power_Alarm_XFP1_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2];
-        High_Rx_Power_Alarm_XFP1_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3];
-        Rx_CDR_Loss_of_Lock_XFP1_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4];
-        Tx_CDR_Loss_of_Lock_XFP1_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5];
-        Laser_Fault_XFP1_anterior =               (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6];
-
-        Low_Tx_Power_Alarm_XFP2_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0];
-        High_Tx_Power_Alarm_XFP2_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1];
-        Low_Rx_Power_Alarm_XFP2_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2];
-        High_Rx_Power_Alarm_XFP2_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3];
-        Rx_CDR_Loss_of_Lock_XFP2_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4];
-        Tx_CDR_Loss_of_Lock_XFP2_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5];
-        Laser_Fault_XFP2_anterior =               (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6];
-
-        Low_Tx_Power_Alarm_XFP3_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0];
-        High_Tx_Power_Alarm_XFP3_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1];
-        Low_Rx_Power_Alarm_XFP3_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2];
-        High_Rx_Power_Alarm_XFP3_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3];
-        Rx_CDR_Loss_of_Lock_XFP3_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4];
-        Tx_CDR_Loss_of_Lock_XFP3_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5];
-        Laser_Fault_XFP3_anterior =               (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6];
-
-        Low_Tx_Power_Alarm_XFP4_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0];
-        High_Tx_Power_Alarm_XFP4_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1];
-        Low_Rx_Power_Alarm_XFP4_anterior =        (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2];
-        High_Rx_Power_Alarm_XFP4_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3];
-        Rx_CDR_Loss_of_Lock_XFP4_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4];
-        Tx_CDR_Loss_of_Lock_XFP4_anterior =       (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5];
-        Laser_Fault_XFP4_anterior =               (int)pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
 
         warning_config_anterior = warning_config_actual;
         initial_polling_alarms = 0;
