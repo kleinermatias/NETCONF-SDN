@@ -1,3 +1,4 @@
 **/output/*
-onos/app-altura/altura/.idea
-onos/app-altura/altura/target
+onos/app-altura/altura/.idea/*
+onos/app-altura/altura/target/*
+examples_modules/cli-mxp/libcli-mxp.so
