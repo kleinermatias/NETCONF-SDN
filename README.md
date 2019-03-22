@@ -56,7 +56,7 @@ $ yangcli --user=@user --server=@host --pass=@pass --timeout=@time_out_for_reply
 
 ## Authors
 
-* **Kleiner Matias** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Kleiner Matias** - *Initial work* 
 See also the list of [contributors](https://github.com/ragnar-l/NETCONF-SDN/graphs/contributors) who participated in this project.
 
 
