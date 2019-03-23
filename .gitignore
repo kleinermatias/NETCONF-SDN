@@ -2,3 +2,4 @@
 onos/app-altura/altura/.idea/*
 onos/app-altura/altura/target/*
 examples_modules/cli-mxp/libcli-mxp.so
+python-app/funciones.pyc
