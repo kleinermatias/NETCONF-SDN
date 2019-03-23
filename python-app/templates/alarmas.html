@@ -1,46 +1,59 @@
 <!DOCTYPE html>
 {% extends 'bootstrap/base.html' %}
-{% block cantidad_alarmas %}<div id="cantidad_alarmas_html">{{ var1  }}</div>{% endblock %}
+{% block cantidad_alarmas %}<div id="cantidad_alarmas_html">{{ cantidad_alarmas  }}</div>{% endblock %}
 <!-- Content -->
 {% block content %}
 
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">   
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <script src="static/js/fin2222.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script src="static/js/alarmas.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
 </head>
+
 <body>
 
-<div class="container">
-		<hr />
+  <div class="container">
+    <hr />
     <form action="/alarmas" method="POST">
-        <div class="form-group">
-          <div class="input-group">
-              <span class="input-group-text" id="basic-addon1">Filtro</span>
-                  <select name="comp_select" id="comp_select" class="selectpicker form-control" style="width:auto;">  
-                    <option value="" selected>Todos los dispositivos</option>
-                    {% for devices in devices %}
-                    <option>{{ devices }}</option>
-                    {% endfor %}
-                  </select>
-                  <button type="submit" name="btngo" id="btngo" class="btn btn-primary">GO</button>
-          </div>
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Filtrar por dispositivo</span>
+          <select name="dispositivo_seleccionado_alarmas" id="dispositivo_seleccionado_alarmas"
+            class="selectpicker form-control" style="width:auto;">
+            <option value="" selected>Todos los dispositivos</option>
+            {% for devices in devices %}
+            <option>{{ devices }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" name="btngo" id="btngo" class="btn btn-primary">FILTRAR</button>
         </div>
-      </form>
+      </div>
+    </form>
   </div>
-  
 
 
-<div id="loga"><table class="table"> <thead-dark> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> </div>
+
+  <div id="tabla_alarmas">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">ALARM_ID</th>
+          <th scope="col">ALARM_DESCRIPCION</th>
+          <th scope="col">ALARM_DEVICE</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 
 
-{% endblock %}
-
+  {% endblock %}

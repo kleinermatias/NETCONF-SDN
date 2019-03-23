@@ -1,20 +1,20 @@
-
 <!-- Navigation Bar -->
 {% block navbar %}
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="/">
-          ALTURA APP MXP40GB
-        </a>
-			</div>
-			<a class="nav-link" href="/configuracion">CONFIGURACION <span class="sr-only">(current)</span></a>
-			<a class="nav-link" href="/alarmas">ALARMAS <span class="badge badge-danger">{% block cantidad_alarmas %}{% endblock %}</span></a>
-			<a class="nav-link" href="#">ESTADO <span class="sr-only">(current)</span></a>
-			<a class="nav-link" href="/perfiles">PERFILES <span class="sr-only">(current)</span></a>
-			<a class="nav-link" href="/topologia">TOPOLOGIA <span class="sr-only">(current)</span></a>
+<nav class="navbar navbar-light" style="background-color: #002a47;">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="/" style="color: #ffffff;"><img src="static/a.png" alt=""> 
+				GUI ALTURA - MXP
+			</a>
 		</div>
-	</nav>
+		<a class="nav-link" href="/configuracion">CONFIGURACION <span class="sr-only">(current)</span></a>
+		<a class="nav-link" href="/alarmas">ALARMAS <span
+				class="badge badge-danger">{% block cantidad_alarmas %}{% endblock %}</span></a>
+		<a class="nav-link" href="#">ESTADO <span class="sr-only">(current)</span></a>
+		<a class="nav-link" href="/perfiles">PERFILES <span class="sr-only">(current)</span></a>
+		<a class="nav-link" href="/topologia">TOPOLOGIA <span class="sr-only">(current)</span></a>
+	</div>
+</nav>
 {% endblock %}
 
 
