@@ -72,7 +72,7 @@ class AlarmsThread(Thread):
 
 class ConfigThread(Thread):
     def __init__(self):
-        self.delay = 5
+        self.delay = 2
         super(ConfigThread, self).__init__()
 
     def config_check(self):
@@ -131,11 +131,13 @@ def test_disconnect():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
-    selected_device = ""
 
+    selected_device = ""
+    mutex.release()
     devices = funciones.get_devices()
     #
     nombre_perfil = []
@@ -156,13 +158,14 @@ def index():
 
 @app.route('/boton_config', methods=['GET', 'POST'])
 def boton_config():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
+    
     devices = funciones.get_devices()
 
-    selected_device = ""
 
     if request.method == 'POST':
         selected_device = request.form.getlist(
@@ -209,7 +212,8 @@ def boton_config():
             funciones.rpc_apply_config(str(x))
 
         selected_device = ""
-
+    
+    mutex.release()
     return render_template('index.html',
                            warning_alarm_event=warning_alarm_event, devices=devices, cantidad_alarmas=cantidad_de_alarmas,
                            linklogico=2, perfiles=nombre_perfil)
@@ -217,11 +221,12 @@ def boton_config():
 
 @app.route('/boton_agregar_dispositivo', methods=['GET', 'POST'])
 def boton_agregar_dispositivo():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
-
+    mutex.release()
     headers = {'Accept': 'application/json', }
     ip = request.form['ip']
     port = request.form['puerto']
@@ -256,19 +261,12 @@ def boton_agregar_dispositivo():
         nombre_perfil.append(mensaje[7:mensaje.find(",")])
 
     f.close()
-    #
-    warning_alarm_event = 2
     json_data = json.dumps(data)
     devices = funciones.get_devices()
 
-    alarmas = funciones.get_alarms_as_array(funciones.get_alarms_as_json(""))
-    cantidad_alarmas = len(alarmas)
-    for x in alarmas:
-        if("WARNING CONFIG" in x):
-            warning_alarm_event = 2
-        else:
-            warning_alarm_event = 1
-    funciones.estado_link_logico()
+   
+    
+    
     if request.method == 'POST':
         f = open('device_append_onos.json', 'w')
         f.write(json_data)
@@ -284,11 +282,12 @@ def boton_agregar_dispositivo():
 
 @app.route('/configuracion', methods=['GET', 'POST'])
 def configuracion():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
-
+    
     devices = funciones.get_devices()
 
     configuracion = []
@@ -302,13 +301,14 @@ def configuracion():
         dev = []
         dev.append(selected_device)
         configuracion = funciones.config_all(dev)
-
+    mutex.release()
     return render_template('configuracion.html',
                            devices=devices, cantidad_alarmas=cantidad_de_alarmas, configuracion=configuracion)
 
 
 @app.route('/alarmas', methods=['GET', 'POST'])
 def alarma():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
@@ -320,17 +320,19 @@ def alarma():
         selected_device = request.form['dispositivo_seleccionado_alarmas']
     alarmas = funciones.get_alarms_as_array(
         funciones.get_alarms_as_json(selected_device))
-
+    mutex.release()
     return render_template('alarmas.html',
                            devices=devices, alarmas=alarmas, cantidad_alarmas=cantidad_de_alarmas)
 
 
 @app.route('/perfiles', methods=['GET', 'POST'])
 def perfiles():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
+    mutex.release()
     nombre_perfil = []
     f = open('perfiles', 'r')
     while True:
@@ -387,10 +389,12 @@ def perfiles():
 
 @app.route('/boton_eliminar_config', methods=['GET', 'POST'])
 def boton_eliminar_config():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
+    mutex.release()
     tipo_trafico = []
     tipo_fec_linea = []
     tipo_fec_cliente = []
@@ -432,11 +436,12 @@ def boton_eliminar_config():
 
 @app.route('/boton_mostrar_config', methods=['GET', 'POST'])
 def boton_mostrar_config():
-    #
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
+    mutex.release()
     tipo_trafico = []
     tipo_fec_linea = []
     tipo_fec_cliente = []
@@ -478,10 +483,12 @@ def boton_mostrar_config():
 
 @app.route('/topologia', methods=['GET', 'POST'])
 def topologia():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
+    mutex.release()
     devices = funciones.get_devices()
     other_devices = funciones.get_devices_others()
 
@@ -491,10 +498,12 @@ def topologia():
 
 @app.route('/boton_agregar_vecinos', methods=['GET', 'POST'])
 def boton_agregar_vecinos():
+    mutex.acquire()
     global cantidad_de_alarmas
     global warning_alarm_event
     global selected_device
     selected_device = ""
+    mutex.release()
     if request.method == 'POST':
         dispositivo_1 = request.form['disp1']
         dispositivo_2 = request.form['disp2']
@@ -502,12 +511,14 @@ def boton_agregar_vecinos():
         serial_1 = funciones.uri_to_serial_number(dispositivo_1)
         headers = {'Accept': 'application/json', }
 
+        try:
+            response = requests.put('http://172.16.0.221:8181/onos/altura/SET/Neighbor/'+str(
+                dispositivo_1)+",0,"+str(serial_2)+",1", headers=headers, auth=('karaf', 'karaf'))
+            response = requests.put('http://172.16.0.221:8181/onos/altura/SET/Neighbor/'+str(
+                dispositivo_2)+",1,"+str(serial_1)+",0", headers=headers, auth=('karaf', 'karaf'))
+        except:
+            print("Error en agregar vecinos, dispositivo no se termino de conectar o no fue encontrado")
         
-        response = requests.put('http://172.16.0.221:8181/onos/altura/SET/Neighbor/'+str(
-            dispositivo_1)+",0,"+str(serial_2)+",1", headers=headers, auth=('karaf', 'karaf'))
-        response = requests.put('http://172.16.0.221:8181/onos/altura/SET/Neighbor/'+str(
-            dispositivo_2)+",1,"+str(serial_1)+",0", headers=headers, auth=('karaf', 'karaf'))
-
     devices = funciones.get_devices()
 
     return render_template('topologia.html',
