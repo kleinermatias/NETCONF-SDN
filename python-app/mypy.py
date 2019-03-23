@@ -3,213 +3,154 @@ from flask_bootstrap import Bootstrap
 import json
 import requests
 import re
+import funciones
+from flask_socketio import SocketIO, emit
+from flask import url_for, copy_current_request_context
+from random import random
+from time import sleep
+from threading import Thread, Event, Lock
 
-
-#globales
-dispositivo_seleccionado = ""
-devices = [] #armo lista de dispositivos
-alarmas = [] #armo lista de alarmas
-perfiles = [] #armo lista de alarmas
-matches = []
-parejas = []
-cantidad_alarmas = 0
-cantidad_link_logico = 0
-headers = {
-    'Accept': 'application/json',
-}
-
-params = (
-        ('devId', ""),
-    )
 
 recipes_blueprint = Blueprint('index', __name__, template_folder='templates')
 
-#globales
-
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
 bootstrap = Bootstrap(app)
 
-def dispositivos():
-    global devices
-    devices = [] #armo lista de dispositivos
-    response = requests.get('http://localhost:8181/onos/v1/devices', headers=headers, auth=('karaf', 'karaf')).text
-    data = json.loads(response) #paso respuesta del curl a json
-    cantidad_dispositivos = len(data["devices"]) #obtengo la cantidad de los dispositivos
-    for x in range(0, cantidad_dispositivos):
-        if("netconf" in data["devices"][x]["id"]):
-            devices.append(data["devices"][x]["id"]) #en la lista de los dispositivos, guardo los diferentes id
-    return devices
+#turn the flask app into a socketio app
+socketio = SocketIO(app)
 
-def alarms():
-    global params
-    global alarmas
-    global cantidad_alarmas
-    alarmas = requests.get('http://localhost:8181/onos/v1/fm/alarms', headers=headers, params=params, auth=('karaf', 'karaf')).text
-    data_alarm = json.loads(alarmas) #paso respuesta del curl a json
-    cantidad_alarmas = len(data_alarm["alarms"]) #obtengo la cantidad de los dispositivos
-    alarmas = []
-    for x in range(0, cantidad_alarmas):
-        alarmas.append(data_alarm["alarms"][x]["id"])
-    return alarmas    
+#random number Generator Thread
+cant_alarms = 0
+select_device = ""
+thread1 = Thread()
+thread2 = Thread()
+thread_stop_event = Event()
+mutex = Lock()
+warning_alarm = 1
 
-def config_all(bool,name):
-    global params
-    global alarmas
-    global devices
-    global matches
-    matches = []
-    if(bool==True):
-        for x in devices:
-            params = (
-                ('devId', str(x)),
-            )
-            config = requests.get('http://localhost:8181/onos/altura/GET/Config%20Data/'+str(x), headers=headers, params=params, auth=('karaf', 'karaf')).text
-            tipo_trafico = "TIPO DE TRAFICO: "+config[(config.index("<tipo_trafico>")+len("<tipo_trafico>")):config.index("</tipo_trafico>")]
-            tipo_fec_linea = "TIPO FEC LINEA: "+config[(config.index("<tipo_fec_linea>")+len("<tipo_fec_linea>")):config.index("</tipo_fec_linea>")]
-            tipo_fec_cliente = "TIPO FEC CLIENTE: "+config[(config.index("<tipo_fec_cliente>")+len("<tipo_fec_cliente>")):config.index("</tipo_fec_cliente>")]
-            vecino = "VECINO: "+config[(config.index("<deviceneighbors>")+len("<deviceneighbors>")):config.index("</deviceneighbors>")]
-            matches.append(tipo_trafico)
-            matches.append(tipo_fec_linea)
-            matches.append(tipo_fec_cliente)
-            matches.append(vecino)
-    else:
-        params = (
-                ('devId', name),
-            )
-        config = requests.get('http://localhost:8181/onos/altura/GET/Config%20Data/'+name, headers=headers, params=params, auth=('karaf', 'karaf')).text
-        tipo_trafico = "TIPO DE TRAFICO: "+config[(config.index("<tipo_trafico>")+len("<tipo_trafico>")):config.index("</tipo_trafico>")]
-        tipo_fec_linea = "TIPO FEC LINEA: "+config[(config.index("<tipo_fec_linea>")+len("<tipo_fec_linea>")):config.index("</tipo_fec_linea>")]
-        tipo_fec_cliente = "TIPO FEC CLIENTE: "+config[(config.index("<tipo_fec_cliente>")+len("<tipo_fec_cliente>")):config.index("</tipo_fec_cliente>")]
-        vecino = "VECINO: "+config[(config.index("<deviceneighbors>")+len("<deviceneighbors>")):config.index("</deviceneighbors>")]
-        matches.append(tipo_trafico)
-        matches.append(tipo_fec_linea)
-        matches.append(tipo_fec_cliente)
-        matches.append(vecino)
+class RandomThread(Thread):
+    def __init__(self):
+        self.delay = 1
+        super(RandomThread, self).__init__()
 
-def config_tipo_trafico(tipo,device):
-    global params
-    global alarmas
-    global devices
-    global matches
-    config = requests.put('http://localhost:8181/onos/altura/SET/Tipo%20de%20Trafico/'+str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
+    def randomNumberGenerator(self):
+        global warning_alarm
+        global cant_alarms
+        global select_device
+        """
+        Generate a random number every 1 second and emit to a socketio instance (broadcast)
+        Ideally to be run in a separate thread?
+        """
+        while not thread_stop_event.isSet():
+            mutex.acquire()
+            try:
+                warning_alarm = 1
+                alarmas_totales,alarmas_json = funciones.get_alarms(select_device)
+                cant_alarms=len(alarmas_totales)
+               
+                
+                
+                
+                socketio.emit('cantidad_alarmas_socket', {'cant_alarms': cant_alarms}, namespace='/test')
+                for x in alarmas_totales:
+                    if("ING" in x):
+                        warning_alarm = 2
+                
+                socketio.emit('alarms_socket', {'alarmaaaa': alarmas_json}, namespace='/test')   
+                sleep(1)
+                socketio.emit('warning_alarm_socket', {'warning_alarm': warning_alarm}, namespace='/test')
+                sleep(self.delay)
+            finally:
+                mutex.release()
+            
 
-def config_tipo_linea(tipo,device):
-    global params
-    global alarmas
-    global devices
-    global matches
-    config = requests.put('http://localhost:8181/onos/altura/SET/Tipo%20Fec%20de%20linea/'+str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
+    def run(self):
+        self.randomNumberGenerator()
 
-def config_tipo_cliente(tipo,device):
-    global params
-    global alarmas
-    global devices
-    global matches
-    config = requests.put('http://localhost:8181/onos/altura/SET/Tipo%20Fec%20de%20Cliente/'+str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
+class DevicesThread(Thread):
+    def __init__(self):
+        self.delay = 5
+        super(DevicesThread, self).__init__()
 
-def rpc_apply_config(device):
-    global params
-    global alarmas
-    global devices
-    global matches
-    config = requests.put('http://localhost:8181/onos/altura/RPC/Apply%20Config/'+str(device), headers=headers, auth=('karaf', 'karaf')).text
-
-def pareja_dispositivos(device):
-    global params
-    global alarmas
-    global devices
-    global matches
-    global parejas
-    config = requests.get('http://localhost:8181/onos/altura/GET/Config%20Data/'+str(device), headers=headers, auth=('karaf', 'karaf')).text
-
-def estado_link_logico():
-    global params
-    global alarmas
-    global devices
-    global matches
-    global parejas
-    global cantidad_link_logico
-    config = requests.get('http://localhost:8181/onos/v1/links', headers=headers, auth=('karaf', 'karaf')).text
-    data_link = json.loads(config) #paso respuesta del curl a json
-    cantidad_links = len(data_link["links"]) #obtengo la cantidad de los dispositivos
-    links = []
-    for x in range(0, cantidad_links):
-        if("DIRECT" in data_link["links"][x]["type"]):
-            links.append(data_link["links"][x])
-    cantidad_link_logico=len(links)
+    def getDevices(self):
+        """
+        get all Devices in ONOS
+        """
+        while not thread_stop_event.isSet():
+            mutex.acquire()
+            devices = funciones.get_devices()
+            socketio.emit('devices_socket', {'devices': devices}, namespace='/test')  
+            mutex.release()          
+            sleep(self.delay)
 
 
+    def run(self):
+        self.getDevices()
 
-#funcion que me retorna el numero de serie de una uri dada de dispositivo.
-def uri_to_serial_number(device):
-    global devices
-    serial_number = ""
-    devices = [] #armo lista de dispositivos
-    response = requests.get('http://localhost:8181/onos/v1/devices', headers=headers, auth=('karaf', 'karaf')).text
-    data = json.loads(response) #paso respuesta del curl a json
-    cantidad_dispositivos = len(data["devices"]) #obtengo la cantidad de los dispositivos
-    for x in range(0, cantidad_dispositivos):
-        if(device in data["devices"][x]["id"]):
-            serial_number=data["devices"][x]["serial"]
-    return serial_number
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    # need visibility of the global thread object
+    global thread1
+    global thread2
+    print('Client connected')
+
+    #Start the random number generator thread only if the thread has not been started before.
+    if not thread1.isAlive():
+        print("Starting Thread")
+        thread1 = RandomThread()
+        thread1.start()
+    
+    if not thread2.isAlive():
+        print("Starting Thread")
+        thread2 = DevicesThread()
+        thread2.start()
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
 
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-    global cantidad_alarmas
-    estadoconfig = 1
+    global cant_alarms
     dispositivo_seleccionado=""
-    params = (
-                ('devId', dispositivo_seleccionado),
-            )
-    devices = dispositivos()
-    alarmas = alarms()
-
+    devices = funciones.get_devices()
     #
     nombre_perfil = []
     f = open ('perfiles','r')
     while True:
         mensaje = f.readline()
         if not mensaje: break
-        nombre_perfil.append(mensaje[7:mensaje.find(",")]) # 7 porque ahi termina el string nombre=
-        
+        nombre_perfil.append(mensaje[7:mensaje.find(",")]) # 7 porque ahi termina el string nombre
     f.close()
     #
 
-    estado_link_logico()
     if request.method == 'POST':
         dispositivo_seleccionado = request.form['selecta']
-    for x in alarmas:
-        if("WARNING CONFIG" in x):
-            estadoconfig = 2
-    return render_template('index.html', devices=devices, id_devices_html=devices, 
-    alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico,
-    estadoconfig=estadoconfig,
-    perfiles=nombre_perfil)
+    
+    return render_template('index.html',
+    devices=devices, estadoconfig=warning_alarm, var1=cant_alarms,
+    linklogico=2, perfiles=nombre_perfil)
 
 
 @app.route('/boton_config', methods=['GET','POST'])
 def boton_config():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-    global cantidad_alarmas
-    estadoconfig = 1
     dispositivo_seleccionado=""
-    params = (
-                ('devId', dispositivo_seleccionado),
-            )
-    devices = dispositivos()
-    alarmas = alarms()
-    estado_link_logico()
+    devices = funciones.get_devices()
+    null = ""
+    alarmas,null = funciones.get_alarms("")
+    cantidad_alarmas = len(alarmas)
+    funciones.estado_link_logico()
     
+    for x in alarmas:
+        if("ING" in x):
+            estadoconfig = 2
+            print "ing"
+            break
+        else:
+            estadoconfig = 1
+
     if request.method == 'POST':
         dispositivo_seleccionado = request.form.getlist('selecta')
         perfil = request.form['comp_select_perfil']
@@ -236,38 +177,25 @@ def boton_config():
                 numero = (mensaje[:mensaje.find("tipo_fec_cliente=")]) 
                 tipo_fec_cliente = mensaje[len(numero)+len("tipo_fec_cliente="):mensaje.find(",",len(numero))] 
         f.close()
-        #
         
         for x in dispositivo_seleccionado:
             
-            config_tipo_trafico(tipo_trafico, str(x) )
-            config_tipo_linea(tipo_fec_linea, str(x) )
-            config_tipo_cliente(tipo_fec_cliente, str(x) )
+            funciones.config_tipo_trafico(tipo_trafico, str(x) )
+            funciones.config_tipo_linea(tipo_fec_linea, str(x) )
+            funciones.config_tipo_cliente(tipo_fec_cliente, str(x) )
         
         for x in dispositivo_seleccionado:
-            rpc_apply_config( str(x) )
-    #print dispositivo_seleccionado
-    alarmas = alarms()
-    for x in alarmas:
-        if("WARNING CONFIG" in x):
-            estadoconfig = 2
-        
-    return render_template('index.html',estadoconfig=estadoconfig ,devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico,
-    perfiles=nombre_perfil)
+            funciones.rpc_apply_config( str(x) )
+
+    return render_template('index.html',
+    estadoconfig=estadoconfig ,devices=devices, cantidad_alarmas=cantidad_alarmas, 
+    linklogico=2, perfiles=nombre_perfil)
 
 
 @app.route('/boton_agregar_dispositivo', methods=['GET','POST'])
 def boton_agregar_dispositivo():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-    global cantidad_alarmas
+    headers = {'Accept': 'application/json',}
     dispositivo_seleccionado=""
-    params = (
-                ('devId', dispositivo_seleccionado),
-            )
     ip=request.form['ip']
     port=request.form['puerto']
     data = {
@@ -299,80 +227,72 @@ def boton_agregar_dispositivo():
         
     f.close()
     #
-
+    estadoconfig = 2
     json_data = json.dumps(data)
-    devices = dispositivos()
-    alarmas = alarms()
-    estado_link_logico()
+    devices = funciones.get_devices()
+    null = ""
+    alarmas,null = funciones.get_alarms("")
+    cantidad_alarmas = len(alarmas)
+    for x in alarmas:
+        if("WARNING CONFIG" in x):
+            estadoconfig = 2
+        else:
+            estadoconfig = 1
+    funciones.estado_link_logico()
     if request.method == 'POST':
         f = open ('holamundo.json','w')
         f.write(json_data)
         f.close()
         data = open('holamundo.json')
         response = requests.post('http://localhost:8181/onos/v1/network/configuration', headers=headers, data=data, auth=('onos', 'rocks'))
-    return render_template('index.html', devices=devices, id_devices_html=devices, alarmas=alarmas , configuracion=matches , var1=cantidad_alarmas, linklogico=cantidad_link_logico,
-    perfiles=nombre_perfil)
+    
+    return render_template('index.html',
+    estadoconfig=estadoconfig ,devices=devices, cantidad_alarmas=cantidad_alarmas, 
+    linklogico=2, perfiles=nombre_perfil)
 
 
 
 @app.route('/configuracion', methods=['GET','POST'])
 def configuracion():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
+    al=[]
+    n=""
+    al,n =funciones.get_alarms("")
+    cantidad_alarmas = len(al)
     dispositivo_seleccionado=""
-    devices = dispositivos()
-    #
-    nombre_perfil = []
-    f = open ('perfiles','r')
-    while True:
-        mensaje = f.readline()
-        if not mensaje: break
-        nombre_perfil.append(mensaje[7:mensaje.find(",")]) # 7 porque ahi termina el string nombre=
-        
-    f.close()
-    #
+    devices = funciones.get_devices()
+    
+    
+    configuracion = []
     if request.method == 'POST':
         dispositivo_seleccionado = request.form['comp_select']
         if dispositivo_seleccionado == 'Choose here':
             dispositivo_seleccionado = 0
     if (dispositivo_seleccionado==0) | (dispositivo_seleccionado==""):
-        config_all(True,"")
+        configuracion = funciones.config_all(funciones.get_devices())
     else:
-        config_all(False,str(dispositivo_seleccionado))   
-    return render_template('configuracion.html', devices=devices, id_devices_html=devices , configuracion=matches,
-    perfiles=nombre_perfil)
+        dev = []
+        dev.append(dispositivo_seleccionado)
+        configuracion = funciones.config_all(dev)   
+    return render_template('configuracion.html', 
+    devices=devices, var1=cantidad_alarmas, configuracion=configuracion)
 
 
 @app.route('/alarmas', methods=['GET','POST'])
 def alarma():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-    global cantidad_alarmas
-    dispositivo_seleccionado=""
-    devices = dispositivos()
+    global select_device
+    select_device=""
+    devices = funciones.get_devices()
     if request.method == 'POST':
-        dispositivo_seleccionado = request.form['comp_select']
-        params = (
-                ('devId', dispositivo_seleccionado),
-            )
-    alarmas = alarms()   
-    return render_template('alarmas.html', devices=devices, id_devices_html=devices , alarmas=alarmas,var1=cantidad_alarmas)
+        select_device = request.form['comp_select']
+    n=""
+    alarmas,n = funciones.get_alarms("") 
+    cantidad_alarmas = len (alarmas)  
+    return render_template('alarmas.html',
+    devices=devices, alarmas=alarmas, var1=cantidad_alarmas)
 
 @app.route('/perfiles', methods=['GET','POST'])
 def perfiles():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-
-    #
+    
     nombre_perfil = []
     f = open ('perfiles','r')
     while True:
@@ -388,11 +308,9 @@ def perfiles():
     if request.method == 'POST':
         nombre = request.form['nombre_perfil']
         if nombre not in nombre_perfil:
-            print "no esta!"
             comp_select_ttrafico = request.form['comp_select_ttrafico']
             comp_select_tflinea = request.form['comp_select_tflinea']
             comp_select_tfcliente = request.form['comp_select_tfcliente']
-            print comp_select_ttrafico
             f = open ('perfiles','a')
             
             f.write('nombre=')
@@ -419,22 +337,15 @@ def perfiles():
         nombre_perfil.append(mensaje[7:mensaje.find(",")]) # 7 porque ahi termina el string nombre=
     f.close()
     #    
-    dispositivo_seleccionado=""
-    devices = dispositivos()
     
-    alarmas = alarms()   
-    return render_template('perfiles.html', devices=devices, id_devices_html=devices , alarmas=alarmas,
-    perfiles=nombre_perfil, tipo_trafico=tipo_trafico, tipo_fec_linea=tipo_fec_linea, tipo_fec_cliente=tipo_fec_cliente)
+    cantidad_alarmas=len(funciones.get_alarms(""))
+
+    return render_template('perfiles.html', 
+    var1=cantidad_alarmas, perfiles=nombre_perfil, tipo_trafico=tipo_trafico, 
+    tipo_fec_linea=tipo_fec_linea, tipo_fec_cliente=tipo_fec_cliente)
 
 @app.route('/boton_eliminar_config', methods=['GET','POST'])
 def boton_eliminar_config():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-    
-    #
     tipo_trafico = []
     tipo_fec_linea = []
     tipo_fec_cliente = []
@@ -466,22 +377,13 @@ def boton_eliminar_config():
         nombre_perfil.append(mensaje[7:mensaje.find(",")]) # 7 porque ahi termina el string nombre=
         
     f.close()
-    dispositivo_seleccionado=""
-    devices = dispositivos()
-    
-    alarmas = alarms()   
-    return render_template('perfiles.html', devices=devices, id_devices_html=devices , alarmas=alarmas,
-    perfiles=nombre_perfil, tipo_trafico=tipo_trafico, tipo_fec_linea=tipo_fec_linea, tipo_fec_cliente=tipo_fec_cliente)
-
+    cantidad_alarmas = len(funciones.get_alarms(""))   
+    return render_template('perfiles.html', 
+    var1=cantidad_alarmas, perfiles=nombre_perfil, tipo_trafico=tipo_trafico, 
+    tipo_fec_linea=tipo_fec_linea, tipo_fec_cliente=tipo_fec_cliente)
 
 @app.route('/boton_mostrar_config', methods=['GET','POST'])
 def boton_mostrar_config():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-    
     #
     tipo_trafico = []
     tipo_fec_linea = []
@@ -509,46 +411,31 @@ def boton_mostrar_config():
         nombre_perfil.append(mensaje[7:mensaje.find(",")]) # 7 porque ahi termina el string nombre=
         
     f.close()
-    dispositivo_seleccionado=""
-    devices = dispositivos()
-    
-    alarmas = alarms()   
-    return render_template('perfiles.html', devices=devices, id_devices_html=devices , alarmas=alarmas,
-    perfiles=nombre_perfil, tipo_trafico=tipo_trafico, tipo_fec_linea=tipo_fec_linea, tipo_fec_cliente=tipo_fec_cliente)
+    cantidad_alarmas = len(funciones.get_alarms(""))
+
+    return render_template('perfiles.html', 
+    var1=cantidad_alarmas, perfiles=nombre_perfil, tipo_trafico=tipo_trafico, 
+    tipo_fec_linea=tipo_fec_linea, tipo_fec_cliente=tipo_fec_cliente)
+
 
 @app.route('/topologia', methods=['GET','POST'])
 def topologia():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-     
-    dispositivo_seleccionado=""
-    devices = dispositivos()
-    
-    alarmas = alarms()   
-    return render_template('topologia.html', devices=devices, id_devices_html=devices , alarmas=alarmas)
+    devices = funciones.get_devices()
+    other_devices = funciones.get_devices_others()
+    cantidad_alarmas = len(funciones.get_alarms(""))  
+    return render_template('topologia.html', 
+    devices=devices, var1=cantidad_alarmas, other_devices=other_devices)
 
 @app.route('/boton_agregar_vecinos', methods=['GET','POST'])
 def boton_agregar_vecinos():
-    global devices
-    global dispositivo_seleccionado
-    global params
-    global alarmas
-    global matches
-
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-    }
-
     if request.method == 'POST':
         dispositivo_1 = request.form['disp1']
         funcion = request.form['funcion']
         dispositivo_2 = request.form['disp2']
-        serial_2=uri_to_serial_number(dispositivo_2)
-        serial_1=uri_to_serial_number(dispositivo_1)
+        serial_2=funciones.uri_to_serial_number(dispositivo_2)
+        serial_1=funciones.uri_to_serial_number(dispositivo_1)
+        headers = {'Accept': 'application/json',}
+        
         if funcion=="item_1":
             #el dispositivo 1 transmite al 2
             response = requests.put('http://localhost:8181/onos/altura/SET/Neighbor/'+str(dispositivo_1)+",0,"+str(serial_2)+",1", headers=headers, auth=('karaf', 'karaf'))
@@ -562,14 +449,12 @@ def boton_agregar_vecinos():
             response = requests.put('http://localhost:8181/onos/altura/SET/Neighbor/'+str(dispositivo_1)+",0,"+str(serial_2)+",1", headers=headers, auth=('karaf', 'karaf'))
             response = requests.put('http://localhost:8181/onos/altura/SET/Neighbor/'+str(dispositivo_2)+",1,"+str(serial_1)+",0", headers=headers, auth=('karaf', 'karaf'))
 
-
-    dispositivo_seleccionado=""
-    devices = dispositivos()
+    devices = funciones.get_devices()
     
-    alarmas = alarms()   
-    return render_template('topologia.html', devices=devices, id_devices_html=devices , alarmas=alarmas
-    )
+    cantidad_alarmas = len(funciones.get_alarms(""))   
+    return render_template('topologia.html', 
+    devices=devices, var1=cantidad_alarmas)
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	socketio.run(app)

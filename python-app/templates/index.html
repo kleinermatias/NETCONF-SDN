@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 {% extends 'bootstrap/base.html' %}
-
-{% block cantidad_alarmas %}2{% endblock %}
+{% block cantidad_alarmas %}<div id="cantidad_alarmas_html">{{ var1  }}</div>{% endblock %}
 <!-- Content -->
 {% block content %}
 
@@ -9,6 +8,9 @@
 <head>
   <meta charset="utf-8">   
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="static/js/fin2222.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -30,6 +32,7 @@
 
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/i18n/defaults-*.min.js"></script>
+
 
 </head>
 <body>
@@ -79,10 +82,10 @@
 
 <div class="container" id="test">
             <div class="row">
-          <div class="col-sm-4">
+          <div class="col-sm-4" id=warning_alarm_html>
               {% if estadoconfig != 2 %}
                 <div class="card border-success mb-3" style="max-width: 20rem;">
-                  <div class="card-header"><img class="card-img" style="width:10%" src="static/config.png" alt="Card image"><center>Estado de la configuracion</center></div>
+                  <div class="card-header"><center>Estado de la configuracion</center></div>
                   <div class="card-body text-success">
                     <h5 class="card-title">Success!</h5>
                     <p class="card-text">Los dispositivos tienen la misma configuracion aplicada.</p>
@@ -90,7 +93,7 @@
                 </div>
                 {% elif estadoconfig == 2 %}
                 <div class="card border-warning mb-3" style="max-width: 20rem;">
-                    <div class="card-header"><img class="card-img" style="width:10%" src="static/config.png" alt="Card image"><center>Estado de la configuracion</center></div>
+                    <div class="card-header"><center>Estado de la configuracion</center></div>
                     <div class="card-body text-warning">
                       <h5 class="card-title">Warning!</h5>
                       <p class="card-text">La configuracion entre los dispositivos es inconsistente.</p>
@@ -102,7 +105,7 @@
           <div class="col-sm-4" id="links">
               {% if linklogico != 2 %}
                 <div class="card border-danger mb-3" style="max-width: 20rem;">
-                  <div class="card-header"><img class="card-img" style="width:10%" src="static/links.png" alt="Card image"><center>Links</center></div>
+                  <div class="card-header"><center>Links</center></div>
                   <div class="card-body text-danger">
                     <h5 class="card-title">Ooops!</h5>
                     <p class="card-text">El enlace logico no esta presente. No existe conectividad entre clientes.</p>
@@ -110,7 +113,7 @@
                 </div>
                 {% elif linklogico == 2 %}
                   <div class="card border-success mb-3" style="max-width: 20rem;">
-                    <div class="card-header"><img class="card-img" style="width:10%" src="static/links.png" alt="Card image"><center>Links</center></div>
+                    <div class="card-header"><center>Links</center></div>
                     <div class="card-body text-success">
                       <h5 class="card-title">Success!</h5>
                       <p class="card-text">El enlace logico esta presente. Existe conectividad entre clientes.</p>
@@ -119,18 +122,18 @@
                 {% endif %}
           </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-4" id=alarms_card_html>
               {% if var1 != 0 %}
               <div class="card border-danger mb-3" style="max-width: 20rem;">
-                <div class="card-header"><img class="card-img" style="width:10%" src="static/alarm.png" alt="Card image"><center>Alarmas</center></div>
+                <div class="card-header"><center>Alarmas</center></div>
                 <div class="card-body text-danger">
                   <h5 class="card-title">Ooops!</h5>
-                  <p class="card-text">Algunos dispositivos podrian contener alarmas. {{ var1 }} alarmas en total.</p>
+                  <p class="card-text">Algunos dispositivos podrian contener alarmas. Alarmas en total: {{ var1 }}.</p>
                 </div>
               </div>
               {% elif var1 == 0 %}
               <div class="card border-success mb-3" style="max-width: 20rem;">
-                  <div class="card-header"><img class="card-img" style="width:10%" src="static/alarm.png" alt="Card image"><center>Alarmas</center></div>
+                  <div class="card-header"><center>Alarmas</center></div>
                   <div class="card-body text-success">
                     <h5 class="card-title">Success!</h5>
                     <p class="card-text">No hay alarmas presentes en los dispositivos.</p>
@@ -171,5 +174,4 @@
 
 
 {% endblock %}
-
 

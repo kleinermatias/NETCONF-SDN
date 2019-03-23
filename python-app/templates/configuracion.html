@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% extends 'bootstrap/base.html' %}
-
+{% block cantidad_alarmas %}{{ var1  }}{% endblock %}
 <!-- Content -->
 {% block content %}
 
@@ -24,13 +24,13 @@
               <span class="input-group-text" id="basic-addon1">Filtro</span>
                   <select name="comp_select" id="comp_select" class="selectpicker form-control" style="width:auto;">  
                     <option value="" selected>Todos los dispositivos</option>
-                    {% for id_devices_html in devices %}
-                    <option>{{ id_devices_html }}</option>
+                    {% for devices in devices %}
+                    <option>{{ devices }}</option>
                     {% endfor %}
                   </select>
                   <button type="submit" name="btngo" id="btngo" class="btn btn-primary">GO</button>
           </div>
-        </div>
+        </div>  
       </form>
   </div>
   

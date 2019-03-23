@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% extends 'bootstrap/base.html' %}
-{% block cantidad_alarmas %}2{% endblock %}
+{% block cantidad_alarmas %}{{ var1  }}{% endblock %}
 <!-- Content -->
 {% block content %}
 
@@ -39,8 +39,8 @@
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1" style="width:200px;">Dispositivo 1</span>
                     <select name="disp1" id="disp1" class="input-xlarge">
-                      {% for id_devices_html in devices %}
-                      <option>{{ id_devices_html }}</option>
+                      {% for devices in devices %}
+                      <option>{{ devices }}</option>
                       {% endfor %}
                     </select>
                 </div>
@@ -59,8 +59,8 @@
                 <div class="input-group">
                     <span class="input-group-text" id="basic-addon1" style="width:200px;">Dispositivo 2</span>
                     <select name="disp2" id="disp2" class="input-xlarge">
-                      {% for id_devices_html in devices %}
-                      <option>{{ id_devices_html }}</option>
+                      {% for devices in devices %}
+                      <option>{{ devices }}</option>
                       {% endfor %}
                     </select>
                     
