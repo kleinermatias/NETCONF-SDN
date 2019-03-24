@@ -58,7 +58,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.onosproject:onos-api:tests:1.13.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.scr.annotations:1.9.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.ws.rs:javax.ws.rs-api:2.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.onosproject:onos-rest:1.13.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.onosproject:onos-incubator-api:1.13.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.karaf.shell:org.apache.karaf.shell.console:3.0.8" level="project" />
