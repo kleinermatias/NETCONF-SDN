@@ -526,4 +526,4 @@ def boton_agregar_vecinos():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app.run(host='0.0.0.0'))
