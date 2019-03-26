@@ -52,6 +52,16 @@
           <th scope="col">ALARM_DEVICE</th>
         </tr>
       </thead>
+      <tbody>
+          {% for alarmas in alarmas %}
+          <tr>
+            <th scope="row"> --- </th>
+            <td> {{ alarmas }} </td>
+            <td> -------------------- </td>
+            <td> -------------------- </td>
+          </tr>
+          {% endfor %}
+        </tbody>
     </table>
   </div>
 

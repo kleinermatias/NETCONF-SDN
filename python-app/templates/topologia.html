@@ -30,20 +30,132 @@
     </div>
     <hr />
 
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <form action="/boton_agregar_vecinos_mxp_mxp" method="POST">
+            <div class="row justify-content-center">
+              <div class="card border-secondary mb-3" style="max-width: 50rem;">
+                <div class="card-header bg-transparent border-secondary"><button class="btn btn-primary" type="submit"
+                    name="boton_agregar_vecinos_mxp_mxp" id="boton_agregar_vecinos_mxp_mxp">Configurar vecinos
+                    MXP-TO-MXP</button></div>
+                <div class="card-body text-secondary">
+
+                  <p class="card-text"></p>
+                  <center>
+
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1" style="width:200px;">Dev 1 (TX - PORT 0)</span>
+                      <select name="disp1" id="disp1" class="input-xlarge">
+                        {% for devices in devices %}
+                        <option>{{ devices }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1" style="width:400px;">------------</span>
+                    </div>
+
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1" style="width:200px;">Dev 2 (RX - PORT 1)</span>
+                      <select name="disp2" id="disp2" class="input-xlarge">
+                        {% for devices in devices %}
+                        <option>{{ devices }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                  </center>
+
+                </div>
+
+                <div class="card-footer bg-transparent border-secondary">Dev1 como transmisor (PORT 0) y
+
+                  Dev2 como receptor (PORT 1)</div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+
+
+
+        <div class="col">
+          <form action="/boton_agregar_vecinos_mxp_switch" method="POST">
+            <div class="row justify-content-center">
+              <div class="card border-secondary mb-3" style="max-width: 50rem;">
+                <div class="card-header bg-transparent border-secondary"><button class="btn btn-primary" type="submit"
+                    name="boton_agregar_vecinos_mxp_switch" id="boton_agregar_vecinos_mxp_switch">Configurar vecinos
+                    MXP-TO-SWITCH</button>
+                </div>
+                <div class="card-body text-secondary">
+
+                  <p class="card-text"></p>
+                  <center>
+
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1" style="width:200px;">MXP</span>
+                      <select name="disp1" id="disp1" class="input-xlarge">
+                        {% for devices in devices %}
+                        <option>{{ devices }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1" style="width:200px;">PUERTO MXP</span>
+                      <select name="port_mxp" id="port_mxp" class="input-xlarge" style="width:200px;">
+
+                        <option value="2">CLI 1 (PORT 2)</option>
+                        <option value="3">CLI 2 (PORT 3)</option>
+                        <option value="4">CLI 3 (PORT 4)</option>
+                        <option value="5">CLI 4 (PORT 5)</option>
+
+                      </select>
+                    </div>
+
+                    <div class="input-group">
+                      <span class="input-group-text" id="basic-addon1" style="width:200px;">SWITCH</span>
+                      <select name="disp2" id="disp2" class="input-xlarge">
+                        {% for other_devices in other_devices %}
+                        <option>{{ other_devices }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                  </center>
+
+                </div>
+
+                <div class="card-footer bg-transparent border-secondary">Se empareja el puerto del cliente MXP con el
+                  OFSwitch indicado.</div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
 
     <div class="col">
-      <form action="/boton_agregar_vecinos" method="POST">
+      <form action="/boton_eliminar_vecinos" method="POST">
         <div class="row justify-content-center">
           <div class="card border-secondary mb-3" style="max-width: 50rem;">
             <div class="card-header bg-transparent border-secondary"><button class="btn btn-primary" type="submit"
-                name="boton_agregar_vecinos" id="boton_agregar_vecinos">Configurar vecinos MXP-TO-MXP</button></div>
+                name="boton_eliminar_vecinos" id="boton_eliminar_vecinos">Eliminar vecino</button></div>
             <div class="card-body text-secondary">
 
-              <p class="card-text">.</p>
+              <p class="card-text"></p>
               <center>
 
                 <div class="input-group">
-                  <span class="input-group-text" id="basic-addon1" style="width:200px;">Dev 1 (TX - PORT 0)</span>
+                  <span class="input-group-text" id="basic-addon1" style="width:200px;">Dispositivo local</span>
                   <select name="disp1" id="disp1" class="input-xlarge">
                     {% for devices in devices %}
                     <option>{{ devices }}</option>
@@ -52,15 +164,21 @@
                 </div>
 
                 <div class="input-group">
-                  <span class="input-group-text" id="basic-addon1" style="width:400px;">------------</span>
+                  <span class="input-group-text" id="basic-addon1" style="width:400px;">Eliminar vecino conectado al
+                    puerto:</span>
                 </div>
 
                 <div class="input-group">
-                  <span class="input-group-text" id="basic-addon1" style="width:200px;">Dev 2 (RX - PORT 1)</span>
-                  <select name="disp2" id="disp2" class="input-xlarge">
-                    {% for devices in devices %}
-                    <option>{{ devices }}</option>
-                    {% endfor %}
+                  <span class="input-group-text" id="basic-addon1" style="width:200px;">Puerto</span>
+                  <select name="port_mxp" id="port_mxp" class="input-xlarge" style="width:200px;">
+
+                    <option value="0">TX (PORT 0)</option>
+                    <option value="1">RX (PORT 1)</option>
+                    <option value="2">CLI 1 (PORT 2)</option>
+                    <option value="3">CLI 2 (PORT 3)</option>
+                    <option value="4">CLI 3 (PORT 4)</option>
+                    <option value="5">CLI 4 (PORT 5)</option>
+
                   </select>
                 </div>
 
@@ -68,54 +186,12 @@
 
             </div>
 
-            <div class="card-footer bg-transparent border-secondary">Se configura al Dev1 como transmisor (PORT 0) y al
-              Dev2 como receptor (PORT 1)</div>
+            <div class="card-footer bg-transparent border-secondary">Se elimina un vecino en el dispositivo,
+              especificando el puerto que se elimina.</div>
           </div>
         </div>
       </form>
     </div>
-
-    <div class="col">
-        <form action="/boton_agregar_vecinos" method="POST">
-          <div class="row justify-content-center">
-            <div class="card border-secondary mb-3" style="max-width: 50rem;">
-              <div class="card-header bg-transparent border-secondary"><button class="btn btn-primary" type="submit"
-                  name="boton_agregar_vecinos" id="boton_agregar_vecinos">Eliminar vecino</button></div>
-              <div class="card-body text-secondary">
-  
-                <p class="card-text">.</p>
-                <center>
-  
-                  <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1" style="width:200px;">Dispositivo local</span>
-                    <select name="disp1" id="disp1" class="input-xlarge">
-                      {% for devices in devices %}
-                      <option>{{ devices }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-  
-                  <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1" style="width:400px;">------------</span>
-                  </div>
-  
-                  <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1" style="width:200px;">Vecino a eliminar</span>
-                    <select name="disp2" id="disp2" class="input-xlarge">
-                      {% for devices in devices %}
-                      <option>{{ devices }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-  
-                </center>
-  
-              </div>
-  
-              <div class="card-footer bg-transparent border-secondary">Se elimina un vecino en el dispositivo, especificando el puerto que se elimina.</div>
-            </div>
-          </div>
-        </form>
-      </div>
-
-    {% endblock %}
+  </div>
+</body>
+{% endblock %}

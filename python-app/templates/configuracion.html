@@ -50,7 +50,21 @@
           <th scope="col">VECINO</th>
         </tr>
       </thead>
+
+      <tbody>
+        {% for config in config %}
+        <tr>
+          <th scope="row"> {{ config[0] }} </th>
+          <td> {{ config[1] }} </td>
+          <td> {{ config[2] }} </td>
+          <td> {{ config[3] }} </td>
+          <td> {{ config[4] }} </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
     </table>
+
   </div>
 
   {% endblock %}
