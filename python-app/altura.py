@@ -38,7 +38,6 @@ lista_configuracion_global = []
 mutex_in_use = 0
 
 thread1 = Thread()
-thread2 = Thread()
 thread3 = Thread()
 thread4 = Thread()
 thread_stop_event = Event()
@@ -190,7 +189,6 @@ class RPCThread(Thread):
         finally:
             
             mutex_rpc.release()
-            sleep(self.delay*len(rpc_selected_device))
             mutex_in_use = 0
             print("Se termino de aplicar la config")
 
@@ -228,7 +226,6 @@ class GetDevices(Thread):
 def test_connect():
     # need visibility of the global thread object
     global thread1
-    global thread2
     global thread4
     print('Client connected')
 
@@ -237,11 +234,6 @@ def test_connect():
         print("Starting Thread de Alarmas")
         thread1 = AlarmsThread()
         thread1.start()
-
-    if not thread2.isAlive():
-        print("Starting Thread de Configuracion")
-        thread2 = ConfigThread()
-        thread2.start()
 
     if not thread4.isAlive():
         print("Starting Thread de Dispositivos")
@@ -441,11 +433,13 @@ def configuracion():
             if selected_device == 'Choose here':
                 selected_device = ""
         if (selected_device == 0) | (selected_device == ""):
-            configuracion = lista_configuracion_global
+            configuracion = funciones.config_all(funciones.get_devices())
+            lista_configuracion_global = configuracion
         else:
             dev = []
             dev.append(selected_device)
             configuracion = funciones.config_all(dev)
+            lista_configuracion_global = configuracion
         
         
     else :
