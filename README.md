@@ -64,16 +64,9 @@ See also the list of [contributors](https://github.com/ragnar-l/NETCONF-SDN/grap
 
 | Task | Estimated date |
 | ------ | ------ |
-| Dar un valor inicial a las variables de NETCONF en startup. | 16/03/2019 |
-| ONOS debe borrar tanto las alarmas del device local como las del vecino, si la configuacion es la misma. | 16/03/2019 |
-| ONOS debe realizar una sola consulta al dispositivo local sobre el tipo de trafico y comparar con los tipos de traficos de sus vecinos. | 16/03/2019 |
-| Se debe corregir el problema de consistencia en las alarmas del mxp40gb. (API C) | -- |
 | Realizar SCRIPT y simulacion. | -- |
 | Terminar GUI. | -- |
 | Documentar. | -- |
-| Mover el driver ALTURA a una carpeta separada en ONOS. | -- |
-| Mover comportamientos fuera del core de ONOS. | -- |
-| Revisar el docker del MXP40gb. | -- |
 | Actualizar servidores yuma123. | -- |
 | Release en git. | -- |
 | Actualizar README en git. | -- |

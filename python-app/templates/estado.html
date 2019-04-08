@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% extends 'bootstrap/base.html' %}
+{% block cantidad_alarmas %}<div id="cantidad_alarmas_html">{{ cantidad_alarmas  }}</div>{% endblock %}
+<!-- Content -->
+{% block content %}
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script src="static/js/index.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+  <div class="container">
+    <hr />
+    <form action="/configuracion" method="POST">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">Filtrar por dispositivo</span>
+          <select name="comp_select" id="comp_select" class="selectpicker form-control" style="width:auto;">
+            <option value="" selected>Todos los dispositivos</option>
+            {% for devices in devices %}
+            <option>{{ devices }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" name="btngo" id="btngo" class="btn btn-primary">FILTRAR</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <hr />
+
+
+  <div class="container">
+    <div class="center-block">
+
+
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label style="width: 150px" onclick="myFunctionGeneral()" class="btn btn-outline-primary active">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked> GENERAL
+        </label>
+        <label style="width: 150px" onclick="myFunctionMISC()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option2" autocomplete="off"> MISC
+        </label>
+        <label style="width: 150px" onclick="myFunctionPOWER()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option3" autocomplete="off"> POWER
+        </label>
+        <label style="width: 150px" onclick="myFunctionDSP()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option3" autocomplete="off"> DSP
+        </label>
+        <label style="width: 150px" onclick="myFunctionEDFA()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option3" autocomplete="off"> EDFA
+        </label>
+        <label style="width: 150px" onclick="myFunctionTEMP()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option3" autocomplete="off"> TEMP/HUM
+        </label>
+        <label style="width: 150px" onclick="myFunctionXFP()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option3" autocomplete="off"> XFP
+        </label>
+      </div>
+
+    </div>
+  </div>
+  <hr />
+  
+  <div id="tabla_estado">
+      <table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>
+  </div>
+
+  <script>
+    function myFunctionGeneral() {
+      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+    }
+
+    function myFunctionMISC() {
+      document.getElementById("tabla_estado").innerHTML = '<table class="table"> <thead class="thead-dark"> <tr> <th scope="col">DEVICE</th> <th scope="col">TIPO DE TRAFICO</th> <th scope="col">TIPO DE FEC DE LINEA</th> <th scope="col">TIPO FEC DE CLIENTE</th> <th scope="col">VECINO</th> </tr> </thead> <tbody>';
+    }
+
+    function myFunctionPOWER() {
+      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+    }
+    
+    function myFunctionDSP() {
+      document.getElementById("tabla_estado").innerHTML = '<table class="table"> <thead class="thead-dark"> <tr> <th scope="col">DEVICE</th> <th scope="col">TIPO DE TRAFICO</th> <th scope="col">TIPO DE FEC DE LINEA</th> <th scope="col">TIPO FEC DE CLIENTE</th> <th scope="col">VECINO</th> </tr> </thead> <tbody>';
+    }
+    
+    function myFunctionEDFA() {
+      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+    }
+
+    function myFunctionTEMP() {
+      document.getElementById("tabla_estado").innerHTML = '<table class="table"> <thead class="thead-dark"> <tr> <th scope="col">DEVICE</th> <th scope="col">TIPO DE TRAFICO</th> <th scope="col">TIPO DE FEC DE LINEA</th> <th scope="col">TIPO FEC DE CLIENTE</th> <th scope="col">VECINO</th> </tr> </thead> <tbody>';
+    }
+
+    function myFunctionXFP() {
+      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+    }
+  </script>
+
+  {% endblock %}

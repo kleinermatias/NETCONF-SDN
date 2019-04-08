@@ -415,6 +415,45 @@ def boton_agregar_dispositivo():
                            linklogico=2, perfiles=perfiles_de_configuracion)
 
 
+@app.route('/estado', methods=['GET', 'POST'])
+def estado():
+    mutex.acquire()
+    global cantidad_de_alarmas
+    global mutex_in_use
+    global warning_alarm_event
+    global selected_device
+    global all_devices
+    global lista_configuracion_global
+    selected_device = ""
+
+    configuracion = []
+    if mutex_in_use == 0:
+        if request.method == 'POST':
+            selected_device = request.form['comp_select']
+            if selected_device == 'Choose here':
+                selected_device = ""
+        if (selected_device == 0) | (selected_device == ""):
+            configuracion = funciones.config_all(funciones.get_devices())
+            lista_configuracion_global = configuracion
+        else:
+            dev = []
+            dev.append(selected_device)
+            configuracion = funciones.config_all(dev)
+            lista_configuracion_global = configuracion
+        
+        
+    else :
+        selected_device = ""
+        configuracion = lista_configuracion_global
+
+    
+    mutex.release()
+    return render_template('estado.html',
+                           devices=all_devices, cantidad_alarmas=cantidad_de_alarmas, config=configuracion)
+
+
+
+
 @app.route('/configuracion', methods=['GET', 'POST'])
 def configuracion():
     mutex.acquire()
