@@ -7,43 +7,66 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-  <script src="static/js/alarmas.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css">
+  
+  
+  
+  
+  
+  
+  
+    <!--Import jQuery before export.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  
+  
+    <!--Data Table-->
+  
+    <script type="text/javascript"
+      src=" https://cdn.datatables.net/buttons/1.10.19/js/dataTables.buttons.min.js"></script>
+  
+  
+  
+    <!--Export table button CSS-->
+  
+  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap-theme.min.css">
+  
+  
+    <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.3.3/css/autoFill.dataTables.min.css">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="static/js/alarmas.js"></script>
+    
 </head>
 
 <body>
-
-  <div class="container">
-    <hr />
-    <form action="/alarmas" method="POST">
-      <div class="form-group">
-        <div class="input-group">
-          <span class="input-group-text" id="basic-addon1">Filtrar por dispositivo</span>
-          <select name="dispositivo_seleccionado_alarmas" id="dispositivo_seleccionado_alarmas"
-            class="selectpicker form-control" style="width:auto;">
-            <option value="" selected>Todos los dispositivos</option>
-            {% for devices in devices %}
-            <option>{{ devices }}</option>
-            {% endfor %}
-          </select>
-          <button type="submit" name="btngo" id="btngo" class="btn btn-primary">FILTRAR</button>
-        </div>
-      </div>
-    </form>
-  </div>
-
-
-
-  <div id="tabla_alarmas">
-    <table class="table">
+    <div>
+        <table id="alarms" class="table table-striped table-bordered">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -52,18 +75,20 @@
           <th scope="col">ALARM_DEVICE</th>
         </tr>
       </thead>
-      <tbody>
+      
+      <tbody id="tabla_alarmas">
           {% for alarmas in alarmas %}
           <tr>
-            <th scope="row"> --- </th>
+            <td scope="row"> --- </td>
             <td> {{ alarmas }} </td>
             <td> -------------------- </td>
             <td> -------------------- </td>
           </tr>
           {% endfor %}
         </tbody>
+      
     </table>
-  </div>
-
-
+    </div>
+  </body>
+  
   {% endblock %}

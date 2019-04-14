@@ -7,37 +7,98 @@
 <html lang="en">
 
 <head>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
   <script src="static/js/index.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css">
+
+
+
+
+
+
+
+  <!--Import jQuery before export.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+  <!--Data Table-->
+
+  <script type="text/javascript"
+    src=" https://cdn.datatables.net/buttons/1.10.19/js/dataTables.buttons.min.js"></script>
+
+
+
+  <!--Export table button CSS-->
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap-theme.min.css">
+
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.3.3/css/autoFill.dataTables.min.css">
+
+
+
+
+  <style>
+    .DTFC_LeftBodyLiner {
+      overflow-y: unset !important
+    }
+
+    .DTFC_RightBodyLiner {
+      overflow-y: unset !important
+    }
+
+    /* Ensure that the demo table scrolls */
+    th,
+    td {
+      white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+      width: auto;
+      margin: 0 auto;
+    }
+
+    table.dataTable.table-striped.DTFC_Cloned tbody tr:nth-of-type(odd) {
+      background: #F3F3F3;
+    }
+
+    table.dataTable.table-striped.DTFC_Cloned tbody tr:nth-of-type(even) {
+      background: white;
+    }
+
+    div.dataTables_wrapper {
+      margin-bottom: 1em;
+    }
+  </style>
+
+
+
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+
 </head>
 
 <body>
 
-  <div class="container">
-    <hr />
-    <form action="/configuracion" method="POST">
-      <div class="form-group">
-        <div class="input-group">
-          <span class="input-group-text" id="basic-addon1">Filtrar por dispositivo</span>
-          <select name="comp_select" id="comp_select" class="selectpicker form-control" style="width:auto;">
-            <option value="" selected>Todos los dispositivos</option>
-            {% for devices in devices %}
-            <option>{{ devices }}</option>
-            {% endfor %}
-          </select>
-          <button type="submit" name="btngo" id="btngo" class="btn btn-primary">FILTRAR</button>
-        </div>
-      </div>
-    </form>
-  </div>
+
   <hr />
 
 
@@ -46,65 +107,933 @@
 
 
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label style="width: 150px" onclick="myFunctionGeneral()" class="btn btn-outline-primary active">
+        <label style="width: 110px" onclick="myFunctionGeneral()" class="btn btn-outline-primary active">
           <input type="radio" name="options" id="option1" autocomplete="off" checked> GENERAL
         </label>
-        <label style="width: 150px" onclick="myFunctionMISC()" class="btn btn-outline-primary">
+        <label style="width: 110px" onclick="myFunctionMISC()" class="btn btn-outline-primary">
           <input type="radio" name="options" id="option2" autocomplete="off"> MISC
         </label>
-        <label style="width: 150px" onclick="myFunctionPOWER()" class="btn btn-outline-primary">
+        <label style="width: 110px" onclick="myFunctionPOWER()" class="btn btn-outline-primary">
           <input type="radio" name="options" id="option3" autocomplete="off"> POWER
         </label>
-        <label style="width: 150px" onclick="myFunctionDSP()" class="btn btn-outline-primary">
-          <input type="radio" name="options" id="option3" autocomplete="off"> DSP
+        <label style="width: 110px" onclick="myFunctionDSP()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option4" autocomplete="off"> DSP
         </label>
-        <label style="width: 150px" onclick="myFunctionEDFA()" class="btn btn-outline-primary">
-          <input type="radio" name="options" id="option3" autocomplete="off"> EDFA
+        <label style="width: 110px" onclick="myFunctionEDFA()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option5" autocomplete="off"> EDFA
         </label>
-        <label style="width: 150px" onclick="myFunctionTEMP()" class="btn btn-outline-primary">
-          <input type="radio" name="options" id="option3" autocomplete="off"> TEMP/HUM
+        <label style="width: 110px" onclick="myFunctionTEMP()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option6" autocomplete="off"> TEMP/HUM
         </label>
-        <label style="width: 150px" onclick="myFunctionXFP()" class="btn btn-outline-primary">
-          <input type="radio" name="options" id="option3" autocomplete="off"> XFP
+        <label style="width: 110px" onclick="myFunctionXFP1()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option7" autocomplete="off"> XFP1
         </label>
+        <label style="width: 110px" onclick="myFunctionXFP2()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option8" autocomplete="off"> XFP2
+        </label>
+        <label style="width: 110px" onclick="myFunctionXFP3()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option9" autocomplete="off"> XFP3
+        </label>
+        <label style="width: 110px" onclick="myFunctionXFP4()" class="btn btn-outline-primary">
+          <input type="radio" name="options" id="option10" autocomplete="off"> XFP4
+        </label>
+
+
       </div>
 
     </div>
   </div>
   <hr />
-  
-  <div id="tabla_estado">
-      <table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>
+
+
+
+
+
+  <div id="tabla_general" style="display:none">
+    <table id="general" class="table table-striped table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Fabricante</th>
+          <th>Version Software</th>
+          <th>Version Hardware</th>
+          <th>Identificador</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dev in all_devicess %}
+        <tr>
+          <td>{{ devices[dev] }}</td>
+          <td>{{ fabricante[dev] }}</td>
+          <td>{{ sw[dev] }}</td>
+          <td>{{ hw[dev] }}</td>
+          <td>{{ id[dev] }}</td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
   </div>
+
+
+
+
+
+
+
+
+
+  <div id="tabla_misc" style="display:none">
+    <table id="misc" class="table table-striped table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Temp. Around</th>
+          <th>Temp. Case</th>
+          <th>Temp. TX Laser</th>
+          <th>Temp. RX Laser</th>
+          <th>Loss</th>
+          <th>Interrupt</th>
+          <th>TX Laser ITU Band</th>
+          <th>TX Laser ITU Channel</th>
+          <th>RX Laser ITU Band</th>
+          <th>RX Laser ITU Channel</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dev in all_devicess %}
+        <tr>
+          <td>{{ devices[dev] }}</td>
+          <td>{{ temp_around[dev] }}</td>
+          <td>{{ temp_case[dev] }}</td>
+          <td>{{ temp_tx_laser[dev] }}</td>
+          <td>{{ temp_rx_laser[dev] }}</td>
+          <td>{{ loss[dev] }}</td>
+          <td>{{ interrupt[dev] }}</td>
+          <td>{{ tx_laser_itu_band[dev] }}</td>
+          <td>{{ tx_laser_itu_channel[dev] }}</td>
+          <td>{{ rx_laser_itu_band[dev] }}</td>
+          <td>{{ rx_laser_itu_channel[dev] }}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  </div>
+
+
+
+
+
+
+
+  <div id="tabla_power" style="display:none">
+    <table id="power" class="table table-striped table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>PSUMMARY</th>
+          <th>P5VANALOG</th>
+          <th>N5V2ANALOG</th>
+          <th>P3P3VANALOG</th>
+          <th>P3P3VDIGITAL</th>
+          <th>LVDIGITAL</th>
+          <th>N5P2VDIGITAL</th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dev in all_devicess %}
+        <tr>
+          <td>{{ devices[dev] }}</td>
+          <td>{{ PSUMMARY[dev] }}</td>
+          <td>{{ P5VANALOG[dev] }}</td>
+          <td>{{ N5V2ANALOG[dev] }}</td>
+          <td>{{ P3P3VANALOG[dev] }}</td>
+          <td>{{ P3P3VDIGITAL[dev] }}</td>
+          <td>{{ LVDIGITAL[dev] }}</td>
+          <td>{{ N5P2VDIGITAL[dev] }}</td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  </div>
+
+  <div id="tabla_dsp" style="display:none">
+    <table id="dsp" class="table table-striped table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>DSP_running</th>
+          <th>CONVERGED</th>
+          <th>MSE_below_threshold</th>
+          <th>BCD_Enabled</th>
+          <th>Coarse_Carrier_Lock</th>
+          <th>Collision</th>
+          <th>DSP_Initialized</th>
+          <th>Presence_of_light</th>
+          <th>Local_Oscillator_running</th>
+          <th>Transmit_Laser_running</th>
+          <th>MSE_XI</th>
+          <th>MSE_XQ</th>
+          <th>MSE_YI</th>
+          <th>MSE_YQ</th>
+          <th>BER_Estimate</th>
+          <th>Min_Bulk_CD_Compensation_ps_nm</th>
+          <th>Max_Bulk_CD_Compensation_ps_nm</th>
+          <th>Step_Size_ps_nm</th>
+          <th>CD_Compensation_ps_nm</th>
+          <th>ID</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dev in all_devicess %}
+        <tr>
+          <td>{{ devices[dev] }}</td>
+          <td>{{ DSP_running[dev] }}</td>
+          <td>{{CONVERGED[dev]}}</td>
+          <td>{{MSE_below_threshold[dev]}}</td>
+          <td>{{BCD_Enabled[dev]}}</td>
+          <td>{{Coarse_Carrier_Lock[dev]}}</td>
+          <td>{{Collision[dev]}}</td>
+          <td>{{DSP_Initialized[dev]}}</td>
+          <td>{{Presence_of_light[dev]}}</td>
+          <td>{{Local_Oscillator_running[dev]}}</td>
+          <td>{{Transmit_Laser_running[dev]}}</td>
+          <td>{{MSE_XI[dev]}}</td>
+          <td>{{MSE_XQ[dev]}}</td>
+          <td>{{MSE_YI[dev]}}</td>
+          <td>{{MSE_YQ[dev]}}</td>
+          <td>{{BER_Estimate[dev]}}</td>
+          <td>{{Min_Bulk_CD_Compensation_ps_nm[dev]}}</td>
+          <td>{{Max_Bulk_CD_Compensation_ps_nm[dev]}}</td>
+          <td>{{Step_Size_ps_nm[dev]}}</td>
+          <td>{{CD_Compensation_ps_nm[dev]}}</td>
+          <td>{{ devices[dev] }}</td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  </div>
+
+
+
+
+
+
+
+
+  <div id="tabla_edfa" style="display:none">
+    <table id="edfa" class="table table-striped table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>POUT</th>
+          <th>PIN</th>
+          <th>Temp</th>
+          <th>LOS</th>
+          <th>LOP</th>
+          <th>Amp_stat</th>
+
+
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dev in all_devicess %}
+        <tr>
+          <td>{{ devices[dev] }}</td>
+          <td>{{ POUT[dev] }}</td>
+          <td>{{ PIN[dev] }}</td>
+          <td>{{ Temp[dev] }}</td>
+          <td>{{ LOS[dev] }}</td>
+          <td>{{ LOP[dev] }}</td>
+          <td>{{ Amp_stat[dev] }}</td>
+
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  </div>
+
+
+
+
+  <div id="tabla_temp" style="display:none">
+    <table id="temp" class="table table-striped table-bordered">
+
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>T41_Around</th>
+          <th>T41_TS0</th>
+          <th>T41_TS1</th>
+          <th>T41_TS2</th>
+          <th>FPGA</th>
+          <th>BOARD_TEMP</th>
+          <th>BOARD_HUM</th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dev in all_devicess %}
+        <tr>
+          <td>{{ devices[dev] }}</td>
+          <td>{{ T41_Around[dev] }}</td>
+          <td>{{ T41_TS0[dev] }}</td>
+          <td>{{ T41_TS1[dev] }}</td>
+          <td>{{ T41_TS2[dev] }}</td>
+          <td>{{ FPGA[dev] }}</td>
+          <td>{{ BOARD_TEMP[dev] }}</td>
+          <td>{{ BOARD_HUM[dev] }}</td>
+
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+
+    </table>
+  </div>
+
+
+
+  <div id="tabla_xfp1" style="display:none">
+      <table id="xfp1" class="table table-striped table-bordered">
+  
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Presence</th>
+            <th>Loss</th>
+            <th>Ready</th>
+            <th>Interrupt</th>
+            <th>Tx_Power_dBm</th>
+            <th>Rx_Power_dBm</th>
+            <th>Temp_c</th>
+            <th>Low_Tx_Power_Alarm</th>
+            <th>High_Tx_Power_Alarm</th>
+            <th>Low_Rx_Power_Alarm</th>
+            <th>High_Rx_Power_Alarm</th>
+            <th>Rx_CDR_Loss_of_Lock</th>
+            <th>Tx_CDR_Loss_of_Lock</th>
+            <th>Laser_Fault</th>
+            <th>ID</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          {% for dev in all_devicess %}
+          <tr>
+            <td>{{ devices[dev] }}</td>
+            <td>{{ Presence1[dev] }}</td>
+            <td>{{Loss1[dev]}}</td>
+            <td>{{Ready1[dev]}}</td>
+            <td>{{Interrupt1[dev]}}</td>
+            <td>{{Tx_Power_dBm1[dev]}}</td>
+            <td>{{Rx_Power_dBm1[dev]}}</td>
+            <td>{{Temp_c1[dev]}}</td>
+            <td>{{Low_Tx_Power_Alarm1[dev]}}</td>
+            <td>{{High_Tx_Power_Alarm1[dev]}}</td>
+            <td>{{Low_Rx_Power_Alarm1[dev]}}</td>
+            <td>{{High_Rx_Power_Alarm1[dev]}}</td>
+            <td>{{Rx_CDR_Loss_of_Lock1[dev]}}</td>
+            <td>{{Tx_CDR_Loss_of_Lock1[dev]}}</td>
+            <td>{{Laser_Fault1[dev]}}</td>
+            
+            <td>{{ devices[dev] }}</td>
+          </tr>
+          {% endfor %}
+  
+        </tbody>
+  
+      </table>
+      
+    </div>
+
+
+
+
+    <div id="tabla_xfp2" style="display:none">
+        <table id="xfp2" class="table table-striped table-bordered">
+    
+          <thead class="thead-dark">
+            <tr>
+              <th>ID</th>
+              <th>Presence</th>
+              <th>Loss</th>
+              <th>Ready</th>
+              <th>Interrupt</th>
+              <th>Tx_Power_dBm</th>
+              <th>Rx_Power_dBm</th>
+              <th>Temp_c</th>
+              <th>Low_Tx_Power_Alarm</th>
+              <th>High_Tx_Power_Alarm</th>
+              <th>Low_Rx_Power_Alarm</th>
+              <th>High_Rx_Power_Alarm</th>
+              <th>Rx_CDR_Loss_of_Lock</th>
+              <th>Tx_CDR_Loss_of_Lock</th>
+              <th>Laser_Fault</th>
+              <th>ID</th>
+            </tr>
+          </thead>
+    
+          <tbody>
+            {% for dev in all_devicess %}
+            <tr>
+              <td>{{ devices[dev] }}</td>
+              <td>{{ Presence2[dev] }}</td>
+              <td>{{Loss2[dev]}}</td>
+              <td>{{Ready2[dev]}}</td>
+              <td>{{Interrupt2[dev]}}</td>
+              <td>{{Tx_Power_dBm2[dev]}}</td>
+              <td>{{Rx_Power_dBm2[dev]}}</td>
+              <td>{{Temp_c2[dev]}}</td>
+              <td>{{Low_Tx_Power_Alarm2[dev]}}</td>
+              <td>{{High_Tx_Power_Alarm2[dev]}}</td>
+              <td>{{Low_Rx_Power_Alarm2[dev]}}</td>
+              <td>{{High_Rx_Power_Alarm2[dev]}}</td>
+              <td>{{Rx_CDR_Loss_of_Lock2[dev]}}</td>
+              <td>{{Tx_CDR_Loss_of_Lock2[dev]}}</td>
+              <td>{{Laser_Fault2[dev]}}</td>
+              
+              <td>{{ devices[dev] }}</td>
+            </tr>
+            {% endfor %}
+    
+          </tbody>
+    
+        </table>
+        
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <div id="tabla_xfp3" style="display:none">
+          <table id="xfp3" class="table table-striped table-bordered">
+      
+            <thead class="thead-dark">
+              <tr>
+                <th>ID</th>
+                <th>Presence</th>
+                <th>Loss</th>
+                <th>Ready</th>
+                <th>Interrupt</th>
+                <th>Tx_Power_dBm</th>
+                <th>Rx_Power_dBm</th>
+                <th>Temp_c</th>
+                <th>Low_Tx_Power_Alarm</th>
+                <th>High_Tx_Power_Alarm</th>
+                <th>Low_Rx_Power_Alarm</th>
+                <th>High_Rx_Power_Alarm</th>
+                <th>Rx_CDR_Loss_of_Lock</th>
+                <th>Tx_CDR_Loss_of_Lock</th>
+                <th>Laser_Fault</th>
+                <th>ID</th>
+              </tr>
+            </thead>
+      
+            <tbody>
+              {% for dev in all_devicess %}
+              <tr>
+                <td>{{ devices[dev] }}</td>
+                <td>{{ Presence3[dev] }}</td>
+                <td>{{Loss3[dev]}}</td>
+                <td>{{Ready3[dev]}}</td>
+                <td>{{Interrupt3[dev]}}</td>
+                <td>{{Tx_Power_dBm3[dev]}}</td>
+                <td>{{Rx_Power_dBm3[dev]}}</td>
+                <td>{{Temp_c3[dev]}}</td>
+                <td>{{Low_Tx_Power_Alarm3[dev]}}</td>
+                <td>{{High_Tx_Power_Alarm3[dev]}}</td>
+                <td>{{Low_Rx_Power_Alarm3[dev]}}</td>
+                <td>{{High_Rx_Power_Alarm3[dev]}}</td>
+                <td>{{Rx_CDR_Loss_of_Lock3[dev]}}</td>
+                <td>{{Tx_CDR_Loss_of_Lock3[dev]}}</td>
+                <td>{{Laser_Fault3[dev]}}</td>
+                
+                <td>{{ devices[dev] }}</td>
+              </tr>
+              {% endfor %}
+      
+            </tbody>
+      
+          </table>
+          
+        </div>
+
+
+
+
+
+        <div id="tabla_xfp4" style="display:none">
+            <table id="xfp4" class="table table-striped table-bordered">
+        
+              <thead class="thead-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Presence</th>
+                  <th>Loss</th>
+                  <th>Ready</th>
+                  <th>Interrupt</th>
+                  <th>Tx_Power_dBm</th>
+                  <th>Rx_Power_dBm</th>
+                  <th>Temp_c</th>
+                  <th>Low_Tx_Power_Alarm</th>
+                  <th>High_Tx_Power_Alarm</th>
+                  <th>Low_Rx_Power_Alarm</th>
+                  <th>High_Rx_Power_Alarm</th>
+                  <th>Rx_CDR_Loss_of_Lock</th>
+                  <th>Tx_CDR_Loss_of_Lock</th>
+                  <th>Laser_Fault</th>
+                  <th>ID</th>
+                </tr>
+              </thead>
+        
+              <tbody>
+                {% for dev in all_devicess %}
+                <tr>
+                  <td>{{ devices[dev] }}</td>
+                  <td>{{ Presence4[dev] }}</td>
+                  <td>{{Loss4[dev]}}</td>
+                  <td>{{Ready4[dev]}}</td>
+                  <td>{{Interrupt4[dev]}}</td>
+                  <td>{{Tx_Power_dBm4[dev]}}</td>
+                  <td>{{Rx_Power_dBm4[dev]}}</td>
+                  <td>{{Temp_c4[dev]}}</td>
+                  <td>{{Low_Tx_Power_Alarm4[dev]}}</td>
+                  <td>{{High_Tx_Power_Alarm4[dev]}}</td>
+                  <td>{{Low_Rx_Power_Alarm4[dev]}}</td>
+                  <td>{{High_Rx_Power_Alarm4[dev]}}</td>
+                  <td>{{Rx_CDR_Loss_of_Lock4[dev]}}</td>
+                  <td>{{Tx_CDR_Loss_of_Lock4[dev]}}</td>
+                  <td>{{Laser_Fault4[dev]}}</td>
+                  
+                  <td>{{ devices[dev] }}</td>
+                </tr>
+                {% endfor %}
+        
+              </tbody>
+        
+            </table>
+            
+          </div>
+
 
   <script>
     function myFunctionGeneral() {
-      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_general.style.display === "none") {
+        tabla_general.style.display = "block";
+      }
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        $('#general').DataTable();
+      });
     }
 
     function myFunctionMISC() {
-      document.getElementById("tabla_estado").innerHTML = '<table class="table"> <thead class="thead-dark"> <tr> <th scope="col">DEVICE</th> <th scope="col">TIPO DE TRAFICO</th> <th scope="col">TIPO DE FEC DE LINEA</th> <th scope="col">TIPO FEC DE CLIENTE</th> <th scope="col">VECINO</th> </tr> </thead> <tbody>';
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_misc.style.display === "none") {
+        tabla_misc.style.display = "block";
+      }
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_general.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        $('#misc').DataTable();
+      });
     }
 
     function myFunctionPOWER() {
-      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_power.style.display === "none") {
+        tabla_power.style.display = "block";
+      }
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        $('#power').DataTable();
+      });
     }
-    
+
     function myFunctionDSP() {
-      document.getElementById("tabla_estado").innerHTML = '<table class="table"> <thead class="thead-dark"> <tr> <th scope="col">DEVICE</th> <th scope="col">TIPO DE TRAFICO</th> <th scope="col">TIPO DE FEC DE LINEA</th> <th scope="col">TIPO FEC DE CLIENTE</th> <th scope="col">VECINO</th> </tr> </thead> <tbody>';
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_dsp.style.display === "none") {
+        tabla_dsp.style.display = "block";
+      }
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+
+        if ($.fn.dataTable.isDataTable('#dsp')) {
+          $('#dsp').DataTable();
+        }
+
+        else {
+          var table = $('#dsp').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+              leftColumns: 1,
+              rightColumns: 1
+            }
+          });
+        }
+
+
+      });
     }
-    
+
     function myFunctionEDFA() {
-      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_edfa.style.display === "none") {
+        tabla_edfa.style.display = "block";
+      }
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        $('#edfa').DataTable();
+      });
     }
 
     function myFunctionTEMP() {
-      document.getElementById("tabla_estado").innerHTML = '<table class="table"> <thead class="thead-dark"> <tr> <th scope="col">DEVICE</th> <th scope="col">TIPO DE TRAFICO</th> <th scope="col">TIPO DE FEC DE LINEA</th> <th scope="col">TIPO FEC DE CLIENTE</th> <th scope="col">VECINO</th> </tr> </thead> <tbody>';
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_temp.style.display === "none") {
+        tabla_temp.style.display = "block";
+      }
+      tabla_xfp1.style.display = "none";
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        $('#temp').DataTable();
+      });
     }
 
-    function myFunctionXFP() {
-      document.getElementById("tabla_estado").innerHTML = '<table id="example" class="table table-striped table-bordered"> <thead class="thead-dark"> <tr> <th scope="col">#</th> <th scope="col">ALARM_ID</th> <th scope="col">ALARM_DESCRIPCION</th> <th scope="col">ALARM_DEVICE</th> </tr> </thead> <tbody>';
+    function myFunctionXFP1() {
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      if (tabla_xfp1.style.display === "none") {
+        tabla_xfp1.style.display = "block";
+      }
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('#xfp1')) {
+          $('#xfp1').DataTable();
+        }
+
+        else {
+          var table = $('#xfp1').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+              leftColumns: 1,
+              rightColumns: 1
+            }
+          });
+        }
+      });
     }
+
+
+
+
+
+
+
+    function myFunctionXFP2() {
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+
+      if (tabla_xfp2.style.display === "none") {
+        tabla_xfp2.style.display = "block";
+      }
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp1.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('#xfp2')) {
+          $('#xfp2').DataTable();
+        }
+
+        else {
+          var table = $('#xfp2').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+              leftColumns: 1,
+              rightColumns: 1
+            }
+          });
+        }
+      });
+    }
+
+
+
+
+    function myFunctionXFP3() {
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      
+
+      if (tabla_xfp3.style.display === "none") {
+        tabla_xfp3.style.display = "block";
+      }
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_xfp4.style.display = "none";
+      $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('#xfp3')) {
+          $('#xfp3').DataTable();
+        }
+
+        else {
+          var table = $('#xfp3').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+              leftColumns: 1,
+              rightColumns: 1
+            }
+          });
+        }
+      });
+    }
+
+
+
+
+
+
+    function myFunctionXFP4() {
+      var tabla_general = document.getElementById("tabla_general");
+      var tabla_misc = document.getElementById("tabla_misc");
+      var tabla_power = document.getElementById("tabla_power");
+      var tabla_dsp = document.getElementById("tabla_dsp");
+      var tabla_edfa = document.getElementById("tabla_edfa");
+      var tabla_temp = document.getElementById("tabla_temp");
+      var tabla_xfp1 = document.getElementById("tabla_xfp1");
+      var tabla_xfp2 = document.getElementById("tabla_xfp2");
+      var tabla_xfp3 = document.getElementById("tabla_xfp3");
+      var tabla_xfp4 = document.getElementById("tabla_xfp4");
+      
+
+      if (tabla_xfp4.style.display === "none") {
+        tabla_xfp4.style.display = "block";
+      }
+      tabla_general.style.display = "none";
+      tabla_misc.style.display = "none";
+      tabla_power.style.display = "none";
+      tabla_dsp.style.display = "none";
+      tabla_edfa.style.display = "none";
+      tabla_temp.style.display = "none";
+      tabla_xfp1.style.display = "none";
+      tabla_xfp2.style.display = "none";
+      tabla_xfp3.style.display = "none";
+      
+      $(document).ready(function () {
+        if ($.fn.dataTable.isDataTable('#xfp4')) {
+          $('#xfp4').DataTable();
+        }
+
+        else {
+          var table = $('#xfp4').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+              leftColumns: 1,
+              rightColumns: 1
+            }
+          });
+        }
+      });
+    }
+
+
+
+
   </script>
+
+
 
   {% endblock %}

@@ -8,8 +8,10 @@
 
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
+<head><meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap-theme.min.css">
@@ -36,7 +38,8 @@
   <!-- (Optional) Mis script (javascript) utilizado en index -->
   <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-  <script src="static/js/index.js"></script>
+<script src="static/js/index.js"></script>
+
 </head>
 
 <body>
@@ -59,11 +62,11 @@
                   <span class="input-group-text" style="width:200px;">Pareja de dispositivos</span>
                   <!-- el id en select es para identificar en python a traves de su id, los diferentes dispositivos seleccionados para la configuracion -->
                   <select class="selectpicker" multiple data-actions-box="true" name="dispositivos_seleccionados" id="dispositivos_seleccionados"
-                    data-live-search="true">
-                    {% for id_devices_html in devices %}
-                    <option>{{ id_devices_html }}</option>
-                    {% endfor %}
-                  </select>
+                  data-live-search="true">
+                  {% for id_devices_html in devices %}
+                  <option>{{ id_devices_html }}</option>
+                  {% endfor %}
+</select>
                 </div>
 
                 <div class="input-group">

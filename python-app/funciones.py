@@ -12,7 +12,7 @@ def get_devices():
     headers = {'Accept': 'application/json', }
 
     devices = []
-    response = requests.get('http://172.16.0.221:8181/onos/v1/devices',
+    response = requests.get('http://localhost:8181/onos/v1/devices',
                             headers=headers, auth=('karaf', 'karaf')).text
     json_response = json.loads(response)  # paso respuesta del curl a json
     # obtengo la cantidad de los dispositivos
@@ -30,7 +30,7 @@ def get_devices_others():
     headers = {'Accept': 'application/json', }
 
     devices = []
-    response = requests.get('http://172.16.0.221:8181/onos/v1/devices',
+    response = requests.get('http://localhost:8181/onos/v1/devices',
                             headers=headers, auth=('karaf', 'karaf')).text
     json_response = json.loads(response)  # paso respuesta del curl a json
     # obtengo la cantidad de los dispositivos
@@ -59,7 +59,7 @@ def get_alarms_as_json(optional_device):
     """
     headers = {'Accept': 'application/json', }
     params = (('devId', optional_device),)
-    alarms = requests.get('http://172.16.0.221:8181/onos/v1/fm/alarms',
+    alarms = requests.get('http://localhost:8181/onos/v1/fm/alarms',
                           headers=headers, params=params, auth=('karaf', 'karaf')).text
     return alarms
 
@@ -81,7 +81,7 @@ def config_all(devices):
         vecino = "no conectado aun"
 
         try:
-            config = requests.get('http://172.16.0.221:8181/onos/altura/GET/Config%20Data/'+str(
+            config = requests.get('http://localhost:8181/onos/altura/GET/Config%20Data/'+str(
                 x), headers=headers, params=params, auth=('karaf', 'karaf')).text
             tipo_trafico = ""+config[(config.index("<tipo_trafico>") +
                                       len("<tipo_trafico>")):config.index("</tipo_trafico>")]
@@ -121,7 +121,7 @@ def config_tipo_trafico(tipo, device):
     """
     headers = {'Accept': 'application/json', }
     try:
-        config = requests.put('http://172.16.0.221:8181/onos/altura/SET/Tipo%20de%20Trafico/'+str(
+        config = requests.put('http://localhost:8181/onos/altura/SET/Tipo%20de%20Trafico/'+str(
             device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
     except:
         print("excep")
@@ -131,7 +131,7 @@ def config_tipo_linea(tipo, device):
     """
     headers = {'Accept': 'application/json', }
     try:
-        config = requests.put('http://172.16.0.221:8181/onos/altura/SET/Tipo%20Fec%20de%20linea/' +
+        config = requests.put('http://localhost:8181/onos/altura/SET/Tipo%20Fec%20de%20linea/' +
                               str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
     except:
         print("excep")
@@ -141,7 +141,7 @@ def config_tipo_cliente(tipo, device):
     """
     headers = {'Accept': 'application/json', }
     try:
-        config = requests.put('http://172.16.0.221:8181/onos/altura/SET/Tipo%20Fec%20de%20Cliente/' +
+        config = requests.put('http://localhost:8181/onos/altura/SET/Tipo%20Fec%20de%20Cliente/' +
                               str(device)+','+str(tipo), headers=headers, auth=('karaf', 'karaf')).text
     except:
         print("excep")
@@ -151,7 +151,7 @@ def rpc_apply_config(device):
     """
     headers = {'Accept': 'application/json', }
     try:
-        config = requests.put('http://172.16.0.221:8181/onos/altura/RPC/Apply%20Config/' +
+        config = requests.put('http://localhost:8181/onos/altura/RPC/Apply%20Config/' +
                               str(device), headers=headers, auth=('karaf', 'karaf')).text
     except:
         print("excep")
@@ -159,14 +159,25 @@ def rpc_apply_config(device):
 def pareja_dispositivos(device):
     headers = {'Accept': 'application/json', }
     try:
-        config = requests.get('http://172.16.0.221:8181/onos/altura/GET/Config%20Data/' +
+        config = requests.get('http://localhost:8181/onos/altura/GET/Config%20Data/' +
                               str(device), headers=headers, auth=('karaf', 'karaf')).text
     except:
             print("excep")
 
+
+def get_dsp(device):
+    headers = {'Accept': 'application/json', }
+    try:
+        dsp = requests.get('http://localhost:8181/onos/altura/GET/ALL/' +
+                              str(device), headers=headers, auth=('karaf', 'karaf')).text
+    except:
+            print("excep")
+    finally:
+        return dsp
+
 def estado_link_logico():
     headers = {'Accept': 'application/json', }
-    config = requests.get('http://172.16.0.221:8181/onos/v1/links',
+    config = requests.get('http://localhost:8181/onos/v1/links',
                           headers=headers, auth=('karaf', 'karaf')).text
     data_link = json.loads(config)  # paso respuesta del curl a json
     # obtengo la cantidad de los dispositivos
@@ -184,7 +195,7 @@ def uri_to_serial_number(device):
     headers = {'Accept': 'application/json', }
     devices = get_devices()
     try:
-        response = requests.get('http://172.16.0.221:8181/onos/v1/devices',
+        response = requests.get('http://localhost:8181/onos/v1/devices',
                                 headers=headers, auth=('karaf', 'karaf')).text
         data = json.loads(response)  # paso respuesta del curl a json
         # obtengo la cantidad de los dispositivos
