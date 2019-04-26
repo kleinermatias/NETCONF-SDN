@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% extends 'bootstrap/base.html' %}
-{% block cantidad_alarmas %}<div id="cantidad_alarmas_html">{{ cantidad_alarmas  }}</div>{% endblock %}
+{% block cantidad_alarmas %}<div id="cantidad_alarmas_html">{{ cantidad_alarmas }}</div>{% endblock %}
 
 
 <!-- Content -->
@@ -8,7 +8,8 @@
 
 <html lang="en">
 
-<head><meta charset="utf-8">
+<head>
+  <meta charset="utf-8">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -19,30 +20,33 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
 
-  <!-- (Optional) Latest compiled and minified JavaScript translation files -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/i18n/defaults-*.min.js"></script>
+
 
   <!-- (Optional) Mis script (javascript) utilizado en index -->
   <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-<script src="static/js/index.js"></script>
+  <script src="static/js/index.js"></script>
+
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
 </head>
 
 <body>
+
 
   <!-- Espacio (inserto linea gris en el HTML) -->
   <hr />
@@ -54,7 +58,17 @@
           <form action="/boton_config" method="POST">
             <div class="form-group">
               <div class="input-group">
-                <button class="btn btn-primary" type="submit">CONFIGURAR</button>
+                <div id="load_button">
+                  {% if config_in_progress == 1 %}
+                  <button class="btn btn-primary" disabled><i class="fa fa-circle-o-notch fa-spin"></i> CONFIGURANDO...
+                  </button>
+                  {% else %}
+                  <button id="load" class="btn btn-primary" type="submit">CONFIGURAR</button>
+                  {% endif %}
+                </div>
+
+
+
               </div>
               <div class="card-body text-primary">
                 <h5 class="card-title">Configurar dispositivos</h5>
@@ -62,11 +76,11 @@
                   <span class="input-group-text" style="width:200px;">Pareja de dispositivos</span>
                   <!-- el id en select es para identificar en python a traves de su id, los diferentes dispositivos seleccionados para la configuracion -->
                   <select class="selectpicker" multiple data-actions-box="true" name="dispositivos_seleccionados" id="dispositivos_seleccionados"
-                  data-live-search="true">
-                  {% for id_devices_html in devices %}
-                  <option>{{ id_devices_html }}</option>
-                  {% endfor %}
-</select>
+                    data-live-search="true">
+                    {% for id_devices_html in devices %}
+                    <option>{{ id_devices_html }}</option>
+                    {% endfor %}
+                  </select>
                 </div>
 
                 <div class="input-group">
@@ -98,11 +112,12 @@
     <div class="container">
       <div class="row">
         <!-- con el id identifico el div que debo reemplazar con javascript (ver javascript index.js) -->
-        <div class="col-sm-4" id=warning_alarm_html>
+        <div class="col" id=1 style="max-width: 10rem;"></div>
+        <div class="col" id=warning_alarm_html>
           {% if warning_alarm_event == 0 %}
           <div class="card border-success mb-3" style="max-width: 20rem;">
             <div class="card-header">
-              <center>Estado de la configuracion</center>
+              <center>Configuracion entre vecinos</center>
             </div>
             <div class="card-body text-success">
               <h5 class="card-title">Success!</h5>
@@ -112,7 +127,7 @@
           {% elif warning_alarm_event == 1 %}
           <div class="card border-warning mb-3" style="max-width: 20rem;">
             <div class="card-header">
-              <center>Estado de la configuracion</center>
+              <center>Configuracion entre vecinos</center>
             </div>
             <div class="card-body text-warning">
               <h5 class="card-title">Warning!</h5>
@@ -122,32 +137,10 @@
           {% endif %}
         </div>
 
-        <div class="col-sm-4">
-          {% if linklogico != 2 %}
-          <div class="card border-danger mb-3" style="max-width: 20rem;">
-            <div class="card-header">
-              <center>Links</center>
-            </div>
-            <div class="card-body text-danger">
-              <h5 class="card-title">Ooops!</h5>
-              <p class="card-text">El enlace logico no esta presente. No existe conectividad entre clientes.</p>
-            </div>
-          </div>
-          {% elif linklogico == 2 %}
-          <div class="card border-success mb-3" style="max-width: 20rem;">
-            <div class="card-header">
-              <center>Links</center>
-            </div>
-            <div class="card-body text-success">
-              <h5 class="card-title">Success!</h5>
-              <p class="card-text">El enlace logico esta presente. Existe conectividad entre clientes.</p>
-            </div>
-          </div>
-          {% endif %}
-        </div>
+
 
         <!-- con el id identifico en javascript -->
-        <div class="col-sm-4" id=alarms_card_html>
+        <div class="col-sm-6" id=alarms_card_html>
           {% if cantidad_alarmas != 0 %}
           <div class="card border-danger mb-3" style="max-width: 20rem;">
             <div class="card-header">
@@ -202,6 +195,14 @@
       </div>
     </form>
 
-
+    <script>
+      function myFunctionGeneral() {
+        var boton = document.getElementById("load");
+        $boton.button('loading');
+        setTimeout(function () {
+          $boton.button('reset');
+        }, 8000);
+      }
+    </script>
 
     {% endblock %}

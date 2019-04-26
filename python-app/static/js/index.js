@@ -30,4 +30,29 @@ $(document).ready(function () {
             $('#warning_alarm_html').html('<div class="card border-warning mb-3" style="max-width: 20rem;"> <div class="card-header"><center>Estado de la configuracion</center></div> <div class="card-body text-warning"> <h5 class="card-title">Warning!</h5> <p class="card-text">Algunos dispositivos vecinos tienen configuracion inconsistente.</p> </div> </div>')
         }
     });
+
+
+
+
+
+    //receive details from server
+    socket.on('configurando_socket', function (msg) {
+        console.log("Received:" + msg.cantidad_dispositivos_completados);
+        if (msg.cantidad_dispositivos_completados == "LISTO") {
+            $('#load_button').html('<button id="load" class="btn btn-primary" type="submit">CONFIGURAR</button>')
+        }
+        else {
+            $('#load_button').html('<button class="btn btn-primary" disabled>' +
+                                    '<i class="fa fa-circle-o-notch fa-spin"></i> CONFIGURANDO ' + msg.cantidad_dispositivos_completados +
+                                    '</button>')
+                                    
+        }
+        
+        
+    });
+
+
+
+
+
 });

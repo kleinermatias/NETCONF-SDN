@@ -165,7 +165,7 @@ def pareja_dispositivos(device):
             print("excep")
 
 
-def get_dsp(device):
+def get_all_config_state(device):
     headers = {'Accept': 'application/json', }
     try:
         dsp = requests.get('http://localhost:8181/onos/altura/GET/ALL/' +

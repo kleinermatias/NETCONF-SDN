@@ -11,6 +11,11 @@ $(document).ready(function () {
         }
     });
 
+
+
+    
+
+
     //receive details from server
     socket.on('alarms_socket', function (msg) {
         var alarms = [];
@@ -124,12 +129,12 @@ $(document).ready(function () {
 
             if (tabla_alarmas != ('<tbody id="tabla_alarmas">' + string2 + '</tbody>')) {
                 $('#tabla_alarmas').html(string2)
-                
+
 
             }
 
             else {
-                
+
             }
 
 
@@ -145,7 +150,7 @@ $(document).ready(function () {
                     paging: false,
                     oLanguage: {
                         sSearch: "Buscar:"
-                      }
+                    }
 
                 });
             }
@@ -155,5 +160,5 @@ $(document).ready(function () {
 
 
     });
-    
+
 });

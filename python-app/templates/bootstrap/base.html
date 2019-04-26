@@ -3,18 +3,24 @@
 <nav class="navbar navbar-light" style="background-color: #002a47;">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="/" style="color: #ffffff;"><img src="static/a.png" alt=""> 
+			<a class="navbar-brand" href="/" style="color: #ffffff;"><img src="static/a.png" alt="">
 				ALTURA - MXP
 			</a>
 		</div>
 		<a class="nav-link" href="/configuracion">CONFIGURACION <span class="sr-only">(current)</span></a>
-		<a class="nav-link" href="/alarmas">ALARMAS <span
-				class="badge badge-danger">{% block cantidad_alarmas %}{% endblock %}</span></a>
+		<a class="nav-link" href="/alarmas">ALARMAS <span class="badge badge-danger">{% block cantidad_alarmas %}{% endblock
+				%}</span></a>
 		<a class="nav-link" href="/estado">ESTADO <span class="sr-only">(current)</span></a>
 		<a class="nav-link" href="/perfiles">PERFILES <span class="sr-only">(current)</span></a>
 		<a class="nav-link" href="/topologia">TOPOLOGIA <span class="sr-only">(current)</span></a>
 	</div>
 </nav>
+<button name="not" id="not" class="btn btn-primary" onclick="showNotify()" style="display:none">notif</button>
+<div id="notif">
+	<div id="ID" data-value="-: "></div>
+	<div id="Mensaje" data-value="Configurado correctamente."></div>
+	<div id="Estado" data-value="success"></div>
+</div>
 {% endblock %}
 
 
@@ -23,3 +29,4 @@
 
 <!-- Content -->
 {% block content %} {% endblock %}
+

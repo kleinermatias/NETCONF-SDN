@@ -33,4 +33,6 @@ $(document).ready(function () {
         $('#cantidad_alarmas_html').html(msg.cant_alarms);
     });
 
+    
+
 });

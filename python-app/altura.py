@@ -43,7 +43,7 @@ thread4 = Thread()
 thread_stop_event = Event()
 mutex = Lock()
 mutex_rpc = Lock()
-
+config_in_progress = 0
 alarmas_json_anterior = ""
 actualizo_lista_alarmas = False
 local_cantidad_de_alarmas_anterior = 0
@@ -136,7 +136,6 @@ class ConfigThread(Thread):
         global selected_device
         global mutex_in_use
         global lista_configuracion_global
-
         while not thread_stop_event.isSet():
 
             if mutex_in_use == 0:
@@ -147,7 +146,6 @@ class ConfigThread(Thread):
 
                 try:
                     lista_configuracion = []
-
                     # Si el string es null quiere decir que estoy consultando a todos los dispositivos
                     if (local_selected_device == ""):
                         # llamo a la funcion que me retorna la lista de todos los dispositivos
@@ -191,24 +189,44 @@ class RPCThread(Thread):
         global tipo_fec_linea
         global tipo_fec_cliente
         global rpc_selected_device
+        global config_in_progress
         mutex_in_use = 1
+        
         try:
+            config_in_progress = 1
+            cantidad = ""+str(len(rpc_selected_device))
+            
+            sleep(0.3)
+            socketio.emit('configurando_socket', {
+                        'cantidad_dispositivos_completados': "(0/"+cantidad+")"}, namespace='/test')
+            sleep(0.3)
+            
             # En todos los dispositivos seleccionados, seteo la configuracion del perfil en NETCONF.
             for x in rpc_selected_device:
-                print(tipo_trafico)
-                print(str(x))
                 funciones.config_tipo_trafico(tipo_trafico, str(x))
                 funciones.config_tipo_linea(tipo_fec_linea, str(x))
                 funciones.config_tipo_cliente(tipo_fec_cliente, str(x))
-
+                
             # Mando el RPC NETCONF de aplicar esa configuracion en todos los dispositivos seleccionados.
+            i=0
             for x in rpc_selected_device:
+                i=i+1    
                 funciones.rpc_apply_config(str(x))
-
-        finally:
+                sleep(0.3)
+                socketio.emit('configurando_socket', {
+                            'cantidad_dispositivos_completados': "("+str(i)+"/"+cantidad+")"}, namespace='/test')
+                sleep(13)
+            
+        finally:    
             mutex_in_use = 0
             mutex_rpc.release()
+            config_in_progress = 0
+            sleep(0.3)
+            socketio.emit('configurando_socket', {
+                            'cantidad_dispositivos_completados': "LISTO"}, namespace='/test')
+            sleep(0.3)
             print("Se termino de aplicar la config")
+
 
     def run(self):
         self.apply_config()
@@ -279,6 +297,7 @@ def index():
     global perfiles_de_configuracion
     global all_devices
     global actualizo_lista_alarmas
+    global config_in_progress
     actualizo_lista_alarmas = False
     selected_device = ""
     perfiles_de_configuracion = []
@@ -296,7 +315,7 @@ def index():
 
     return render_template('index.html',
                            devices=all_devices, warning_alarm_event=warning_alarm_event, cantidad_alarmas=cantidad_de_alarmas,
-                           linklogico=2, perfiles=perfiles_de_configuracion)
+                           linklogico=2, perfiles=perfiles_de_configuracion, config_in_progress=config_in_progress)
 
 
 @app.route('/boton_config', methods=['GET', 'POST'])
@@ -589,13 +608,15 @@ def estado():
     Laser_Fault4 = []
 
     i = 0
-
+    XFP_g = []
+    XFP = []
+    indice = []
     if mutex_in_use == 0:
         for x in all_devices:
-            dsp = funciones.get_dsp(x)
+            dsp = funciones.get_all_config_state(x)
 
             all_devicess.append(i)
-            i = i + 1
+            
 
             ID.append(x)
 
@@ -688,89 +709,104 @@ def estado():
                 dsp, "<BOARD_TEMP>", "</BOARD_TEMP>"))
             BOARD_HUM.append(find_between(dsp, "<BOARD_HUM>", "</BOARD_HUM>"))
 
+            XFP_g.append(x)
+            XFP_g.append(x)
+            XFP_g.append(x)
+            XFP_g.append(x)
+            
+            indice.append((4*i))
+            indice.append((4*i)+1)
+            indice.append((4*i)+2)
+            indice.append((4*i)+3)
+            i = i + 1
+            XFP.append("XFP1")
+            XFP.append("XFP2")
+            XFP.append("XFP3")
+            XFP.append("XFP4")
+
             a, dsp = find_between_cut(dsp, "<Presence>", "</Presence>")
             Presence1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Presence>", "</Presence>")
-            Presence2.append(a)
+            Presence1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Presence>", "</Presence>")
-            Presence3.append(a)
+            Presence1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Presence>", "</Presence>")
-            Presence4.append(a)
+            Presence1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Loss>", "</Loss>")
             Loss1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Loss>", "</Loss>")
-            Loss2.append(a)
+            Loss1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Loss>", "</Loss>")
-            Loss3.append(a)
+            Loss1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Loss>", "</Loss>")
-            Loss4.append(a)
+            Loss1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Ready>", "</Ready>")
             Ready1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Ready>", "</Ready>")
-            Ready2.append(a)
+            Ready1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Ready>", "</Ready>")
-            Ready3.append(a)
+            Ready1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Ready>", "</Ready>")
-            Ready4.append(a)
+            Ready1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Interrupt>", "</Interrupt>")
             Interrupt1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Interrupt>", "</Interrupt>")
-            Interrupt2.append(a)
+            Interrupt1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Interrupt>", "</Interrupt>")
-            Interrupt3.append(a)
+            Interrupt1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Interrupt>", "</Interrupt>")
-            Interrupt4.append(a)
+            Interrupt1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Tx_Power_dBm>", "</Tx_Power_dBm>")
             Tx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Tx_Power_dBm>", "</Tx_Power_dBm>")
-            Tx_Power_dBm2.append(a)
+            Tx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Tx_Power_dBm>", "</Tx_Power_dBm>")
-            Tx_Power_dBm3.append(a)
+            Tx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Tx_Power_dBm>", "</Tx_Power_dBm>")
-            Tx_Power_dBm4.append(a)
+            Tx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Rx_Power_dBm>", "</Rx_Power_dBm>")
             Rx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Rx_Power_dBm>", "</Rx_Power_dBm>")
-            Rx_Power_dBm2.append(a)
+            Rx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Rx_Power_dBm>", "</Rx_Power_dBm>")
-            Rx_Power_dBm3.append(a)
+            Rx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Rx_Power_dBm>", "</Rx_Power_dBm>")
-            Rx_Power_dBm4.append(a)
+            Rx_Power_dBm1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Temp_c>", "</Temp_c>")
             Temp_c1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Temp_c>", "</Temp_c>")
-            Temp_c2.append(a)
+            Temp_c1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Temp_c>", "</Temp_c>")
-            Temp_c3.append(a)
+            Temp_c1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Temp_c>", "</Temp_c>")
-            Temp_c4.append(a)
+            Temp_c1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Tx_Power_Alarm>", "</Low_Tx_Power_Alarm>")
@@ -778,15 +814,15 @@ def estado():
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Tx_Power_Alarm>", "</Low_Tx_Power_Alarm>")
-            Low_Tx_Power_Alarm2.append(a)
+            Low_Tx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Tx_Power_Alarm>", "</Low_Tx_Power_Alarm>")
-            Low_Tx_Power_Alarm3.append(a)
+            Low_Tx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Tx_Power_Alarm>", "</Low_Tx_Power_Alarm>")
-            Low_Tx_Power_Alarm4.append(a)
+            Low_Tx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<High_Tx_Power_Alarm>", "</High_Tx_Power_Alarm>")
@@ -794,15 +830,15 @@ def estado():
 
             a, dsp = find_between_cut(
                 dsp, "<High_Tx_Power_Alarm>", "</High_Tx_Power_Alarm>")
-            High_Tx_Power_Alarm2.append(a)
+            High_Tx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<High_Tx_Power_Alarm>", "</High_Tx_Power_Alarm>")
-            High_Tx_Power_Alarm3.append(a)
+            High_Tx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<High_Tx_Power_Alarm>", "</High_Tx_Power_Alarm>")
-            High_Tx_Power_Alarm4.append(a)
+            High_Tx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Rx_Power_Alarm>", "</Low_Rx_Power_Alarm>")
@@ -810,15 +846,15 @@ def estado():
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Rx_Power_Alarm>", "</Low_Rx_Power_Alarm>")
-            Low_Rx_Power_Alarm2.append(a)
+            Low_Rx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Rx_Power_Alarm>", "</Low_Rx_Power_Alarm>")
-            Low_Rx_Power_Alarm3.append(a)
+            Low_Rx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Low_Rx_Power_Alarm>", "</Low_Rx_Power_Alarm>")
-            Low_Rx_Power_Alarm4.append(a)
+            Low_Rx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<High_Rx_Power_Alarm>", "</High_Rx_Power_Alarm>")
@@ -826,15 +862,15 @@ def estado():
 
             a, dsp = find_between_cut(
                 dsp, "<High_Rx_Power_Alarm>", "</High_Rx_Power_Alarm>")
-            High_Rx_Power_Alarm2.append(a)
+            High_Rx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<High_Rx_Power_Alarm>", "</High_Rx_Power_Alarm>")
-            High_Rx_Power_Alarm3.append(a)
+            High_Rx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<High_Rx_Power_Alarm>", "</High_Rx_Power_Alarm>")
-            High_Rx_Power_Alarm4.append(a)
+            High_Rx_Power_Alarm1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Rx_CDR_Loss_of_Lock>", "</Rx_CDR_Loss_of_Lock>")
@@ -842,15 +878,15 @@ def estado():
 
             a, dsp = find_between_cut(
                 dsp, "<Rx_CDR_Loss_of_Lock>", "</Rx_CDR_Loss_of_Lock>")
-            Rx_CDR_Loss_of_Lock2.append(a)
+            Rx_CDR_Loss_of_Lock1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Rx_CDR_Loss_of_Lock>", "</Rx_CDR_Loss_of_Lock>")
-            Rx_CDR_Loss_of_Lock3.append(a)
+            Rx_CDR_Loss_of_Lock1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Rx_CDR_Loss_of_Lock>", "</Rx_CDR_Loss_of_Lock>")
-            Rx_CDR_Loss_of_Lock4.append(a)
+            Rx_CDR_Loss_of_Lock1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Tx_CDR_Loss_of_Lock>", "</Tx_CDR_Loss_of_Lock>")
@@ -858,28 +894,30 @@ def estado():
 
             a, dsp = find_between_cut(
                 dsp, "<Tx_CDR_Loss_of_Lock>", "</Tx_CDR_Loss_of_Lock>")
-            Tx_CDR_Loss_of_Lock2.append(a)
+            Tx_CDR_Loss_of_Lock1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Tx_CDR_Loss_of_Lock>", "</Tx_CDR_Loss_of_Lock>")
-            Tx_CDR_Loss_of_Lock3.append(a)
+            Tx_CDR_Loss_of_Lock1.append(a)
 
             a, dsp = find_between_cut(
                 dsp, "<Tx_CDR_Loss_of_Lock>", "</Tx_CDR_Loss_of_Lock>")
-            Tx_CDR_Loss_of_Lock4.append(a)
+            Tx_CDR_Loss_of_Lock1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Laser_Fault>", "</Laser_Fault>")
             Laser_Fault1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Laser_Fault>", "</Laser_Fault>")
-            Laser_Fault2.append(a)
+            Laser_Fault1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Laser_Fault>", "</Laser_Fault>")
-            Laser_Fault3.append(a)
+            Laser_Fault1.append(a)
 
             a, dsp = find_between_cut(dsp, "<Laser_Fault>", "</Laser_Fault>")
-            Laser_Fault4.append(a)
+            Laser_Fault1.append(a)
 
+    print(XFP_g)
+    print(indice)
     return render_template('estado.html',
                            devices=ID, cantidad_alarmas=cantidad_de_alarmas,
                            fabricante=device_manufacturer,
@@ -1003,7 +1041,9 @@ def estado():
                            Rx_CDR_Loss_of_Lock4=Rx_CDR_Loss_of_Lock4,
                            Tx_CDR_Loss_of_Lock4=Tx_CDR_Loss_of_Lock4,
                            Laser_Fault4=Laser_Fault4,
-
+                           XFP_g = XFP_g,
+                           XFP = XFP,
+                           indice = indice,
                            all_devicess=all_devicess)
 
 
