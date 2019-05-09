@@ -1,0 +1,643 @@
+% Chapter Template
+
+\chapter{Diseño de la aplicación de distribución de contenido} % Main chapter title
+% cSpell:disable
+\label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+% cSpell:enable
+% cSpell:words resizebox onosapi usecase Mcast enrutamiento parencite includegraphics pcktprocactiv lstlisting createmcast ssmprotocol
+
+En este capítulo se explicarán los procedimientos relacionados al diseño y la implementación de una aplicación dentro del controlador SDN que permita el intercambio de tráfico \textit{multicast}. \
+
+El proceso de diseño comenzará por la definición de requerimientos propios de la aplicación para luego determinar su principio de operación.
+Dentro de esta etapa se desarrollarán diagramas de actividad y secuencia para explicar el tratamiento que recibirá un paquete \textit{multicast} cada vez que ingresa al controlador. \
+
+Luego, por medio de diagramas de clase y componentes se caracterizará la estructura interna de la aplicación y su relación con otras aplicaciones de \textit{ONOS}. A continuación, 
+se profundizará sobre las funciones que realizan las acciones fundamentales en el desempeño de la aplicación.\
+
+Por último, en base a los requerimientos se propondrá una serie de casos de prueba, determinantes para verificar el correcto funcionamiento de la aplicación. Dirigidos por 
+estos últimos, se realizará un conjunto de pruebas que comprueben el funcionamiento de la aplicación.
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section{Análisis de Requerimientos}
+
+Se definen en un principio los requerimientos funcionales de la aplicación:
+\begin{itemize}
+	\item [R-01] \textit{Soporte a SSM \textit{multicast}}: la aplicación debe ser capaz de operar de acuerdo a los mensajes establecidos en el protocolo \parencite{ssmprotocol}, garantizando de este modo la interoperabilidad con los demás sistemas. %es interoperabilidad, esta chequeado
+	\item [R-02] \textit{Creación de rutas \textit{multicast}}: se le debe dar al controlador la capacidad de establecer rutas \textit{multicast} y programar las tablas en los dispositivos de acuerdo a estas.
+	\item [R-03] \textit{Bloqueo de tráfico desde fuentes no autorizadas}: solo se crearán rutas \textit{multicast} con fuentes autorizadas por parte del administrador de la red. Se debe prohibir que fuentes no autorizadas ingresen tráfico a la red.
+	\item [R-04] \textit{Bloqueo de tráfico hacia un destino}: el administrador de la red debe tener la capacidad de restringir el tráfico de una ruta hacia un destino determinado.
+	\item [R-05] \textit{Respuesta ante cambios en la topología}: el tráfico no se debe interrumpir por caídas de dispositivos o enlaces, siempre y cuando exista un camino posible entre el proveedor de contenido y el consumidor, en el caso de existir más de un camino posible, se debe elegir el de menor costo.
+\end{itemize}
+
+Además, se identifican los siguientes requerimientos no funcionales:
+\begin{itemize}
+	\item [R-06] Utilización de llamadas a \textit{REST} como interfaz \textit{northbound} permitiendo la carga del registro de fuentes autorizadas y de clientes a bloquear.
+	\item [R-07] Registro de eventos de la aplicación en el \textit{log} del controlador para realizar un seguimiento de su actividad.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section{Principio de funcionamiento}
+A continuación, se desarrolla una introducción a la lógica llevada a cabo para implementar la aplicación de distribución de contenido, para facilitar la futura comprensión de la estructura y el funcionamiento.
+El diagrama \ref{fig:simple_sec_diag} refleja la operación básica esperada de la aplicación dentro del controlador, con la suscripción de un nuevo \textit{host} a un grupo \textit{multicast}. Cabe aclarar que este esquema se encuentra simplificado y se emplea solo a modo introductorio. 
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{0.9\textwidth}{!}{\includegraphics{Figures/IgmpSeqBasic.png}}
+	\caption[Diagrama de secuencia simplificado de la aplicación]{Diagrama de secuencia de las operaciones básicas de la aplicación.}
+	\label{fig:simple_sec_diag}
+\end{figure}
+
+
+Se puede ver que el \textit{host} intenta suscribirse a un grupo enviando un mensaje de \textit{IGMP Membership Report}, el \textit{switch} que recibe este mensaje busca en sus tablas un \textit{match} para este tipo, pero no existe una entrada para este protocolo específicamente. Como los dispositivos tienen una regla de prioridad mínima en la que todos los mensajes que no correspondan a ninguna entrada en las tablas se redirigen hacia el controlador, el paquete se envía según esta última regla.
+
+
+Una vez en el controlador, el paquete se procesa para determinar la creación o modificación de las reglas necesarias en los dispositivos que determinen las rutas de distribución \textit{multicast}. La configuración de los dispositivos se realiza mediante paquetes \textit{Openflow} del tipo \textit{FLOW\_MOD}.
+
+
+En la figura \ref{fig:simple_sec_diag} solo se tienen en cuenta los requerimientos R-01 y R-02, correspondientes al soporte los protocolos de \textit{multicast}. Por lo tanto, además de esta operación básica, en el controlador será necesario implementar los demás requerimientos, asociados al control de los grupos, con sus fuentes y suscriptores, así como también la configuración de parámetros de la aplicación y la respuesta ante cambios en la topología. En la siguiente sección se profundizará sobre estos apartados y el procesamiento de los paquetes dentro del controlador.
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+% \section{Integración con el controlador}
+\section{Detalles de la implementación}
+
+En esta sección se profundiza en los detalles de la implementación, que caracterizan a la aplicación, haciendo foco en las funciones más relevantes a la hora de cumplir con los requerimientos funcionales.\
+
+Para el desarrollo de esta aplicación se comenzó por la herramienta \textit{onos-create-app}, mencionada anteriormente, que permite crear el esquema del proyecto. Como parte de la creación del proyecto esta herramienta genera dependencias con las librerías de \textit{ONOS} permitiendo así el uso de la API de Java del controlador \parencite{onosapi}. Esta API facilita de gran manera el desarrollo ya que documenta todas las clases que componen al controlador, facilitando el acceso a la información de la red y la programación de la aplicación propiamente dicha. \
+
+
+Cabe mencionar que \textit{ONOS} cuenta con un grupo de aplicaciones que constituyen el \textit{onos core}, las cuales realizan las funciones primarias del plano de control de la red, estas exponen servicios a las otras aplicaciones. Estos servicios permiten hacer llamadas a aplicaciones del \textit{core} y reaccionar ante eventos de la red. A continuación, se describirán los componentes principales de la aplicación y su relación con los distintos servicios del controlador  \
+
+\subsection{Procesamiento de paquetes \textit{multicast}}
+
+Implementando la interfaz \textit{PacketProcessor} de \textit{ONOS}, se puede instanciar una clase que realiza el procesamiento de los paquetes entrantes al controlador. Cuando se construye el procesador de paquetes debe instalarse con un número de prioridad que indicará qué aplicación toma el paquete una vez que este ingresa al controlador, en este caso se utilizará una prioridad alta. \
+
+En la figura \ref{fig:pcktprocactiv} se resume la operación del procesador de paquetes implementado. Por un lado, el procesamiento de los paquetes IGMP tendrá como resultado directivas hacia la clase \textit{MulticastData}, la cual se encargará de la creación de las rutas \textit{multicast}. \
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Es necesario hablar un poco sobre los record TYPE??
+
+Por otro lado, a partir del procesamiento de los paquetes UDP con dirección de destino \textit{multicast} se creará una nueva regla de \textit{match} para los dispositivos. Esta última operación se ve reflejada en el fragmento de código \ref{lst:match} en donde se instala en el dispositivo \textit{devId} una regla que descarta los paquetes con las características que indica el selector.
+ 
+% cSpell:disable
+\begin{lstlisting}[caption={Fragmento de código que envía un mensaje \textit{OpenFlow} para modificar las reglas en un dispositivo}, captionpos=b, label={lst:match}]
+    //Selector que define las reglas de \textit{match} para el flujo a instalar
+    TrafficSelector.Builder selector = DefaultTrafficSelector.builder();
+    selector.matchEthType(Ethernet.TYPE_IPV4)
+            .matchIPProtocol(IPv4.PROTOCOL_UDP)
+            .matchIPDst(dst.toIpPrefix())
+            .matchIPSrc(src.toIpPrefix());
+    
+    //Acciones a realizar con el paquete, en este caso es descartarlo 
+    TrafficTreatment drop = DefaultTrafficTreatment.builder()
+            .drop().build();
+    
+    //Instalacion de la regla en el dispositivo 
+    flowObjectiveService.forward(devId, DefaultForwardingObjective.builder()
+        .fromApp(appId)
+        .withSelector(selector.build())
+        .withTreatment(drop)
+        .withPriority(90)
+        .withFlag(ForwardingObjective.Flag.VERSATILE)
+        .makePermanent()
+        .add());
+    
+\end{lstlisting}
+
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{.9\textwidth}{!}{\includegraphics{Figures/PacketProcessorActiv.png}}
+	\caption[Diagrama de actividad del procesador de paquetes]{Diagrama de actividad del procesador de paquetes implementado en la aplicación.}
+	\label{fig:pcktprocactiv}
+\end{figure}
+% cSpell:enable
+
+\subsubsection*{El mensaje IGMP Query}
+
+El protocolo IGMP define un mensaje IGMP Query, el cual se envía periódicamente desde los puntos de distribución hacia el grupo 224.0.0.1 (\textit{All hosts}). Para implementar esta capacidad, se deben construir los paquetes en el controlador y enviarlos directamente a los \textit{hosts}. En \parencite{queryinfo} se detalla sobre la operación de IGMPQuery. En el código \ref{lst:query} se puede ver como se construye un paquete en el controlador y como es enviado. Para realizar el envió periódico de estos mensajes se implementa la interfaz \textit{ScheduledExecutorService} \parencite{execjava}, de la librería \textit{concurrent} de Java.
+
+% cSpell:disable
+\begin{lstlisting}[caption={Fragmento en el que se construye un mensaje \textit{IGMP Query}}, captionpos=b, label={lst:query}]
+    IGMP igmp = new IGMP.IGMPv3();
+    igmp.setIgmpType(IGMP.TYPE_IGMPV3_MEMBERSHIP_QUERY);
+    igmp.setMaxRespCode(maxRespCode);
+
+    IGMPQuery query = new IGMPQuery(IpAddress.valueOf("0.0.0.0"), 0); //Esta funcion construye la cabecera IGMPQuery
+    igmp.addGroup(query);
+
+    IPv4 ip = new IPv4();
+    ip.setDestinationAddress(224.0.0.1); //All nodes group
+    ip.setProtocol(IPv4.PROTOCOL_IGMP);
+    ip.setSourceAddress("192.168.1.1");
+    ip.setTtl((byte) 1);
+    ip.setPayload(igmp);
+
+    Ethernet eth = new Ethernet();
+    eth.setDestinationMACAddress("01:00:5E:00:00:01");
+    eth.setSourceMACAddress("DE:AD:BE:EF:BA:11");
+    eth.setEtherType(Ethernet.TYPE_IPV4);
+
+    eth.setPayload(ip);
+
+    eth.setPad(true);
+
+    packetService.emit(new DefaultOutboundPacket((DeviceId) port.element().id(), treatment, ByteBuffer.wrap(eth.serialize()));
+    
+\end{lstlisting}
+% cSpell:enable
+
+
+\subsection{Proceso de creación de rutas \textit{multicast}} \label{sec:creacion_rutas_multicast}
+
+En la figura \ref{fig:createmcast} se resume el proceso por medio del cual las configuraciones introducidas en la clase \textit{MulticastData} se traducen en \textit{flows} en los dispositivos. Para comprender el procedimiento mediante el cual los algoritmos descriptos en lenguaje de alto nivel derivan configuraciones en los dispositivos de red, primero será necesario profundizar en el concepto de \textit{intents}. 
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{0.5\textwidth}{!}{\includegraphics{Figures/FlujoInfoCrearMcastRoute.png}}
+	\caption[Flujo de creación de rutas \textit{multicast}]{Flujo de información dentro de la aplicación para la creación de rutas \textit{multicast}.}
+	\label{fig:createmcast}
+\end{figure}
+
+\subsubsection*{ONOS Intent Framework}
+Los \textit{intents}, como se introduce en la sección \ref{subs:intents}, brindan una interfaz de alto nivel para describir políticas en la red. Permiten al programador abstraerse de las complejidades asociadas a la propia estructura de red, estableciendo políticas en lugar de instrucciones específicas a los dispositivos. Además, de la flexibilidad en el aspecto de la programabiliadad, el sistema de \textit{intents} cuenta con importantes ventajas a la hora de reaccionar ante cambios en las condiciones de la red \parencite{onos_intent}. 
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{0.7\textwidth}{!}{\includegraphics{Figures/Intents.png}}
+	\caption[Diagrama de estados simplificado de la creación de un \textit{intent}]{Diagrama de estados simplificado de la creación de un \textit{intent}.}
+	\label{fig:intent}
+\end{figure}
+
+El diagrama de la figura \ref{fig:intent} representa una simplificación del proceso de compilación de un \textit{intent} en ONOS. El proceso se inicia con una aplicación que expresa el deseo de conectar dos puntos alcanzables de la red, en el caso en que no exista un camino posible entre estos puntos, ocurrirá una falla en el estado de compilación del \textit{intent}. En este proceso se computa la menor trayectoria entre los puntos, este proceso se lleva a cabo por el \textit{Intent Compiler} de ONOS.
+
+
+Una vez compilado, a través de un \textit{IntentInstaller} se traduce el \textit{intent} a reglas en los dispositivos y se considera instalado. Luego, ante un cambio en la topología el \textit{intent} atravesará un proceso de recompilación, determinando un nuevo camino de ser posible entre los extremos establecidos. Un \textit{intent} instalado o que haya presentado una falla en su instalación se puede eliminar desde las aplicaciones, a través del servicio de \textit{intents} de ONOS.
+
+
+
+\subsubsection*{Construcción de rutas por medio de \textit{intents}}
+
+Como se mencionó anteriormente, la administración de canales de distribución se realizará por medio de la clase \textit{MulticastData}, la cual contendrá el registro de fuentes autorizadas, clientes suscriptos y bloqueados. En base a esta información y por medio del servicio de enrutamiento \textit{multicast} de \textit{ONOS} se registrarán las rutas en las tablas \textit{multicast} del controlador. \
+
+Mediante el desarrollo de la clase \textit{MulticastIntentManager} se implementa la interfaz \textit{McastListener}, capaz de reaccionar ante eventos en las tablas de enrutamiento \textit{multicast} y traducirla a reglas en los dispositivos. La administración de las reglas se realiza a través de los antes descriptos \textit{intents}, por cada ruta \textit{multicast} se establece un \textit{intent} del tipo \textit{SinglePointToMultipoint}. Como ya se mencionó anteriormente, los \textit{intents} computan siempre el camino de menor costo para la distribución de contenido, evitando así la necesidad de calcular este camino e insertar las reglas en los dispositivos correspondientes. Para instalar los \textit{intents} se hace uso del servicio de \textit{intents} de \textit{ONOS}. \
+
+Para la creación del \textit{intent} es necesario que la ruta tenga al menos una fuente y un destino. En el fragmento de código \ref{lst:intent} se ilustra la creación de un \textit{intent}, como se puede ver existen ciertas similitudes con la creación de un flujo, en el código \ref{lst:match}. Ambos cuentan con un selector y una serie de acciones a realizar en el caso de \textit{match} (\textit{Treatment}).
+
+% cSpell:disable
+\begin{lstlisting}[caption={Fragmento de código que muestra la creación de un \textit{SinglePointToMultipoint}}, captionpos=b, label={lst:intent}]
+    //Selector que define las reglas de \textit{match} para el \textit{intent} a instalar
+    TrafficSelector.Builder selector = DefaultTrafficSelector.builder();
+    selector.matchEthType(Ethernet.TYPE_IPV4)
+        .matchIPDst(route.group().toIpPrefix())   //Direccion IP de grupo
+        .matchIPSrc(route.source().toIpPrefix()); //Direccion IP de la fuente
+
+    //Acciones a realizar en el caso de \textit{match}
+    TrafficTreatment treatment = DefaultTrafficTreatment.emptyTreatment();
+
+    //Creacion del intent
+    SinglePointToMultiPointIntent.Builder builder = SinglePointToMultiPointIntent.builder()
+        .appId(appId)
+        .selector(selector.build())
+        .treatment(treatment)
+        .ingressPoint(ingressPoint)  //Fuente de distribucion de contenido
+        .egressPoints(egressPoints); //Conjunto de suscriptores
+
+    SinglePointToMultiPointIntent intent;
+    intent = builder.build();
+
+    //Instalacion del intent  
+    intentService.submit(intent);
+    
+\end{lstlisting}
+% cSpell:enable
+
+\subsection{Bloqueo de fuentes no autorizadas}
+
+Según lo establecido en el requerimiento R-03, no se debe permitir el tráfico de fuentes no autorizadas en el registro, evitando de este modo la sobrecarga de los enlaces con mensajes que no deseados. \
+
+Como se puede ver en la figura \ref{fig:pcktprocactiv}, desde el procesador de paquetes se genera una regla de prioridad baja que descarta desde el plano de datos los mensajes con dirección de destino \textit{multicast}. Si la fuente se encuentra habilitada a transmitir al canal y existen suscriptores, por medio del proceso descripto anteriormente se instalan los \textit{intents}, estableciendo flujos de mayor prioridad sobrescribiendo la regla de descarte de paquetes. \
+
+\subsection{Bloqueo de suscriptores no autorizados}
+
+Para inhabilitar una dirección IP a escuchar a un grupo determinado, se recurre a la clase \textit{MulticastData}, la cual mantiene un registro de los suscriptores y su estado, y en base a estos crea las rutas. De este modo, si una dirección se encuentra bloqueada, no se tiene en cuenta a la hora de construir la ruta y, por lo tanto, no será objetivo para la creación de \textit{intent}.
+
+\subsection{Respuesta ante cambios en la topología}
+
+Para lograr que la aplicación reaccione ante cambios en la topología, es necesario agregar una clase que implemente la interfaz \textit{TopologyListener}, la cual ante un evento en la topología disparará un método en el cual se identificará el evento y de acuerdo al mismo se tomarán las medidas necesarias. En este caso se responderá ante dos tipos de cambios en la topología: cambio de estado de un link(\textit{LINK\_UPDATED}) y de un dispositivo (\textit{DEVICE\_AVAILABILITY\_CHANGED}). \
+
+Ante uno de estos eventos, se realizará un recómputo de las rutas \textit{multicast}, borrando las rutas existentes y enviando un mensaje \textit{IGMP Query} para que los \textit{hosts} que estaban suscriptos reenvíen sus mensajes de suscripción y de este modo reescribir las rutas.
+
+
+\subsection{Configuración de la aplicación}
+Parte de los requerimientos consiste en que se puedan alterar los parámetros de la aplicación, los cuales determinan las fuentes autorizadas a transmitir y los clientes que no tienen permitida la suscripción a los canales. Para el desarrollo de estas tareas se hizo uso de \textit{NetworkConfigurationService} \parencite{onosnetcfg} de \textit{ONOS}, este servicio lo brinda el controlador para facilitar la configuración de las aplicaciones a través de archivos con una sintaxis específica. Brinda una solución al envío de estas configuraciones a la aplicación, permitiendo la carga por medio de llamadas a REST (ya sea con el comando \texttt{curl} \parencite{curlman} u otra aplicación, por ejemplo, Postman\parencite{postman}), o bien, utilizando de uno de los \textit{shell scripts} de \textit{ONOS} (\textit{onos-netcfg}), el cual simplemente enmascara la llamada a REST.
+
+Para la configuración de la aplicación se crearán dos clases: una que permita configurar las fuentes habilitadas y otra para evitar que clientes se suscriban a canales específicos, ambas determinarán sus propios archivos de configuración en formato \textit{json}. Se puede ver un ejemplo de estos archivos de configuración en los Listings \ref{lst:addsrc} y \ref{lst:blocksink}, respectivamente. Luego, a través de un \textit{NetworkConfigurationListener}, se generará un evento cada vez que se actualice una configuración. En el diagrama de la figura \ref{fig:configclasses} se ve la estructura de las clases involucradas en la configuración de la aplicación. Cabe aclarar que en la figura, las clases sombreadas son parte del \textit{core} del controlador y, por lo tanto, no son parte del desarrollo del proyecto.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{0.8\textwidth}{!}{\includegraphics{Figures/ClassConfig.png}}
+	\caption[Diagrama de clases involucradas en la configuración de la aplicación]{Diagrama de clases involucradas en la configuración de la aplicación.}
+	\label{fig:configclasses}
+\end{figure}
+
+
+\begin{lstlisting}[language=json, caption={Ejemplo de configuración de habilitación de canales de transmisión}, captionpos=b, label={lst:addsrc}]
+{
+    "ssmTranslate": [
+        {
+            "source": <IP de la fuente del canal>,
+            "group": <IP del grupo del canal>
+        },
+        {
+            "source": "10.10.0.3",
+            "group": "232.0.55.65"
+        }
+    ]
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=json, caption={Ejemplo de configuración del bloqueo de suscriptores}, captionpos=b, label={lst:blocksink}]
+{
+    "sinksBlocked": [
+        {
+            "source": <IP de la fuente del canal>,
+            "group": <IP del grupo del canal>, 
+            "sinks": [
+                <IP del cliente1 a bloquear>,
+                <IP del cliente2 a bloquear>]
+        },
+        {
+            "source": "10.10.0.3",
+            "group": "232.0.55.65",
+            "sinks": [
+                "10.10.0.6",
+                "10.10.0.9"]
+        }
+        ]
+}
+\end{lstlisting}
+
+
+Para registrar los cambios en las configuraciones se implementa la interfaz \textit{NetworkConfigurationListener} que, al igual que los demás \textit{Listeners}, dispara una función cada vez que se actualiza una configuración, y actualiza los registros de la clase \textit{MulticastData} según la configuración que corresponda.
+
+\subsubsection*{Interfaz REST de la aplicación}
+Además, del acceso a la información por medio de la interfaz estándar definida anteriormente, se implementó una interfaz \textit{REST} propia, para facilitar el acceso a la información relacionada a la configuración vigente. A través del comando \textit{onos-create-app rest}, se configuran las dependencias de la aplicación para agregar la interfaz y se crean dos clases que determinarán las operaciones soportadas. Luego, se definirá una operación GET que permitirá obtener un archivo \textit{json} con las rutas \textit{multicast} que se encuentren activas.
+
+
+Para visualizar el contenido, se hizo uso de la herramienta \textit{Swagger UI} \parencite{swagger}, que permite interactuar con el contenido de una REST API. Para utilizar Swagger, es necesario editar el archivo \textit{swagger.json} que define la estructura de la interfaz gráfica y los métodos que se van a implementar.
+
+\section{Validación y Verificación}
+
+En la siguiente sección se procede a describir el plan de pruebas diseñadas para la aplicación. Cada cuadro a continuación presenta la descripción del procedimiento llevado a cabo para probar cada requerimiento de dicha pieza de software. Algunos de los casos de prueba son acompañados por imágenes para esclarecer el funcionamiento.
+
+La figura \ref{fig:topo_grande} muestra la topología empleada para probar la aplicación. El dispositivo de red marcado es diferente a los demás, esté es el nodo físico señalado anteriormente.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{0.5\textwidth}{!}{\includegraphics{Figures/topo_grande.png}}
+	\caption[Topología de prueba]{Topología de prueba.}
+	\label{fig:topo_grande}
+\end{figure}
+
+\subsection*{Caso de prueba \textit{T-R-01}}
+
+En las figuras \ref{fig:igmp_test01_cmd} y \ref{fig:igmp_test01_topo} se muestra un ejemplo del procedimiento descripto en el cuadro \ref{t-Soporte-a-SSM-Multicast}. La figura \ref{fig:igmp_test01_cmd} señala como los \textit{hosts} \textit{h7} y \textit{h5} intentan suscribirse a un grupo dentro del rango 232.0.0.0/8 pero solamente \textit{h5} indica la dirección de la fuente, es por esto que en la figura \ref{fig:igmp_test01_topo} vemos que solo \textit{h5} recibe tráfico.
+
+\begin{table}[H]
+\centering
+\caption{Soporte a SSM \textit{Multicast}}
+\label{t-Soporte-a-SSM-Multicast}
+\resizebox{1\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & T-R-01 \\ \hline
+\textbf{Título} & Soporte a SSM \textit{Multicast} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}c@{}}Si un cliente desea suscribirse o desuscribirse de un grupo \textit{multicast} con dirección \\ 232.0.0.0/8 debe especificar la fuente de cual quiere recibir o estaba recibiendo. En \\ caso de no hacerlo la aplicación debe ignorar el pedido del cliente.\end{tabular} \\ \hline
+\textbf{Procedimiento} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}\textbf{Suscripción}\\ 1. Desde un cliente mandar mensaje de suscripción IGMP a un grupo con \\ dirección 232.0.0.0/8 sin especificar la fuente. \\ 2. Desde otro cliente enviar el mismo mensaje incluyendo la información de la \\ fuente. \\ \\ \textbf{Desuscripción}\\ 1. Desde un cliente mandar mensaje de desuscripción IGMP a un grupo con \\ dirección 232.0.0.0/8 sin especificar la fuente. \\ 2. Desde otro cliente enviar el mismo mensaje incluyendo la información de la \\ fuente.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}\textbf{Suscripción}\\ Para el caso 1 el cliente no puede suscribirse, no se debe registrar este cliente para \\ ese grupo y no se crea una ruta \textit{multicast} para ese grupo que lo incluya. Por otro \\ lado, el caso 2 muestra el comportamiento opuesto. Se registra el cliente y se lo \\ agrega a la ruta \textit{multicast} de ese canal.   \\ \\ \textbf{Desuscripción}\\ Para el caso 1 el cliente no se desuscribirse, no se desregistra el cliente para ese \\ grupo y no se actualiza la ruta \textit{multicast}. Por otro lado, el caso 2 muestra el \\ comportamiento opuesto. Se desregistra el cliente y se lo elimina de la ruta \\ \textit{multicast} de ese canal.\end{tabular}} \\ \hline
+\textbf{Estado} & Aprobado \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.6\textwidth}{!}{\includegraphics{Figures/igmp_test01_cmd.png}}
+	\caption[T-R-01 - Comandos del \textit{host}]{T-R-01 - Comandos del \textit{host}.}
+	\label{fig:igmp_test01_cmd}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.5\textwidth}{!}{\includegraphics{Figures/igmp_test01_topo.png}}
+	\caption[T-R-01 - Tráfico resultante]{T-R-01 - Tráfico resultante.}
+	\label{fig:igmp_test01_topo}
+\end{figure}
+
+\subsection*{Caso de prueba \textit{T-R-02}}
+
+Las figuras \ref{fig:igmp_test02_topo_init}, \ref{fig:igmp_test02_cli_onos_init}, \ref{fig:igmp_test02_topo_mod_del} y \ref{fig:igmp_test02_cli_onos_mod_del} ilustran un ejemplo del procedimiento indicado en el cuadro \ref{t-Rutas-Multicast}. El tráfico inicial de la figura \ref{fig:igmp_test02_topo_init} corresponde a la ruta \textit{multicast} de la figura \ref{fig:igmp_test02_cli_onos_init}, dónde los campos subrayados indican los puntos de conexión tanto de la fuente como de los clientes. Un punto de conexión queda definido por el id de un \textit{switch} (ej. \textit{of:00000000000001}) y por un puerto del mismo (ej. \textit{/3}).
+
+Partiendo de dicho estado inicial, se agregan los \textit{hosts} \textit{h2} y \textit{h10} al grupo \textit{multicast}. Las rutas se modifican para resultar como en la figura \ref{fig:igmp_test02_topo_mod} y \ref{fig:igmp_test02_cli_onos_mod} dónde se ven los clientes nuevos. Por otro lado, nuevamente partiendo del estado inicial, se eliminan todos los oyentes del grupo \textit{multicast} y así el tráfico de la red junto con los clientes de la ruta \textit{multicast} desaparecen como señalan las figuras \ref{fig:igmp_test02_topo_del} y \ref{fig:igmp_test02_cli_onos_del}.
+
+\begin{table}[H]
+\centering
+\caption{Rutas \textit{Multicast}}
+\label{t-Rutas-Multicast}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & T-R-02 \\ \hline
+\textbf{Título} & Rutas \textit{Multicast} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}c@{}}Corroborar la creación, modificación y eliminación de rutas \textit{multicast} por parte \\ la aplicación.\end{tabular} \\ \hline
+\textbf{Procedimiento} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}\textbf{Agregar nueva ruta}\\ 1. Suscribir el primer cliente de un grupo \textit{multicast} sin proveedor de contenido.\\ 2. Suscribir el primer cliente de otro grupo \textit{multicast} con proveedor de contenido. \\ \\ \textbf{Modificar ruta existente}\\ 1. Desde un cliente suscribirse a un grupo \textit{multicast}.\\ 2. Desde otro cliente desuscribirse de un grupo \textit{multicast}.\\ 3. Cortar la transmisión de una fuente de otro grupo \textit{multicast}.\\ \\ \textbf{Eliminar ruta existente}\\ 1. Desuscribir el último cliente de un grupo \textit{multicast} sin proveedor de contenido.\\ 2. Desuscribir el último cliente de otro grupo \textit{multicast} con proveedor de contenido.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}\textbf{Agregar nueva ruta}\\ Para ambos casos la ruta \textit{multicast} es creada, es decir, las reglas en los dispositivos \\ se instalan en los 2 casos. La diferencia está en que en una ruta habrá tráfico y en la \\ otra no. \\ \\ \textbf{Modificar ruta existente}\\ Para el caso 1 se agrega el cliente a la ruta \textit{multicast} y comienza a circular tráfico de \\ ese grupo hacía él. Por otro lado, el caso 2 muestra el comportamiento opuesto. Se \\ elimina el cliente de la ruta \textit{multicast} y se corta la circulación de tráfico de ese grupo \\ hacía él. Finalmente, en el caso 3 la ruta \textit{multicast} no sufre ninguna modificación. Sin \\ embargo, el tráfico por esa ruta será nulo. \\ \\ \textbf{Eliminar ruta existente}\\ Para ambos casos la ruta \textit{multicast} es eliminada, es decir, las reglas en los dispositivos \\ se eliminan en los 2 casos. La diferencia está en que en el caso 2 el tráfico del \\ proveedor será descartado para que no inunde la red ya que no tiene oyentes.\end{tabular}} \\ \hline
+\textbf{Estado} & Aprobado \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.5\textwidth}{!}{\includegraphics{Figures/igmp_test02_topo_init.png}}
+	\caption[T-R-02 - Tráfico inicial]{T-R-02 - Tráfico inicial.}
+	\label{fig:igmp_test02_topo_init}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{1\textwidth}{!}{\includegraphics{Figures/igmp_test02_cli_onos_init.png}}
+	\caption[T-R-02 - Ruta \textit{multicast} inicial]{T-R-02 - Ruta \textit{multicast} inicial.}
+	\label{fig:igmp_test02_cli_onos_init}
+\end{figure}
+
+\begin{figure}[H]    
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/igmp_test02_topo_mod.png}
+        \caption{Tráfico con dos oyentes nuevos.}
+        \label{fig:igmp_test02_topo_mod}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.87\linewidth]{Figures/igmp_test02_topo_del.png}
+        \caption{Tráfico desuscribiendo todos los oyentes.}
+        \label{fig:igmp_test02_topo_del}
+    \end{subfigure}
+    \caption[T-R-02 - Tráfico resultante]{T-R-02 - Tráfico resultante.}
+    \label{fig:igmp_test02_topo_mod_del}
+\end{figure}
+
+\begin{figure}[H]    
+    \begin{subfigure}[b]{1\textwidth}
+        \includegraphics[width=1\linewidth]{Figures/igmp_test02_cli_onos_mod.png}
+        \caption{Ruta \textit{multicast} con dos oyentes nuevos.}
+        \label{fig:igmp_test02_cli_onos_mod}
+    \end{subfigure}
+    \begin{subfigure}[b]{1\textwidth}
+        \includegraphics[width=1\linewidth]{Figures/igmp_test02_cli_onos_del.png}
+        \caption{Ruta \textit{multicast} desuscribiendo todos los oyentes.}
+        \label{fig:igmp_test02_cli_onos_del}
+    \end{subfigure}
+    \caption[T-R-02 - Ruta \textit{multicast} resultante]{T-R-02 - Ruta \textit{multicast} resultante.}
+    \label{fig:igmp_test02_cli_onos_mod_del}
+\end{figure}
+
+\subsection*{Caso de prueba \textit{T-R-03}}
+
+En el caso de prueba desarrollado en el cuadro \ref{t-Bloqueo-de-trafico-desde-fuentes-no-autorizadas}, se busca prevenir que fuentes no autorizadas inserten tráfico a la red. La figura \ref{fig:igmp_test03_cmd} muestra al \textit{host} \textit{h9} transmitiendo a una dirección \textit{multicast}, en la figura \ref{fig:igmp_test03_log} tenemos la respuesta de la aplicación ante este evento y como \textit{h9} no está autorizado a transmitir a esa dirección se impedirá que sus paquetes ingresen a la red, tal como lo indica la figura \ref{fig:igmp_test03_topo}.   
+
+\begin{table}[H]
+\centering
+\caption{Bloqueo de tráfico desde fuentes no autorizadas}
+\label{t-Bloqueo-de-trafico-desde-fuentes-no-autorizadas}
+\resizebox{1\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id}                                   & T-R-03                                                                                                                                                   \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Título}                              & Bloqueo de tráfico desde fuentes no autorizadas                                                                                                         \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo}                             & \begin{tabular}[c]{@{}c@{}}Verificar que solo existan rutas \textit{multicast} que incluyan fuentes                                                               \\ autorizadas a transmitir a ese grupo.\end{tabular} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Procedimiento}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}\begin{tabular}[c]{@{}l@{}}1. Desautorizar una fuente que actualmente esté involucrada en una ruta \textit{multicast}. \\ 2. Desde un cliente intentar suscribirse a un canal que involucre una fuente desautorizada.\\ 3. Desde un cliente intentar suscribirse a un canal que involucre una fuente autorizada.\\ 4. Comenzar a transmitir desde una fuente no autorizada.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados                                                                                                                                                         \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}Para el caso 1 se elimina la ruta \textit{multicast} cortando así el tráfico de ese canal.\\ Luego, en el caso 2 no se crea una ruta \textit{multicast}. Sin embargo, el caso 3 la ruta \textit{multicast} \\ es creada y el cliente recibe el tráfico del canal solicitado. Finalmente, en el caso 4 los \\ paquetes generados por esta fuente serán bloqueados.\end{tabular}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Estado} & Aprobado \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.8\textwidth}{!}{\includegraphics{Figures/igmp_test03_cmd.png}}
+	\caption[T-R-03 - Comandos del \textit{host}]{T-R-03 - Comandos del \textit{host}.}
+	\label{fig:igmp_test03_cmd}
+\end{figure}
+
+\begin{figure}[H]
+    \centering 
+    \resizebox{0.8\textwidth}{!}{\includegraphics{Figures/igmp_test03_log.png}}
+    \caption[T-R-03 - Mensaje de logeo]{T-R-03 - Mensaje de logeo.}
+    \label{fig:igmp_test03_log}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.4\textwidth}{!}{\includegraphics{Figures/igmp_test03_topo.png}}
+	\caption[T-R-03 - Tráfico resultante]{T-R-03 - Tráfico resultante.}
+	\label{fig:igmp_test03_topo}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Bloqueo de tráfico hacia un cliente}
+\label{t-Bloqueo-de-trafico-hacia-un-cliente}
+\resizebox{1\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id}                                   & T-R-04                                                                                                                                                         \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Título}                              & Bloqueo de tráfico hacia un cliente                                                                                                                           \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo}                             & Chequear que los clientes bloqueados para un determinado grupo no reciban su tráfico.                                                                         \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Procedimiento}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}\begin{tabular}[c]{@{}l@{}}1. Bloquear un cliente que está recibiendo tráfico de un grupo \textit{multicast} determinado. \\ 2. Desde otro cliente intentar suscribirse a un grupo al cual él está bloqueado.\\ 3. Dado un cliente bloqueado en el grupo \textit{multicast} A pero no en el grupo \textit{multicast} B, \\ intentar suscribirse al grupo B.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados                                                                                                                                                                 \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}Para el caso 1, la ruta \textit{multicast} involucrada será modificada para eliminar dicho \\ cliente, y así cortar el tráfico del grupo hacia él. En el caso 2, la ruta \textit{multicast} no es \\ creada y la solicitud del cliente es ignorada. Por último, en el caso 3 el cliente será \\ agregado a la ruta \textit{multicast} del grupo B, y así recibir su tráfico.\end{tabular}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Estado}                               & Aprobado                                                                                                                                                       \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\subsection*{Caso de prueba \textit{T-R-05}}
+
+A continuación, se explica un ejemplo del caso de prueba planteado en el cuadro \ref{t-Respuestas-ante-cambios-en-la-topologia}. Dado el estado inicial de tráfico indicado en la figura \ref{fig:igmp_test05_topo_init}, se procede a realizar los cambios en la topología señalados en la figura \ref{fig:igmp_test05_cmd_mininet}. En primer lugar, la figura \ref{fig:igmp_test05_topo_link} muestra la nueva ruta al romper los enlaces entre los \textit{switches}. Luego, restablecidos los enlaces, se da de baja uno de los \textit{switches}. En la figura \ref{fig:igmp_test05_topo_sw} vemos cual es el nuevo camino elegido por el controlador para dirigir los paquetes. 
+
+\begin{table}[H]
+\centering
+\caption{Respuestas ante cambios en la topología}
+\label{t-Respuestas-ante-cambios-en-la-topologia}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id}                                   & T-R-05                                                                                                                                               \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Título}                              & Respuestas ante cambios en la topología                                                                                                             \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo}                             & \begin{tabular}[c]{@{}c@{}}Corroborar que ante un cambio en la topología de la red, se recalcule el camino de                                       \\ menor costo para las rutas \textit{multicast}.\end{tabular} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Procedimiento}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}\begin{tabular}[c]{@{}l@{}}1. Deshabilitar un enlace por el cual circula tráfico de una ruta \textit{multicast}. \\  2. Agregar un enlace que genere un camino de menor costo para alguna ruta \textit{multicast}. \\ 3. Deshabilitar un \textit{switch} por el cual circula tráfico de una ruta \textit{multicast}. \\  4. Agregar un \textit{switch} que genere un camino de menor costo para alguna ruta \textit{multicast}. \\ 5. Agregar un \textit{switch} en medio de un camino de alguna ruta \textit{multicast} tal que el camino \\ resultante no sea el de menor costo.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados                                                                                                                                                       \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}En el procedimiento 1, se calcula un nuevo camino de menor costo para esa ruta. \\ En el caso 2, el tráfico de la ruta es redirigido por este nuevo camino. Para el caso 3 y 4 \\ el comportamiento será análogo al caso 1 y 2 respectivamente. Por otro lado, en el \\ procedimiento 5 se redirigirá el tráfico de la ruta por un nuevo camino óptimo para esa ruta.\end{tabular}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Estado}                               & Aprobado                                                                                                                                             \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.4\textwidth}{!}{\includegraphics{Figures/igmp_test05_topo_init.png}}
+	\caption[T-R-05 - Tráfico inicial]{T-R-05 - Tráfico inicial.}
+	\label{fig:igmp_test05_topo_init}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.4\textwidth}{!}{\includegraphics{Figures/igmp_test05_cmd_mininet.png}}
+	\caption[T-R-05 - Comandos de Mininet]{T-R-05 - Comandos de Mininet.}
+	\label{fig:igmp_test05_cmd_mininet}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.8\textwidth}{!}{\includegraphics{Figures/igmp_test05_log.png}}
+	\caption[T-R-05 - Mensajes de logeo]{T-R-05 - Mensajes de logeo.}
+	\label{fig:igmp_test05_log}
+\end{figure}
+
+\begin{figure}[H]    
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/igmp_test05_topo_link.png}
+        \caption{Tráfico después de los enlaces caídos.}
+        \label{fig:igmp_test05_topo_link}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.88\linewidth]{Figures/igmp_test05_topo_sw.png}
+        \caption{Tráfico después del \textit{switch} caído.}
+        \label{fig:igmp_test05_topo_sw}
+    \end{subfigure}
+    \caption[T-R-05 - Tráfico resultante]{T-R-05 - Tráfico resultante.}
+\end{figure}
+
+\subsection*{Caso de prueba \textit{T-R-06}}
+
+Aquí se busca emplear la interfaz \textit{northbound} del controlador para administrar la aplicación, tal como lo describe el cuadro \ref{t-Modificar-parametros-de-la-aplicacion}. Primero, ONOS brinda la interfaz gráfica \textit{Swagger} para facilitar el trabajo con la REST API. En las figuras \ref{fig:igmp_test06_swagger_source_out} y \ref{fig:igmp_test06_swagger_sink_out} utilizamos este medio para desautorizar una fuente y deshabilitar un cliente respectivamente. Las figuras \ref{fig:igmp_test06_curl_source_out} y \ref{fig:igmp_test06_curl_sink_out} señalan como realizar la misma consulta con \texttt{curl}, comando disponible en cualquier distribución de \textit{Linux}. 
+
+Al prohibir el tráfico proveniente del \textit{host} \textit{h1} la ruta \textit{multicast} es automáticamente disuelta, tal como muestra la figura \ref{fig:igmp_test06_topo_source_out}. Por otro lado, como describe la figura \ref{fig:igmp_test06_topo_sink_out}, cuando se bloquea el \textit{h5} la ruta es modificada para excluir a este \textit{host} de su camino.
+
+\begin{table}[H]
+\centering
+\caption{Modificar parámetros de la aplicación}
+\label{t-Modificar-parametros-de-la-aplicacion}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id}                                   & T-R-06                                                                                                                                          \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Título}                              & Modificar parámetros de la aplicación                                                                                                         \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo}                             & \begin{tabular}[c]{@{}c@{}}Chequear que desde la REST API de ONOS se pueda modificar las fuentes                                                \\ autorizadas y los clientes bloqueados.\end{tabular} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Procedimiento}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}\begin{tabular}[c]{@{}l@{}}1. Realizar un método POST de HTTP bloqueando un cliente para un canal. \\ 2. Realizar un método POST de HTTP desbloqueando un cliente inhabilitado \\ a recibir por un canal.\\ 3. Realizar un método POST de HTTP autorizando una fuente a transmitir en \\ determinado grupo.\\ 4. Realizar un método POST de HTTP desautorizando una fuente habilitada a \\ transmitir a un grupo determinado.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados                                                                                                                                                  \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}En el caso 1 y 2, cada solicitud es procesada realizando los cambios indicados en \\ ella para así producir los resultados ya descritos en T-R-04. Análogamente, para \\ los casos restantes los pedidos son procesados haciendo las modificaciones \\ correspondiente y así lograrlos resultados descritos en T-R-03.\end{tabular}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Estado}                               & Aprobado                                                                                                                                        \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\begin{figure}[H]    
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/igmp_test06_swagger_source_out.png}
+        \caption{Desautorizar fuente.}
+        \label{fig:igmp_test06_swagger_source_out}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/igmp_test06_swagger_sink_out.png}
+        \caption{Desautorizar cliente.}
+        \label{fig:igmp_test06_swagger_sink_out}
+    \end{subfigure}
+    \caption[T-R-06 - Solicitud a la REST API de ONOS a través de \textit{Swagger UI}]{T-R-06 - Solicitud a la REST API de ONOS a través de \textit{Swagger UI}.}
+\end{figure}
+
+\begin{figure}[H]    
+    \begin{subfigure}[b]{1\textwidth}
+        \includegraphics[width=1\linewidth]{Figures/igmp_test06_curl_source_out.png}
+        \caption{Desautorizar fuente.}
+        \label{fig:igmp_test06_curl_source_out}
+    \end{subfigure}
+    \begin{subfigure}[b]{1\textwidth}
+        \includegraphics[width=1\linewidth]{Figures/igmp_test06_curl_sink_out.png}
+        \caption{Desautorizar cliente.}
+        \label{fig:igmp_test06_curl_sink_out}
+    \end{subfigure}
+    \caption[T-R-06 - Solicitud a la REST API de ONOS a través del comando \texttt{curl}.]{T-R-06 - Solicitud a la REST API de ONOS a través del comando \texttt{curl}.}
+\end{figure}
+
+\begin{figure}[H]    
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/igmp_test06_topo_source_out.png}
+        \caption{Desautorizar fuente.}
+        \label{fig:igmp_test06_topo_source_out}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\textwidth}
+        \includegraphics[width=0.9\linewidth]{Figures/igmp_test06_topo_sink_out.png}
+        \caption{Desautorizar cliente.}
+        \label{fig:igmp_test06_topo_sink_out}
+    \end{subfigure}
+    \caption[T-R-06 - Tráfico resultante]{T-R-06 - Tráfico resultante.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Registrar los eventos de la aplicación}
+\label{t-Registrar-los-eventos-de-la-aplicacion}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id}                                   & T-R-07                                                                                                                                                 \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Título}                              & Registrar los eventos de la aplicación                                                                                                                \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo}                             & \begin{tabular}[c]{@{}c@{}}Verificar que se generen mensajes de los eventos de la aplicación en el log del                                            \\ controlador para realizar un seguimiento de su actividad.\end{tabular} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Procedimiento}                        & \multicolumn{1}{l|}{\cellcolor[HTML]{FFFFFF}\begin{tabular}[c]{@{}l@{}}1. Comenzar a transmitir desde una fuente autorizada y desde una no autorizada. \\ 2. Suscribir un cliente a un grupo SSM y otro cliente a un grupo ASM.\\ 3. Bloquear un cliente para un determinado grupo.\\ 4. Deshabilitar y habilitar un enlace de la red.\\ 5. Deshabilitar y habilitar un \textit{switch} de la red.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{\begin{tabular}[c]{@{}c@{}}Resultados                                                                                                                                                         \\ Esperados\end{tabular}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}Los eventos descritos en los todos los procedimientos deben ser identificados en \\ el archivo de logeo del controlador.\end{tabular}} \\ \hline
+\rowcolor[HTML]{FFFFFF} 
+\textbf{Estado}                               & Aprobado                                                                                                                                               \\ \hline
+\end{tabular}%
+}
+\end{table}

@@ -1,0 +1,177 @@
+% Chapter Template
+
+\chapter{Diseño de la aplicación de interfaz de usuario} % Main chapter title
+
+\label{Chapter6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+ En este capítulo se abordará el proceso de diseño e implementación de una interfaz gráfica de usuario, cuyo objeto principal es exponer de manera sencilla las capacidades de la aplicación desarrollada en el capítulo anterior. \
+
+
+ Primero se definirán los requerimientos de la aplicación, luego en base a estos se establecerán parámetros para la implementación, tales como el lenguaje de desarrollo o interfaz comunicación con el exterior.
+ Una vez finalizado el desarrollo, se definirán casos de prueba y se verificará el correcto funcionamiento de la aplicación.
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+
+\section{Análisis de Requerimientos}
+Los requerimientos funcionales estarán dados por:
+\begin{itemize}
+    \item [R-01] \textit{Brindar información sobre la situación actual de la red}: se deben incluir datos que permitan identifcar los dispositivos controlados y los \textit{hosts} conectados.
+    \item [R-02] \textit{Proveer información sobre el estado de la distribución de contenido}: incluyendo datos sobre las rutas \textit{multicast} creadas, las fuentes habilitadas a transmitir y los suscriptores bloqueados.
+    \item [R-03] \textit{Administrar los proveedores y suscriptores habilitados}: brindar la capacidad de modificar los parámetros de la aplicación interna al controlador para permitir o bloquear algunas conexiones.
+\end{itemize}
+
+
+Por otro lado, se definen los siguientes requerimientos no funcionales:
+\begin{itemize}
+    \item [R-04] \textit{Ofrecer una interfaz gráfica amigable al usuario}: el entorno de operación debe ser sencillo de administrar.
+    \item [R-05] \textit{Tiempo de actualización de la información}: Los datos en la interfaz deben actualizarse en intervalos de tiempo cortos.
+\end{itemize}
+
+%-----------------------------------
+%	SECTION 2
+%-----------------------------------
+\section{Implementación y comunicación con el controlador}
+
+De acuerdo a los requerimientos definidos en la sección anterior, se puede inferir que las actividades que debe desempeñar esta aplicación residen principalmente en consultas a la REST API definida como interfaz \textit{northbound} de ONOS. Se utilizará como plataforma para la implementación un servidor web, ya que brinda mayor versatilidad y simplicidad para el desarrollo de la interfaz gráfica a través de los lenguajes de programación web. 
+
+Como se muestra en la figura \ref{fig:gui_diagram}, para el desarrollo del \textit{"front-end"}  de la interfaz se utilizará \textit{HTML} con el agregado de librerías de \textit{Bootstrap} que simplifican el diseño. Por otro lado, las funciones \textit{"back-end"} estarán implementadas en \textit{Python} un lenguaje de programación de alto nivel con librerías que facilitan la comunicación con la REST API de ONOS y la lectura de los datos. La comunicación entre el \textit{"front-end"} y  el \textit{"back-end"} se logra a través de \textit{CGI o Common Gateway Interface}.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{.3\textwidth}{!}{\includegraphics{Figures/gui_diagram.png}}%
+	\caption[Esquema de la interfaz de usuario]{Esquema de la interfaz de usuario.}
+	\label{fig:gui_diagram}
+\end{figure}
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Validación y Verificación}
+
+Los casos de prueba diseñados para la interfaz de usuario estan representados por los cuadros \ref{t-Situacion-actual-de-la-red}, \ref{t-Informacion-sobre-el-estado-de-distribucion-de-contenido}, \ref{t-Administrar-proveedores-y-clientes-autorizados}, \ref{t-Brindar-una-interfaz-sencilla-para-la-administracion-del-servicio} y \ref{t-Mantener-la-informacion-actualizada}. En la figura \ref{fig:gui_captura} se presenta una captura de la interfaz de usuario desarrolada.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{1\textwidth}{!}{\includegraphics{Figures/gui_captura.png}}%
+	\caption[Captura de la interfaz de usuario]{Captura de la interfaz de usuario.}
+	\label{fig:gui_captura}
+\end{figure}
+
+
+\begin{table}[th]
+\centering
+\caption{Situación actual de la red}
+\label{t-Situacion-actual-de-la-red}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}T-R-01} \\ \hline
+\textbf{Título} & \multicolumn{1}{c|}{Situación actual de la red} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}l@{}}Incluir datos sobre dispositivos controlados y los \textit{hosts} \\ conectados que permitan identificarlos y conocer su \\ estado de conexión.\end{tabular} \\ \hline
+\textbf{Procedimiento} & \begin{tabular}[c]{@{}l@{}}1. Conectar y desconectar un \textit{host}.\\ 2. Conectar y desconectar un dispositivo.\end{tabular} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Resultados Esperados} & \begin{tabular}[c]{@{}l@{}}Para el caso 1, se visualiza primero la conexión de un \\ nuevo \textit{host} y luego la desconexión de este mismo. El \\ resultado es análogo para el caso 2.\end{tabular} \\ \hline
+\textbf{Estado} & \multicolumn{1}{c|}{Aprobado} \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[th]
+\centering
+\caption{Información sobre el estado de distribución de contenido}
+\label{t-Informacion-sobre-el-estado-de-distribucion-de-contenido}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}T-R-02} \\ \hline
+\textbf{Título} & \multicolumn{1}{c|}{Información sobre el estado de distribución de contenido} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}l@{}}Proveer información acerca de las rutas \textit{multicast} creadas, \\ las fuentes habilitadas a transmitir y los suscriptores bloqueados.\end{tabular} \\ \hline
+\textbf{Procedimiento} & \begin{tabular}[c]{@{}l@{}}1. Establecer una sola ruta \textit{multicast} con su proveedor de \\ contenido y sus respectivos clientes.\\ 2. Establecer otra ruta \textit{multicast} con su proveedor de \\ contenido y sus respectivos clientes, pero bloqueando a \\ un \textit{host}.\\ 3. Desbloquear dicho \textit{host} para esa ruta.\end{tabular} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Resultados Esperados} & \begin{tabular}[c]{@{}l@{}}En el caso 1, la interfaz de usuario muestra solo 1 fuente \\ habilitada a transmitir al grupo \textit{multicast} correspondiente y la \\ IP de los clientes suscriptos. Para el caso 2, para esta nueva ruta \\ se visualiza un nuevo proveedor autorizado, una nueva lista de \\ clientes suscriptos y clientes bloqueados. Finalmente, este último \\ cliente desaparece de la lista de bloqueados de dicha ruta \textit{multicast}.\end{tabular} \\ \hline
+\textbf{Estado} & \multicolumn{1}{c|}{Aprobado} \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[th]
+\centering
+\caption{Administrar proveedores y clientes autorizados}
+\label{t-Administrar-proveedores-y-clientes-autorizados}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|l|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}T-R-03} \\ \hline
+\textbf{Título} & \multicolumn{1}{c|}{Administrar proveedores y clientes autorizados} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}l@{}}Modificar los parámetros de la aplicación interna al controlador \\ para permitir o bloquear proveedores y clientes\end{tabular} \\ \hline
+\textbf{Procedimiento} & \begin{tabular}[c]{@{}l@{}}1. Bloquear un cliente que está recibiendo tráfico de un grupo \\ \textit{multicast} determinado.\\ 2. Desbloquear el cliente.\\ 3. Bloquear una fuente que está transmitiendo y hay \textit{hosts} \\ escuchando.\\ 4. Autorizar la fuente a transmitir a un grupo determinado.\end{tabular} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Resultados Esperados} & \begin{tabular}[c]{@{}l@{}}En primer lugar, se observa como el cliente pasa de la lista de \\ autorizados a la de bloqueados de dicha ruta \textit{multicast}. Segundo, \\ se produce la acción contraria. Por otro lado, en el caso 3 la fuente \\ desaparece de la lista de proveedores autorizados y la información \\ de la ruta \textit{multicast} a la que pertenecía desaparece. Para el caso 4, \\ la fuente vuelve a la lista de autorizados y la información de la ruta \\ \textit{multicast} se restaura.\end{tabular} \\ \hline
+\textbf{Estado} & \multicolumn{1}{c|}{Aprobado} \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[th]
+\centering
+\caption{Brindar una interfaz sencilla para la administración del servicio}
+\label{t-Brindar-una-interfaz-sencilla-para-la-administracion-del-servicio}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & T-R-04 \\ \hline
+\textbf{Título} & Brindar una interfaz sencilla para la administración del servicio \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}c@{}}El entorno para la administración de la red debe ser organizado y \\ sencillo de operar.\end{tabular} \\ \hline
+\textbf{Procedimiento} & \multicolumn{1}{l|}{1. Realizar una serie de operaciones aleatorias con la interfaz.} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Resultados Esperados} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}Toda la información se presenta en una sola vista, dónde también \\ se muestran los campos para realizar los cambios de las \\ configuraciones del servicio. A su vez, con un máximo de 2 clicks \\ el usuario puede realizar cualquiera de las operaciones.\end{tabular}} \\ \hline
+\textbf{Estado} & Aprobado \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[th]
+\centering
+\caption{Mantener la información actualizada}
+\label{t-Mantener-la-informacion-actualizada}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Id} & T-R-05 \\ \hline
+\textbf{Título} & Mantener la información actualizada \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Objetivo} & \begin{tabular}[c]{@{}c@{}}Los datos en la interfaz deben actualizarse cada un \\ tiempo acorde a los intervalos entre los distintos eventos de la red\end{tabular} \\ \hline
+\textbf{Procedimiento} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}1. Realizar una serie de cambios en las configuraciones del servicio.\\ 2. Desconectar y conectar \textit{hosts} y dispositivos de red.\end{tabular}} \\ \hline
+\rowcolor[HTML]{C0C0C0} 
+\textbf{Resultados Esperados} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\begin{tabular}[c]{@{}l@{}}Los cambios en las configuraciones y en el estado de conexión de los \\ \textit{hosts} y los \textit{switches} se refrescan en intervalos de tiempo no mayor \\ a 10 segundos.\end{tabular}} \\ \hline
+\textbf{Estado} & Aprobado \\ \hline
+\end{tabular}%
+}
+\end{table}

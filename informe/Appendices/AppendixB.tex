@@ -1,0 +1,321 @@
+% Appendix Template
+
+\chapter{Tutorial de instalación el entorno} % Main appendix title
+
+\label{AppendixB} % Change X to a consecutive letter; for referencing this appendix elsewhere, use \ref{AppendixX}
+
+En este apéndice, se detalla el procedimiento por el cual se configura el entrono sobre el que se llevan a cabo todos los desarrollos del trabajo. Luego se explica el procedimiento que se debe seguir para instalar la aplicación en el controlador y los pasos para comprobar su funcionamiento.
+
+\section{Instalación de las máquinas virtuales}
+
+Como se explica al comienzo del capítulo \ref{Chapter4}, para la construcción del entorno se utilizarán tres máquinas virtuales, una para el emulador de red Mininet, otra para el controlador y una tercera como servidor web para aplicación de interfaz con el usuario. 
+
+Importante, para desplegar este sistema es necesario disponer de una computadora con \textit{8GB} de RAM libres para uso de las VM's y un sistema operativo Linux (en este tutorial se utiliza Ubuntu). 
+
+Como software \textit{hipervisor} se utilizó Virtualbox, en conjunto con herramientas de automatización como Ansible y Vagrant para simplificar el despliegue del ambiente de prueba. Vagrant es una herramienta para la creación y configuración de entornos de desarrollo virtualizados, por otro lado, Ansible es una plataforma de software libre para configurar y administrar computadoras, combinadas permite la inicialización y completa configuración del escenario. 
+
+Para el correcto funcionamiento del proyecto es necesario contar con la última versión de tanto Ansible como Vagrant. Para instalar estas herramientas se utilizaron los comandos en el código \ref{lst:instaent}
+
+% cSpell:disable
+\begin{lstlisting}[caption={Instalación de Vagrant y Ansible en su última versión}, captionpos=b, label={lst:instaent}, language=bash]
+#Instalacion de Vagrant
+wget https://releases.hashicorp.com/vagrant/2.0.2/vagrant_2.0.2_x86_64.deb
+dpkg -i vagrant_2.0.2_x86_64.deb
+
+#Instalacion de Ansible 
+apt-get update
+apt-get install software-properties-common
+apt-add-repository ppa:ansible/ansible
+apt-get update
+apt-get install ansible
+
+#Obtener Repositorio con archivos de configuracion
+git clone https://NatiTomattis@bitbucket.org/nati\_matt/documentation.git
+
+\end{lstlisting}
+% cSpell:enable
+
+Una vez instaladas las herramientas, se utilizarán los códigos de la carpeta \textit{documentation/Vagrant} para inicializar el entorno. Dentro de esta carpeta, el archivo \textit{Vagrantfile} define las características de las máquinas virtuales y cómo se encuentran conectadas entre sí, los archivos con extensión \textit{.yml} son Playbooks de Ansible y contienen las configuraciones de las VMs. Dentro del mismo directorio, con el comando:
+\begin{center}
+    $ \emph {vagrant up}$
+\end{center}
+se inicia la construcción de las máquinas virtuales, durante el proceso se le solicita al usuario que seleccione una interfaz de red con acceso a Internet. Una vez inicializada cada una, Vagrant ejecuta el Playbook correspondiente que realizará las configuraciones (\textit{provision}). Otros comandos de Vagrant que resultaron útiles a lo largo del proyecto se detallan en la tabla \ref{t-vagrant}.
+
+\begin{table}[th]
+    \centering
+    \caption{Comandos de Vagrant frecuentemente utilizados}
+    \label{t-vagrant}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|}
+    \hline 
+    \rowcolor[HTML]{C0C0C0} 
+    \textbf{Comando}                                   & \textit{\textbf{Descripción}}                                               \\ \hline \hline
+    \textit{vagrant halt <VM>}      & Apaga una máquina virtual                                                   \\ \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textit{vagrant destroy <VM>}   & Elimina una VM                                                              \\ \hline
+    \textit{vagrant ssh <VM>}       & Accede por ssh a la máquina virtual que se indica en el argumento            \\ \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textit{vagrant provision <VM>} & Configura la VM con el Playbook de Ansible indicado en el archivo Vagrantfile \\ \hline
+    \end{tabular}%
+}
+\end{table}
+
+Una vez configuradas las máquinas virtuales se puede acceder por ssh a cada una con el usuario \textbf{sdn} y contraseña \textbf{sdnrocks}. Las máquinas virtuales se encuentran conectadas a un red \textit{host-only} con direcciones IP fijas (detalladas en la tabla \ref{t-ipvm}), a través de las cuales se puede acceder desde el \textit{host} anfitrión. Se comprueba la correcta instalación del controlador ingresando a la CLI, como se muestra en la figura \ref{fig:onoscli}.
+
+\begin{table}[th]
+    \centering
+    \caption{Direcciones IP de las VM enla red \textit{host-only} del anfitrión}
+    \label{t-ipvm}
+    \begin{tabular}{|l|l|}
+    \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textbf{VM}        & \textit{\textbf{Dirección IP host-only}} \\ \hline \hline
+    \textit{mininet}   & 192.168.33.100                           \\ \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textit{onos}      & 192.168.33.101                           \\ \hline
+    \textit{webserver} & 192.168.33.102                           \\ \hline
+    \end{tabular}
+    \end{table}
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/onoscli.png}}%
+	\caption[CLI de ONOS]{CLI de ONOS.}
+	\label{fig:onoscli}
+\end{figure}
+
+\section{Instalación de una aplicación en el controlador}
+Para instalar una aplicación en el controlador es necesario contar con un archivo con extensión \textit{.oar}, el cual es construido con la herramienta Maven, a partir del código fuente escrito en Java. Este proceso requiere de la instalación previa de varias herramientas que constituyen el entorno de desarrollo de aplicaciones, en la próxima sección se explicará cómo configurar este ambiente para poder construir aplicaciones internas al controlador. 
+
+Por otro lado, si se dispone del archivo \textit{.oar} el proceso de instalación es mucho más sencillo y no requiere de la de herramientas externas. De este modo, simplemente se instalará la aplicación, sin la posibilidad de editarla.
+
+A continuación, se describirán los dos métodos de instalación mencionados, si no se pretende editar una aplicación no es necesario configurar el entorno de desarrollo, por lo tanto, se recomienda la utilización del segundo método. 
+
+
+Las aplicaciones desarrolladas a lo largo de este proyecto se encuentran bajo control de versiones en un repositorio público de Bitbucket el cual se puede obtener a través del comando
+\begin{center}
+    \label{line:clone-app-repo}
+    $ \emph {git clone https://NatiTomattis@bitbucket.org/nati\_matt/apps.git}$ (\ref{line:clone-app-repo})
+\end{center}
+aquí residen los archivos \textit{.oar} para instalar en el controlador, así como también el código fuente de cada una de las aplicaciones.
+
+\subsection{Configuración del entorno de desarrollo}
+Para poder desarrollar aplicaciones en el controlador será necesario contar con las siguientes herramientas:
+\begin{itemize}
+    \item \textbf{Java 8}
+    \item \textbf{Maven}
+    \item \textbf{IDE de desarrollo de Java}, en este proyecto se utilizó \textit{IntelliJ IDEA Community Edition}, por recomendación de ONOS en los tutoriales, pero se puede emplear el de preferencia del desarrollador.
+    \item \textbf{Onos scripts}, dentro del repositorio de onos \parencite{onos-repo} el cual se debe descargar previamente:
+
+\begin{lstlisting}[caption={}, captionpos=b, label={}, language=bash]
+cd ~
+wget https://github.com/opennetworkinglab/onos/archive/1.11.2-rc1.zip
+unzip 1.11.2-rc1.zip
+mv onos-1.11.2-rc1 onos        
+\end{lstlisting}
+
+    en un directorio identificado como ONOS\_ROOT, se exporta el directorio que contiene los scripts agregando la siguiente línea al archivo \textit{\textasciitilde/.bashrc}:
+    \begin{center}
+        $ \emph {source \textasciitilde/onos/tools/dev/bash\_profile}$
+    \end{center}
+    \item \textbf{Configuración de las variables de entorno}, ONOS define a una \textit{cell} como un conjunto de variables de entorno que identifican las direcciones IP del controlador, configuraciones de usuarios y contraseñas. A continuación, el fragmento de código \ref{lst:cell} refleja un ejemplo de confección de una cell de ONOS. Una cell se edita con el comando,
+    \begin{center}
+        $ \emph {vicell local}$
+    \end{center}
+    a través del editor de código \textit{vi}. Una vez configurada la cell se aplican las variables de entorno con el comando el comando,
+    \begin{center}
+        $ \emph {cell local}$
+    \end{center}
+    \item \textbf{Comunicación con el controlador}: se debe establecer un canal seguro con el controlador a través del cual se enviarán las aplicaciones, para esto se utilizará ssh. Existe un comando de ONOS que realiza esta tarea,
+    \begin{center}
+        $ \emph {onos-secure-ssh}$
+    \end{center}
+    de este modo se copia la clave pública de la computadora de desarrollo y la pega en el controlador garantizando un acceso seguro. Una vez ejecutado este comando se tiene acceso tanto a la CLI como a la interfaz REST del controlador.
+\end{itemize}
+
+% cSpell:disable
+\begin{lstlisting}[caption={Ejemplo de una cell de ONOS}, captionpos=b, label={lst:cell}, language=bash]
+export OC1="192.168.33.101" # Direccion IP de la primera instancia del controlador
+export OCN="192.168.33.100" # Direccion IP de Mininet
+
+export ONOS_USER=sdn        #Usuario y grupo para el logue en la CLI
+export ONOS_GROUP=sdn
+
+export ONOS_WEB_PASS=rocks  #Usuario y password de la interfaz web
+export ONOS_WEB_USER=sdn
+\end{lstlisting}
+% cSpell:enable
+
+\subsection{Construcción de aplicaciones}
+Una vez realizadas las configuraciones anteriores, es necesario exportar las librerías de Java correspondientes a la versión de ONOS utilizada, dentro de \textit{\textasciitilde/onos} ejecutar: 
+\begin{center}
+    $ \emph {onos-buck-publish-local}$
+\end{center}
+Ahora, el entorno está listo para construir una aplicación de ONOS. El código fuente de la aplicación de distribución de contenido, se encuentra en el repositorio clonado en la línea \ref{line:clone-app-repo} dentro de la carpeta \textbf{igmp}, es necesario moverse a este directorio para construir la aplicación. El proceso se realiza a través de Maven con el comando:
+\begin{center}
+    $ \emph {mci}$
+\end{center}
+que es equivalente a ejecutar \textit{mvn clean install}, aquí a través del archivo \textit{pom.xml} se resuelven dependencias de librerías de Java, se realizan chequeos de sintaxis de código y \textit{checkstyles} donde se comprueba que el código cumpla con ciertos estándares a la hora de ser escrito.
+
+
+Este último proceso da como resultado una carpeta \textit{target} dentro de la cual reside un archivo con extensión \textit{.oar} que es el módulo que se introducirá en el controlador. Para instalar la aplicación se utiliza el siguiente comando de ONOS:
+\begin{center}
+    $ \emph {onos-app \$OC1 install! nombre\_de\_la\_app.oar}$
+\end{center}
+en el primer argumento se indica la dirección IP del controlador con las variables de estado definidas anteriormente, el segundo es la operación que se realizará sobre la aplicación, en este caso se instalará y como se agregó un signo de exclamación al final ($!$) también se activará; el último argumento es la ruta al archivo de aplicación. Una vez ejecutado el comando el controlador devuelve el estado actual de la aplicación y sus características en caso de una operación correcta, de lo contrario se devuelve un código de error.
+
+Para verificar las tareas realizadas anteriormente se accede a través de la CLI como indica en la figura \ref{fig:appactivate}, el comando \textit{apps} devuelve el listado total de aplicaciones en el controlador y sus características, con el argumento \textit{-s} se omite la descripción completa de cada aplicación, y el argumento \textit{-a} muestra sólo las aplicaciones activadas.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/appactivate.png}}%
+	\caption[Listado de aplicaciones instaladas y activadas]{Listado de aplicaciones instaladas y activadas.}
+	\label{fig:appactivate}
+\end{figure}
+
+Esta forma fue la que se utilizó a lo largo de trabajo para la instalación de aplicaciones, sin embargo, ONOS brinda otras formas de administrar las aplicaciones instaladas a través de la CLI, la GUI o llamadas a REST.
+
+\subsection{Instalación de aplicaciones desde la interfaz gráfica}
+En el repositorio de aplicaciones además del código fuente de cada aplicación se incluye dentro del directorio de cada una, la capeta \textit{target} que contiene el objeto \textit{.oar} el cual permite que la aplicación sea directamente instalada en el controlador, sin necesidad de ser construida.
+
+Para instalar estas aplicaciones sin contar con el entorno de desarrollo es necesario acceder a la interfaz gráfica del controlador a través de un navegador web ingresando la URL:
+\begin{center}
+    $ \emph {http://192.168.33.101:8181/onos/ui/login.html}$
+\end{center}
+y autenticando con usuario \textbf{sdn} y la contraseña \textbf{rocks}. Una vez dentro de la interfaz se puede ingresar al panel de \textit{Applications}, como se muestra en la figura \ref{fig:appinstall1}.
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{.6\textwidth}{!}{\includegraphics{Figures/appinstall1.png}}%
+	\caption[Ingreso a la vista de aplicaciones de la GUI]{Ingreso a la vista de aplicaciones de la GUI.}
+	\label{fig:appinstall1}
+\end{figure}
+
+En la vista de aplicaciones, haciendo click en el símbolo \textbf{+} se abre una ventana con el explorador de archivos. Diríjase al directorio que contiene el repositorio y seleccione el archivo \textit{.oar} dentro de la carpeta target de la aplicación que se pretende instalar, que en este caso será \textit{learningswitch}. Una vez incluida la aplicación aparece un mensaje advirtiendo que esta ya fue instalada (figura \ref{fig:appinstall2}).
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/appinstall2.png}}%
+	\caption[Instalación de una aplicación a través de la GUI]{Instalación de una aplicación a través de la GUI.}
+	\label{fig:appinstall2}
+\end{figure}
+
+Después de instalar la aplicación se debe activar para que pueda ser utilizada, para esto es necesario seleccionarla en el listado, presionar el botón de activación y confirmar la acción como se indica en la figura \ref{fig:appinstall3}. Una vez finalizada la instalación compruebe el estado de la aplicación, tal como se desataca en la figura \ref{fig:appinstall4}.
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/appinstall3.png}}%
+	\caption[Activación de una aplicación a través de la GUI]{Activación de una aplicación a través de la GUI.}
+	\label{fig:appinstall3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/appinstall4.png}}%
+	\caption[Aplicación instalada a traves de la GUI]{Aplicación instalada a través de la GUI.}
+	\label{fig:appinstall4}
+\end{figure}
+\section{Puesta en marcha del escenario}
+Para probar el funcionamiento de la aplicación se instanciará una topología en Mininet, en la máquina virtual en donde se instaló se incluyeron también un set de topologías para estas tareas. En el directorio \textit{/home/sdn/topo} se inicializa la topología con el comando:
+\begin{center}
+    $ \emph {sudo python topo\_final.py}$
+\end{center}
+aquí se crea un escenario con seis dispositivos y doce \textit{hosts} para realizar pruebas sobre la aplicación. Una vez conectado el entorno  con el controlador es posible acceder desde la interfaz web de usuario de ONOS para visualizar el escenario construido, tal como se mencionó en la sección anterior.
+
+En la figura \ref{fig:tutorialui} se muestra una vista rápida del panel de topología que es lo primero que se presenta al ingresar a la interfaz. ONOS define una serie de atajos de teclado para habilitar distintas vistas en el panel de topología:
+\begin{itemize}
+    \item \textbf{La tecla H}: Habilita la visualización de \textit{hosts}.
+    \item \textbf{La tecla A}: Habilita la visualización del tráfico en la red.
+\end{itemize}
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/tutorialui.png}}%
+	\caption[Vista de la topología en la interfaz de usuario de ONOS]{Vista de la topología en la interfaz de usuario de ONOS.}
+	\label{fig:tutorialui}
+\end{figure}
+
+Cabe aclarar que para que se puedan ver los \textit{hosts} en la vista de la topología es necesario que previamente desde la línea de comandos de Mininet se ingrese el comando \textit{pingall}, para advertir al controlador de la existencia de los mismos. 
+
+A su vez para que el comando \textit{pingall} funcione correctamente, en el controlador deben estar activadas las aplicaciones de \textbf{openflow}, para que el controlador pueda manipular este tipo de mensajes y \textbf{forwarding}, para que los \textit{switches} puedan retransmitir paquetes. Para activar las aplicaciones se introducen los siguientes comandos en la CLI de ONOS:
+\begin{center}
+    $ \emph {app activate openflow}$ \\
+    $ \emph {app activate fwd}$
+\end{center}
+
+Luego, para acceder a la interfaz de usuario de la aplicación se debe ingresar la URL:
+\begin{center}
+    $ \emph {http://192.168.33.102/main.html}$
+\end{center}
+
+Por último, a través de la URL
+\begin{center}
+    $ \emph {http://192.168.33.101:8181/onos/v1/docs/}$
+\end{center}
+se puede acceder a la interfaz Swagger de la REST API del controlador, donde se pueden realizar configuraciones y obtener datos tanto del controlador como de las aplicaciones que están corriendo sobre él. 
+
+\section{Transmisión y recepción de contenido}
+Una vez establecido el escenario, desde la interfaz gráfica de la aplicación se habilita una fuente completando los campos según la figura \ref{fig:sourceenable}. Luego, desde la CLI de Mininet se utiliza el comando \textit{xterm} para obtener una terminal por cada \textit{host} involucrado en la comunicación, tener en cuenta que en la conexión ssh con la VM de Mininet se debe habilitar \textit{X11 Forwarding}. Como se muestra en la figura, se habilita el \textit{host} h2 a transmitir al grupo 232.0.55.65.
+
+En la sección \ref{sec:iperf}, se explicó cómo utilizar el comando \textit{iperf}, entonces en la terminal de h2 se utilizará este comando para transmitir contenido a una dirección \textit{multicast} de la siguiente manera:
+\begin{center}
+    $ \emph {iperf -c 232.0.55.65 -u -T 32 -t 1000 -i 1}$
+\end{center}
+Luego, en otro \textit{host} también se utiliza una terminal externa para suscribirse a la distribución de contenido mediante iperf:
+\begin{center}
+    $ \emph {iperf -s -u -B 232.0.55.65 -i 1 -O 10.10.0.2 -X h1-eth0}$
+\end{center}
+\begin{figure}[th]
+	\centering 
+	\resizebox{0.3\textwidth}{!}{\includegraphics{Figures/sourceenable.png}}%
+	\caption[Habilitación de una fuente en la interfaz de la aplicación]{Habilitación de una fuente en la interfaz de la aplicación.}
+	\label{fig:sourceenable}
+\end{figure}
+
+
+\section{Visualización de las tablas de flujo e \textit{intents}}
+Para comprobar el correcto funcionamiento de la aplicación es necesario poder ver los \textit{intents} y los flujos en las tablas de los dispositivos. Este control se puede hacer tanto desde la interfaz gráfica como desde la línea de comandos.
+
+\subsection{ONOS CLI}
+En la tabla \ref{t-clicommands} se enumeran los comandos de la CLI más utilizados a lo largo del proyecto.
+\begin{table}[th]
+    \centering
+    \caption{Comandos de la CLI de onos}
+    \label{t-clicommands}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|}
+    \hline 
+    \rowcolor[HTML]{C0C0C0} 
+    \textbf{Comando}    & \textit{\textbf{Descripción}}                               \\ \hline \hline
+    \textit{devices}    & Muestra el listado de dispositivos controlados             \\ \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textit{flows}      & Muestra información de los flujos instalados por dispositivo \\ \hline
+    \textit{intents}    & Muestra información de todos los \textit{intents} del controlador    \\ \hline
+    \rowcolor[HTML]{C0C0C0} 
+    \textit{mcast-show} & Muestra las rutas \textit{multicast} establecidas                    \\ \hline
+    \textit{apps}    & Muestra el listado de las aplicaciones instaladas    \\ \hline
+    \end{tabular}%
+    }
+\end{table}
+ONOS CLI acepta muchos otros comandos de configuración y monitoreo, en la documentación de ONOS hay una entrada completa dedicada a la CLI y los comandos que admite \parencite{onoscli}.
+
+\subsection{ONOS GUI}
+Ofrece una visualización más amigable con el usuario del estado del controlador y sus aplicaciones. Como se ve en la figura \ref{fig:guimonitor}, en el panel de topología es posible ver en tiempo real el tráfico de la red, presionando la tecla \textbf{a}. Asimismo se puede ver el listado total de \textit{intents} en el panel de \textit{intents} tal como se muestra en la figura \ref{fig:guiintent}
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/guimonitor.png}}%
+	\caption[Monitoreo de tráfico en tiempo real]{Monitoreo de tráfico en tiempo real.}
+	\label{fig:guimonitor}
+\end{figure}
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/guiintent.png}}%
+	\caption[Panel de \textit{intents} en la interfaz gráfica]{Panel de \textit{intents} en la interfaz gráfica.}
+	\label{fig:guiintent}
+\end{figure}
+
+Del mismo modo, en el panel de dispositivos se puede acceder a los flujos de cada uno y a las características de los mismos. 
+
+Al igual que para la línea de comandos, en la documentación de ONOS existe una entrada dedicada a la explicación detallada de las funcionalidades de la interfaz gráfica \parencite{onosgui}.

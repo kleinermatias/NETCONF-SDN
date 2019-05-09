@@ -1,0 +1,96 @@
+% Appendix Template
+
+\chapter{Análisis de la aplicación OnePing} % Main appendix title
+
+\label{AppendixA} % Change X to a consecutive letter; for referencing this appendix elsewhere, use \ref{AppendixX}
+Para poder desarrollar aplicaciones dentro del controlador se tomó como referencia un repositorio de \textit{Open Networking Foundation} (organización desarrolladora de ONOS) \parencite{onos-samples}, donde se encuentran aplicaciones de ejemplo para utilizar con el controlador. Como base, se usó una aplicación sencilla como lo es OnePing para entender la estructura que debe tener un desarrollo dentro del controlador y las API de Java que ONOS brinda a los desarrolladores. 
+
+El funcionamiento de OnePing reside en una aplicación que permite intercambiar un solo mensaje de \texttt{ping} entre dos \textit{hosts} específicos. En este apéndice se analiza detalladamente el funcionamiento de la aplicación y los mensajes intercambiados entre el controlador y los dispositivos que permiten la programación de las reglas de los mismos. 
+
+Se propone una topología sencilla que simplifique el seguimiento de los paquetes dentro de la misma, tal como se muestra en la figura \ref{fig:onepingtopo}, compuesta por tres \textit{hosts} y un \textit{switch}.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{.4\textwidth}{!}{\includegraphics{Figures/onepingtopo.png}}%
+	\caption[Topología propuesta para probar OnePing]{Topología propuesta para probar OnePing.}
+	\label{fig:onepingtopo}
+\end{figure}
+
+
+Luego, se debe instalar la aplicación en el controlador para poder comprobar su funcionamiento. 
+
+Como medio de análisis se construyó un diagrama de secuencias de alto nivel (figura \ref{fig:sec-oneping}) que muestra los mensajes que intercambian el controlador con los dispositivos. A continuación, se describirán más detalladamente las actividades involucradas en este proceso.
+\begin{figure}[th]
+	\centering 
+	\resizebox{.7\textwidth}{!}{\includegraphics{Figures/sec-oneping.png}}%
+	\caption[Diagrama de secuencia de OnePing]{Diagrama de secuencia de OnePing.}
+	\label{fig:sec-oneping}
+\end{figure}
+
+
+\section{Estado inicial}
+Al instalar la aplicación, se registra en el controlador un procesador de paquetes que es el encargado de recibir los paquetes ICMP correspondientes a los mensajes Ping. Este registro se ve reflejado en los dispositivos con la instalación de una regla de \textit{match} que envía todos los mensajes con estas características al controlador. En la figura \ref{fig:pcktprocessor} se puede ver la regla que instala la aplicación para recibir los paquetes ICMP (\textit{IP\_PROTO:1}).
+\begin{figure}[th]
+	\centering 
+	\resizebox{.9\textwidth}{!}{\includegraphics{Figures/pcktProcessor.png}}%
+	\caption[Listado de flujos del dispositivo sw1]{Listado de flujos del dispositivo sw1.}
+	\label{fig:pcktprocessor}
+\end{figure}
+\section{Primer mensaje ICMP}
+Desde el emulador se envía un \texttt{ping} desde h3 hacia h1. En el dispositivo, el paquete hace \textit{match} con la regla descripta anteriormente ya que es la que tiene mayor prioridad, y se encapsula en un mensaje OpenFlow \textit{PACKET\_IN} para ser enviado al controlador. En la figura \ref{fig:packetin} se puede ver una captura de Wireshark de este mensaje a la salida del \textit{switch}. Se destacan las direcciones de origen y destino, el controlador en la dirección 192.168.33.101 y el dispositivo en 192.168.33.100; el tipo de mensaje OpenFlow, y por ultimo las características del mensaje ICMP encapsulado.
+\begin{figure}[th] 
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/PacketIn.png}}%
+	\caption[Mensaje OpenFlow \textit{PACKET\_IN} desde sw1 hacia el controlador]{Mensaje OpenFlow \textit{PACKET\_IN} desde sw1 hacia el controlador.}
+	\label{fig:packetin}
+\end{figure}
+
+La aplicación dentro del controlador recibe el mensaje ICMP, lo registra y como es el primer \texttt{ping}, lo retransmite a su destino. Para reenviar el paquete, el controlador lo encapsula en un mensaje OpenFlow \textit{PACKET\_OUT}, indicando al \textit{switch} a qué puerto enviarlo como se destaca en la figura \ref{fig:packetout}.
+
+\begin{figure}[th] 
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/PacketOut1.png}}%
+	\caption[Mensaje OpenFlow \textit{PACKET\_OUT} desde el controlador hacia sw1] {Mensaje OpenFlow \textit{PACKET\_OUT} desde el controlador hacia sw1.}
+	\label{fig:packetout}
+\end{figure}
+
+Una vez enviado el paquete a h2, este responde con un mensaje ICMP de \textit{echo reply}. El mensaje se procesa en el \textit{switch} y el controlador de manera análoga al anterior y es recibido por h3.
+
+\section{Segundo mensaje ICMP}
+H3 envía nuevamente un mensaje ICMP, como no se produjeron cambios en las tablas de flujo, el comportamiento del \textit{switch} será igual al anterior, encapsulando el paquete en un mensaje  OpenFlow \textit{PACKET\_IN}. La aplicación recibe nuevamente el paquete, y en este caso detecta que es el segundo \texttt{ping} desde h3 hacia h2, entonces procede a bloquear los próximos paquetes de este tipo. Para realizar esta tarea, primero descarta el paquete que se encuentra procesando y luego instala una regla en el dispositivo para que los paquetes siguientes se descarten desde el plano de datos. 
+
+La adición de una regla en el dispositivo se realiza con el mensaje OpenFlow \textit{FLOW\_MOD} como se muestra en la figura \ref{fig:flowmod}. En el análisis de este paquete se destacan las características del flujo que se agrega en el dispositivo, donde se pueden identificar los campos de \textit{match} que en este caso son:
+\begin{itemize}
+	\item \textbf{MAC de origen}: a2:99:16:f5:ff:02 (h3)
+	\item \textbf{MAC de destino}: 2a:bf:d7:81:f4:b5 (h2)
+	\item \textbf{Protocolo Ethernet}: 0x0800 (IPv4)
+	\item \textbf{Protocolo IP}: 1 (ICMP)
+\end{itemize}
+\begin{figure}[th] 
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/flowmod.png}}%
+	\caption[Mensaje OpenFlow \textit{FLOW\_MOD} desde el controlador hacia sw1] {Mensaje OpenFlow \textit{FLOW\_MOD} desde el controlador hacia sw1.}
+	\label{fig:flowmod}
+\end{figure}
+\section{Tercer mensaje ICMP}
+Una vez instalada la regla en sw1, los paquetes son directamente descartados en el plano de datos. En la figura \ref{fig:flowfinal} se ilustra el resumen de las reglas instaladas en el dispositivo en la interfaz gráfica del controlador. Se destaca la regla creada para descartar paquetes en el plano de datos, cuyo contador aumenta por cada mensaje ICMP enviado desde h3 a h2. En la figura también se puede notar que la prioridad del nuevo flujo creado es mayor a la del procesador de paquetes.
+\begin{figure}[th] 
+	\centering 
+	\resizebox{\textwidth}{!}{\includegraphics{Figures/flowfinal.png}}%
+	\caption[Listado de flujos después de la instalación de la regla de bloqueo de paquetes] {Listado de flujos después de la instalación de la regla de bloqueo de paquetes.}
+	\label{fig:flowfinal}
+\end{figure}
+
+Además, en la figura se pueden ver otros flujos no mencionados anteriormente, los tres primeros, se instalan con la conexión del controlador al dispositivo y están involucrados en el funcionamiento básico del controlador. Por otro lado, en quinto lugar se encuentra un flujo de una aplicación llamada \textit{org.tesissdn.learningswitch}, la cual se construyó en base a un ejemplo de ONOS \parencite{onos-samples} y permite al dispositivo realizar redireccionamiento de capa 2.
+
+
+\section{Código fuente de la aplicación}
+Si bien para la construcción de este caso de prueba se utilizó código de ejemplo de ONOS, se realizaron modificaciones en las aplicaciones tanto de OnePing como de LearningSwitch. El código fuente de ambas se encuentra disponible dentro del repositorio de aplicaciones, y se puede obtener clonando el repositorio
+\begin{center}
+    $ \emph {git clone https://NatiTomattis@bitbucket.org/nati\_matt/apps.git}$
+\end{center}
+
+Del mismo modo, la topología empleada se obtiene en el repositorio de topologías:
+\begin{center}
+    $ \emph {git clone https://NatiTomattis@bitbucket.org/nati\_matt/topologies\_mininet.git}$
+\end{center}

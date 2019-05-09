@@ -1,0 +1,115 @@
+% Chapter Template
+
+\chapter{Introducción} % Main chapter title
+
+\label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+
+Desde hace algunos años estamos presenciando un crecimiento explosivo de tráfico de datos generado, entre otros, por los dispositivos móviles (LTE, 4G), los servicios en la nube (Amazon, Netflix, iCloud, Microsoft Azure, etc.) y la combinación de ambos en servicios como Siri o Amazon Echo. Hay que incluir además la migración de la infraestructura de servicios de información que están realizando las empresas desde sus propios centros de datos hacia mega centros de datos que condensan las operaciones de múltiples clientes en una plataforma común.
+
+Estos nuevos centros y servicios requieren una gran flexibilidad tanto en la infraestructura de cómputo como en la infraestructura de comunicación. La respuesta a estos nuevos requerimientos desde el punto de vista de la infraestructura de cómputo está resultando en la virtualización de servidores. Desde el punto de vista de la infraestructura de comunicación, el mejor candidato para resolver este problema son las redes definidas por software o SDN por sus siglas en inglés.
+
+El paradigma actual de implementación de redes resulta difícil de adaptar a estos nuevos cambios en los requerimientos, por ejemplo,
+
+a) La complejidad y el tamaño de las redes ha crecido considerablemente, esto genera gran resistencia al cambio en los operadores ya que el riesgo de generar una falla es mayor.
+
+b) Dependencia de un fabricante, la falta de compatibilidad entre fabricantes fuerza a los operadores a quedar atados a los ciclos de diseño de un fabricante determinado y no les permite configurar la red de manera óptima dadas sus necesidades particulares.
+
+Conceptualmente, SDN consiste en separar el plano de control del plano de datos en toda la infraestructura de la red. Esto se logra utilizando una interfaz abierta entre ambos planos. De esta manera la infraestructura de la red se vuelve intercambiable e independiente de las aplicaciones que se implementan sobre ella.
+
+En SDN el hardware se convierte en dispositivos del tipo \textit{caja blanca}, significando que equipos de diferentes fabricantes son completamente intercambiables. De esta manera el problema de aprovisionamiento de servicios en la red se vuelve un problema exclusivamente de software, lo que les da libertad a los operadores al momento de implementar estos cambios. Además, les permite seleccionar el proveedor que ofrezca las condiciones más favorables en relación a su propio plan de implementación.
+
+En el transcurso de este capítulo introduciremos los aspectos más significativos del proyecto. Se comienza describiendo las motivaciones principales que han llevado al desarrollo de este trabajo. Luego, en la sección \ref{Estado_Arte}, se expone el estado actual de las tecnologías directamente relacionadas, continuando con los objetivos planteados y finalizando con una descripción de la organización del texto.
+
+\section{Motivación e importancia del proyecto}
+
+Las razones que han incentivado la realización de este trabajo integrador de fin de grado son,
+
+\begin{itemize}     
+    \item La oportunidad de poder incursionar en el estudio de sistemas de administración de redes de vanguardia.
+    \item La posibilidad de desarrollar un sistema de administración de redes en su totalidad.
+    \item La aplicación de los conocimientos adquiridos a lo largo de la carrera de Ingeniería en Computación.
+    \item La potencial oportunidad de realizar publicaciones científicas acerca de lo desarrollado en el proyecto.
+\end{itemize}
+    
+\section{Estado del arte} \label{Estado_Arte} %poner que es lo que hace y que es lo que nosotros agregamos o cambiamos
+
+En la presente sección se hace una revisión del estado de las tecnologías directamente relacionadas al proyecto con el objeto de establecer un marco de comparación con nuestro desarrollo y no trabajar en algo ya creado. Particularmente, se presenta una visión global de las implementaciones existentes más relevantes de servicios de distribución de contenido desplegados usando el esquema de redes definidas por software.   
+
+% tesis granada
+\subsubsection*{\textit{Protocolos Multicast en redes SDN}}
+
+El documento \parencite{tesis_granada} propone un nuevo protocolo \textit{multicast} para usar bajo el esquema de SDN. El autor realiza una caracterización del funcionamiento de un protocolo \textit{multicast} existente (PIM-SSM) en un escenario de red actual. Luego, utilizando el controlador OpenDaylight, implementa un nuevo protocolo \textit{multicast} en una red SDN. 
+
+Finalmente, la figura \ref{fig:tesis_granada} indica los resultados de la evaluación entre los dos esquemas de red planteados en \parencite{tesis_granada}, donde la columna de la izquierda representa el tráfico en el esquema SDN y la columna de la derecha utilizando PIM-SSM en una red tradicional. De esta forma, se comprueba cómo se produce una reducción en la cantidad de tráfico necesario para la transmisión de datos \textit{multicast} a través de la red. 
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{1\textwidth}{!}{\includegraphics{Figures/tesis_granada.png}}%
+	\caption[Análisis de los escenarios.]{Análisis de los escenarios \parencite{tesis_granada}.}
+	\label{fig:tesis_granada}
+\end{figure}
+
+% paper de números raros 1
+\subsubsection*{\textit{Design and Implementation Multicast Video Streaming On Openflow Network}}
+
+En el artículo \parencite{paper_desing_and_implementation}, se logra agregar soporte \textit{multicast} a un \textit{switch} utilizando SDN y OpenFlow. Estos experimentos consisten en desarrollar una aplicación que corre en un controlador SDN y le brinda las funcionalidades de IGMP \textit{snooping} a un \textit{switch} a través de instalación de flujos OpenFlow. Sin embargo, esta implementación funciona en una topología con un solo \textit{switch} y cinco \textit{hosts}, donde el servidor de contenido y los clientes son fijos.
+
+% paper de números raros 2
+\subsubsection*{\textit{Streaming Multicast Video over Software-Defined Networks}}
+
+En \parencite{paper_streaming_multicast}, se desarrolla un marco de trabajo basado en SDN donde el controlador SDN es capaz de administrar el tráfico \textit{multicast} en una red. A su vez, utilizando \textit{Multiple description coding} (MDC) se brinda la capacidad de ofrecer dos calidades de servicio de \textit{video streaming} a los clientes. En la figura \ref{fig:paper_streaming_multicast}, se da una noción general del funcionamiento de esta implementación.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{.7\textwidth}{!}{\includegraphics{Figures/paper_streaming_multicast.png}}%
+	\caption[Perspectiva general.]{Perspectiva general \parencite{paper_streaming_multicast}.}
+	\label{fig:paper_streaming_multicast}
+\end{figure}
+
+El artículo \parencite{paper_streaming_multicast}, concluye formulando que, en redes mediana a fuertemente congestionadas, la solución \textit{multicast} en SDN comparada con las soluciones de hoy en día mejora significativamente la relación señal ruido pico (PSNR) del video transmitido, desde un nivel que es prácticamente indistinguible a uno de buena calidad.   
+
+% % multicast use case
+\subsubsection*{\textit{Multicast Use Case}}
+
+En el caso de uso descripto en \parencite{mcast_ONOS_use_case}, se propone desplegar SDN en una red \textit{multicast} en producción. En la figura \ref{fig:mcast_ONOS_use_case} se observa la topología de la red planteada, la cual puede dividirse en una red central con un extremo generador de tráfico \textit{multicast} y otro extremo consumidor de tráfico \textit{multicast}.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{.7\textwidth}{!}{\includegraphics{Figures/mcast_ONOS_use_case.png}}%
+	\caption[Topología de la red en producción.]{Topología de la red en producción \parencite{mcast_ONOS_use_case}.}
+	\label{fig:mcast_ONOS_use_case}
+\end{figure}
+
+El objetivo de la implementación \parencite{mcast_ONOS_use_case} es en una primera fase desplegar SDN en el extremo generador de la red y en una segunda fase desplegar SDN en el extremo consumidor de la red. Sin embargo, el proyecto aún se encuentra en la fase uno.
+
+\section{Objetivos}
+
+El objetivo general de este Proyecto Integrador es adquirir los conocimientos relacionados con administración de redes de datos, particularmente el esquema conocido como \textit{Software Defined Networking}. Para esto, se propone usar como vehículo de prueba una aplicación de distribución de contenido. Implementar la misma utilizando exclusivamente las facilidades que brinda un sistema SDN. Se prestará particular atención al estudio y comparación de las diferentes opciones abiertas disponibles para la implementación del controlador.
+
+\subsection{Objetivos particulares}
+
+Las tareas de este proyecto van a llevarnos a,
+\begin{itemize}     
+    \item Tener un conocimiento acabado de las tecnologías existentes en SDN.
+    \item Generar un ambiente de emulación de red.
+    \item Desarrollar una aplicación de distribución de contenido para utilizar como vehículo de prueba.
+    \item Integrar esta aplicación con un controlador SDN.
+    \item Desarrollar una aplicación de interfaz de usuario para administrar de manera simple la distribución de contenido.
+    \item Implementar al menos un nodo de red en hardware conectado con el ambiente de simulación.
+\end{itemize}
+
+\section{Estructura del texto}
+
+Aquí se listan los distintos capítulos que conforman el proyecto, presentando una breve descripción de su contenido. El escrito está compuesto por 8 capítulos, los apéndices y la bibliografía.
+
+\begin{itemize}
+    \item \textbf{Capítulo 1 - Introducción:} En este capítulo, se presentan los aspectos más significativos del proyecto, incluyendo las motivaciones que llevaron a la realización del trabajo, una revisión del estado actual del arte relacionado y los objetivos que se plantearon para este proyecto.   
+    \item \textbf{Capítulo 2 - Marco teórico:} Aquí, se abordan todos los conceptos necesarios para la comprensión y fundamentación de las posteriores implementaciones prácticas.
+    \item \textbf{Capítulo 3 - Análisis de las tecnologías:} Este capítulo aborda las herramientas más representativas que permiten la implementación de los conceptos desarrollados en el marco teórico.
+    \item \textbf{Capítulo 4 - Entorno de trabajo:} En este capítulo, se describe la construcción del ambiente donde se desenvolverán y evaluarán las aplicaciones diseñadas en este proyecto.
+    \item \textbf{Capítulo 5 - Diseño de la aplicación de distribución de contenido:} En este capítulo, se explican los procedimientos relacionados al diseño y la implementación de una aplicación, dentro de un controlador SDN, que permita la administración de la distribución de contenido en una red.
+    \item \textbf{Capítulo 6 - Diseño de la aplicación de interfaz de usuario:} En este capítulo, se aborda el proceso de diseño e implementación de una interfaz gráfica de usuario, cuyo objeto principal es exponer de manera sencilla las capacidades de la aplicación desarrollada en el capítulo anterior.
+    \item \textbf{Capítulo 7 - Conclusiones:} Aquí, se presentan las conclusiones obtenidas tras la realización del trabajo, posibles vías de trabajos futuros y una apreciación personal del proceso abordado.
+    \item \textbf{Apéndices:} En los apéndices se presenta un ejemplo sencillo e ilustrativo del flujo de trabajo de un entrono SDN. Asimismo, se proporciona al lector un tutorial de como desplegar el entorno de trabajo y las aplicaciones desarrolladas en este proyecto.    
+    \item \textbf{Bibliografía:} En esta parte final del documento, se muestran todas las referencias que se han consultado para el desarrollo de este proyecto.   
+\end{itemize}
