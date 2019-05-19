@@ -5,267 +5,225 @@
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-En base a los conceptos revisados en el capítulo anterior, en este se introducirá a las herramientas más representativas que permitirán la implementación de estos entornos. Como se menciona anteriormente, las redes definidas por software separan el plano de control de un dispositivo de red, del plano de datos, permitiendo controlar, monitorear y gestionar una red desde un nodo centralizado o controlador. Esto, en un principio nos da la pauta de que serán necesarias al menos dos entidades para realizar esta implementación.
+Teniendo en cuenta los conceptos revisados en el capítulo anterior, en este se estudiarán las herramientas que permitirán la realización del proyecto. En la primera sección, se realizará un análisis del dispositivo utilizado, un \textit{muxponder} óptico coherente de 40Gb desarrollado por la institución donde se realizó el proyecto.
+Luego, en la segunda sección se examinarán las herramientas de software involucradas. La misma se encuentra dividida en dos partes; la primera detalla el funcionamiento del controlador \textit{SDN} utilizado, \textit{ONOS}; la segunda refiere al estudio de dos agentes \textit{\textit{}:} Sysrepo y Yuma123.
 
-En la primera sección se realizará un análisis de un ambiente de emulación del plano de datos, a través de la herramienta Mininet. Esta herramienta explota capacidades de virtualización del \textit{kernel} de Linux brindando la capacidad de emular \textit{hosts}, \textit{switches} y \textit{routers}.
-
-Luego en la segunda sección, se consideran las opciones para la implementación del plano de control. En este caso el mercado es mucho más amplio y existen varias alternativas. A la hora de un análisis más detallado, se considerarán dos controladores OpenDaylight y ONOS. El criterio de selección de los mismos reside en que son los más utilizados en el mercado actualmente y son soluciones de código abierto.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Emulador de red Mininet}
+\section{Herramientas de \textit{Hardware}}
 
-Para probar el rendimiento de la tecnología, es necesario que exista un entorno de verificación versátil, y con dispositivos que soporten Openflow, el protocolo de comunicación entre el plano de datos y control. Por estas razones, se descarta la construcción de un banco de pruebas íntegramente físico, para perfilarse ante un entorno de emulación, como lo es Mininet.
+Esta sección comprende el estudio de uno de los dispositivos mencionados en el capítulo anterior, un \textit{muxponder}. Concretamente, se analizarán aspectos técnicos relacionados tanto al hardware como al software de un \textit{muxponder} de 40Gb. El interés de este análisis resulta en que es en este dispositivo en donde se integrará el protocolo de gestión \textit{\textit{}.}
 
-Provee una manera sencilla de crear redes definidas por software, las cuales consisten en un controlador, un grupo de \textit{switches} que soportan Openflow y múltiples \textit{hosts} conectados a estos \textit{switches}. Es utilizado en múltiples ámbitos tales como investigación, desarrollo, aprendizaje, prototipado, testing y otras tareas que requieran una red completa experimental dentro de cualquier PC. Soporta diferentes tipos de controladores y \textit{switches}, contiene una librería de topologías por defecto y permite también crear topologías más complejas a través de una API de \textit{Python}.
+\subsection{\textit{Muxponder} 40Gb}
 
-Mininet fue desarrollado en un principio por la universidad de Stanford, y actualmente se encuentra promovida por la ONF. Es una aplicación de código abierto y escrita principalmente en \textit{Python} y \textit{C}, basa su funcionamiento en los conceptos de: \textit{Linux Namespaces} \ref{subs:ns}, para la creación de \textit{hosts} aislados; \textit{Linux Traffic Control} \parencite{ltc}, para establecer enlaces emulados y \textit{Open vSwitch} \ref{subs:ovs}, para implementar \textit{switches} emulados.
+El equipo con el que se cuenta para realizar este proyecto, es capaz de realizar una transmisión óptica de 40Gb/s sobre una señal de línea \textit{OTU3}. La misma es lograda cumpliendo el estándar \textit{ITU-T G.709} \parencite{itu7}, utilizando una modulación coherente \textit{DP-QPSK} o \textit{DP-DQPSK}.
+\\
 
+Cuenta con cuatro clientes ópticos asíncronos totalmente independientes de 10Gb/s cada uno, a través de módulos ópticos  \textit{XFP} removibles. Las longitudes de ondas soportadas para los clientes son 850/1310/1550 nm y admite los tipos de cliente \textit{10Gb Ethernet LAN/WAN, OTU2} y \textit{OTU2e}.
+\\
 
-\begin{figure}[th]
-	\centering 
-	\resizebox{0.75\textwidth}{!}{\includegraphics{Figures/mininet.png}}
-	\caption[Diagrama de Mininet]{Las topologías de Mininet permiten la utilización de las aplicaciones de red de Linux/Unix en entornos aislados llamados \textit{Network namespaces}, dentro de un mismo kernel \parencite{mininetonf}.}
-	\label{fig:mininet}
-\end{figure}
+Además, incorpora el mecanismo de corrección de errores \textit{FEC} para todas las señales, tanto para clientes como para línea. Mediante el mismo, el \textit{muxponder} es capaz de realizar correcciones sin necesidad de retransmitir la información.
 
+A su vez, el equipo es de bajo consumo de potencia, alcanzando típicamente 93 Watts. También, incorpora un amplificador óptico, el cual le permite alcanzar una distancia de hasta 2000Km. Si no se utiliza dicho amplificador, puede alcanzar una distancia de hasta 65Km.
+\\
 
-\subsection{Linux network namespaces}
-\label{subs:ns}
-Un \textit{namespace} es una característica del kernel que permite aislar y virtualizar diferentes recursos del sistema. Existen diferentes tipos de \textit{namespaces}, diferenciados por el tipo de recursos que permiten virtualizar. Esta tecnología establece las bases de la virtualización a nivel de sistema operativo, también conocida como \textit{containerization}. 
-
-Mininet utiliza \textit{network namespaces} los cuales posibilitan crear grupos de recursos de red aislados entre sí. Entre estos recursos encontramos, interfaces de red, tablas de enrutamiento, lista de sockets, \textit{firewall} y otras características relacionadas a las funciones de red. Luego, a través de \textit{virtual ethernet (veth)} es posible asignarle interfaces virtuales a los namespaces, de manera que estos puedan conectarse y emular enlaces, posibilitando así la emulación de los dispositivos, minimizando la sobrecarga y la complejidad en la virtualización de recursos de red.
-
-
-\subsection{Open vSwitch}
-\label{subs:ovs}
-\textit{Open vSwitch} es un software desarrollado por Nicira, de código abierto y consiste en un \textit{switch} virtual multicapa. Nace como solución a la necesidad de interconectar máquinas virtuales en uno o más nodos físicos, permitiendo la creación de interfaces virtuales. Si bien el desarrollo de OvS se basa en \textit{linux bridges}, presenta un diseño mucho más complejo, ya que se encuentra compuesto por varios módulos. Mientras que los bridges se ejecutan solo en el espacio de kernel del \textit{host}, OvS se ejecuta también en el espacio de usuario, brindándole funcionalidades más avanzadas, como por ejemplo la capacidad de procesar paquetes desconocidos.
-
-\begin{figure}[th]
-	\centering 
-	\resizebox{0.75\textwidth}{!}{\includegraphics{Figures/ovs.png}}
-	\caption[Flujo del procesamiento de un paquete en un Open vSwitch]{Flujo del procesamiento de un paquete en un Open vSwitch \parencite{ovsflow}.}
-	\label{fig:ovs}
-\end{figure}
-
-En la figura \ref{fig:ovs} se puede ver la arquitectura de un OvS, a continuación, se describirá brevemente el funcionamiento de los principales elementos que lo componen.
+Las interfaces de conexión soportadas para realizar configuración y monitoreo son: 
 \begin{itemize}
-	\item \textbf{Datapath}: representa al módulo del kernel que lleva a cabo el intercambio de paquetes, utiliza una memoria caché (\textit{flowtable}) en la que están descriptas las reglas a seguir con los paquetes entrantes. Cuando llega un paquete no reconocido, que no está en las tablas, el modulo se contactara con el proceso \textit{ovs-vswitchd} por medio de un \textit{netlink} para determinar su destino.
-	\item \textbf{ovs-vswitchd}: es un demonio que implementa las principales funcionalidades del \textit{switch}. Se encarga de procesar los paquetes Openflow, mediante netlink se comunica con el datapath y realiza consulta y cambios en la base de datos a través del protocolo OVSDB.
-	\item \textbf{ovsdb-server}: es un servidor de base de datos ligero que guarda las principales configuraciones de los elementos del \textit{switch}.
-	\item \textbf{ovs-dpctl}: es la herramienta utilizada para configurar el modulo del kernel del \textit{switch}, obtener información exacta sobre los \textit{match} en la memoria caché
-	\item \textbf{ovs-ofctl}: es una herramienta para monitorear y administrar las características Openflow del \textit{switch}, y poder ver los flujos en caché.
-	\item \textbf{ovsdb-tool}: permite administrar la base de datos.
-	\item \textbf{ovs-vsctl}: este comando es utilizado para configurar y obtener información del \textit{ovs-vswitchd}.
+	\item 2 puertos \textit{Ethernet} 10/100/1000 Mb/s.
+	\item 1 puerto serial \textit{RS232}.
+	\item 1 puerto \textit{USB} 2.0.
 \end{itemize}
 
-Los últimos cuatro ítems constituyen el principal medio de administración del software. Cada una de las utilidades consiste en una línea de comandos con múltiples opciones. Se puede acceder a la documentación de cada comando utilizando el parámetro \textit{- -help}. En la tabla \ref{t-ovs-commands} se listan los comandos de estas herramientas que fueron más utilizados a lo largo del desarrollo.
+En la figura \ref{fig:mux40} se puede observar en el panel frontal del dispositivo las interfaces mencionadas anteriormente.
 
-\begin{table}[th]
-	\caption{Comandos de ovs frecuentemente utilizados}
-	\label{t-ovs-commands}
-	\resizebox{\textwidth}{!}{
-		\begin{tabular}{|c|l|}
-			\hline
-			\rowcolor[HTML]{C0C0C0} 
-			\textbf{Comando}                                                                & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{Descripción}}          \\ \hline
-			\textit{ovs-vsctl show}                                                         & \begin{tabular}[c]{@{}l@{}}Muestra una breve descripción de la             \\  base de datos\end{tabular}                          \\ \hline
-			\rowcolor[HTML]{C0C0C0} 
-			\textit{ovs-vsctl add-br}                                                       & Crea un vSwitch en  la base de datos                                        \\ \hline
-			\textit{ovs-vsctl add-port}                                                     & \begin{tabular}[c]{@{}l@{}}Conecta una interfaz (virtual o física) a       \\ un vSwitch\end{tabular}                       \\ \hline
-			\rowcolor[HTML]{C0C0C0} 
-			\textit{ovs-ofctl show}                                                         & \begin{tabular}[c]{@{}l@{}}Muestra la configuración Openflow de un         \\ vSwitch\end{tabular}                            \\ \hline
-			\textit{ovs-ofctl snoop}                                                        & \begin{tabular}[c]{@{}l@{}}Imprime los mensajes Openflow que llegan al      \\  \textit{switch}\end{tabular}                         \\ \hline
-			\rowcolor[HTML]{C0C0C0} 
-			\multicolumn{1}{|l|}{\cellcolor[HTML]{C0C0C0}\textit{ovs-vsctl set-controller}} & \begin{tabular}[c]{@{}l@{}}Permite asociar un controlador SDN al            \\ dispositivo\end{tabular}                           \\ \hline
-			\rowcolor[HTML]{FFFFFF} 
-			\textit{ovs-ofctl  dump-flows}                                                  & \begin{tabular}[c]{@{}l@{}}Muestra los flujos de un vSwitch que están en la \\  base de datos\end{tabular}              \\ \hline
-			\rowcolor[HTML]{C0C0C0} 
-			\textit{ovs-dpctl dump-flows}                                                   & \begin{tabular}[c]{@{}l@{}}Muestra información exacta sobre los matches en \\  la tabla del kernel (caché)\end{tabular} \\ \hline
-		\end{tabular}
-	}
-\end{table}
 
-En \parencite{mininetovs} se puede acceder a una presentación a cargo del uno de los desarrolladores Mininet en la que explica su funcionamiento con ejemplos. Se distingue en la diapositiva 7 una implementación interesante de como emular una topología sobre el kernel de Linux, a través de las herramientas mencionadas con anterioridad.
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{Figures/mux40.pdf}
+	\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+	\label{fig:mux40}
+  \end{figure}
 
-\subsection{Desarrollo de una topología}
+El \textit{muxponder} integra un total de 128Mb de memoria \textit{RAM} y [[[[]]]] de almacenamiento, con capacidad de extender esta última mediante una tarjeta \textit{SD}. Además, cuenta con un sistema operativo Linux \textit{“Buildroot”}, el cual ocupa gran parte de estos recursos mencionados, dejando libre para las aplicaciones de usuario un total de 100Mb de \textit{RAM} y [[[[]]]] de almacenamiento.
 
-Entonces, sobre estos principios se construye Mininet, facilitando la creación de topologías de red en entornos SDN, ya sea por medio de una línea de comandos o de la API de \textit{Python}. A través de esta última interfaz permite la programación en tres diferentes capas de abstracción, de alto, medio y bajo nivel. La API a bajo nivel está compuesta por las clases básicas como \textit{Switch} y Link, los cuales pueden instanciarse individualmente, lo cual complica un poco la implementación. La API a medio nivel se abstrae de los objetos anteriores, instanciando un único objeto Mininet, sobre el cual se agregan \textit{hosts} y enlaces y se brindan las directivas a la red con comandos como \textit{start()} y \textit{stop()}. Por último, la API a alto nivel crea \textit{templates} de topologías, con la habilidad de ser reusables y parametrizadas.
+El hecho de que presente dicho sistema operativo resulta en una ventaja por varios motivos, en primer lugar porque el mismo es un entorno conocido por el alumno, donde además podrán ejecutarse en él la mayoría de las aplicaciones \textit{UNIX} típicas. En segundo lugar, el sistema operativo integra librerías y herramientas que facilitaran el desarrollo del proyecto, como por ejemplo la librería \textit{SSH}, necesaria por el protocolo \textit{NETCONF}.
+\\
 
-Como prueba de la herramienta, a lo largo del proyecto se desarrollaron diferentes topologías, con distintas características. A continuación, en el código \ref{lst:simpletest} se presenta un sencillo ejemplo del desarrollo de un esquema de red en \textit{Python}. Donde la creación de la topología se lleva a cabo íntegramente en método simpleTest, utilizando la API de medio nivel definida anteriormente. 
+Por último, el procesador que incorpora es un \textit{NIOS II} de primera generación fabricado por \textit{Intel} \parencite{intelaltera}. El mismo funciona a 125 Mhz y se encuentra integrado en una \textit{FPGA}. Es importante destacar que la arquitectura de este procesador no es la arquitectura típica de una máquina de propósito general (por ejemplo $x86_64$), por lo tanto, las distintas aplicaciones que se ejecuten en esta plataforma deberán estar compiladas específicamente para la arquitectura \textit{NIOS}. 
 
-% cSpell:disable
-\begin{lstlisting}[caption={Creación de una topología sencilla en Mininet}, captionpos=b, label={lst:simpletest}, language=Python]
-#!/usr/bin/python                                                                            
-
-import os                                                                            
-from mininet.node import RemoteController                                                                                     
-from mininet.topo import Topo
-from mininet.net import Mininet
-from mininet.util import dumpNodeConnections
-from mininet.log import setLogLevel, info
-from mininet.cli import CLI
-from mininet.link import TCLink,Intf
-
-def simpleTest():
-    "Creacion de topologia con dos nodos OVS y 4 hosts"
-	net = Mininet(link=TCLink)
-	
-    h1 = net.addHost( 'h1', ip ='10.10.0.1/24', mac='00:0c:29:60:dd:01')
-    h2 = net.addHost( 'h2', ip ='10.10.0.2/24', mac='00:0c:29:60:dd:02')
-    h3 = net.addHost( 'h3', ip ='10.10.0.3/24', mac='00:0c:29:60:dd:03')
-    h4 = net.addHost( 'h4', ip ='10.10.0.4/24', mac='00:0c:29:60:dd:04')
-
-    #Agrego switch un nodo que esta ejecuatndo un switch openflow
-    s1 = net.addSwitch( 's1', protocols='OpenFlow13' )
-    s2 = net.addSwitch( 's2', protocols='OpenFlow13' )
-
-    #Creacion de enlaces entre los nodos
-    net.addLink( s1, s2 )  
-    net.addLink( s1, h1 )  
-    net.addLink( s1, h2 )
-    net.addLink( s2, h3 )
-    net.addLink( s2, h4 )
-
-    #Agrego el controlador en el puerto 6633 utilizado para la comunicacion con los dispositivos
-    net.addController( 'c0', controller=RemoteController, ip='172.16.0.167', port=6633 ) 
-
-	net.start()
-
-    print "Comprobando la conectividad de la red"
-    net.pingAll()
-
-    #Inicio la linea de comandos
-    CLI(net)
-    net.stop()
-
-if __name__ == '__main__':
-    setLogLevel('info')
-    simpleTest()
-\end{lstlisting}
-% cSpell:enable
-A través del objeto Mininet se configura inicialmente la topología y a partir de las funciones a continuación se agregan elementos a la misma:
-\begin{itemize}
-	\item \textbf{addHost(nombre, params)}: permite agregar un nodo con características definidas en los parámetros de la función. Entre las opciones a configurar se encuentran la dirección IP, MAC, ruta por defecto, entre otras.
-	\item \textbf{addSwitch(nombre, params)}: añade un \textit{switch}, al igual que la función anterior también permite la configuración a través de parámetros, entre los cuales se encuentra el tipo de \textit{switch} a utilizar y versión del protocolo OpenFlow.
-	\item \textbf{addLink(nodo1, nodo2, params)} crea un enlace virtual entre dos nodos permitiendo la configuración del ancho de banda o el tipo de enlace que se utiliza.
-	\item \textbf{addController(nombre, params):} conecta a la red un controlador remoto en este caso, con las características pasadas como parámetros. 
-	\item \textbf{start()}: inicializa el controlador y los \textit{switches}.
-	\item \textbf{pingAll()}: utiliza el comando \texttt{ping} en todos los \textit{hosts} para comprobar la conectividad y devuelve el porcentaje de pérdidas.
-	\item \textbf{CLI(net)}: inicializa una línea de comandos para interactuar con la topología.
-	\item \textbf{stop()}: detiene el controlador y los \textit{switches}, elimina la topología habilitando el entorno para la creación de una nueva.
-\end{itemize}
-Luego, para iniciar la red se corre simplemente este código en Python con permisos de administrador (\texttt{root}) y se accede a la línea de comando de Mininet como se puede ver en la figura \ref{fig:climn}. En la figura \ref{fig:topmn} se puede ver el esquema de red creado y su comunicación con el controlador.
-\begin{figure}[th]
-	\centering 
-	\resizebox{0.75\textwidth}{!}{\includegraphics{Figures/mn-cli.png}}
-	\caption[Creación de una topología en Mininet]{Creación de una topología en Mininet.}
-	\label{fig:climn}
-\end{figure}
-\begin{figure}[th]
-	\centering 
-	\resizebox{0.75\textwidth}{!}{\includegraphics{Figures/topomn.png}}
-	\caption[Topología sencilla creada a través de Mininet]{Topología sencilla creada con el código \ref{lst:simpletest} a través de Mininet.}
-	\label{fig:topmn}
-\end{figure}
-
+Además, debido a los recursos limitados con los que cuenta el equipo, resulta imposible realizar la compilación de las aplicaciones sobre el mismo. Se deberá realizar lo que se conoce como compilación cruzada, que consiste en preparar un sistema huésped (donde generalmente dicho sistema cuenta con mayores recursos y capacidades) para generar todos los binarios y librerías que requiere  el dispositivo objetivo donde finalmente se ejecutarán las aplicaciones.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 
-\section{Análisis de los controladores SDN} \label{AnalisisControladoresSDN}
-El foco de esta sección es realizar una comparación entre los controladores \textit{OpenDaylight} (ODL) y \textit{Open Network Operating System} (ONOS) que según \parencite{book_SDN_a_c_a} son los controladores comercialmente viables sobresalientes. Prestaremos principal atención a las funcionalidades más innovadoras que brindan ambos controladores tales como protocolos \textit{SouthBound}, arquitecturas internas, escalabilidad, interfaz \textit{NorthBound} y soluciones para los prestadores de servicio.
+\section{Herramientas de \textit{Software}}
 
-\subsection{Protocolos \textit{SouthBound}}
+Además del estudio del \textit{hardware} utilizado, resulta de interés realizar un análisis de los componentes de \textit{software} que conforman el proyecto. Para ello, la primer parte de esta sección estará dedicada a estudiar el controlador \textit{SDN} empleado, mientras que en la segunda parte se analizarán dos agentes \textit{NETCONF} disponibles de código abierto.
 
-Como protocolos de comunicación entre los dispositivos de red y el controlador, ONOS brinda soporte a OpenFlow, NETCONF, REST, SNMP, TL1 \parencite{onosSouthboundProtocols}. Mientras que ODL brinda soporte a un mayor número como por ejemplo BGP, Netconf, OpenFlow, OVSDB. La lista completa de protocolos soportados por ODL se ve en la parte inferior de la figura \ref{fig:ODLCarbon} \parencite{odlSouthboundProtocols}. Para soportar esta numerosa cantidad de protocolos \textit{Southbound}, ODL implementa una capa de abstracción de servicio la cual permite a las aplicaciones dentro del controlador abstraerse del protocolo utilizado.  
+\subsection{Controlador \textit{ONOS}}
+Desarrollado por la \textit{ONF} \parencite{onff}, es uno de los controladores abiertos más comunes en la industria, donde destacan miembros como Google, Intel, AT$y$T, Samsung, entre una numerosa lista \parencite{onffmembers}. Está diseñado específicamente para los proveedores de servicios, donde sus principales objetivos son la escalabilidad y el alto rendimiento \parencite{onffwhite}.
 
+Las licencias compatibles con \textit{ONOS} son \textit{Apache} 2.0, \textit{MIT} y \textit{BSD} \parencite{onfflic}. El hecho de que sea un proyecto \textit{open-source}, supone ventajas como ser interoperabilidad, personalización, flexibilidad e independencia del fabricante. 
 
-\begin{figure}[th]
-	\centering 
-	\resizebox{1\textwidth}{!}{\includegraphics{Figures/CarbonDiagrams_final.png}}%
-	\caption[Arquitectura de OpenDaylight Carbon]{Arquitectura de OpenDaylight Carbon. \parencite{odlarch}}
-	\label{fig:ODLCarbon}
-\end{figure}
+Antes de detallar cómo funciona y realizar un análisis de su arquitectura, es importante explicar el problema que enfrentan los controladores \textit{SDN} para poder entender las ventajas que supone el mismo. 
+\\
 
-\subsubsection*{Capa de abstracción de servicios basada en modelos}
-
-Con la capa de abstracción de servicios basada en modelos, o por sus siglas en inglés MD-SAL, ODL brinda a los desarrolladores de aplicaciones APIs independientes al protocolo empleado. Además, para facilitar la comunicación inter-aplicación define servicios y librerías estandarizadas por modelos YANG.    
-
-\subsection{Soluciones para los proveedores de servicio}
-
-Muchos proveedores de servicios han participado en la definición del protocolo OpenFlow, sin embargo, cambiar su ambiente actual a OpenFlow no es algo que se pueda lograr en el corto plazo. Es por eso que empresas, como Deutsche Telekom o AT\&T, brindan soluciones SDN utilizando NETCONF, que es un protocolo con más trayectoria y despliegue. 
-
-Si bien el protocolo base de ONOS es OpenFlow, es un controlador diseñado específicamente para los proveedores de servicios. La diferencia está en la arquitectura del controlador. ONOS posee un núcleo distribuido lo que implica la posibilidad de soportar enormes cantidades de dispositivos de red. En la próxima sección se detalla más sobre esto.
-
-\subsection{Escalabilidad, rendimiento y alta disponibilidad}
-
-Con el nivel de crecimiento del consumo de tráfico en las redes y la demanda de ancho de banda en alza, es necesario para los proveedores de servicio que la escalabilidad y el rendimiento de sus redes alcance niveles mucho mayores a los de hoy en día. Debido a esto, la solución de SDN debe poseer tres atributos claves, \textit{Escalabilidad, Rendimiento y Alta Disponibilidad}.
+Debido al crecimiento del consumo de tráfico en las redes y la demanda del ancho de banda en alza, es necesario para los proveedores de servicio que el rendimiento y la escalabilidad de sus redes no se vean afectadas por estos motivos. De este modo, los controladores \textit{SDN} deben poseer tres atributos claves: escalabilidad, rendimiento y alta disponibilidad \parencite{sdnproblema}.
 
 \begin{itemize}
-	\item \textbf{Escalabilidad:} la nube, el streaming de video sumado al \textit{Internet de las cosas} demanda a los controladores SDN la habilidad de manejar grandes cantidades de tráfico, dispositivos de red y \textit{hosts}.
-	\item \textbf{Rendimiento:} la tecnología debe ser capaz de adaptarse dinámicamente a las fluctuaciones en la carga de tráfico y congestión de la red. Si el controlador se sobrecarga agravaría el estado de una red congestionada.    
-	\item \textbf{Alta Disponibilidad:} al centralizarse todo el plano de control sobre el controlador, este juega un papel crítico, generándose la necesidad de disponibilidad ininterrumpida del controlador.
+	\item \textbf{Escalabilidad}: como se explicó en el capítulo anterior, \textit{SDN} introduce una autoridad de control centralizada. La misma, debe ser capaz de escalar de igual forma que las funcionalidades de la red, manteniendo su rendimiento.
+	\item \textbf{Alta disponibilidad}: el plano de control que se encuentra centralizado en el controlador, juega ahora un papel crítico. Las diferentes soluciones \textit{SDN} deberán brindar disponibilidad ininterrumpida del controlador.
+	\item \textbf{Rendimiento}: el controlador también tiene que ser capaz de proveer mecanismos para adaptarse dinámicamente ante las fluctuaciones en la carga del tráfico y la congestión de la red. 
 \end{itemize}
 
-Ambos controladores proponen ideas distintas para alcanzar estas metas. Por un lado, las primeras versiones de ODL era más una prueba de concepto por lo cual no presentaba gran robustez en su escalabilidad, rendimiento y disponibilidad. Para alcanzar la alta disponibilidad, en los subsiguientes \textit{releases} de OpenDaylight sí implemento una solución basada en \textit{Akka}. Consiste en una serie de herramientas que permite simplificar la creación de aplicaciones que se ejecutarán en ambientes distribuidos. 
+\subsubsection{Arquitectura}
+Las características más importantes de la arquitectura presentada por \textit{ONOS} \parencite{onffwhite} se detallan a continuación:
 
-A su vez, para mejorar la performance, ODL reparte las funcionalidades del controlador de manera distribuida para balancear la carga a lo largo del \textit{cluster}. Esta división de funcionalidades es denominada \textit{shards}. La desventaja de esta última solución es si un \textit{host} del cluster se cae, se requiere un tiempo para que el sistema se recupere. En la figura \ref{fig:ODLCluster} se ilustra un ejemplo de un cluster formado con ODL.       
+\begin{itemize}
+	\item \textbf{Núcleo distribuido}: la solución que propone \textit{ONOS} para proveer escalabilidad, alto rendimiento y disponibilidad se basa en un núcleo distribuido por los diferentes nodos que conforman un \textit{cluster}, lo que implica la posibilidad de soportar enormes cantidades de dispositivos de red. 
+	
+	La figura \ref{fig:onosdistribuido} muestra como el núcleo de ONOS es distribuido entre diferentes hosts.
 
-\begin{figure}[th]
-	\centering 
-	\resizebox{1\textwidth}{!}{\includegraphics{Figures/odlCluster.png}}%
-	\caption[ODL Clustering]{Cluster formado por ODL.}
-	\label{fig:ODLCluster}
-\end{figure}
+	\item \textbf{Abstracción \textit{Northbound}}: el controlador brinda gráficos y estadísticas de la red como así también aplicaciones basadas en \textit{intents} para facilitar el control, administración y configuración de los equipos.
+	\item \textbf{Abstracción \textit{Southbound}}: si bien \textit{ONOS} basa su funcionamiento en el protocolo \textit{OpenFlow}, también brinda soporte a otros como \textit{NETCONF}, \textit{REST}, \textit{SNMP}, entre otros. De esta forma, el controlador mantiene compatibilidad con dispositivos más antiguos.
+	\item \textbf{Modularidad}: se encuentra desarrollado en \textit{Java} con una arquitectura modular, de esta forma se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
+\end{itemize}
 
-Por otro lado, ONOS es un controlador que fue concebido y construido para ser escalable y de alto rendimiento. Por ende, su diseño es distribuido, permitiéndole controlar ambientes enormemente escalables. En la figura \ref{fig:ONOSCluster} se representa como el núcleo de ONOS es distribuido entre los \textit{hosts} del cluster y la existencia de una interfaz \textit{northbound} basada en \textit{intents}, la cual explicaremos en la siguiente sección.   
- 
-\begin{figure}[th]
-	\centering 
-	\resizebox{1\textwidth}{!}{\includegraphics{Figures/onosCluster.png}}%
-	\caption[ONOS Clustering]{Cluster formado por ONOS.}
-	\label{fig:ONOSCluster}
-\end{figure}
-
-\subsection{Aplicaciones basadas en Intents}
-\label{subs:intents}
-
-En un principio, los controladores SDN se construyen con el solo propósito de crear APIs en Java o REST para permitir a las aplicaciones programar con OpenFlow a los dispositivos de red. Esto, sin duda, agregaba demasiada complejidad a las aplicaciones. Actualmente, ambos controladores ODL y ONOS implementan esta interfaz basada en \textit{intents}.
-
-Por ejemplo, si una aplicación deseaba establecer algún tipo de comunicación entre el \textit{host} A y B debía programar cada uno de los \textit{switches} involucrados en el camino entre ambos \textit{hosts}. Sin embargo, con la API \textit{northbound} basada en \textit{intents} la aplicación simplemente expresa su deseo de conectar el \textit{host} A y B, y el controlador se encarga de programar las reglas en todos los dispositivos en la trayectoria. En la sección \ref{sec:creacion_rutas_multicast} se desarrolla más el concepto de \textit{intents}.
-
-\subsection{Elección del controlador ONOS}
-
-Presentado el análisis de las dos implementaciones de un controlador SDN \textit{open source} más relevantes, \textit{OpenDaylight} y \textit{Open Network Operating System}, en esta sección justificaremos nuestra elección de ONOS como controlador SDN de este proyecto.
-
-En primer lugar, la documentación de ONOS es más clara y organizada, lo cual mejora la curva de aprendizaje de las distintas herramientas y procedimientos para instalar, ejecutar e interaccionar con el controlador. A su vez, se brindan diversos tutoriales y ejemplos de distintas aplicaciones, lo cual facilitó el desarrollo e inserción de una aplicación personalizada en el núcleo del controlador.   
-
-Segundo, cómo se aludió anteriormente, ONOS es un controlador diseñado para ofrecer escalabilidad, rendimiento y alta disponibilidad. Su arquitectura de núcleo distribuido, como muestra la figura \ref{fig:ONOSArq}, y la posibilidad de soportar un gran número de dispositivos de red simultáneamente es una cualidad sobresaliente de ONOS.
-
-\begin{figure}[th]
-	\centering 
-	\resizebox{1\textwidth}{!}{\includegraphics{Figures/onos-architecture.png}}%
-	\caption[Arquitectura de ONOS]{Arquitectura de ONOS.}
-	\label{fig:ONOSArq}
-\end{figure}
-
-Tercero, hoy en día las redes de los proveedores de servicio son complejas y multicapas, incluyendo capas ópticas. ONOS ha logrado brindar soporte a las redes ópticas según lo demuestra el caso de uso descripto en \parencite{onosPacketOptical}.
-
-Finalmente, se distingue un crecimiento de un $10\%$ en la utilización de ONOS. Esto se observa en los reportes anuales de 2016 y 2017 de \textit{SDx Central} sobre el avance de las tecnologías relacionadas a SDN (figuras \ref{fig:2016Report} y \ref{fig:2017Report}). Sin embargo, ODL sigue siendo el dominante por un amplio margen \parencite{SDXCentralReport}.  
-
-\begin{figure}[th]
+\begin{figure}[H]
 	\centering
-		\includegraphics[width=1\linewidth]{Figures/snxcentral2016.png}
-		\caption{Comparación de la utilización de los controladores SDN según el reporte de 2016 de SDx Central.}
-		\label{fig:2016Report}
-\end{figure}
-\begin{figure}[th]
+	\includegraphics[scale=0.9]{Figures/mux40.pdf}
+	\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+	\label{fig:onosdistribuido}
+  \end{figure}
+
+  Para finalizar, se observa en la figura [] la arquitectura desplegada por ONOS.
+
+  \begin{figure}[H]
 	\centering
-		\includegraphics[width=1\linewidth]{Figures/snxcentral2017.png}
-		\caption{Comparación de la utilización de los controladores SDN según el reporte de 2017 de SDx Central.}
-		\label{fig:2017Report}
-\end{figure}
+	\includegraphics[scale=0.9]{Figures/mux40.pdf}
+	\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+	\label{fig:onosarch}
+  \end{figure}
+
+  \subsubsection{Interfaz Southbound en ONOS}
+  Tal como se explico con anterioridad, el objetivo del proyecto es gestionar la configuración de un \textit{muxponder} de 40Gb a traves del protocolo \textit{NETCONF}. Para ello, se procede a explicar con más detalle la interfaz \textit{Southbound} de \textit{ONOS}. La misma, se encuentra dividida en una serie de componentes que se detallan a continuación:
+
+  \begin{itemize}
+	\item \textbf{\textit{Providers}}: son aplicaciones independientes que residen en el núcleo de \textit{ONOS}, las mismas pueden activarse o desactivarse dinámicamente en tiempo de ejecución. El propósito principal de esta capa es abstraer al \textit{core} las complejidades de los protocolos, brindando interfaces a las operaciones típicas de los mismos. Un ejemplo de un \textit{provider} en \textit{ONOS} es el llamado \textit{“NetconfAlarmProvider”}, encargado de transformar cada notificación de los dispositivos en una alarma registrada en \textit{ONOS}.
+	\item \textbf{\textit{Protocols}}: es la capa de más bajo nivel en la interfaz \textit{Southbound} y es la única que tiene contacto directo con los dispositivos conectados al controlador. Aquí se implementan los diferentes protocolos necesarios para la comunicación como ser \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc. Comúnmente se utilizan librerías de terceros como \textit{openflowj, snmp4j, thrift}, entre otras.
+	\item \textbf{\textit{Drivers}}: al igual que los \textit{providers}, los \textit{drivers} pueden cargarse dinámicamente al núcleo del controlador y proveen mecanismos para comunicarse con los diferentes dispositivos a través de algún protocolo. La diferencia principal con los \textit{providers} es que aquí no se implementan generalidades de los protocolos, sino comportamientos específicos de los dispositivos. Además, sirve de interfaz entre las aplicaciones que se encuentran en la capa \textit{Northbound} y los diferentes equipos de red.  El propósito principal de este subsistema es el de aislar el código específico del dispositivo de tal manera de que el mismo no se extienda por el resto del núcleo de \textit{ONOS}. Dado que tal código será necesario para cualquier futuro previsible, este subsistema proporciona medios para contenerlo y permitir que otros subsistemas interactúen con él a través de abstracciones independientes del protocolo y del dispositivo. Por último, presenta una ventaja para los desarrolladores de hardware dado que al ser un componente modular, permite la herencia de funcionalidades de otros \textit{drivers} con el fin de compartir características con una familia de dispositivos en común.
+\end{itemize}
+
+La figura [X] esclarece qué participación tiene cada componente con el core y con el dispositivo.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.9]{Figures/mux40.pdf}
+	\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+	\label{fig:onosarchsouth}
+  \end{figure}
+
+  \subsubsection{Justificación de la elección del controlador}
+
+En la actualidad, existe una diversidad de controladores \textit{SDN}, como ser \textit{Ryu} (\textit{Python}), \textit{Floodlight} (\textit{Java}), \textit{POX} (\textit{Python}), e incluso implementaciones propietarias. 
+
+Se destaca \textit{OpenDaylight} (\textit{Java}), un controlador abierto que soporta una gran lista de protocolos y que, según [], junto a \textit{ONOS} es uno de los controladores más utilizados en la industria.
+
+La razón determinante por la cual se optó por \textit{ONOS} como controlador \textit{SDN} reside en que el mismo cuenta con una documentación más clara y organizada. Esto facilitó la curva de aprendizaje de las distintas herramientas, donde se pudo tener una rápida interacción con el controlador dada su facilidad de instalación y puesta en marcha.
+
+Otro motivo reside en que las redes de los proveedores de servicio son complejas y multicapas, donde se requiere una separación clara de la capa de paquetes y de la capa de transporte, tal como se vió en el capítulo anterior. \textit{ONOS}, ha logrado brindar soporte a las redes ópticas según lo demuestra el caso de uso aquí descripto [].
+
+\subsection{Análisis de agentes \textit{NETCONF}}
+
+Como se explicó al comienzo de este capítulo, se deberá implementar un agente \textit{NETCONF} en el \textit{muxponder} de 40Gb con el fin de gestionar su configuración mediante este protocolo. Para ello, se estudiará en esta sección dos implementaciones del protocolo \textit{NETCONF}: Sysrepo y Yuma123. 
+
+Las mismas son \textit{open-source}, lo que facilita el estudio y comprensión de los agentes. Finalmente, se justificará la elección de Yuma123 como servidor \textit{NETCONF} para el proyecto.
+
+\subsubsection{Sysrepo}
+Proporciona las funcionalidades de una base de datos lógica a las diferentes aplicaciones Unix-Linux. Las aplicaciones pueden gestionar sus datos de configuración y de estado utilizando \textit{YANG} como modelado de datos, a través de las \textit{API’s} que expone Sysrepo []. De esta forma, Sysrepo garantiza mediante \textit{YANG} la consistencia de los datos y la correctitud de los mismos. 
+
+A su vez, el proyecto integra \textit{Netopeer2} [] como agente \textit{NETCONF}. Netopeer2 es la evolución del proyecto Netopeer [] (discontinuado) y ofrece tanto un cliente como un servidor \textit{NETCONF}.
+
+Sysrepo fue la primer implementación del protocolo \textit{NETCONF} instalada y manipulada en una máquina de propósito general. Tiene la ventaja de contar con una gran documentación, como así también una variedad de ejemplos y casos de usos. 
+
+\subsubsection{Yuma123}
+En el 2011, el proyecto \textit{open-source} YUMA, también conocido como OpenYUMA, sufrió un cambio en su licencia donde esta dejó de ser \textit{BSD}. A partir de entonces, el proyecto tuvo dos ramificaciones: YumaPro [], ahora perteneciente a YumaWorks y Yuma123. 
+
+Yuma123 nace a partir de la última \textit{release} \textit{BSD} del proyecto OpenYUMA, con el fin de continuar con el soporte de dicha implementación mientras se mantiene la licencia \textit{BSD}. Al igual que Sysrepo, ofrece tanto un cliente (yangcli) como un servidor (netconfd) \textit{NETCONF}. La diferencia es que aquí no se exponen \textit{API’s} a las aplicaciones, sino que las mismas son directamente compiladas como librerias SIL, dependientes de Yuma123. 
+\\
+
+Según la documentación [], se agregaron las siguientes funcionalidades con respecto a la versión original:
+
+\begin{itemize}
+	\item Un sistema de compilación más eficiente con respecto a OpenYUMA, basado en las herramientas autoconf y automake.
+	\item Se han corregidos \textit{bugs} críticos reportados en OpenYUMA.
+	\item Soporte de las nuevas funcionalidades del protocolo agregadas por la \textit{IETF} (ietf-nacm, ietf-system, etc.). 
+\end{itemize}
+
+\subsubsection{Análisis de diferencias entre las implementaciones}
+A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cuenta los siguientes criterios: las diferencias relativas al protocolo \textit{NETCONF}; las herramientas y características extras que brinda cada una; y los recursos que demandan.
+
+\begin{itemize}
+	\item \textbf{Diferencias relativas al protocolo \textit{NETCONF}}: Como se detalló en el capítulo anterior, \textit{NETCONF} define una serie de operaciones que no son obligatorias para las diferentes implementaciones del protocolo, sino que son opcionales y las mismas deberán ser explícitamente anunciadas en el mensaje \textit{HELLO} del servidor. Es importante repasar cuáles de estas operaciones admite cada proyecto. 
+		
+	Así, tanto Yuma123 [] cómo Sysrepo [] implementan el estándar \textit{NETCONF} 1.0 y \textit{NETCONF} 1.1, definidos en los \textit{RFC 4741} [] y \textit{RFC 6241} [] respectivamente. 
+	
+	Sin embargo, mientras que Sysrepo admite el transporte seguro mediante \textit{SSH} y \textit{TLS}, Yuma123 únicamente soporta \textit{SSH}. Esto último es una ventaja para Sysrepo, ya que brinda flexibilidad y personalización al administrador sobre el protocolo de transporte seguro.
+	
+	Por otra parte, Sysrepo admite únicamente la operación \textit{commit} sobre la base de datos \textit{candidate}, mientras que Yuma123 además de soportar dicha operación también incorpora las capacidades \textit{confirmed-commit} y \textit{validate}, lo que provee a esta última de potentes herramientas para corroborar la correctitud de los datos ingresados y a su vez restaurar la funcionalidad de la red en caso de ingresar una configuración incorrecta.
+	
+	Para finalizar, cabe destacar que ambos proyectos soportan las bases de datos \textit{startup} y \textit{candidate}.
+
+	\item \textbf{Herramientas y características extras al protocolo}: Ambas implementaciones integran tanto un cliente como un servidor \textit{NETCONF}. Sin embargo, cada una incorpora una serie de herramientas que es de importancia mencionarlas. 
+	\begin{itemize}
+		\item \textbf{Sysrepo}
+		\begin{itemize}
+			\item sysrepoctl: es una aplicación que permite administrar los módulos \textit{YANG} desde una \textit{CLI}. Brinda opciones para instalar, eliminar y listar los módulos que tiene activo el servidor.
+			\item sysrepocfg: utilidad para exportar o importar datos de configuración de las diferentes bases de datos. De esta forma se podría editar, por ejemplo, el contenido de la base de datos startup desde un navegador web o editor de texto cualquiera, sin que sea necesario utilizar el protocolo \textit{NETCONF} para dicho propósito.
+		\end{itemize}
+		\item \textbf{Yuma123}
+		\begin{itemize}
+			\item yangdiff: herramienta que permite comparar dos revisiones de un mismo módulo \textit{YANG}. El nivel de detalle con el cual se exponen las diferencias puede ajustarse hasta con tres niveles de reporte. Además, puede generar de forma automática la declaración \textit{“revision”} del módulo con detalles de los cambios.
+			\item yangdump: posibilita validar módulos \textit{YANG} y convertirlos a otros formatos. De esta forma, mediante un módulo \textit{YANG} la herramienta genera el esqueleto del código \textit{SIL} (lenguaje C) que necesita para relacionar la instrumentación del dispositivo con el modelado de los datos.
+		\end{itemize}
+	\end{itemize}
+
+	Para finalizar el análisis de este criterio, se menciona que ambas implementaciones permiten parametrizar opciones en el servidor \textit{NETCONF}, como por ejemplo el número máximo de sesiones admitidas, el tiempo de espera para una respuesta \textit{RPC} y el tiempo de espera de una sesión inactiva antes de finalizarla.
+
+	\item \textbf{Demanda de recursos}: Al inicio de este capítulo, se estudiaron las características técnicas del \textit{muxponder} utilizado para este proyecto. Será de suma importancia que las implementaciones mencionadas se adapten a los recursos que dispone el equipo, por lo que se hará foco principal en demanda de la memoria \textit{RAM} y de la memoria de almacenamiento. 
+	
+	Dicho esto, es importante mencionar que para el siguiente análisis se iniciaron los binarios sin cargar previamente algún módulo \textit{YANG} ni alguna otra aplicación que ponga en desventaja a cualquiera de las implementaciones. Además, los datos obtenidos corresponden a la ejecución de los binarios en una máquina de escritorio.
+
+	\begin{itemize}
+		\item \textbf{Sysrepo}: según la documentación [], se requiere de una extensa lista de librerías de terceros para poder efectuar la compilación e instalación del proyecto. Teniendo en cuenta aquellas que son necesarias para el funcionamiento de Sysrepo (y omitiendo las que únicamente participan en la compilación), la implementación demanda un espacio total en memoria secundaria de 250Mb. Cabe destacar que en este análisis se incluye no solo el servidor Netopeer2 sino también el cliente, ya que Sysrepo necesita de ambos para funcionar. En el caso de memoria \textit{RAM}, Sysrepo ocupa 270Mb.
+
+		\item \textbf{Yuma123}: la cantidad de librerías de terceros que requiere este proyecto [] es menor comparado con las de Sysrepo. Además, se destaca que Yuma123 no necesita de ambos binarios (cliente y servidor) para funcionar, pudiendo iniciarse uno u otro según sea necesario. Teniendo en cuenta esto último, únicamente se analizan los recursos que demanda el servidor (llamado netconfd), ya que en el dispositivo no será necesario ejecutar un cliente \textit{NETCONF}. Así, Yuma123 requiere en memoria secundaria un espacio de 50Mb, mientras que en memoria principal alcanza los 73Mb aproximadamente.
+
+	\end{itemize}
+	
+	En figura [x] puede verse una comparativa de los recursos tomados por ambas implementaciones. La primer columna hace referencia a la memoria RAM ocupada por el proceso, donde la misma está dada en Kb.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.9]{Figures/mux40.pdf}
+		\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+		\label{fig:consumoagentes}
+	  \end{figure}
+	\end{itemize}
+
+
+	\subsubsection{Justificación de elección del agente}
+
+	Presentado el análisis y las diferencias entre ambos proyectos, en esta sección se justificará la elección de Yuma123 como servidor que se instalará en el \textit{muxponder} de 40Gb.
+
+Como se mencionó anteriormente, Sysrepo fue la primer implementación con la que se tuvo contacto y manipulación del protocolo \textit{NETCONF}. La razón por la que se optó empezar a familiarizarse con este, fue porque se encontró una gran cantidad de ejemplos y casos de uso a la hora de realizar los módulos \textit{YANG} y relacionarlos con la instrumentación y las aplicaciones Unix. Además, la instalación del proyecto en una computadora de escritorio fue sencilla (debido a la extensa documentación y las diferentes alternativas de instalación que brinda como ser \textit{dockers}, \textit{scripts} de instalación, etc).
+
+Sin embargo, no resultó de igual forma a la hora de realizar la compilación cruzada. La razón se debe a que Sysrepo tiene gran cantidad de dependencias como ser \textit{libyang, Google Protocol Buffers, protobuf-c, libev,} entre otros []. Específicamente, se tuvo problemas para compilar la librería \textit{“protobuf-c”} para la arquitectura \textit{NIOS}, por lo que se abandonó el uso de esta herramienta. Además, como se vio anteriormente, la demanda de memoria principal y secundaria en Sysrepo excede a los recursos disponibles en el muxponder.
+
+En el caso de Yuma123 se logró compilar e instalar de manera correcta todas las librerías requeridas. Además, se realizaron scripts que facilitan esta tarea para las siguientes arquitecturas: \textit{ARM, NIOS y $x86_64$}. Por último, se destaca la herramienta yangdump brindada por Yuma123, la cual facilita el desarrollo de las librerías \textit{SIL} en C.
+
+De esta forma, el factor determinante a la hora de elegir entre las distintas implementaciones \textit{NETCONF}, fue tener en cuenta las limitaciones técnicas del equipo, siendo Yuma123 el agente que mejor se adaptó a las mismas. 
