@@ -5,8 +5,10 @@
 
 \label{Chapter3} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-Teniendo en cuenta los conceptos revisados en el capítulo anterior, en este se estudiarán las herramientas que permitirán la realización del proyecto. En la primera sección, se realizará un análisis del dispositivo utilizado, un \textit{muxponder} óptico coherente de 40Gb desarrollado por la institución donde se realizó el proyecto.
-Luego, en la segunda sección se examinarán las herramientas de software involucradas. La misma se encuentra dividida en dos partes; la primera detalla el funcionamiento del controlador \textit{SDN} utilizado, \textit{ONOS}; la segunda refiere al estudio de dos agentes \textit{\textit{}:} Sysrepo y Yuma123.
+Teniendo en cuenta los conceptos revisados en el capítulo anterior, en este se estudiarán las herramientas que permitirán la realización del proyecto. 
+
+En la primera sección, se realizará un análisis del dispositivo utilizado, un \textit{muxponder} óptico coherente de 40Gb desarrollado por la institución donde se realizó el proyecto.
+Luego, en la segunda sección se examinarán las herramientas de \textit{software} involucradas. La misma se encuentra dividida en dos partes; la primera detalla el funcionamiento del controlador \textit{SDN} utilizado, \textit{ONOS}; la segunda refiere al estudio de dos agentes \textit{NETCONF}: Sysrepo y Yuma123.
 
 
 %----------------------------------------------------------------------------------------
@@ -15,29 +17,28 @@ Luego, en la segunda sección se examinarán las herramientas de software involu
 
 \section{Herramientas de \textit{Hardware}}
 
-Esta sección comprende el estudio de uno de los dispositivos mencionados en el capítulo anterior, un \textit{muxponder}. Concretamente, se analizarán aspectos técnicos relacionados tanto al hardware como al software de un \textit{muxponder} de 40Gb. El interés de este análisis resulta en que es en este dispositivo en donde se integrará el protocolo de gestión \textit{\textit{}.}
+Para cumplir con el objetivo del proyecto, será de importancia conocer las bondades y las limitaciones del equipo con el que se cuenta. Así, esta sección comprende el estudio de uno de los dispositivos mencionados en el capítulo anterior, un \textit{muxponder}. Concretamente, se analizarán aspectos técnicos relacionados tanto al hardware como al \textit{software} de un \textit{muxponder} de 40Gb. El interés de este análisis resulta en que es en este dispositivo en donde se integrará el protocolo de gestión \textit{NETCONF}.
 
 \subsection{\textit{Muxponder} 40Gb}
 
-El equipo con el que se cuenta para realizar este proyecto, es capaz de realizar una transmisión óptica de 40Gb/s sobre una señal de línea \textit{OTU3}. La misma es lograda cumpliendo el estándar \textit{ITU-T G.709} \parencite{itu7}, utilizando una modulación coherente \textit{DP-QPSK} o \textit{DP-DQPSK}.
-\\
+El equipo en cuestión, es capaz de realizar una transmisión óptica de 40Gb/s sobre una señal de línea \textit{OTU3}. La misma es lograda cumpliendo el estándar \textit{ITU-T G.709} \parencite{itu7}, utilizando una modulación coherente \textit{DP-QPSK} o \textit{DP-DQPSK}.
 
-Cuenta con cuatro clientes ópticos asíncronos totalmente independientes de 10Gb/s cada uno, a través de módulos ópticos  \textit{XFP} removibles. Las longitudes de ondas soportadas para los clientes son 850/1310/1550 nm y admite los tipos de cliente \textit{10Gb Ethernet LAN/WAN, OTU2} y \textit{OTU2e}.
-\\
+Cuenta con cuatro clientes ópticos asíncr\textit{onos} totalmente independientes de 10Gb/s cada uno, a través de módulos ópticos  \textit{XFP} removibles. Las longitudes de ondas soportadas para los clientes son 850/1310/1550 nm y admite los tipos de cliente \textit{10Gb Ethernet LAN/WAN, OTU2} y \textit{OTU2e}.
 
 Además, incorpora el mecanismo de corrección de errores \textit{FEC} para todas las señales, tanto para clientes como para línea. Mediante el mismo, el \textit{muxponder} es capaz de realizar correcciones sin necesidad de retransmitir la información.
-
-A su vez, el equipo es de bajo consumo de potencia, alcanzando típicamente 93 Watts. También, incorpora un amplificador óptico, el cual le permite alcanzar una distancia de hasta 2000Km. Si no se utiliza dicho amplificador, puede alcanzar una distancia de hasta 65Km.
 \\
 
-Las interfaces de conexión soportadas para realizar configuración y monitoreo son: 
+En términos de potencia, alcanza típicamente los 93 Watts. También, incorpora un amplificador óptico, el cual le permite alcanzar una distancia de hasta 2000Km. Si no se utiliza dicho amplificador, puede alcanzar una distancia de hasta 65Km.
+\\
+
+Las interfaces de conexión soportadas para realizar configuración y monitoreo en el dispositivo son: 
 \begin{itemize}
 	\item 2 puertos \textit{Ethernet} 10/100/1000 Mb/s.
 	\item 1 puerto serial \textit{RS232}.
 	\item 1 puerto \textit{USB} 2.0.
 \end{itemize}
 
-En la figura \ref{fig:mux40} se puede observar en el panel frontal del dispositivo las interfaces mencionadas anteriormente.
+En la figura \ref{fig:mux40} se puede observar en el panel frontal del equipo y las diferentes interfaces mencionadas anteriormente.
 
 
 \begin{figure}[H]
@@ -47,14 +48,14 @@ En la figura \ref{fig:mux40} se puede observar en el panel frontal del dispositi
 	\label{fig:mux40}
   \end{figure}
 
-El \textit{muxponder} integra un total de 128Mb de memoria \textit{RAM} y [[[[]]]] de almacenamiento, con capacidad de extender esta última mediante una tarjeta \textit{SD}. Además, cuenta con un sistema operativo Linux \textit{“Buildroot”}, el cual ocupa gran parte de estos recursos mencionados, dejando libre para las aplicaciones de usuario un total de 100Mb de \textit{RAM} y [[[[]]]] de almacenamiento.
+El \textit{muxponder} de 40Gb integra un total de 128Mb de memoria \textit{RAM} y [[[[]]]] de almacenamiento, con capacidad de extender esta última mediante una tarjeta \textit{SD}. Además, cuenta con un sistema operativo Linux \textit{“Buildroot”}, el cual ocupa gran parte de estos recursos mencionados, dejando libre para las aplicaciones de usuario un total de 100Mb de \textit{RAM} y [[[[]]]] de almacenamiento.
 
 El hecho de que presente dicho sistema operativo resulta en una ventaja por varios motivos, en primer lugar porque el mismo es un entorno conocido por el alumno, donde además podrán ejecutarse en él la mayoría de las aplicaciones \textit{UNIX} típicas. En segundo lugar, el sistema operativo integra librerías y herramientas que facilitaran el desarrollo del proyecto, como por ejemplo la librería \textit{SSH}, necesaria por el protocolo \textit{NETCONF}.
 \\
 
 Por último, el procesador que incorpora es un \textit{NIOS II} de primera generación fabricado por \textit{Intel} \parencite{intelaltera}. El mismo funciona a 125 Mhz y se encuentra integrado en una \textit{FPGA}. Es importante destacar que la arquitectura de este procesador no es la arquitectura típica de una máquina de propósito general (por ejemplo $x86_64$), por lo tanto, las distintas aplicaciones que se ejecuten en esta plataforma deberán estar compiladas específicamente para la arquitectura \textit{NIOS}. 
 
-Además, debido a los recursos limitados con los que cuenta el equipo, resulta imposible realizar la compilación de las aplicaciones sobre el mismo. Se deberá realizar lo que se conoce como compilación cruzada, que consiste en preparar un sistema huésped (donde generalmente dicho sistema cuenta con mayores recursos y capacidades) para generar todos los binarios y librerías que requiere  el dispositivo objetivo donde finalmente se ejecutarán las aplicaciones.
+Además, debido a los recursos limitados con los que cuenta el equipo, resulta imposible realizar la compilación de las aplicaciones sobre el mismo equipo. Se deberá realizar lo que se conoce como compilación cruzada, que consiste en preparar un sistema huésped (donde generalmente dicho sistema cuenta con mayores recursos y capacidades) para generar todos los binarios y librerías que requiere  el dispositivo objetivo donde finalmente se ejecutarán las aplicaciones.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 2
@@ -86,21 +87,22 @@ Las características más importantes de la arquitectura presentada por \textit{
 \begin{itemize}
 	\item \textbf{Núcleo distribuido}: la solución que propone \textit{ONOS} para proveer escalabilidad, alto rendimiento y disponibilidad se basa en un núcleo distribuido por los diferentes nodos que conforman un \textit{cluster}, lo que implica la posibilidad de soportar enormes cantidades de dispositivos de red. 
 	
-	La figura \ref{fig:onosdistribuido} muestra como el núcleo de ONOS es distribuido entre diferentes hosts.
+	La figura \ref{fig:onosdistribuido} ejemplifica dicha distribución. El hecho de agregar esta redundancia implica una mayor disponibilidad del controlador. A su vez, permite realizar un balanceo de carga, lo que implica mayor rendimiento y escalabilidad.
 
-	\item \textbf{Abstracción \textit{Northbound}}: el controlador brinda gráficos y estadísticas de la red como así también aplicaciones basadas en \textit{intents} para facilitar el control, administración y configuración de los equipos.
-	\item \textbf{Abstracción \textit{Southbound}}: si bien \textit{ONOS} basa su funcionamiento en el protocolo \textit{OpenFlow}, también brinda soporte a otros como \textit{NETCONF}, \textit{REST}, \textit{SNMP}, entre otros. De esta forma, el controlador mantiene compatibilidad con dispositivos más antiguos.
-	\item \textbf{Modularidad}: se encuentra desarrollado en \textit{Java} con una arquitectura modular, de esta forma se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
+
+	\item \textbf{Abstracción \textit{Northbound}}: el plano aplicación, explicado en el capítulo anterior, se comunica con \textit{ONOS} a través de una interfaz brindada por el controlador. El mismo, brinda a las aplicaciones gráficos y estadísticas de la red como así también aplicaciones basadas en intents para facilitar el control, administración y configuración de los equipos.
+	\item \textbf{Abstracción \textit{Southbound}}: de forma similar, el controlador ofrece una interfaz para comunicarse con el plano de datos. Cabe destacar que si bien \textit{ONOS} basa su funcionamiento en el protocolo \textit{OpenFlow}, también brinda soporte a otros como \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc, con el fin de mantener compatibilidad con dispositivos más antiguos.
+	\item \textbf{Modularidad}: el controlador se encuentra desarrollado en \textit{Java}, obteniendo así una arquitectura modular. De esta forma, se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{Figures/mux40.pdf}
-	\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+	\includegraphics[scale=0.8]{Figures/onosarch.pdf}
+	\caption{Arquitectura distribuida de \textit{ONOS}.}
 	\label{fig:onosdistribuido}
   \end{figure}
 
-  Para finalizar, se observa en la figura [] la arquitectura desplegada por ONOS.
+  Para finalizar, se observa en la figura \ref{fig:onosarch} la arquitectura desplegada por ONOS.
 
   \begin{figure}[H]
 	\centering
@@ -110,7 +112,7 @@ Las características más importantes de la arquitectura presentada por \textit{
   \end{figure}
 
   \subsubsection{Interfaz Southbound en ONOS}
-  Tal como se explico con anterioridad, el objetivo del proyecto es gestionar la configuración de un \textit{muxponder} de 40Gb a traves del protocolo \textit{NETCONF}. Para ello, se procede a explicar con más detalle la interfaz \textit{Southbound} de \textit{ONOS}. La misma, se encuentra dividida en una serie de componentes que se detallan a continuación:
+  Tal como se explicó anteriormente, el objetivo del proyecto es gestionar la configuración de un \textit{muxponder} de 40Gb a través del protocolo \textit{NETCONF}. Para ello, se procede a explicar con más detalle la interfaz \textit{Southbound} de \textit{ONOS}. La misma, se encuentra dividida en una serie de componentes que se detallan a continuación:
 
   \begin{itemize}
 	\item \textbf{\textit{Providers}}: son aplicaciones independientes que residen en el núcleo de \textit{ONOS}, las mismas pueden activarse o desactivarse dinámicamente en tiempo de ejecución. El propósito principal de esta capa es abstraer al \textit{core} las complejidades de los protocolos, brindando interfaces a las operaciones típicas de los mismos. Un ejemplo de un \textit{provider} en \textit{ONOS} es el llamado \textit{“NetconfAlarmProvider”}, encargado de transformar cada notificación de los dispositivos en una alarma registrada en \textit{ONOS}.
@@ -118,12 +120,12 @@ Las características más importantes de la arquitectura presentada por \textit{
 	\item \textbf{\textit{Drivers}}: al igual que los \textit{providers}, los \textit{drivers} pueden cargarse dinámicamente al núcleo del controlador y proveen mecanismos para comunicarse con los diferentes dispositivos a través de algún protocolo. La diferencia principal con los \textit{providers} es que aquí no se implementan generalidades de los protocolos, sino comportamientos específicos de los dispositivos. Además, sirve de interfaz entre las aplicaciones que se encuentran en la capa \textit{Northbound} y los diferentes equipos de red.  El propósito principal de este subsistema es el de aislar el código específico del dispositivo de tal manera de que el mismo no se extienda por el resto del núcleo de \textit{ONOS}. Dado que tal código será necesario para cualquier futuro previsible, este subsistema proporciona medios para contenerlo y permitir que otros subsistemas interactúen con él a través de abstracciones independientes del protocolo y del dispositivo. Por último, presenta una ventaja para los desarrolladores de hardware dado que al ser un componente modular, permite la herencia de funcionalidades de otros \textit{drivers} con el fin de compartir características con una familia de dispositivos en común.
 \end{itemize}
 
-La figura [X] esclarece qué participación tiene cada componente con el core y con el dispositivo.
+La figura \ref{fig:onosarchsouth} esclarece la participación que tiene cada componente tanto con el \textit{core} como con el dispositivo.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{Figures/mux40.pdf}
-	\caption{Vista del panel frontal del \textit{muxponder} de 40Gb utilizado.}
+	\includegraphics[scale=0.85]{Figures/southboundonos.pdf}
+	\caption{Interfaz \textit{Southbound} en \textit{ONOS}.}
 	\label{fig:onosarchsouth}
   \end{figure}
 
@@ -133,13 +135,13 @@ En la actualidad, existe una diversidad de controladores \textit{SDN}, como ser 
 
 Se destaca \textit{OpenDaylight} (\textit{Java}), un controlador abierto que soporta una gran lista de protocolos y que, según [], junto a \textit{ONOS} es uno de los controladores más utilizados en la industria.
 
-La razón determinante por la cual se optó por \textit{ONOS} como controlador \textit{SDN} reside en que el mismo cuenta con una documentación más clara y organizada. Esto facilitó la curva de aprendizaje de las distintas herramientas, donde se pudo tener una rápida interacción con el controlador dada su facilidad de instalación y puesta en marcha.
+La razón determinante por la cual se optó por \textit{ONOS} como controlador \textit{SDN} radica en que el mismo cuenta con una documentación más clara y organizada. Esto facilitó la curva de aprendizaje de las distintas herramientas, donde se pudo tener una rápida interacción con el controlador dada su facilidad de instalación y puesta en marcha.
 
 Otro motivo reside en que las redes de los proveedores de servicio son complejas y multicapas, donde se requiere una separación clara de la capa de paquetes y de la capa de transporte, tal como se vió en el capítulo anterior. \textit{ONOS}, ha logrado brindar soporte a las redes ópticas según lo demuestra el caso de uso aquí descripto [].
 
 \subsection{Análisis de agentes \textit{NETCONF}}
 
-Como se explicó al comienzo de este capítulo, se deberá implementar un agente \textit{NETCONF} en el \textit{muxponder} de 40Gb con el fin de gestionar su configuración mediante este protocolo. Para ello, se estudiará en esta sección dos implementaciones del protocolo \textit{NETCONF}: Sysrepo y Yuma123. 
+Con el fin de poder gestionar la configuración del \textit{muxponder} de 40Gb a través de \textit{NETCONF}, se estudiará en esta sección dos implementaciones del protocolo: Sysrepo y Yuma123. 
 
 Las mismas son \textit{open-source}, lo que facilita el estudio y comprensión de los agentes. Finalmente, se justificará la elección de Yuma123 como servidor \textit{NETCONF} para el proyecto.
 
