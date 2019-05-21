@@ -9,22 +9,22 @@ Teniendo en cuenta los conceptos revisados en el capítulo anterior, en este se 
 
 En la primera sección, se realizará un análisis del dispositivo utilizado, un \textit{muxponder} óptico coherente de 40Gb desarrollado por la institución donde se realizó el proyecto.
 
-Luego, en la segunda sección se examinarán las herramientas de \textit{software} involucradas. La misma se encuentra dividida en dos partes; la primera detalla el funcionamiento del controlador \textit{SDN} utilizado, \textit{ONOS}; la segunda refiere al estudio de dos agentes \textit{NETCONF}: Sysrepo y Yuma123.
+Luego, en la segunda sección se examinarán las herramientas de software involucradas. La misma se encuentra dividida en dos partes; la primera detalla el funcionamiento del controlador \textit{SDN} utilizado, \textit{ONOS}; la segunda refiere al estudio de dos agentes \textit{NETCONF}: Sysrepo y Yuma123.
 
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Herramientas de \textit{Hardware}}
+\section{Herramientas de Hardware}
 
-Para cumplir con el objetivo del proyecto, será de suma importancia conocer las bondades y las limitaciones del equipo con el que se cuenta. Así, esta sección comprende el estudio de uno de los dispositivos mencionados en el capítulo anterior, un \textit{muxponder}. Concretamente, se analizarán aspectos técnicos relacionados tanto al hardware como al \textit{software} de un \textit{muxponder} de 40Gb. El interés de este análisis resulta en que es en este dispositivo en donde se integrará el protocolo de gestión \textit{NETCONF}.
+Para cumplir con el objetivo del proyecto, será de suma importancia conocer las bondades y las limitaciones del equipo con el que se cuenta. Así, esta sección comprende el estudio de uno de los dispositivos mencionados en el capítulo anterior, un \textit{muxponder}. Concretamente, se analizarán aspectos técnicos relacionados tanto al hardware como al software de un \textit{muxponder} de 40Gb. El interés de este análisis resulta en que es en este dispositivo en donde se integrará el protocolo de gestión \textit{NETCONF}.
 
 \subsection{\textit{Muxponder} 40Gb}
 
-El equipo en cuestión, es capaz de realizar una transmisión óptica de 40Gb/s sobre una señal de línea \textit{OTU3}. La misma es lograda cumpliendo el estándar \textit{ITU-T G.709} \parencite{itu7}, utilizando una modulación coherente \textit{DP-QPSK} o \textit{DP-DQPSK}.
+El muxponder con el que se cuenta es capaz de realizar una transmisión óptica de 40Gb/s sobre una señal de línea \textit{OTU3}. La misma es lograda cumpliendo el estándar \textit{ITU-T G.709} \parencite{itu7}, utilizando una modulación coherente \textit{DP-QPSK} o \textit{DP-DQPSK}.
 
-Cuenta con cuatro clientes ópticos asíncronos totalmente independientes de 10Gb/s cada uno, a través de módulos ópticos  \textit{XFP} removibles. Las longitudes de ondas soportadas para los clientes son 850/1310/1550 nm y admite los tipos de cliente \textit{10Gb Ethernet LAN/WAN, OTU2} y \textit{OTU2e}.
+Dispone de cuatro clientes ópticos asíncronos totalmente independientes de 10Gb/s cada uno, a través de módulos ópticos  \textit{XFP} removibles. Las longitudes de ondas soportadas para los clientes son 850/1310/1550 nm y admite los tipos de cliente \textit{10Gb Ethernet LAN/WAN, OTU2} y \textit{OTU2e}.
 \\
 
 Además, incorpora el mecanismo de corrección de errores \textit{FEC} para todas las señales, tanto para clientes como para línea. Mediante el mismo, el \textit{muxponder} es capaz de realizar correcciones sin necesidad de retransmitir la información.
@@ -50,7 +50,7 @@ En la figura \ref{fig:mux40} se puede observar en el panel frontal del equipo co
 	\label{fig:mux40}
   \end{figure}
 
-El \textit{muxponder} de 40Gb integra un total de 128Mb de memoria \textit{RAM} y [[[[]]]] de almacenamiento, con capacidad de extender esta última mediante una tarjeta \textit{SD}. Además, cuenta con un sistema operativo Linux \textit{“Buildroot”}, el cual ocupa gran parte de estos recursos mencionados, dejando libre para las aplicaciones de usuario un total de 100Mb de \textit{RAM} y [[[[]]]] de almacenamiento.
+  Por otra parte, el \textit{muxponder} de 40Gb integra un total de 128Mb de memoria \textit{RAM} y [[[[]]]] de almacenamiento, con capacidad de extender esta última mediante una tarjeta \textit{SD}. Además, cuenta con un sistema operativo Linux \textit{“Buildroot”}, el cual ocupa gran parte de estos recursos mencionados, dejando libre para las aplicaciones de usuario un total de 100Mb de \textit{RAM} y [[[[]]]] de almacenamiento.
 
 El hecho de que presente dicho sistema operativo resulta en una ventaja por varios motivos, en primer lugar porque el mismo es un entorno conocido por el alumno, donde además podrán ejecutarse en él la mayoría de las aplicaciones \textit{UNIX} típicas. En segundo lugar, el sistema operativo integra librerías y herramientas que facilitaran el desarrollo del proyecto, como por ejemplo la librería \textit{SSH}, necesaria por el protocolo \textit{NETCONF}.
 \\
@@ -63,12 +63,12 @@ Además, debido a las capacidades de la memoria primaria y secundaria del equipo
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 
-\section{Herramientas de \textit{Software}}
+\section{Herramientas de Software}
 
-Además del estudio del \textit{hardware} utilizado, resulta de interés realizar un análisis de los componentes de \textit{software} que conforman el proyecto. Para ello, la primer parte de esta sección estará dedicada a estudiar el controlador \textit{SDN} empleado, mientras que en la segunda parte se analizarán dos agentes \textit{NETCONF} disponibles de código abierto.
+Además del estudio del hardware utilizado, resulta de interés realizar un análisis de los componentes de software que conforman el proyecto. Para ello, la primer parte de esta sección estará dedicada a estudiar el controlador \textit{SDN} empleado, mientras que en la segunda parte se analizarán dos agentes \textit{NETCONF} disponibles de código abierto.
 
 \subsection{Controlador \textit{ONOS}}
-Desarrollado por la \textit{ONF} \parencite{onff}, es uno de los controladores abiertos más comunes en la industria, donde destacan miembros como Google, Intel, AT$y$T, Samsung, entre una numerosa lista \parencite{onffmembers}. Está diseñado específicamente para los proveedores de servicios, donde sus principales objetivos son la escalabilidad y el alto rendimiento \parencite{onffwhite}.
+El controlador \textit{ONOS}, desarrollado y mantenido por la \textit{ONF} \parencite{onff}, es uno de los controladores abiertos más comunes en la industria, donde destacan miembros como Google, Intel, AT$y$T, Samsung, entre una numerosa lista \parencite{onffmembers}. Está diseñado específicamente para los proveedores de servicios, donde sus principales objetivos son la escalabilidad y el alto rendimiento \parencite{onffwhite}.
 
 Las licencias compatibles con \textit{ONOS} son \textit{Apache} 2.0, \textit{MIT} y \textit{BSD} \parencite{onfflic}. El hecho de que sea un proyecto \textit{open-source}, supone ventajas como ser interoperabilidad, personalización, flexibilidad e independencia del fabricante. 
 
@@ -94,7 +94,10 @@ Las características más importantes de la arquitectura presentada por \textit{
 
 	\item \textbf{Abstracción \textit{Northbound}}: el plano aplicación, explicado en el capítulo anterior, se comunica con \textit{ONOS} a través de una interfaz brindada por el controlador. El mismo, brinda a las aplicaciones gráficos y estadísticas de la red como así también aplicaciones basadas en intents para facilitar el control, administración y configuración de los equipos.
 	\item \textbf{Abstracción \textit{Southbound}}: de forma similar, el controlador ofrece una interfaz para comunicarse con el plano de datos. Cabe destacar que si bien \textit{ONOS} basa su funcionamiento en el protocolo \textit{OpenFlow}, también brinda soporte a otros como \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc, con el fin de mantener compatibilidad con dispositivos más antiguos.
-	\item \textbf{Modularidad}: el controlador se encuentra desarrollado en \textit{Java}, obteniendo así una arquitectura modular. De esta forma, se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
+	
+	Una aproximación más detallada de la arquitectura que presenta \textit{ONOS} puede verse en la figura \ref{fig:onosarch}. En la misma, se observan las interfaces mencionadas anteriormente junto a una serie de componentes que pertenecen a la interfaz \textit{Southbound}. Estos componentes se analizarán más adelante. 
+
+	\item \textbf{Modularidad}: el controlador se encuentra desarrollado en \textit{Java}, y mediante el \textit{framework} OSGi, obtiene las características de una arquitectura modular. De esta forma, se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
 \end{itemize}
 
 \begin{figure}[H]
@@ -104,7 +107,7 @@ Las características más importantes de la arquitectura presentada por \textit{
 	\label{fig:onosdistribuido}
   \end{figure}
 
-  Para finalizar, se observa en la figura \ref{fig:onosarch} la arquitectura desplegada por ONOS.
+  
 
   \begin{figure}[H]
 	\centering
@@ -139,7 +142,7 @@ En la actualidad, existe una diversidad de controladores \textit{SDN}, como ser 
 
 Se destaca \textit{OpenDaylight} (\textit{Java}), un controlador abierto que soporta una gran lista de protocolos y que, según \parencite{book_SDN_a_c_a}, junto a \textit{ONOS} es uno de los controladores más utilizados en la industria.
 
-La razón determinante por la cual se optó por \textit{ONOS} como controlador \textit{SDN} radica en que el mismo cuenta con una documentación más clara y organizada. Esto facilitó la curva de aprendizaje de las distintas herramientas, donde se pudo tener una rápida interacción con el controlador dada su facilidad de instalación y puesta en marcha.
+La razón determinante por la cual se optó por \textit{ONOS} como controlador \textit{SDN} radica en que el mismo cuenta con una documentación más clara y organizada. Además, se poseía experiencia previa trabajando con dicho controlador. Todo esto facilitó la curva de aprendizaje de las distintas herramientas, donde se pudo tener una rápida interacción con el controlador dada su facilidad de instalación y puesta en marcha.
 
 Otro motivo reside en que las redes de los proveedores de servicio son complejas y multicapas, donde se requiere una separación clara de la capa de paquetes y de la capa de transporte, tal como se vió en el capítulo anterior. \textit{ONOS}, ha logrado brindar soporte a las redes ópticas según lo demuestra el caso de uso aquí descripto \parencite{onffwhite}.
 
@@ -150,15 +153,15 @@ Con el fin de poder gestionar la configuración del \textit{muxponder} de 40Gb a
 Las mismas son \textit{open-source}, lo que facilita el estudio y comprensión de los agentes. Finalmente, se justificará la elección de Yuma123 como servidor \textit{NETCONF} para el proyecto.
 
 \subsubsection{Sysrepo}
-Proporciona las funcionalidades de una base de datos lógica a las diferentes aplicaciones Unix-Linux. Las aplicaciones pueden gestionar sus datos de configuración y de estado utilizando \textit{YANG} como modelado de datos, a través de las \textit{API’s} e interfaces que expone Sysrepo \parencite{sysrepogit}. De esta forma, la implementación garantiza mediante \textit{YANG} la consistencia de los datos y la correctitud de los mismos. 
+El proyecto Sysrepo proporciona las funcionalidades de una base de datos lógica a las diferentes aplicaciones Unix-Linux. De esta forma, las aplicaciones pueden gestionar sus datos de configuración y de estado utilizando \textit{YANG} como modelado de datos, a través de las \textit{API’s} e interfaces que expone Sysrepo \parencite{sysrepogit}. Así, la implementación garantiza mediante YANG la consistencia de los datos y la correctitud de los mismos. 
 
-A su vez, el proyecto integra \textit{Netopeer2} \parencite{netopeergit} como agente \textit{NETCONF}. \textit{Netopeer2} es la evolución del proyecto Netopeer \parencite{netopeergit1} (discontinuado) y ofrece tanto un cliente como un servidor \textit{NETCONF}.
+A su vez, Sysrepo integra \textit{Netopeer2} \parencite{netopeergit} como agente \textit{NETCONF}. \textit{Netopeer2} es la evolución del proyecto Netopeer \parencite{netopeergit1} (discontinuado) y ofrece tanto un cliente como un servidor \textit{NETCONF}.
 \\
 
 Sysrepo fue la primer implementación del protocolo instalada y manipulada en una máquina de propósito general. Tiene la ventaja de contar con una gran documentación, como así también una variedad de ejemplos y casos de usos. Además, otra ventaja que presenta es que el hecho de que Sysrepo exponga \textit{API’s} implica una posibilidad de adaptar cualquier aplicación Unix existente al protocolo \textit{NETCONF}, sin mayores cambios.  
 
 \subsubsection{Yuma123}
-En el 2011, el proyecto \textit{open-source} YUMA, también conocido como OpenYUMA, sufrió un cambio en su licencia donde esta dejó de ser \textit{BSD}. A partir de entonces, el proyecto tuvo dos ramificaciones: YumaPro \parencite{yumapro}, ahora perteneciente a YumaWorks y Yuma123, donde este último es \textit{open-source}. 
+En el 2011, el proyecto \textit{open-source} YUMA, también conocido como OpenYUMA, sufrió un cambio en su licencia donde esta dejó de ser \textit{BSD}. A partir de entonces, el proyecto tuvo dos ramificaciones: YumaPro \parencite{yumapro}, ahora perteneciente a YumaWorks, y Yuma123, su versión \textit{open-source}. 
 
 Yuma123 nace a partir de la última \textit{release} \textit{BSD} del proyecto OpenYUMA, con el fin de continuar con el soporte de dicha implementación mientras se mantiene la licencia \textit{BSD}. Al igual que Sysrepo, ofrece tanto un cliente (yangcli) como un servidor (netconfd) \textit{NETCONF}. La diferencia con la implementación anterior es que aquí no se exponen \textit{API’s} a las aplicaciones, sino que las mismas son directamente compiladas como librerias \textit{SIL} y son dependientes de Yuma123.
 \\
@@ -171,7 +174,7 @@ Según la documentación \parencite{yuma123}, se agregaron las siguientes funcio
 	\item Soporte de las nuevas funcionalidades del protocolo agregadas por la \textit{IETF} (ietf-nacm, ietf-system, etc.). 
 \end{itemize}
 
-\subsubsection{Análisis de diferencias entre las implementaciones}
+\subsubsection{Evaluación de las implementaciones}
 A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cuenta los siguientes criterios: las diferencias relativas al protocolo \textit{NETCONF}; las herramientas y características extras que brinda cada una; y los recursos que demandan.
 
 \begin{itemize}
@@ -179,13 +182,13 @@ A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cue
 		
 	Tanto Yuma123 \parencite{yuma123features} cómo Sysrepo \parencite{sysrepogit} implementan el estándar \textit{NETCONF} 1.0 y \textit{NETCONF} 1.1, definidos en los \textit{RFC 4741} \parencite{netconfrfc} y \textit{RFC 6241} \parencite{netconfrfcnuevo} respectivamente. 
 	
-	Sin embargo, mientras que Sysrepo admite el transporte seguro mediante \textit{SSH} y \textit{TLS}, Yuma123 únicamente soporta \textit{SSH}. Esto último es una ventaja para Sysrepo, ya que brinda flexibilidad y personalización al administrador sobre el protocolo de transporte seguro.
+	Sin embargo, mientras que Sysrepo admite el transporte seguro mediante \textit{SSH} y \textit{TLS}, Yuma123 únicamente soporta \textit{SSH}. Esto último, es una ventaja para Sysrepo ya que brinda flexibilidad y personalización al administrador sobre el protocolo de transporte seguro.
 	
 	Por otra parte, Sysrepo admite únicamente la operación \textit{commit} sobre la base de datos \textit{candidate}, mientras que Yuma123 además de soportar dicha operación también incorpora las capacidades \textit{confirmed-commit} y \textit{validate}, lo que provee a esta última de potentes herramientas para corroborar la correctitud de los datos ingresados y a su vez restaurar la funcionalidad de la red en caso de ingresar una configuración incorrecta.
 	
 	Para finalizar, cabe destacar que ambos proyectos soportan las bases de datos \textit{startup} y \textit{candidate}.
 
-	\item \textbf{Herramientas y características extras al protocolo}: Ambas implementaciones integran tanto un cliente como un servidor \textit{NETCONF}. Sin embargo, cada una incorpora una serie de herramientas que es de importancia mencionarlas. 
+	\item \textbf{Herramientas y características extras al protocolo}: Ambas implementaciones integran tanto un cliente como un servidor \textit{NETCONF}. Sin embargo, cada una incorpora una serie de herramientas que resulta de importancia mencionarlas. 
 	\begin{itemize}
 		\item \textbf{Sysrepo}
 		\begin{itemize}
@@ -203,18 +206,17 @@ A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cue
 
 	\item \textbf{Demanda de recursos}: Al inicio de este capítulo, se estudiaron las características técnicas del \textit{muxponder} utilizado para este proyecto. Será de suma importancia que las implementaciones mencionadas se adapten a los recursos que dispone el equipo, por lo que se hará foco principal en demanda de la memoria \textit{RAM} y de la memoria de almacenamiento. 
 	
-	Dicho esto, es importante mencionar que para el siguiente análisis se iniciaron los binarios sin cargar previamente algún módulo \textit{YANG} ni alguna otra aplicación que ponga en desventaja a cualquiera de las implementaciones. Además, los datos obtenidos corresponden a la ejecución de los binarios en una máquina de escritorio, sin realizar algún tipo de optimización en recursos.
+	Dicho esto, es importante mencionar que para el siguiente análisis se iniciaron los binarios con la configuración por defecto. Además, los datos obtenidos corresponden a la ejecución de los mismos en una máquina de escritorio, sin realizar algún tipo de optimización en recursos.
 
 	\begin{itemize}
-		\item \textbf{Sysrepo}: según la documentación \parencite{sysrepoinstall}, se requiere de una extensa lista de librerías de terceros para poder efectuar la compilación e instalación del proyecto. Teniendo en cuenta dichas librerías, necesarias para el funcionamiento de Sysrepo, la implementación demanda un espacio total en memoria secundaria de 250Mb. Cabe destacar que en este análisis se incluye no solo el servidor Netopeer2 sino también el cliente, ya que Sysrepo necesita de ambos para funcionar. En el caso de memoria \textit{RAM}, Sysrepo ocupa 270Mb.
+		\item \textbf{Sysrepo}: según la documentación \parencite{sysrepoinstall}, se requiere de una extensa lista de librerías de terceros para poder efectuar la compilación e instalación del proyecto. Teniendo en cuenta dichas librerías necesarias para el funcionamiento de Sysrepo, la implementación demanda un espacio total en memoria secundaria de 250Mb. Cabe destacar que en este análisis se incluye no solo el servidor Netopeer2 sino también el cliente, ya que Sysrepo necesita de ambos para funcionar. En el caso de memoria \textit{RAM}, Sysrepo ocupa 270Mb.
 
 		\item \textbf{Yuma123}: en este caso, la cantidad de librerías de terceros que requiere el proyecto \parencite{yuma123} es menor. Además, se destaca que Yuma123 no necesita de ambos binarios (cliente y servidor) para funcionar, pudiendo iniciarse uno u otro según sea necesario. Teniendo en cuenta esto último, únicamente se analizan los recursos que demanda el servidor (llamado netconfd), ya que en el dispositivo no será necesario ejecutar un cliente \textit{NETCONF}. Así, Yuma123 requiere en memoria secundaria un espacio de 50Mb, mientras que en memoria principal alcanza los 73Mb aproximadamente.
 
 	\end{itemize}
 	
-	El principal problema para adaptar las distintas implementaciones al dispositivo es la memoria \textit{RAM} que dispone el mismo, ya que como se mencionó anteriormente, el muxponder de 40Gb admite la expansión de la memoria de almacenamiento mediante una \textit{SD}. Por lo tanto, se hará foco principal en la utilización de este recurso.
 	
-	En figura \ref{fig:consumoagentes}, en la primer columna, puede verse una comparativa de la memoria \textit{RAM} que demanda cada implementación, la expresión está dada en el orden de los \textit{Kb}. El proceso \textit{"netconfd"} corresponde al servidor \textit{NETCONF} del proyecto Yuma123, mientras que el proceso sysrepod corresponde a Sysrepo e integra tanto el cliente como el servidor.
+	En figura \ref{fig:consumoagentes}, en la primer columna, puede verse una comparativa de la memoria \textit{RAM} que demanda cada implementación, la expresión está dada en el orden de los \textit{Kb}. El proceso \textit{"netconfd"} corresponde al servidor \textit{NETCONF} del proyecto Yuma123, mientras que el proceso \textit{"sysrepod} corresponde a Sysrepo e integra tanto el cliente como el servidor.
 
 
 	\begin{figure}[H]

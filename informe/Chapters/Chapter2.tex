@@ -33,7 +33,7 @@ Comprende la configuración del sistema, la administración y el intercambio de 
 El proceso de establecimiento de la topología de red utilizando un plano de control que se ejecuta localmente, es compleja debido a que no existe ningún dispositivo que sea conocido por toda la red. Para gestionar cambios o actualizaciones en cada dispositivo se debe estar conectado a su plano de control de forma individual, lo que no resulta en un enfoque inteligente.
 
 \subsection{Plano de Datos}
-También conocido como plano de usuario o plano de reenvío \parencite{DataPlane}, es el encargado de transportar el tráfico de usuario hacia el destinatario final. Una diferencia importante que tiene el tráfico correspondiente al plano de datos con respecto al plano de control, es que el primero es generado en los terminales mientras que en el segundo caso, el tráfico es generado en los dispositivos de red. Tiene como objetivo el reenvío de los paquetes hacia el próximo salto basándose en las decisiones tomadas por la capa de control.
+También conocido como plano de usuario o plano de reenvío \parencite{DataPlane}, es el encargado de transportar el tráfico de usuario hacia el destinatario final. Tiene como objetivo el reenvío de los paquetes hacia el próximo salto basándose en las decisiones tomadas por la capa de control.
 \\
 
 
@@ -108,11 +108,13 @@ En la actualidad se puede encontrar una gran variedad de redes, desde pequeñas 
 Existen múltiples formas de llevar a cabo la administración de la configuración en los diversos dispositivos que conforman la red. En esta sección, se analizarán dos alternativas: \textit{CLI} y \textit{SNMP}.
 
 \subsubsection{\textit{Command Line Interface}}
-\textit{CLI} es el enfoque más común en el ámbito de gestión de la configuración, adoptado por múltiples empresas. Está orientado a que resulte fácil de entender para las personas, presentando una interfaz de texto simple. Sin embargo, no se encuentra orientado a las \textit{API’s}, donde la implementación interna podría ser diferente entre los distintos dispositivos, incluso entre dispositivos del mismo fabricante. La \textit{CLI} puede utilizar \textit{API’s} internas para cambiar la lógica de la función de red o bien podría transformar los comandos ingresados en un archivo de configuración y reiniciar la configuración del dispositivo con dicho archivo.
+
+\textit{CLI} es el enfoque más común en el ámbito de gestión de la configuración, adoptado por múltiples empresas. Consiste en un método para comunicarse con las aplicaciones que la subyacen, a través de una interfaz de usuario simple basada en texto. De esta forma, permite que el administrador pueda ingresar instrucciones en una línea de comandos a través de una terminal y recibir las respuestas en la misma. La aplicación subyacente es la encargada de procesar la instrucción y devolver alguna respuesta al usuario. Generalmente, las respuestas están orientadas a que resulten fácil de entender para las personas, sin embargo, no se encuentran orientadas a las API’s, ya que no existe un formato o un estándar de cómo representar dichas respuestas. Además, las implementaciones internas podrían ser diferentes entre los distintos dispositivos, incluso entre dispositivos del mismo fabricante, de modo que, tanto los comandos como las respuestas podrían variar significativamente entre los equipos.
 \\
 
-Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{fig:cli}
+Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{fig:cli}. La primer línea ingresada, hace referencia a un acceso al modo de configuración de un dispositivo cualquiera. En la segunda, se agrega una entrada estática a la tabla de ruteo y en la tercera se abandona el modo de configuración.
 \\
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.7]{Figures/cli.pdf}
@@ -120,7 +122,10 @@ Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{fig:c
 	\label{fig:cli}
   \end{figure}
 
-  Este enfoque presenta una serie desventajas \parencite{clilimitacion}. En primer lugar, la implementación de las \textit{API’s} \textit{CLI} no están estandarizadas, por lo que las operaciones varían drásticamente entre dispositivos de diferentes fabricantes e incluso en implementaciones \textit{CLI} del mismo fabricante. A su vez, los fabricantes podrían brindar una actualización de software del dispositivo donde los comandos \textit{CLI} de la versión anterior se vean modificados o eliminados, lo que no solo se traduce a problemas para el administrador de red, sino también para las \textit{API} que usen la \textit{CLI}. En segundo lugar, algunas operaciones en la gestión de la configuración podrían requerir múltiples transacciones \textit{CLI}, si alguna de estas transacciones falla, el dispositivo podría quedar en un estado inconsistente. \textit{CLI} no define de forma estándar una solución para deshacer los cambios aplicados en el dispositivo.
+  Este enfoque presenta una serie desventajas \parencite{clilimitacion}. En primer lugar, la implementación de las aplicaciones subyacentes a la \textit{CLI} no están estandarizadas, por lo que las operaciones varían drásticamente entre dispositivos de diferentes fabricantes e incluso en implementaciones \textit{CLI} del mismo fabricante. A su vez, los fabricantes podrían brindar una actualización de software del dispositivo, donde los comandos \textit{CLI} de la versión anterior se vean modificados o eliminados, lo que no solo se traduce a problemas para el administrador de red, sino también para las \textit{API’s} que hagan uso de la \textit{CLI}. 
+  \\
+
+  En segundo lugar, realizar un cambio en el estado de un dispositivo podría requerir múltiples transacciones, y en el caso de que alguna de estas falle, el dispositivo podría quedar en un estado inconsistente. Por ejemplo, en la figura \ref{fig:cli} se observó que para realizar una operación sencilla como agregar una entrada a la tabla de ruteo, implicó el uso de al menos tres comandos. De forma similar, podrían existir operaciones que requieran de transacciones con una mayor cantidad de instrucciones. \textit{CLI} no define de forma estándar una solución para deshacer los cambios aplicados en el dispositivo.
 
   \subsubsection{\textit{Simple Network Management Protocol}}
   \textit{SNMP} es un protocolo de monitoreo y administración de red, estandarizado por primera vez en 1988 por la \textit{IETF} \parencite{snmprfc}. Su funcionamiento se basa en una arquitectura cliente-servidor, donde los mensajes se intercambian a través del protocolo de transporte no orientado a la conexión \textit{UDP}. Consiste en una colección de agentes y administradores formando entre ellos una red, donde se denomina administrador a aquel dispositivo que tiene el rol de ejecutar aplicaciones de administración de red, mientras que los dispositivos que requieran ser administrados se denominan agentes \parencite{snmprfcfunc}.
@@ -136,6 +141,15 @@ Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{fig:c
 	\item No existe una estandarización de los módulos \textit{MIB} para configurar las funciones de red. El trabajo de descubrir correctamente los módulos \textit{MIB} para cada dispositivo es tarea del usuario, lo que resulta compleja y no eficiente.
 \end{itemize}
 
+La figura \ref{fig:snmpfig} muestra las operaciones más comunes de SNMP.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.6]{Figures/cli.pdf}
+	\caption{Interacción tipica con un dispositivo mediante \textit{CLI}.}
+	\label{fig:snmpfig}
+  \end{figure}
+
 \subsubsection{Otras alternativas}
 Algunos enfoques para la gestión de la red pueden incluir soluciones basadas en páginas web, que permiten al administrador modificar las configuraciones en el dispositivo de forma gráfica y más amigable, pero generalmente resultan más limitadas que las \textit{CLI}. 
 Además, algunos dispositivos pueden brindar soluciones propietarias para la gestión de la configuración, sin embargo, estas soluciones suelen ser muy específicas a un dispositivo o una familia de dispositivos, y rara vez suelen ser compatibles entre sí. Estos últimos también representan una carga para los administradores, donde cada solución requiere que el administrador aprenda otra manera de configurar las funcionalidades de la red.  
@@ -148,6 +162,7 @@ Esta sección repasa brevemente los conceptos y características principales que
 \\
 
 La \textit{IETF} definde a \textit{NETCONF} como un protocolo estándar para Instalar, manipular y borrar configuraciones en un dispositivo \parencite{netconfrfcnuevo}. Permite implementar una \textit{API} formal utilizando el lenguaje de modelado \textit{YANG} para administrar y monitorear las funcionalidades de la red. \textit{NETCONF} utiliza el paradigma de las \textit{RPC}, donde construye los mensajes que intercambian información como un flujo con codificación \textit{XML}. Funciona con una arquitectura cliente-servidor, donde los mensajes son transportados utilizando algún protocolo orientado a la conexión. El \textit{RFC 6241}, en la sección 1.2, menciona una partición conceptual del protocolo en cuatro capas, dicha partición se refleja en la figura \ref{fig:netconf}. 
+\\
 
 A continuación, se explica qué función cumple cada una de estas capas.
 
@@ -160,7 +175,7 @@ A continuación, se explica qué función cumple cada una de estas capas.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.9]{Figures/stack-netconf.pdf}
+	\includegraphics[scale=0.8]{Figures/stack-netconf.pdf}
 	\caption{Separación conceptual del protocolo \textit{NETCONF}.}
 	\label{fig:netconf}
   \end{figure}
@@ -194,10 +209,18 @@ Como se mencionó anteriormente, \textit{NETCONF} define un protocolo de adminis
   \end{figure}
 
   \subsubsection{Capacidades}
-  El protocolo \textit{NETCONF} está diseñado para ser altamente extensible y, con este fin, es compatible con el intercambio inicial de capacidades entre cliente y servidor \parencite{netconfrfcnuevo}. Este intercambio de información permite al cliente ajustar sus comportamientos basándose en las funcionalidades que admite el servidor. Cada capacidad establecida por el protocolo recibe un nombre asignado por la \textit{IANA}. Además, también se incluye el intercambio de los modelos \textit{YANG} que tiene implementado el servidor, lo cual es necesario no solo para que el cliente pueda aprender de los mismos, sino también para reconocer las diferentes revisiones implementadas en el servidor.
+  El protocolo \textit{NETCONF} está diseñado para ser altamente extensible y, con este fin, es compatible con el intercambio inicial de capacidades entre cliente y servidor \parencite{netconfrfcnuevo}. Este intercambio de información permite al cliente ajustar sus comportamientos basándose en las funcionalidades que admite el servidor. Cada capacidad establecida por el protocolo recibe un nombre asignado por la \textit{IANA}. Además, también se incluye el intercambio de los modelos \textit{YANG} que tiene implementado el servidor, lo cual es necesario no solo para que el cliente pueda aprender de los mismos, sino también para reconocer las diferentes revisiones implementadas en el servidor. 
+  \\
+
+  La utilidad de esta característica reside en que, a través del intercambio de las capacidades entre el cliente y el servidor, el protocolo define cuáles serán las operaciones admitidas desde el inicio de la sesión, evitando así el ingreso de comandos de configuración incorrectos o no soportados. 
+
 
   \subsubsection{Sesión orientada a la conexión}
   La sección dos del \textit{RFC 6242}, referida a protocolos de transporte, detalla que \textit{NETCONF} no esta vinculado a ningún protocolo de transporte específico. El requisito necesario de \textit{NETCONF} para el protocolo de transporte subyacente es que el mismo sea orientado a la conexión. 
+  \\
+
+  Esta es una de las principales ventajas frente a SNMP, donde los mensajes en este último eran transportados a través del protocolo no orientado a la conexión, \textit{UDP}. Además, el hecho de que \textit{NETCONF} no especifique el uso de un único protocolo de transporte orientado a la conexión, se traduce a una mayor flexibilidad y personalización para el administrador, pudiendo optar por aquella que mejor se ajuste a las necesidades de los equipos involucrados.
+
 
   \subsubsection{Sesión orientada a la autenticación}
   El protocolo \textit{NETCONF} es orientado a la sesión con autenticación, utilizando una arquitectura cliente-servidor donde el servidor escucha un puerto asignado para recibir las conexiones con los clientes. 
@@ -219,6 +242,11 @@ Como se mencionó anteriormente, \textit{NETCONF} define un protocolo de adminis
 
 
 Como se mencionó anteriormente, cualquier implementación de \textit{NETCONF} debe admitir al menos el \textit{datastore running}, esto es necesario ya que los datos de estado (necesarios para monitorear el dispositivo) únicamente se encuentran admitidos en dicho \textit{datastore}.
+\\
+
+Por último, se podría hacer una analogía entre la separación de los datos de estado y los datos de configuración, con la separación conceptual de dichas bases de datos lógicas. 
+En el primer caso, se busca distinguir entre un dato de solo lectura de otro que admite la escritura, mientras que el segundo trata de diferenciar entre un conjunto de estados bien definidos que puede alcanzar el dispositivo. Por ejemplo, distinguir la configuración que va a aplicarse únicamente en el inicio del dispositivo a través del \textit{datastore startup}, de la configuración que podría llevar en un determinado momento a través del \textit{datastore running}.
+
 
 \subsubsection{Operaciones del protocolo}
 
@@ -256,7 +284,7 @@ También, \textit{NETCONF} admite operaciones con capacidades más avanzadas. No
 La tabla \ref{Tab:netconf_operaciones} resume las diferentes operaciones disponibles en \textit{NETCONF} y a qué \textit{datastore} podría aplicarse cada una de ellas. 
 \\
 
-\begin{table}[!h]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|}
 	\hline
@@ -275,10 +303,11 @@ La tabla \ref{Tab:netconf_operaciones} resume las diferentes operaciones disponi
   Si bien \textit{NETCONF} está diseñado principalmente para la administración de la configuración de la red mediante las operaciones expuestas anteriormente, existe una poderosa herramienta de monitoreo implementada en el protocolo llamada notificaciones. La \textit{RFC 5277} define a las mismas como un servicio de entrega de mensajes asíncronas a los clientes mediante suscripción. Esta característica no es obligatoria para las diferentes implementaciones del protocolo. De soportarlo, el servidor deberá comunicar a los clientes dicha característica como una capacidad del servidor en el mensaje \textit{HELLO}.
   \\
 
-  Esta herramienta es similar a las notificaciones en el protocolo \textit{SNMP}, pero tiene la ventaja de que en \textit{NETCONF}, el cliente puede especificar a qué notificación particular se desea suscribir, lo que permite un monitoreo más flexible. Además, como se mencionó anteriormente, el servidor puede declarar permisos para los diferentes usuarios y sesiones por lo que las notificaciones serán enviadas únicamente a aquellos clientes suscritos y que cumplan con el nivel de acceso requerido por el servidor.
+  Esta herramienta es similar a las notificaciones en el protocolo \textit{SNMP}, pero tiene la ventaja de que, en \textit{NETCONF}, el cliente puede especificar a qué notificación particular se desea suscribir, lo que permite un monitoreo más flexible. Además, como se mencionó anteriormente, el servidor puede declarar permisos para los diferentes usuarios y sesiones por lo que las notificaciones serán enviadas únicamente a aquellos clientes suscritos y que cumplan con el nivel de acceso requerido por el servidor.
   \\
 
-  La importancia de las operaciones soportadas por el protocolo \textit{NETCONF} reside en que de esta forma, la configuración de la red puede cambiar de forma activa mediante las operaciones que define el protocolo y reactiva mediante las notificaciones, pudiendo reaccionar ante un cambio en el dispositivo de forma automática.
+  La importancia de las notificaciones reside en que los dispositivos de red tienen variables críticas que deben ser monitoreadas, por ejemplo la temperatura del equipo, el estado de los enlaces, la conectividad entre los mismos, etc. Dichas variables críticas reciben el nombre de alarmas. De no existir un mecanismo de mensajes asíncronos, el monitoreo de las alarmas de un dispositivo podría implicar una sobrecarga en la red, debido a la cantidad de consultas periódicas que existirían sobre los dispositivos. 
+De esta forma, las notificaciones que define el protocolo NETCONF no solo implica un monitoreo eficiente mediante mensajes asíncronos, sino que permite al protocolo poder tomar medidas de forma reactiva a las diferentes alarmas que se presenten. Por ejemplo, se podría configurar al cliente NETCONF para que, de recibir una alarma de exceso de temperatura en el equipo, configure de forma automática una velocidad mayor en el ventilador del mismo. 
   \\
 
   Para finalizar, la figura \ref{fig:netconf_ejemplo} refleja una interacción típica entre cliente y servidor donde se observa el intercambio de capacidades en los mensajes \textit{HELLO}, el uso de diferentes operaciones con respuestas \textit{RPC} y las notificaciones.
