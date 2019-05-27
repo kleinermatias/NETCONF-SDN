@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>190</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Adaptar NETCONF al equipo*
+--
+id: R-07
+Se debe instalar algún agente 
+del protocolo en el dispositivo.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>190</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Monitoreo de datos de estado*
+--
+id: R-08
+Se debe poder monitorear cualquier
+variable de memoria compartida del
+dispositivo a través de NETCONF.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>320</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Gestionar datos de configuración*
+--
+id: R-10
+Se debe poder realizar cambios en la
+configuración del equipo mediante
+el protocolo NETCONF.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>320</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Alarmas mediante notificaciones*
+--
+id: R-09
+Las alarmas emitidas por el dispositivo
+deberan notificarse mediante el 
+protocolo NETCONF.</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
