@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>170</y>
+      <w>280</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Descubrimiento del dispositivo*
+--
+id: R-11
+El driver desarrollado debera ser 
+capaz de identificar las caracteristicas
+basicas del equipo en el momento
+de la conexión </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>170</y>
+      <w>290</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Descubrimiento de enlaces*
+--
+id: R-12
+El driver debe proveer mecanismos e
+indicaciones al controlador sobre
+como estan conformado los enlaces
+con los dispositivos vecinos</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>520</x>
+      <y>320</y>
+      <w>290</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Comandos CLI de ONOS*
+--
+id: R-14
+El driver debe exponer comandos CLI
+a las operaciones tipicas del dispositivo
+con el fin de poder administrar el msimo
+desde la consola de ONOS</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>320</y>
+      <w>280</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Interfaz a RPC*
+--
+id: R-13
+El driver debera brindar interfaces
+a todas las RPC definidas en el 
+modulo YANG del dispositivo</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
