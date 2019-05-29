@@ -1,67 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
   <zoom_level>10</zoom_level>
-  <element>
-    <id>UMLSpecialState</id>
-    <coordinates>
-      <x>440</x>
-      <y>60</y>
-      <w>20</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>type=initial</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>360</x>
-      <y>110</y>
-      <w>190</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Llamada a rpcApplyConfig</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>440</x>
-      <y>70</y>
-      <w>30</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>440</x>
-      <y>160</y>
-      <w>30</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>370</x>
-      <y>240</y>
-      <w>160</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>Enviar operacion 
-mux-apply-config
-al mxp A</panel_attributes>
-    <additional_attributes/>
-  </element>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>210</x>
-      <y>180</y>
+      <x>80</x>
+      <y>280</y>
       <w>170</w>
       <h>40</h>
     </coordinates>
@@ -72,311 +16,10 @@ rpcApplyConfig</panel_attributes>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>760</x>
-      <y>60</y>
-      <w>320</w>
-      <h>290</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>520</x>
-      <y>120</y>
-      <w>280</w>
-      <h>170</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>260.0;10.0;210.0;10.0;210.0;150.0;10.0;150.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>910</x>
-      <y>220</y>
-      <w>160</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Aplicar configuracion</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>760</x>
-      <y>60</y>
-      <w>100</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>muxponder A
-YUMA123
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>780</x>
-      <y>110</y>
-      <w>150</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Procesar el
-mensaje</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>840</x>
-      <y>170</y>
-      <w>240</w>
-      <h>180</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>840</x>
-      <y>170</y>
-      <w>100</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Modulo YANG
-cli-mxp</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>920</x>
-      <y>120</y>
-      <w>170</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>m2=llamada al modulo
-lt=&lt;-</panel_attributes>
-    <additional_attributes>70.0;100.0;70.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>500</x>
-      <y>320</y>
-      <w>510</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;40.0;490.0;40.0;490.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLSyncBarHorizontal</id>
-    <coordinates>
-      <x>440</x>
-      <y>370</y>
-      <w>80</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>lw=5
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>440</x>
+      <x>80</x>
       <y>280</y>
-      <w>30</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>380</x>
-      <y>420</y>
-      <w>210</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>Consultar al mxp A
-si tiene vecinos conectados</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>470</x>
-      <y>370</y>
-      <w>30</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>580</x>
-      <y>440</y>
-      <w>220</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>200.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>910</x>
-      <y>290</y>
-      <w>160</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Enviar respuesta de
-operacion</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>980</x>
-      <y>250</y>
-      <w>30</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>760</x>
-      <y>380</y>
-      <w>100</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>muxponder A
-YUMA123
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>780</x>
-      <y>430</y>
-      <w>150</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Procesar el
-mensaje</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>840</x>
-      <y>490</y>
-      <w>100</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Modulo YANG
-cli-mxp</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>840</x>
-      <y>490</y>
-      <w>240</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLState</id>
-    <coordinates>
-      <x>910</x>
-      <y>540</y>
-      <w>160</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Enviar respuesta de
-vecinos</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>760</x>
-      <y>380</y>
-      <w>320</w>
-      <h>210</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>920</x>
-      <y>440</y>
-      <w>170</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>m2=llamada al modulo
-lt=&lt;-</panel_attributes>
-    <additional_attributes>70.0;100.0;70.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLSyncBarHorizontal</id>
-    <coordinates>
-      <x>440</x>
-      <y>520</y>
-      <w>80</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>lw=5
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>440</x>
-      <y>460</y>
-      <w>30</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>490</x>
-      <y>490</y>
-      <w>520</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;40.0;10.0;10.0;250.0;10.0;250.0;130.0;500.0;130.0;500.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>210</x>
-      <y>180</y>
-      <w>500</w>
-      <h>520</h>
+      <w>580</w>
+      <h>480</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -384,12 +27,12 @@ lt=&lt;-</panel_attributes>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>820</x>
-      <y>690</y>
+      <x>710</x>
+      <y>230</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>muxponder A
+    <panel_attributes>muxponder B
 YUMA123
 bg=blue</panel_attributes>
     <additional_attributes/>
@@ -397,8 +40,8 @@ bg=blue</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>840</x>
-      <y>740</y>
+      <x>730</x>
+      <y>280</y>
       <w>150</w>
       <h>40</h>
     </coordinates>
@@ -409,8 +52,8 @@ mensaje</panel_attributes>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>820</x>
-      <y>690</y>
+      <x>710</x>
+      <y>230</y>
       <w>320</w>
       <h>210</h>
     </coordinates>
@@ -420,8 +63,8 @@ mensaje</panel_attributes>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>900</x>
-      <y>800</y>
+      <x>790</x>
+      <y>340</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -432,20 +75,20 @@ cli-mxp</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>970</x>
-      <y>850</y>
+      <x>860</x>
+      <y>390</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>Enviar respuesta de
-vecinos</panel_attributes>
+configuracion aplicada</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>900</x>
-      <y>800</y>
+      <x>790</x>
+      <y>340</y>
       <w>240</w>
       <h>100</h>
     </coordinates>
@@ -455,8 +98,8 @@ vecinos</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>980</x>
-      <y>750</y>
+      <x>870</x>
+      <y>290</y>
       <w>170</w>
       <h>120</h>
     </coordinates>
@@ -467,8 +110,8 @@ lt=&lt;-</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>460</x>
-      <y>560</y>
+      <x>290</x>
+      <y>310</y>
       <w>40</w>
       <h>40</h>
     </coordinates>
@@ -479,19 +122,20 @@ type=decision</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>470</x>
-      <y>520</y>
-      <w>30</w>
-      <h>60</h>
+      <x>320</x>
+      <y>320</y>
+      <w>170</w>
+      <h>70</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+    <panel_attributes>lt=&lt;-
+m2=tiene vecinos</panel_attributes>
+    <additional_attributes>150.0;50.0;150.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>470</x>
-      <y>730</y>
+      <x>440</x>
+      <y>810</y>
       <w>20</w>
       <h>20</h>
     </coordinates>
@@ -499,22 +143,93 @@ type=decision</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <id>UMLState</id>
     <coordinates>
-      <x>470</x>
-      <y>590</y>
-      <w>100</w>
-      <h>50</h>
+      <x>360</x>
+      <y>520</y>
+      <w>220</w>
+      <h>60</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
-m1=sin vecinos</panel_attributes>
-    <additional_attributes>10.0;30.0;10.0;10.0;10.0;20.0;10.0;10.0</additional_attributes>
+    <panel_attributes>comparar la configuracion
+aplicada en el muxponder A
+con el muxponder vecino B</panel_attributes>
+    <additional_attributes/>
   </element>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>380</x>
-      <y>620</y>
+      <x>330</x>
+      <y>370</y>
+      <w>270</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Enviar mensaje al dispositivo
+vecino, solicitando su configuracion
+aplicada</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>290</y>
+      <w>160</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;100.0;10.0;100.0;110.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>420</y>
+      <w>500</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>
+lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;30.0;480.0;30.0;480.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSyncBarHorizontal</id>
+    <coordinates>
+      <x>410</x>
+      <y>470</y>
+      <w>80</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lw=5
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>420</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>470</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>100</x>
+      <y>570</y>
       <w>220</w>
       <h>60</h>
     </coordinates>
@@ -524,14 +239,85 @@ los vecinos</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>430</x>
+      <y>600</y>
+      <w>40</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>bg=green
+type=decision</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
     <id>Relation</id>
     <coordinates>
-      <x>470</x>
-      <y>670</y>
+      <x>310</x>
+      <y>590</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=misma config</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;30.0;120.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>570</y>
       <w>30</w>
-      <h>80</h>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>430</x>
+      <y>670</y>
+      <w>220</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Crear alarma de configuracion
+inconsistente con el
+muxponder vecino B</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>460</x>
+      <y>610</y>
+      <w>140</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=distinta config</panel_attributes>
+    <additional_attributes>80.0;60.0;80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>200</x>
+      <y>620</y>
+      <w>260</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>240.0;200.0;10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>720</y>
+      <w>110</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;90.0;100.0;90.0;10.0</additional_attributes>
   </element>
 </diagram>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>170</y>
+      <w>280</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Operaciones de consulta*
+--
+id: R-15
+ONOS debe proveer una interfaz 
+REST para que las aplicaciones 
+externas puedan realizar monitoreo
+del muxponder</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>510</x>
+      <y>170</y>
+      <w>290</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Operaciones de modificacion*
+--
+id: R-16
+Debe exponer una interfaz para que 
+las diferentes aplicaciones puedan 
+realizar cambios en la configuracion
+del dispositivo</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>370</x>
+      <y>310</y>
+      <w>280</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Operacion a RPC*
+*mux-apply-config*
+--
+id: R-17
+Debe proveer una interfaz a la RPC
+mux-apply-config para poder aplicar
+los cambios en el dispositivo</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
