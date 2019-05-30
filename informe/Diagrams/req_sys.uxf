@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>20</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Controlador SDN*
+--
+id: R-01
+El sistema debe brindar el
+servicio de un controlador SDN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>150</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Servidor web*
+--
+id: R-03
+El sistema debe proveer el servicio
+de una interfaz web para administrar
+los dispositivos.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>280</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Nodos físicos*
+--
+id: R-05
+El sistema debe soportar la conexión
+de nodos fisicos.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>280</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Nodos virtuales*
+--
+id: R-06
+El sistema debe soportar la conexión
+de nodos virtuales.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>150</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Soporte NETCONF*
+--
+id: R-04
+Los dispositivos y el controlador
+deben soportar el protocolo NETCONF.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>20</y>
+      <w>280</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Conexión con el controlador*
+--
+id: R-02
+Se debe establecer una conexion
+entre los muxponders y el controlador</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -63,10 +63,10 @@ desde la consola de ONOS</panel_attributes>
       <h>130</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Interfaz a RPC*
+*Soporte a las RPC*
 --
 id: R-13
-El driver debera brindar interfaces
+El driver debera brindar soporte
 a todas las RPC definidas en el 
 modulo YANG del dispositivo</panel_attributes>
     <additional_attributes/>

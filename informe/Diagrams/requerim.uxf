@@ -37,13 +37,13 @@ los muxponders de 40Gb</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>670</x>
+      <x>690</x>
       <y>130</y>
-      <w>370</w>
+      <w>250</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>Administrar y monitorear parametros
-de los muxponder mediante una aplicacion web</panel_attributes>
+    <panel_attributes>Monitoreo de las variables de 
+estado</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -63,11 +63,11 @@ entre los dispositivos monitoreados</panel_attributes>
     <coordinates>
       <x>590</x>
       <y>150</y>
-      <w>100</w>
+      <w>120</w>
       <h>40</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -102,102 +102,5 @@ entre los dispositivos clientes</panel_attributes>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;10.0;100.0;180.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>300</x>
-      <y>450</y>
-      <w>280</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Controlador SDN*
---
-id: R-01
-El sistema debe brindar el
-servicio de un controlador SDN</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>600</x>
-      <y>450</y>
-      <w>280</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Conexión con el controlador*
---
-id: R-02
-Se debe establecer una conexion
-entre los muxponders y el controlador</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>300</x>
-      <y>580</y>
-      <w>280</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Servidor web*
---
-id: R-03
-El sistema debe proveer el servicio
-de una interfaz web para administrar
-los dispositivos.</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>300</x>
-      <y>710</y>
-      <w>280</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Nodos físicos*
---
-id: R-05
-El sistema debe soportar la conexión
-de nodos fisicos.</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>600</x>
-      <y>580</y>
-      <w>280</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Soporte NETCONF*
---
-id: R-04
-Los dispositivos y el controlador
-deben soportar el protocolo NETCONF.</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>600</x>
-      <y>710</y>
-      <w>280</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Nodos virtuales*
---
-id: R-06
-El sistema debe soportar la conexión
-de nodos virtuales.</panel_attributes>
-    <additional_attributes/>
   </element>
 </diagram>

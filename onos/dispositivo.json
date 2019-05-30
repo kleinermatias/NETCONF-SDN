@@ -7,27 +7,29 @@
                 "username": "root",
                 "password": "123",
                 "connect-timeout": 120,
-		"reply-timeout": 120,
-		"ssh-client": "ethz-ssh2"
-            },
-            "basic": {
-                "driver": "altura-netconf"
-            }
-        },
-
-        "netconf:172.16.0.142:830": {
-            "netconf": {
-                "ip": "172.16.0.142",
-                "port": 830,
-                "username": "root",
-                "password": "123",
-                "connect-timeout": 120,
                 "reply-timeout": 120,
-		"ssh-client": "ethz-ssh2"
+                "ssh-client": "ethz-ssh2"
             },
             "basic": {
                 "driver": "altura-netconf"
             }
         }
     }
+}
+
+        "netconf:172.16.0.142:830": {
+        "netconf": {
+            "ip": "172.16.0.142",
+            "port": 830,
+            "username": "root",
+            "password": "123",
+            "connect-timeout": 120,
+            "reply-timeout": 120,
+            "ssh-client": "ethz-ssh2"
+        },
+        "basic": {
+            "driver": "altura-netconf"
+        }
+    }
+}
 }
