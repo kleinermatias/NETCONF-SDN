@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLSpecialState</id>
@@ -23,18 +22,6 @@
     <panel_attributes>bg=green
 alarms_i == alarms_i-1?
 type=decision</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLObject</id>
-    <coordinates>
-      <x>60</x>
-      <y>30</y>
-      <w>170</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>Libreria C
-relacionada al Modulo</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

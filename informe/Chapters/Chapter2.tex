@@ -129,7 +129,7 @@ Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{lstli
   \subsubsection{\textit{Simple Network Management Protocol}}
   \textit{SNMP} es un protocolo de monitoreo y administración de red, estandarizado por primera vez en 1988 por la \textit{IETF} \parencite{snmprfc}. Su funcionamiento se basa en una arquitectura cliente-servidor, donde los mensajes se intercambian a través del protocolo de transporte no orientado a la conexión \textit{UDP}. Consiste en una colección de agentes y administradores formando entre ellos una red, donde se denomina administrador a aquel dispositivo que tiene el rol de ejecutar aplicaciones de administración de red, mientras que los dispositivos que requieran ser administrados se denominan agentes \parencite{snmprfcfunc}.
 
-  Las capacidades para administrar la red en \textit{SNMP} quedan representadas en lo que se conoce como \textit{MIB}. Una \textit{MIB} es una base de datos que contiene información jerárquica y estructurada en forma de árbol de todos los parámetros gestionables de la red. 
+  Las capacidades para administrar la red en \textit{SNMP}, quedan representadas en lo que se conoce como \textit{MIB}. Una \textit{MIB}, es una base de datos que contiene información jerárquica y estructurada en forma de árbol de todos los parámetros gestionables de la red. 
   Dicha base de datos se debe cargar en el administrador \textit{SNMP}, para ello cada agente \textit{SNMP} expone al administrador \textit{SNMP} una serie de módulos \textit{MIB}. Con esta información el administrador podría alterar dinámicamente la configuración del agente. 
   \\
 
@@ -174,7 +174,7 @@ A continuación, se explica qué función cumple cada una de estas capas.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.8]{Figures/stack-netconf.pdf}
+	\includegraphics[scale=0.7]{Figures/stack-netconf.pdf}
 	\caption{Separación conceptual del protocolo \textit{NETCONF}.}
 	\label{fig:netconf}
   \end{figure}
@@ -202,7 +202,7 @@ Como se mencionó anteriormente, \textit{NETCONF} define un protocolo de adminis
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.8]{Figures/netconf-cliente-servidor.pdf}
+	\includegraphics[scale=0.77]{Figures/netconf-cliente-servidor.pdf}
 	\caption{Arquitectura cliente-servidor en el protocolo \textit{NETCONF}.}
 	\label{fig:netconf_comunicacion}
   \end{figure}
@@ -252,7 +252,7 @@ En el primer caso, se busca distinguir entre un dato de solo lectura de otro que
 Las operaciones en el protocolo \textit{NETCONF} se definen como \textit{RPC} en los modelos \textit{YANG} relevantes. En dichos modelos también se definen los argumentos de entrada y los contenidos de salida para cada operación. Todas las operaciones están codificadas en \textit{XML} dentro de los mensajes \textit{RPC} que son, de hecho, los únicos mensajes que los clientes pueden enviar en las sesiones de \textit{NETCONF} después del intercambio inicial del mensaje \textit{HELLO}. 
 \\
 
-Como las operaciones son \textit{RPC}, cada mensaje enviado por los clientes tiene una respuesta por parte del servidor. Este resultado normalmente contiene \textit{ok} para indicar que la operación resultó según lo esperado, o \textit{error} indicando las razones por la cual falló dicha operación.
+Como las operaciones son \textit{RPC}, cada mensaje enviado por los clientes tendrá una respuesta por parte del servidor. Este resultado normalmente contiene \textit{ok} para indicar que la operación resultó según lo esperado, o \textit{error} indicando las razones por la cual falló dicha operación.
 \\
 
 El protocolo define en la sección 7 del \textit{RFC 6241} nueve operaciones básicas y necesarias para cualquier implementación del mismo, las cuales se describen a continuación:
@@ -336,7 +336,7 @@ La tabla \ref{Tab:netconf_operaciones} resume las diferentes operaciones disponi
 
   \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.6]{Figures/estructura_modulo.pdf}
+	\includegraphics[scale=0.4]{Figures/estructura_modulo.pdf}
 	\caption{Estructura de un módulo \textit{YANG}.}
 	\label{fig:estructura_modulo}
   \end{figure}
@@ -387,7 +387,7 @@ Una red de transporte óptica, es un tipo de red de comunicaciones de datos que 
 Un sistema de comunicaciones ópticas puede incluir diversos dispositivos, como ser:
 
 \begin{itemize}
-	\item \textbf{Amplificadores ópticos} 
+	\item \textbf{Amplificadores ópticos}. 
 	\item \textbf{\textit{Switches} ópticos,} encargados de conmutar de un canal a otro.
 	\item \textbf{Divisores de luz,} cuya tarea comprende dividir la señal en diferentes caminos de fibra óptica.
 	\item \textbf{Fibra óptica,} que cumple de medio de transporte de la información entre los diferentes equipos.
@@ -424,10 +424,11 @@ La función que tienen los \textit{muxponders} es la de proveer una conexión l�
 \\
 
 De esta forma, los dispositivos de la capa \textit{IP/MPLS} tienen conocimiento de sus vecinos pero no de la forma en la que se encuentran conectados ni de cómo se está realizando dicha comunicación, mientras que los equipos de la capa óptica esencialmente emparejan a los dispositivos de la capa \textit{IP/MPLS}, pero sin tener conocimiento sobre los diferentes servicios que se prestan. 
+\\
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.8]{Figures/capasredes.pdf}
+	\includegraphics[scale=0.7]{Figures/capasredes.pdf}
 	\caption{Separación de la red en capa de paquetes y capa de transporte.}
 	\label{fig:capasredes}
   \end{figure}

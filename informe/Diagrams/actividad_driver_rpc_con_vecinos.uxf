@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLObject</id>
@@ -28,7 +27,7 @@ rpcApplyConfig</panel_attributes>
     <id>UMLObject</id>
     <coordinates>
       <x>710</x>
-      <y>230</y>
+      <y>330</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -41,7 +40,7 @@ bg=blue</panel_attributes>
     <id>UMLState</id>
     <coordinates>
       <x>730</x>
-      <y>280</y>
+      <y>380</y>
       <w>150</w>
       <h>40</h>
     </coordinates>
@@ -53,7 +52,7 @@ mensaje</panel_attributes>
     <id>UMLObject</id>
     <coordinates>
       <x>710</x>
-      <y>230</y>
+      <y>330</y>
       <w>320</w>
       <h>210</h>
     </coordinates>
@@ -64,7 +63,7 @@ mensaje</panel_attributes>
     <id>UMLObject</id>
     <coordinates>
       <x>790</x>
-      <y>340</y>
+      <y>440</y>
       <w>100</w>
       <h>40</h>
     </coordinates>
@@ -76,7 +75,7 @@ cli-mxp</panel_attributes>
     <id>UMLState</id>
     <coordinates>
       <x>860</x>
-      <y>390</y>
+      <y>490</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -88,7 +87,7 @@ configuracion aplicada</panel_attributes>
     <id>UMLObject</id>
     <coordinates>
       <x>790</x>
-      <y>340</y>
+      <y>440</y>
       <w>240</w>
       <h>100</h>
     </coordinates>
@@ -99,7 +98,7 @@ configuracion aplicada</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>870</x>
-      <y>290</y>
+      <y>390</y>
       <w>170</w>
       <h>120</h>
     </coordinates>
@@ -172,24 +171,24 @@ aplicada</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>590</x>
-      <y>290</y>
+      <y>390</y>
       <w>160</w>
-      <h>130</h>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>140.0;10.0;100.0;10.0;100.0;110.0;10.0;110.0</additional_attributes>
+    <additional_attributes>140.0;10.0;100.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>460</x>
-      <y>420</y>
+      <y>440</y>
       <w>500</w>
-      <h>80</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>
 lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;60.0;10.0;30.0;480.0;30.0;480.0;10.0</additional_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0;230.0;10.0;230.0;120.0;480.0;120.0;480.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLSyncBarHorizontal</id>
