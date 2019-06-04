@@ -7,9 +7,9 @@
 % \ref{ChapterX} 
 Para el desarrollo del proyecto, será necesario implementar un sistema donde se puedan realizar pruebas y evaluar de este modo la correctitud del mismo. 
 
-De esta forma, la primera sección de este capítulo comprende tanto el análisis del sistema como la topología utilizada. Específicamente, se estudiará su estructura, su comportamiento y sus requerimientos. 
+De esta forma, la primera sección de este capítulo comprende tanto el análisis del sistema, como la topología utilizada. Específicamente, se estudiará su estructura, su comportamiento y sus requerimientos. 
 
-En las secciones siguientes, se detallarán las diferentes aplicaciones desarrolladas que permiten cumplir con el objetivo del proyecto. En primer lugar, se hará un estudio del módulo YANG implementado, el cual caracteriza y modela los datos del equipo. A continuación, se detallará el driver implementado para lograr la comunicación entre el controlador y el dispositivo. Por último, se analizará la interfaz REST y la GUI desarrollada.
+En las secciones siguientes, se detallarán las aplicaciones desarrolladas que permiten cumplir con el objetivo del proyecto. En primer lugar, se hará un estudio del módulo YANG implementado, el cual caracteriza y modela los datos del equipo. A continuación, se detallará el driver implementado para lograr la comunicación entre el controlador y el dispositivo. Por último, se analizará la interfaz REST y la GUI desarrollada.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
@@ -24,9 +24,9 @@ En esta sección se detallan las características del sistema a implementar, des
 
 \subsection{Topología}
 
-Con el fin de poder identificar en una primera instancia los requerimientos que debe cumplir el sistema, se conformará una topología. La misma, está basado en un caso de uso simple, en el cual se quiere brindar conectividad a dos clientes a través de un enlace óptico, este último conformado por dos \textit{muxponders}.  
+Se conformará una topología con el fin de poder identificar en una primera instancia, los requerimientos que debe cumplir el sistema. La misma, está basado en un caso de uso simple, en el cual se quiere brindar conectividad a dos clientes a través de un enlace óptico, este último conformado por dos \textit{muxponders}.  
 
-Además, es importante identificar la presencia del controlador, el cual gestionará la configuración de los equipos mediante el protocolo \textit{NETCONF}. En la figura \ref{fig:topologia} se muestra de forma general la topología planteada.
+Además, es importante identificar la presencia del controlador ONOS, el cual gestionará la configuración de los equipos mediante el protocolo \textit{NETCONF}. En la figura \ref{fig:topologia} se muestra de forma general la topología planteada.
 
 \begin{figure}[H]
     \centering
@@ -36,23 +36,29 @@ Además, es importante identificar la presencia del controlador, el cual gestion
   \end{figure}
 
 
-Los dispositivos terminales A y B, se encuentran conectados cada uno a los puertos cliente del \textit{muxponder} de 40Gb. A su vez, el transmisor del \textit{muxponder} C se encuentra conectado con el receptor del \textit{muxponder} D, y viceversa. Esto permite una comunicación bidireccional, donde ambos clientes pueden tener conectividad. 
+Los dispositivos terminales A y B, se encuentran conectados al puerto cliente del \textit{muxponder} C y D, respectivamente. A su vez, el transmisor del \textit{muxponder} C se encuentra conectado con el receptor del \textit{muxponder} D, y viceversa. Esto permite una comunicación bidireccional, donde ambos clientes pueden tener conectividad. 
 
+Por otra parte, el controlador tiene una conexión con los muxponder a través de los puertos de control de los mismos.
+
+\begin{comment}
 A continuación, en la figura \ref{fig:topologiafis} se muestra como está dispuesta la conexión físicamente en los dispositivos. A la izquierda se tiene el \textit{muxponder} C, y a la derecha se encuentra el \textit{muxponder} D. Las interfaces de control de ambos dispositivos están conectadas al controlador \textit{ONOS}, mientras que los puertos clientes se encuentran conectados a los clientes A y B respectivamente. Por otra parte, las interfaces de línea se encuentran conectados entre los \textit{muxponder}, como se explicó anteriormente, con el fin de poder tener una comunicación bidireccional.
+\end{comment}
 
+\begin{comment}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.7]{Figures/topologia.pdf}
+    \includegraphics[scale=0.45]{Figures/mxpfisicos.pdf}
     \caption{Conexión física de la topología.}
     \label{fig:topologiafis}
   \end{figure}
+\end{comment}
 
 %-----------------------------------
 %	SUBSECTION 2
 %-----------------------------------
 \subsection{Requerimientos del sistema}
 
-Para establecer los requerimientos funcionales del sistema, se presentará en primer lugar, diagramas de casos de usos. Como se puede observar en el diagrama de la figura \ref{fig:caso_uso_admin}, el objeto principal del sistema es poder brindar al administrador un entorno donde el mismo pueda gestionar a los muxponders mediante sus aplicaciones.
+Para establecer los requerimientos funcionales del sistema, se presentará en primer lugar un diagrama de caso de uso. Como se puede observar en la figura \ref{fig:caso_uso_admin}, el objeto principal del sistema es poder brindar al administrador un entorno donde el mismo, pueda gestionar la configuración de los muxponders mediante sus aplicaciones.
 
 \begin{figure}[H]
     \centering
@@ -61,7 +67,7 @@ Para establecer los requerimientos funcionales del sistema, se presentará en pr
     \label{fig:caso_uso_admin}
   \end{figure}
 
-  En base a esto, se pueden definir los requerimientos funcionales a nivel de sistema. La figura \ref{fig:req_sys} muestra una lista de los mismos. 
+  En base a este diagrama, se pueden definir los requerimientos funcionales a nivel de sistema. La figura \ref{fig:req_sys} muestra una lista de los mismos. 
   
   Como requerimiento no funcional, se puede identificar la adición de nodos virtuales, los cuales no afectan a la funcionalidad del sistema pero brindan más flexibilidad y permiten conformar una topología más compleja. Dichos nodos consistirán en switches virtuales conectados a los muxponders, y a su vez conectados con host virtuales.
 
@@ -73,31 +79,59 @@ Para establecer los requerimientos funcionales del sistema, se presentará en pr
   \end{figure}
 
 
-  Además, a partir del diagrama de caso de uso de la figura \ref{fig:caso_uso_admin}, se pueden identificar tres diagramas de actividades relacionadas. 
-  \\
+  Además, a partir del diagrama de caso de uso de la figura \ref{fig:caso_uso_admin}, se pueden identificar tres diagramas de actividades relacionadas. La figura \ref{fig:actividad_config}, muestra los flujos de actividad típicos que tendrá el sistema. 
+  
+  Para la actividad relacionada al monitoreo, la aplicación WEB realiza consultas periódicas al controlador con el fin de obtener información sobre los dispositivos. Así, se envía un mensaje HTTP con la operación GET desde la aplicación, el controlador procesa la petición y responde dicha consulta.
 
-La figura \ref{fig:actividad_config}, muestra el flujo de actividad típico que tendrá una operación de configuración por parte del administrador. Como se puede ver, el evento inicial es la adición de una configuración desde la aplicación web. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la Northbound interface del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración NETCONF a los dispositivos involucrados a través de la Southbound interface.
+Por otra parte, para el flujo de actividad relacionado a las notificiaciones, es el dispositivo quien emite inicialmente el mensaje mediante una notificación NETCONF. En el controlador se procesa la notificación y se la registra como alarma.
 
-  Por otra parte, la actividad de monitoreo se observa en la figura \ref{fig:actividad_config}, donde la aplicación realiza consultas periódicas al controlador para obtener información sobre los dispositivos. Se envía un mensaje HTTP (esta vez una operación GET), el controlador procesa la petición y responde nuevamente la consulta.
-
-  Por último, en la figura \ref{fig:actividad_config} se tiene el flujo de actividades donde el controlador registra una alarma mediante una notificación NETCONF que envía un dispositivo.
+Por ultimo, se tiene el diagrama de actividad relacionado a la configuración del equipo. El evento inicial para este caso, es la adición de una configuración desde la aplicación WEB. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la Northbound interface del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración NETCONF a los dispositivos involucrados a través de la Southbound interface.
 
 
+  
+
+
+  \begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.43\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figures/actividad_monitoreo.pdf}
+        \caption{Actividad de monitoreo.}
+    \end{subfigure}
+    \quad
+    \begin{subfigure}[b]{0.43\textwidth}  
+        \centering 
+        \includegraphics[width=\textwidth]{Figures/actividad_notif.pdf}
+        \caption{Actividad de notificación.}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.43\textwidth}   
+        \centering 
+        \includegraphics[width=\textwidth]{Figures/actividad_config_web.pdf}
+        \caption{Actividad de configuración.}
+    \end{subfigure}
+    \caption{Diagramas de actividad del sistema.}
+    \label{fig:actividad_config}
+\end{figure}
+
+\begin{comment}
   \begin{figure}[H]
     \centering
     \includegraphics[scale=0.40]{Figures/actividad_config.pdf}
     \caption{Topología implementada en el proyecto.}
     \label{fig:actividad_config}
   \end{figure}
+\end{comment}
 
+\newpage
   %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 
   \section{Integración del protocolo NETCONF al muxponder}
-  La sección anterior, deja claro que uno de los requerimientos de sistema será que tanto el controlador ONOS como los dispositivos a monitorear, soporten NETCONF como protocolo de gestión de la configuración. 
+  La sección anterior deja claro que uno de los requerimientos de sistema será que tanto el controlador ONOS como los dispositivos a monitorear, soporten NETCONF como protocolo de gestión de la configuración. 
   
-  Como se vio en el capítulo anterior, el controlador soporta dicho protocolo, por lo que para cumplir con este requisito de sistema, únicamente será necesario adaptar NETCONF al dispositivo. 
+  Como se vio en el capítulo anterior, el controlador soporta dicho protocolo, por lo que para cumplir con este requisito de sistema únicamente será necesario adaptar NETCONF al dispositivo. 
   
   %-----------------------------------
 %	SUBSECTION 1
@@ -105,12 +139,12 @@ La figura \ref{fig:actividad_config}, muestra el flujo de actividad típico que 
 
   \subsection{Requerimientos}
 
-  Para cumplir con los requerimientos vistos en \ref{fig:req_sys}, se confeccionaron los requerimientos que se observan en la figura \ref{fig:req_netconf}.
+  Los requerimientos que deberá cumplir la integración del protocolo son los que se observan en la figura \ref{fig:req_netconf}.
 
   \begin{figure}[H]
     \centering
     \includegraphics[scale=0.65]{Figures/req_netconf.pdf}
-    \caption{Topología implementada en el proyecto.}
+    \caption{Requerimientos para la integración del protocolo NETCONF.}
     \label{fig:req_netconf}
   \end{figure}
 
@@ -119,17 +153,17 @@ La figura \ref{fig:actividad_config}, muestra el flujo de actividad típico que 
 %-----------------------------------
 
   \subsection{Compilación instalación del agente}
-Siendo YUMA123 el agente que se eligió para integrar el protocolo NETCONF en el equipo, en esta sección se detalla el procedimiento que se llevó a cabo para la compilación e instalación del agente en el muxponder, con el fin de poder cumplir el requerimiento R-07.
+Siendo YUMA123 el agente que se eligió para integrar el protocolo en el equipo, en esta sección se detalla el procedimiento que se llevó a cabo para la compilación e instalación del agente en el muxponder, con el fin de poder cumplir el requerimiento R-07.
 \\
 
   En primer lugar, toda la tarea de compilación se realizó en una computadora de propósito general, debido a los recursos limitados con los que cuenta el dispositivo. Para facilitar la compilación e instalación, se realizaron tres scripts los cuales se describen a continuación:
 
   \begin{itemize}
-	\item \textbf{Dockerfile}: el objetivo de este script, es el de realizar la compilación del proyecto YUMA123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile [] es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto YUMA123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto YUMA123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta “$/root/usrapp$” de la imagen Docker construida. Cabe destacar que de esta forma se realizaron tres versiones del script, con el objetivo de poder compilar para las arquitecturas NIOS II, ARM y 86 64.
+	\item \textbf{\texttt{Dockerfile}}: el objetivo de este script, es el de realizar la compilación del proyecto YUMA123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto YUMA123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto YUMA123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta “$/root/usrapp$” de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del script, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
     
-    \item \textbf{$remote_install_yuma.sh$}: script bash que tiene la tarea de realizar la instalación del protocolo compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el script realiza la instalación del agente mediante SSH y SCP [], copiando el contenido necesario de "$/root/usrapp$" que se generó con la construcción de la imagen Docker, al directorio "$/root/usrapp$" del dispositivo. Es importante mencionar que muchas de las librerías requeridas por YUMA123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
+    \item \textbf{\texttt{remote\_install\_yuma.sh}}: script bash que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el script realiza la instalación del agente mediante SSH y SCP \parencite{scpman}, copiando el contenido necesario de "$/root/usrapp$" que se generó con la construcción de la imagen Docker, al directorio "$/root/usrapp$" del dispositivo. Es importante mencionar que muchas de las librerías requeridas por YUMA123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
     
-    \item \textbf{$remote_uninstall_yuma.sh$}: requiere dos parametros los cuales son el usuario del dispositivo remoto y la dirección ip del mismo. El objetivo de este script es facilitar la desinstalación de todas las librerías relacionadas a YUMA123 del dispositivo.
+    \item \textbf{\texttt{remote\_uninstall\_yuma.sh}}: requiere dos parametros los cuales son el usuario del dispositivo remoto y la dirección ip del mismo. El objetivo de este script es facilitar la desinstalación de todas las librerías relacionadas a YUMA123 del dispositivo.
 
 \end{itemize}
 
@@ -139,35 +173,33 @@ Siendo YUMA123 el agente que se eligió para integrar el protocolo NETCONF en el
 Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la figura \ref{fig:req_netconf}, se diseñó un módulo YANG que contiene cinco secciones bien definidas, las cuales se describen a continuación: 
 
 \begin{itemize}
-	\item \textbf{Cabecera del módulo y declaraciones}: contiene la estructura inicial de un módulo YANG. En él, se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: restricted-tipo-trafico, restricted-tipo-fec-linea y restricted-tipo-fec-cliente, donde se especifica a través de la directiva ‘enum’, cuales son los valores aceptados que puede tomar dicho tipo de dato. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (otu2 y xge), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar un fragmento del módulo realizado en la figura \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
+	\item \textbf{Cabecera del módulo y declaraciones}: aqui se declara la estructura inicial del módulo YANG. Se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: restricted-tipo-trafico, restricted-tipo-fec-linea y restricted-tipo-fec-cliente. En ellos, se especifica a través de la directiva ‘enum’ cuales seran los valores aceptados que pueden tomar dichos tipos de datos. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (otu2 y xge), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar un fragmento de esta sección en la figura \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
 
+  \newpage
     \begin{lstlisting}[language=SHELXL, caption=Cabecera del módulo YANG., label=lstlisting:cabecera]
         module cli-mxp {
-
             namespace "http://fulgor.com/ns/cli-mxp";
             prefix "cli-mxp";
-        
             description
               "CLI para configurar el muxponder de 40G";
-        
             revision "2018-06-24" {
                 description
                   "Version 0.1.0";
             }
-            
+
             typedef restricted-tipo-trafico {
                 type enumeration {
                     enum "otu2";
                     enum "xge";
                   }
             }
-        
               ...
               ...
               ...
+
     \end{lstlisting}
 
-    \item \textbf{Container YANG de configuración}: el módulo contiene también una sección donde se declara un container llamado ‘mux-config’, el cual es el único que admite datos de configuración del dispositivo. En él, se describen todos los parámetros que admiten una configuración (por ejemplo, el tipo de fec de línea), a través de las declaraciones ‘leaf’. Un fragmento de esta sección puede observarse en la figura \ref{lstlisting:config_container}, donde además se ve el uso de los tipos de datos definidos en la cabecera del módulo.
+    \item \textbf{Container YANG de configuración}: en esta sección se declara un container llamado ‘mux-config’. Aquí se describen todos los parámetros que admiten una configuración (por ejemplo, el tipo de fec de línea), a través de las declaraciones ‘leaf’. Un fragmento de esta sección puede observarse en la figura \ref{lstlisting:config_container}, donde además se puede ver el uso de los tipos de datos definidos en la cabecera del módulo.
   
     \begin{lstlisting}[language=SHELXL, caption=Container de configuración., label=lstlisting:config_container]
     container mux-config {
@@ -205,9 +237,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{Container YANG de estado}: de igual forma, se realizaron containers para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitoreo del dispositivo. La figura \ref{lstlisting:state_container} muestra una parte de esta sección del módulo, donde puede apreciarse la directiva “config false”, la cual indica que el container no admitirá datos de configuración.  
-    
-    \newpage
+    \item \textbf{Container YANG de estado}: de igual forma, se realizaron containers para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. La figura \ref{lstlisting:state_container} muestra una parte de esta sección del módulo, donde puede apreciarse la directiva “config false”, la cual indica que el container no admitirá datos de configuración.  
 
     \begin{lstlisting}[language=SHELXL, caption=Container de estado., label=lstlisting:state_container]
     container mux-state {
@@ -232,8 +262,9 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     \end{lstlisting}
 
 
-    \item \textbf{Definición de RPC}: Como se estudió en capítulos anteriores, NETCONF permite definir RPC propias de un módulo, con el fin de extender la funcionalidad de los dispositivos. Se define así una RPC cuya utilidad será la de poder indicar al agente, cuándo debe aplicar la configuración que contiene el container “mux-config” en el dispositivo. En la figura \ref{lstlisting:RPC}, se muestra dicha sección del módulo. En ella, se puede notar que la RPC admite una respuesta de la operación solicitada, la cual está contenida en el leaf “respuesta-mux-apply-config” y es de tipo String. En este mensaje se indica el resultado de la operación.
+    \item \textbf{Definición de RPC}: como se estudió en capítulos anteriores, NETCONF permite definir RPC propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una RPC cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el container “mux-config” en el dispositivo. En la figura \ref{lstlisting:RPC}, se muestra dicha sección del módulo. En ella, se puede notar que la RPC admite una respuesta de la operación solicitada, la cual está contenida en el leaf “respuesta-mux-apply-config” y es de tipo String. En este mensaje se indica el resultado de la operación.
 
+    \newpage
 
     \begin{lstlisting}[language=SHELXL, caption=Declaración de RPC., label=lstlisting:RPC]
     rpc mux-apply-config {        
@@ -246,9 +277,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{Definición de notificación}: por último, el módulo tiene una sección donde se declara una notificación. Dicho mensaje será utilizado para indicar a las sesiones conectadas y suscritas, las diferentes alarmas que produzca el dispositivo. Estos mensajes se transportan mediante notificaciones del protocolo NETCONF.  La idea de estos mensajes es la de, por ejemplo, poder notificar mediante una alarma si un enlace con un dispositivo vecino se cayó, si el dispositivo supera la temperatura umbral, etc. La figura \ref{lstlisting:notif} muestra la declaración de dicha notificación en el módulo, donde se puede ver que el mensaje estará contenido dentro de la leaf “INFO”, en la cual se especifica de forma obligatoria con la directiva “mandatory”, cuál será el mensaje que se enviará como notificación.
-    
-    \newpage
+    \item \textbf{Definición de notificación}: por último, el módulo tiene una sección donde se declara una notificación. Dicho mensaje será utilizado para indicar a las sesiones conectadas y suscritas, las diferentes alarmas que produzca el dispositivo. Estos mensajes se transportan mediante notificaciones del protocolo NETCONF. El propósito de estos mensajes es el de, por ejemplo, reportar mediante una alarma si un enlace con un dispositivo vecino se cayó, si el dispositivo supera la temperatura umbral, etc. La figura \ref{lstlisting:notif} muestra la declaración de dicha notificación en el módulo, donde se puede ver que el mensaje estará contenido dentro de la leaf “INFO”, en la cual se especifica de forma obligatoria con la directiva “mandatory” cuál será el mensaje que se enviará como notificación.
 
     \begin{lstlisting}[language=SHELXL, caption=Declaración de notificación., label=lstlisting:notif]
     notification mux-notify {
@@ -262,42 +291,42 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 \end{itemize}
 
 \subsection{Diseño de la librería C para el agente NETCONF}
-Para comprender el funcionamiento de la librería desarrollada, será importante mencionar dos binarios que incorporan los muxponders de 40Gb: monitor y ñññññññññ. 
+Con el objetivo comprender el funcionamiento de la librería desarrollada, será importante mencionar dos binarios que incorporan los muxponders de 40Gb: monitor y muxponder. 
 
 Para permitir que otros procesos conozcan el estado del dispositivo, el equipo utiliza el método de comunicación entre procesos llamado memoria compartida. El mismo, consiste en una región de memoria donde se permite que otras aplicaciones puedan, por ejemplo, leer información. 
 
-Así, la aplicación “monitor” es utilizado por el muxponder para actualizar en dicha zona de memoria, los valores de las diferentes variables del dispositivo. Además, el binario mencionado también tiene la tarea de mostrar por la CLI, la información de estas variables. 
+Así, la aplicación “monitor” es utilizada por el equipo para actualizar en dicha zona de memoria los valores de las diferentes variables a monitorear. Además, el binario mencionado también tiene la tarea de mostrar por la CLI la información de estas variables. 
 
-La figura [x] muestra el binario monitor en ejecución.
+La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP que produce en pantalla dicho binario en ejecución.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.65]{Figures/req_sys.pdf}
-    \caption{Topología implementada en el proyecto.}
-    \label{fig:req_sys}
+    \includegraphics[scale=0.75]{Figures/monitorapp.png}
+    \caption{Sección XFP de la aplicación monitor.}
+    \label{fig:monitor}
   \end{figure}
 
-  Por otra parte, la aplicación ñññññññññ es utilizada por el administrador para poder configurar el dispositivo mediante ciertos parámetros que son especificados haciendo uso de la CLI del equipo. Por ejemplo, con esta aplicación, el administrador podría cambiar la configuración de un equipo que tiene un tipo de tráfico xge por un tipo de tráfico otu2 a través de la CLI. Se ejemplifica lo mencionado anteriormente en la figura [X].
+  Por otra parte, la aplicación 'muxponder' es utilizada por el administrador para poder configurar el dispositivo mediante ciertos parámetros que son especificados haciendo uso de la CLI del equipo. Por ejemplo, con esta aplicación, el administrador podría cambiar la configuración de un equipo que tiene un tipo de tráfico $otu2$ por un tipo de tráfico $xge$ a través de la CLI. Se ejemplifica lo mencionado anteriormente en la figura \ref{fig:mxpapp}.
 
   \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.65]{Figures/req_sys.pdf}
-    \caption{Topología implementada en el proyecto.}
-    \label{fig:req_sys}
+    \includegraphics[scale=0.6]{Figures/muxponderapp.png}
+    \caption{Configuración mediante la aplicación muxponder.}
+    \label{fig:mxpapp}
   \end{figure}
 
-  Teniendo en cuenta las aplicaciones mencionadas, se procede a explicar el diseño de la librería en el lenguaje C. Para ello, se utilizó la herramienta yangdump del proyecto YUMA123, la cual genera un esqueleto de la aplicación a partir de un módulo YANG dado. Se forman así dos archivos, uno con extensión ".h" (headers) y otro con extensión ".c" (código fuente). 
+  Teniendo en cuenta las aplicaciones mencionadas, se procede a explicar el diseño de la librería en el lenguaje C. Para ello, se utilizó la herramienta yangdump del proyecto YUMA123, la cual genera un esqueleto de la aplicación a partir de un módulo YANG dado. Se forman así dos archivos, uno con extensión '.h' (headers) y otro con extensión '.c' (código fuente). 
   
 
-  En el primero, la herramienta declara todas las variables, funciones y los tipos de datos que va a utilizar la librería. Este archivo es incluido en el archivo con extensión ".c" mediante la directiva “include” en C.
+  En el primero, la herramienta declara todas las variables, funciones y los tipos de datos que va a utilizar la librería. 
 
-  El segundo archivo contiene la estructura de la aplicación en sí. En ella, se encuentran implementadas todas las funciones, las cuales llamará el agente en caso de que ingrese un mensaje referido al módulo YANG en cuestión. Todo el desarrollo de la aplicación y la relación entre la instrumentación del dispositivo con el módulo YANG, se encuentra en este archivo. 
-  \\
+  Por otra parte, el segundo archivo contiene la estructura de la aplicación en sí. En ella, se encuentran implementadas todas las funciones declaradas en el archivo con extensión '.h', las cuales llamará el agente en caso de que ingrese un mensaje referido al módulo YANG en cuestión. Todo el desarrollo de la aplicación y la relación entre la instrumentación del dispositivo con el módulo YANG, se encuentra en este archivo. 
 
-  Con el fin de explicar cómo se desarrolló esta aplicación, se distinguen dos flujos de actividades bien definidos, uno para las operaciones que son sincrónicas con los mensajes que envía el cliente, y otro para aquellas que sean asíncronas a los mensajes del mismo. 
+
+  [AACAA] Con el fin de explicar cómo se desarrolló esta aplicación, se distinguen dos flujos de actividades bien definidos, uno para las operaciones que son sincrónicas con los mensajes que envía el cliente, y otro para aquellas que sean asíncronas a los mensajes del mismo. 
 
   Para el primer grupo, se tiene entonces las operaciones como obtención de un dato de estado o de configuración, modificación de un dato de configuración y ejecución de RPC, mientras que el segundo grupo contempla el envío de notificaciones, las cuales son asíncronas a las operaciones del cliente.
-  \newpage
+  
 
   Se muestra el comportamiento de este primer grupo, en el diagrama de actividad de la figura \ref{fig:actividad_modulo_sinc}. Cada vez que llega un mensaje NETCONF al agente YUMA123, el mismo procesa y verifica a qué módulo YANG hace referencia el mensaje y qué tipo de operación requiere el cliente. 
 
