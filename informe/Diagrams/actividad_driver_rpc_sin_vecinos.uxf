@@ -110,9 +110,10 @@ rpcApplyConfig</panel_attributes>
       <w>100</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>muxponder A
+    <panel_attributes>
+muxponder A
 YUMA123
-bg=red</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -261,9 +262,10 @@ operacion</panel_attributes>
       <w>100</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>muxponder A
+    <panel_attributes>
+muxponder A
 YUMA123
-bg=red</panel_attributes>
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -389,7 +391,7 @@ lt=&lt;-</panel_attributes>
       <w>40</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>bg=green
+    <panel_attributes>
 type=decision</panel_attributes>
     <additional_attributes/>
   </element>

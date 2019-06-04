@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>20</y>
+      <w>280</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Interfaz a las operaciones*
+*de consulta*
+--
+id: R-15
+ONOS debe proveer una REST API
+en la interfaz Northbound, para 
+que aplicaciones externas 
+puedan realizar tareas de monitoreo 
+relativas al muxponder mediante
+consultas NETCONF</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>620</x>
+      <y>20</y>
+      <w>280</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Interfaz a la RPC*
+*mux-apply-config*
+--
+id: R-17
+ONOS debe proveer una REST API
+en la interfaz Northbound para 
+que aplicaciones externas 
+puedan aplicar los cambios en el
+muxponder a traves de la RPC 
+mux-apply-config</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>320</x>
+      <y>20</y>
+      <w>280</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
+*Interfaz a las operaciones*
+*de modificacion*
+--
+id: R-16
+ONOS debe proveer una REST API
+en la interfaz Northbound, para 
+que aplicaciones externas 
+puedan realizar cambios en la 
+configuracion de los equipos, 
+a traves de mensajes NETCONF</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

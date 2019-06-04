@@ -285,7 +285,7 @@ dispositivos</panel_attributes>
       <w>60</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>bg=green
+    <panel_attributes>
 type=decision</panel_attributes>
     <additional_attributes/>
   </element>
@@ -308,7 +308,7 @@ type=decision</panel_attributes>
       <w>60</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>bg=green
+    <panel_attributes>
 type=decision</panel_attributes>
     <additional_attributes/>
   </element>

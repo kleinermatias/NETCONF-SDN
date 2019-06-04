@@ -32,8 +32,7 @@ rpcApplyConfig</panel_attributes>
       <h>40</h>
     </coordinates>
     <panel_attributes>muxponder B
-YUMA123
-bg=blue</panel_attributes>
+YUMA123</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -114,7 +113,7 @@ lt=&lt;-</panel_attributes>
       <w>40</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>bg=green
+    <panel_attributes>
 type=decision</panel_attributes>
     <additional_attributes/>
   </element>
@@ -245,7 +244,7 @@ los vecinos</panel_attributes>
       <w>40</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>bg=green
+    <panel_attributes>
 type=decision</panel_attributes>
     <additional_attributes/>
   </element>

@@ -1,70 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>200</x>
-      <y>110</y>
-      <w>280</w>
-      <h>190</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Interfaz a las operaciones*
-*de consulta*
---
-id: R-15
-ONOS debe proveer una REST API
-en la interfaz Northbound, para 
-que aplicaciones externas 
-puedan realizar tareas de monitoreo 
-relativas al muxponder mediante
-consultas NETCONF</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>500</x>
-      <y>110</y>
-      <w>280</w>
-      <h>190</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Interfaz a las operaciones*
-*de modificacion*
---
-id: R-16
-ONOS debe proveer una REST API
-en la interfaz Northbound, para 
-que aplicaciones externas 
-puedan realizar cambios en la base
-de datos running del muxponder
-mediante la operacion NETCONF
-edit-config</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>800</x>
-      <y>110</y>
-      <w>280</w>
-      <h>190</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Interfaz a la RPC*
-*mux-apply-config*
---
-id: R-17
-ONOS debe proveer una REST API
-en la interfaz Northbound para 
-que aplicaciones externas 
-puedan aplicar los cambios en el
-muxponder a traves de la RPC 
-mux-apply-config</panel_attributes>
-    <additional_attributes/>
-  </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
@@ -75,7 +10,7 @@ mux-apply-config</panel_attributes>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
 *Seccion de visualizacion*
-*de las alarmas en la GUI*
+*de alarmas en la GUI*
 --
 id: R-18
 Se debera poder visualizar en una 
@@ -105,10 +40,10 @@ equipos</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
-      <y>320</y>
+      <x>200</x>
+      <y>480</y>
       <w>280</w>
-      <h>150</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
 *Seccion de cambios*
@@ -118,60 +53,23 @@ id: R-20
 La aplicacion web debe contar
 con una seccion donde se pueda
 cambiar la configuracion de los 
-muxponders</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>200</x>
-      <y>490</y>
-      <w>280</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Seccion de cambios*
-*de la topologia en la GUI*
---
-id: R-21
-La GUI debe proveer una seccion 
-donde pueda realizarse cambios
-en la topologia mediante los datos
-port, neighbor y port_neighbor</panel_attributes>
+muxponders mediante perfiles de
+configuracion</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>500</x>
-      <y>490</y>
+      <y>480</y>
       <w>280</w>
-      <h>150</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Seccion de perfiles*
-*de configuracion en la GUI*
---
-id: R-22
-Se debe facilitar la administracion
-de la configuracion del muxponder 
-mediante perfiles de configuracion
-que puedan agregarse o eliminarse</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>800</x>
-      <y>490</y>
-      <w>280</w>
-      <h>150</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
 *Seccion de visualizacion*
 *de los datos de estado en la GUI*
 --
-id: R-23
+id: R-21
 Todos los datos de estado de 
 los equipos se deben poder 
 visualizar en una seccion de 

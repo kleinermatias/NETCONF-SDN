@@ -101,7 +101,7 @@ implementada en el driver</panel_attributes>
       <w>100</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>bg=green
+    <panel_attributes>
 type=decision</panel_attributes>
     <additional_attributes/>
   </element>
@@ -362,5 +362,17 @@ en el controlador</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>600</x>
+      <y>570</y>
+      <w>80</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>finalizo?
+style=wordwrap</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
