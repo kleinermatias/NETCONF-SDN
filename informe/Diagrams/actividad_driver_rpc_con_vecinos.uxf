@@ -79,7 +79,7 @@ cli-mxp</panel_attributes>
       <h>40</h>
     </coordinates>
     <panel_attributes>Enviar respuesta de
-configuracion aplicada</panel_attributes>
+configuración aplicada</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -101,7 +101,7 @@ configuracion aplicada</panel_attributes>
       <w>170</w>
       <h>120</h>
     </coordinates>
-    <panel_attributes>m2=llamada al modulo
+    <panel_attributes>m2=llamada al módulo
 lt=&lt;-</panel_attributes>
     <additional_attributes>70.0;100.0;70.0;10.0;10.0;10.0</additional_attributes>
   </element>
@@ -148,7 +148,7 @@ m2=tiene vecinos</panel_attributes>
       <w>220</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>comparar la configuracion
+    <panel_attributes>comparar la configuración
 aplicada en el muxponder A
 con el muxponder vecino B</panel_attributes>
     <additional_attributes/>
@@ -162,7 +162,7 @@ con el muxponder vecino B</panel_attributes>
       <h>60</h>
     </coordinates>
     <panel_attributes>Enviar mensaje al dispositivo
-vecino, solicitando su configuracion
+vecino, solicitando su configuración
 aplicada</panel_attributes>
     <additional_attributes/>
   </element>
@@ -279,7 +279,7 @@ m2=misma config</panel_attributes>
       <w>220</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>Crear alarma de configuracion
+    <panel_attributes>Crear alarma de configuración
 inconsistente con el
 muxponder vecino B</panel_attributes>
     <additional_attributes/>

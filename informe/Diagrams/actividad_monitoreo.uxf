@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
   <element>
     <id>Relation</id>
@@ -32,7 +31,7 @@
       <h>40</h>
     </coordinates>
     <panel_attributes>Consulta sobre las variables 
-de interes para monitorear</panel_attributes>
+de interés para monitorear</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

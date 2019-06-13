@@ -13,7 +13,7 @@
 --
 id: R-01
 El sistema debe brindar el
-servicio de un controlador SDN</panel_attributes>
+servicio de un controlador SDN.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -46,7 +46,7 @@ los dispositivos.</panel_attributes>
 --
 id: R-05
 El sistema debe soportar la conexión
-de nodos fisicos.</panel_attributes>
+de nodos físicos.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -94,7 +94,7 @@ deben soportar el protocolo NETCONF.</panel_attributes>
 --
 id: R-02
 Se debe establecer una conexion
-entre los muxponders y el controlador</panel_attributes>
+entre los muxponders y el controlador.</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

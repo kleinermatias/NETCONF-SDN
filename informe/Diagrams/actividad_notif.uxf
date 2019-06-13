@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLObject</id>
@@ -20,7 +19,7 @@
       <w>260</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>Enviar notificacion NETCONF</panel_attributes>
+    <panel_attributes>Enviar notificación NETCONF</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -75,7 +74,7 @@
       <w>260</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>Procesar la notificacion</panel_attributes>
+    <panel_attributes>Procesar la notificación</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -86,7 +85,7 @@
       <w>260</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>Registrar la notificacion como
+    <panel_attributes>Registrar la notificación como
 una alarma en el controlador</panel_attributes>
     <additional_attributes/>
   </element>

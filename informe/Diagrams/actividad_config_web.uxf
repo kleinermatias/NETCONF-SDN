@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLObject</id>
@@ -42,8 +41,8 @@
       <w>260</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>Modificacion de los parametros
-de configuracion en la interfaz web</panel_attributes>
+    <panel_attributes>Modificación de los parametros
+de configuración en la interfaz web</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -65,7 +64,7 @@ de configuracion en la interfaz web</panel_attributes>
       <w>260</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>POST de las configuracion a través
+    <panel_attributes>POST de las configuración a través
 de la REST api</panel_attributes>
     <additional_attributes/>
   </element>

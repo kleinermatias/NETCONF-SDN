@@ -12,10 +12,10 @@
 *Descubrimiento del dispositivo*
 --
 id: R-11
-El driver desarrollado debera ser 
-capaz de identificar las caracteristicas
-basicas del equipo en el momento
-de la conexión </panel_attributes>
+El driver desarrollado deberá ser 
+capaz de identificar las características
+básicas del equipo en el momento
+de la conexión.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -32,8 +32,8 @@ de la conexión </panel_attributes>
 id: R-12
 El driver debe proveer mecanismos e
 indicaciones al controlador sobre
-como estan conformado los enlaces
-con los dispositivos vecinos</panel_attributes>
+cómo estan conformado los enlaces
+con los dispositivos vecinos.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -49,9 +49,9 @@ con los dispositivos vecinos</panel_attributes>
 --
 id: R-14
 El driver debe exponer comandos CLI
-a las operaciones tipicas del dispositivo
-con el fin de poder administrar el msimo
-desde la consola de ONOS</panel_attributes>
+a las operaciones típicas del dispositivo,
+con el fin de poder administrar el mismo
+desde la consola de ONOS.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -66,9 +66,9 @@ desde la consola de ONOS</panel_attributes>
 *Soporte a las RPC*
 --
 id: R-13
-El driver debera brindar soporte
+El driver deberá brindar soporte
 a todas las RPC definidas en el 
-modulo YANG del dispositivo</panel_attributes>
+módulo YANG del dispositivo.</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

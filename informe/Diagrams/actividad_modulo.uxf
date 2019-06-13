@@ -103,7 +103,7 @@ lt=&lt;-</panel_attributes>
       <h>60</h>
     </coordinates>
     <panel_attributes>obtener valores de los datos
-de configuracion</panel_attributes>
+de configuración</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -116,7 +116,7 @@ de configuracion</panel_attributes>
     </coordinates>
     <panel_attributes>Enviar mensaje al cliente
 con el resultado de la 
-operacion en formato xml</panel_attributes>
+operación en formato xml</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -190,14 +190,15 @@ del mensaje</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>410</x>
+      <x>420</x>
       <y>380</y>
-      <w>240</w>
-      <h>60</h>
+      <w>230</w>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>aplicar la configuracion
+    <panel_attributes>aplicar la configuración
 en el dispositivo
-con los datos obtenidos</panel_attributes>
+con los datos obtenidos,
+usando el binario "muxponder"</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -216,13 +217,13 @@ lt=&lt;-</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>520</x>
-      <y>430</y>
+      <y>450</y>
       <w>30</w>
-      <h>120</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>
 lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLState</id>
@@ -280,7 +281,7 @@ muxponder</panel_attributes>
       <w>100</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>operacion?
+    <panel_attributes>operación?
 style=wordwrap</panel_attributes>
     <additional_attributes/>
   </element>

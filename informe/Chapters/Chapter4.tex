@@ -26,32 +26,34 @@ En esta sección se detallan las características del sistema a implementar, des
 
 Se conformará una topología con el fin de poder identificar en una primera instancia, los requerimientos que debe cumplir el sistema. La misma, está basada en un caso de uso simple, en el cual se quiere brindar conectividad a dos clientes a través de un enlace óptico, este último conformado por dos \textit{muxponders}.  
 
-Es importante identificar la presencia del controlador \textit{ONOS}, el cual gestionará la configuración de los equipos mediante el protocolo \textit{NETCONF}. En la figura \ref{fig:topologia} se muestra de forma general la topología planteada.
+Es importante identificar la presencia del controlador \textit{ONOS}, el cual gestionará la configuración de los equipos mediante el protocolo \textit{NETCONF}. En la figura \ref{fig:topologia} se muestra de forma general la topología planteada. 
+
+Los dispositivos terminales A y B, se encuentran conectados al puerto cliente del \textit{muxponder} C y D, respectivamente. A su vez, el transmisor del \textit{muxponder} C se encuentra conectado al receptor del \textit{muxponder} D, y viceversa. Esto permite una comunicación bidireccional, donde ambos clientes pueden tener conectividad. 
+
+Por otra parte, el controlador tiene una conexión con los \textit{muxponder} a través de los puertos de control de los mismos. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.85]{Figures/topologia.pdf}
+    \includegraphics[scale=0.68]{Figures/topologia.pdf}
     \caption{Topología implementada en el proyecto.}
     \label{fig:topologia}
   \end{figure}
 
 
-Los dispositivos terminales A y B, se encuentran conectados al puerto cliente del \textit{muxponder} C y D, respectivamente. A su vez, el transmisor del \textit{muxponder} C se encuentra conectado con el receptor del \textit{muxponder} D, y viceversa. Esto permite una comunicación bidireccional, donde ambos clientes pueden tener conectividad. 
-
-Por otra parte, el controlador tiene una conexión con los \textit{muxponder} a través de los puertos de control de los mismos.
+En la figura \ref{fig:topologiafis} se presenta cómo está dispuesta la conexión física de los equipos. En ella, se puede observar la alimentación de los equipos, los puertos clientes los cuáles estarán conectados a los \textit{host} A y B antes mencionados. También, se observa las interfaces de línea conectadas entre sí, de tal manera que se permita una comunicación bidireccional entre los clientes. Por otro lado, las interfaces de control se conectan al controlador \textit{ONOS} tal cómo se mencionó anteriormente. 
 
 \begin{comment}
 A continuación, en la figura \ref{fig:topologiafis} se muestra como está dispuesta la conexión físicamente en los dispositivos. A la izquierda se tiene el \textit{muxponder} C, y a la derecha se encuentra el \textit{muxponder} D. Las interfaces de control de ambos dispositivos están conectadas al controlador \textit{ONOS}, mientras que los puertos clientes se encuentran conectados a los clientes A y B respectivamente. Por otra parte, las interfaces de línea se encuentran conectados entre los \textit{muxponder}, como se explicó anteriormente, con el fin de poder tener una comunicación bidireccional.
 \end{comment}
 
-\begin{comment}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.45]{Figures/mxpfisicos.pdf}
+    \resizebox{\textwidth}{!}{\includegraphics[scale=0.1]{Figures/mxpfisicos.pdf}}
     \caption{Conexión física de la topología.}
     \label{fig:topologiafis}
   \end{figure}
-\end{comment}
+
 
 %-----------------------------------
 %	SUBSECTION 2
@@ -62,7 +64,7 @@ Para establecer los requerimientos funcionales del sistema, se presentará en pr
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.55]{Figures/caso_uso_admin.pdf}
+    \includegraphics[scale=0.53]{Figures/caso_uso_admin.pdf}
     \caption{Caso de uso desde la perspectiva del administrador.}
     \label{fig:caso_uso_admin}
   \end{figure}
@@ -81,11 +83,11 @@ Para establecer los requerimientos funcionales del sistema, se presentará en pr
 
   Además, a partir del diagrama de caso de uso de la figura \ref{fig:caso_uso_admin}, se pueden identificar tres diagramas de actividades relacionadas. La figura \ref{fig:actividad_config}, muestra los flujos de actividad típicos que tendrá el sistema. 
   
-  Para la actividad relacionada al monitoreo, la aplicación \textit{WEB} realiza consultas periódicas al controlador con el fin de obtener información sobre los dispositivos. Así, se envía un mensaje HTTP con la operación GET desde la aplicación, el controlador procesa la petición y responde dicha consulta.
+  Para la actividad relacionada al monitoreo \ref{fig:actividad_config} (A), la aplicación \textit{WEB} realiza consultas periódicas al controlador con el fin de obtener información sobre los dispositivos. Así, se envía un mensaje HTTP con la operación GET desde la aplicación, el controlador procesa la petición y responde dicha consulta.
 
-Por otra parte, para el flujo de actividad relacionado a las notificiaciones, es el dispositivo quien emite inicialmente el mensaje mediante una notificación \textit{NETCONF}. El controlador, se procesa la notificación y se la registra como alarma.
+Por otra parte, para el flujo de actividad relacionado a las notificiaciones que puede verse en la figura \ref{fig:actividad_config} (B), es el dispositivo quien emite inicialmente el mensaje mediante una notificación \textit{NETCONF}. El controlador, se procesa la notificación y se la registra como alarma.
 
-Por último, se tiene el diagrama de actividad relacionado a la configuración del equipo. El evento inicial para este caso, es la adición de una configuración desde la aplicación \textit{WEB}. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la \textit{Northbound} interface del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración \textit{NETCONF} a los dispositivos involucrados a través de la \textit{Southbound} interface.
+Por último, se tiene el diagrama de actividad relacionado a la configuración del equipo \ref{fig:actividad_config} (C). El evento inicial para este caso, es la adición de una configuración desde la aplicación \textit{WEB}. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la \textit{Northbound} interface del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración \textit{NETCONF} a los dispositivos involucrados a través de la \textit{Southbound} interface.
 
 
   
@@ -173,7 +175,7 @@ Siendo YUMA123 el agente que se eligió para integrar el protocolo en el equipo,
 Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la figura \ref{fig:req_netconf}, se diseñó un módulo \textit{YANG} que contiene cinco secciones bien definidas, las cuales se describen a continuación: 
 
 \begin{itemize}
-	\item \textbf{Cabecera del módulo y declaraciones}: aqui se declara la estructura inicial del módulo \textit{YANG}. Se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: restricted-tipo-trafico, restricted-tipo-fec-linea y restricted-tipo-fec-cliente. En ellos, se especifica a través de la directiva ‘enum’ cuales seran los valores aceptados que pueden tomar dichos tipos de datos. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (otu2 y xge), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar un fragmento de esta sección en la figura \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
+	\item \textbf{Cabecera del módulo y declaraciones}: aqui se declara la estructura inicial del módulo \textit{YANG}. Se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: restricted-tipo-trafico, restricted-tipo-fec-linea y restricted-tipo-fec-cliente. En ellos, se especifica a través de la directiva ‘enum’ cuales seran los valores aceptados que pueden tomar dichos tipos de datos. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (otu2 y xge), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar una porción de esta sección en el código \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
 
   \newpage
     \begin{lstlisting}[language=SHELXL, caption=Cabecera del módulo \textit{YANG}., label=lstlisting:cabecera]
@@ -199,7 +201,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
     \end{lstlisting}
 
-    \item \textbf{Container \textit{YANG} de configuración}: en esta sección se declara un container llamado ‘mux-config’. Aquí se describen todos los parámetros que admiten una configuración (por ejemplo, el tipo de fec de línea), a través de las declaraciones ‘leaf’. Un fragmento de esta sección puede observarse en la figura \ref{lstlisting:config_container}, donde además se puede ver el uso de los tipos de datos definidos en la cabecera del módulo.
+    \item \textbf{Container \textit{YANG} de configuración}: en esta sección se declara un container llamado ‘mux-config’. Aquí se describen todos los parámetros que admiten una configuración (por ejemplo, el tipo de fec de línea), a través de las declaraciones ‘leaf’. Un fragmento de esta sección puede observarse en el código \ref{lstlisting:config_container}, donde además se puede ver el uso de los tipos de datos definidos en la cabecera del módulo.
   
     \begin{lstlisting}[language=SHELXL, caption=Container de configuración., label=lstlisting:config_container]
     container mux-config {
@@ -237,7 +239,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{Container \textit{YANG} de estado}: de igual forma, se realizaron containers para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. La figura \ref{lstlisting:state_container} muestra una parte de esta sección del módulo, donde puede apreciarse la directiva ’config false’, la cual indica que el container no admitirá datos de configuración.  
+    \item \textbf{Container \textit{YANG} de estado}: de igual forma, se realizaron containers para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. El código \ref{lstlisting:state_container} presenta una parte de esta sección del módulo, donde puede apreciarse la directiva ’config false’, la cual indica que el \textit{container} no admitirá datos de configuración.  
 
     \begin{lstlisting}[language=SHELXL, caption=Container de estado., label=lstlisting:state_container]
     container mux-state {
@@ -262,7 +264,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     \end{lstlisting}
 
 
-    \item \textbf{Definición de \textit{RPC}}: como se estudió en capítulos anteriores, \textit{NETCONF} permite definir \textit{RPC} propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una \textit{RPC} cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el container 'mux-config' en el dispositivo. En la figura \ref{lstlisting:RPC}, se muestra dicha sección del módulo. En ella, se puede notar que la \textit{RPC} admite una respuesta de la operación solicitada, la cual está contenida en el leaf 'respuesta-mux-apply-config' y es de tipo String. En este mensaje se indica el resultado de la operación.
+    \item \textbf{Definición de \textit{RPC}}: como se estudió en capítulos anteriores, \textit{NETCONF} permite definir \textit{RPC} propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una \textit{RPC} cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el container 'mux-config' en el dispositivo. El código \ref{lstlisting:RPC} muestra dicha sección del módulo. En ella, se puede notar que la \textit{RPC} admite una respuesta de la operación solicitada, la cual está contenida en el leaf 'respuesta-mux-apply-config' y es de tipo String. En este mensaje se indica el resultado de la operación.
 
     
 
@@ -277,7 +279,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{Definición de notificación}: por último, el módulo tiene una sección donde se declara una notificación. Dicho mensaje será utilizado para indicar a las sesiones conectadas y suscritas, las diferentes alarmas que produzca el dispositivo. Estos mensajes se transportan mediante notificaciones del protocolo \textit{NETCONF}. El propósito de estos mensajes es el de, por ejemplo, reportar mediante una alarma si un enlace con un dispositivo vecino se cayó, si el dispositivo supera la temperatura umbral, etc. La figura \ref{lstlisting:notif} muestra la declaración de dicha notificación en el módulo, donde se puede ver que el mensaje estará contenido dentro de la \textit{leaf} ’INFO’, en la cual se especifica de forma obligatoria con la directiva ’mandatory’ cuál será el mensaje que se enviará como notificación.
+    \item \textbf{Definición de notificación}: por último, el módulo tiene una sección donde se declara una notificación. Dicho mensaje será utilizado para indicar a las sesiones conectadas y suscritas, las diferentes alarmas que produzca el dispositivo. Estos mensajes se transportan mediante notificaciones del protocolo \textit{NETCONF}. El propósito de estos mensajes es el de, por ejemplo, reportar mediante una alarma si un enlace con un dispositivo vecino se cayó, si el dispositivo supera la temperatura umbral, etc. Se puede observar en el código \ref{lstlisting:notif}, la declaración de la notificación en el módulo. El mensaje estará contenido dentro de la \textit{leaf} ’INFO’, en la cual se especifica de forma obligatoria con la directiva ’mandatory’ cuál será el mensaje que se enviará como notificación.
 
     \begin{lstlisting}[language=SHELXL, caption=Declaración de notificación., label=lstlisting:notif]
     notification mux-notify {
@@ -306,7 +308,7 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
     \label{fig:monitor}
   \end{figure}
 
-  Por otra parte, la aplicación 'muxponder' es utilizada por el administrador para poder configurar el dispositivo mediante ciertos parámetros que son especificados haciendo uso de la \textit{CLI} del equipo. Por ejemplo, con esta aplicación, el administrador podría cambiar la configuración de un equipo que tiene un tipo de tráfico $otu2$ por un tipo de tráfico $xge$ a través de la CLI, tal y como se muestra en la figura \ref{fig:mxpapp}.
+  Por otra parte, la aplicación 'muxponder' es utilizada por el administrador para poder configurar el dispositivo mediante ciertos parámetros que son especificados haciendo uso de la \textit{CLI} del equipo. Por ejemplo, con esta aplicación, el administrador podría cambiar la configuración de un equipo que tiene un tipo de tráfico $otu2$ por un tipo de tráfico $xge$ a través de la CLI, tal como se muestra en la figura \ref{fig:mxpapp}.
 
   \begin{figure}[H]
     \centering
@@ -347,7 +349,7 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
   
   La razón por la cual se examina cada tres segundos, está relacionada con la aplicación 'monitor', la cual actualiza los valores de memoria compartida con esa frecuencia.
 
-  Al examinar los valores de las alarmas, las compara con la información antigua que se tenía almacenada sobre las mismas. Si la información es igual, no se envían notificaciones a las sesiones. En cambio, si la información actual es diferente a la información anterior, será necesario notificar a las sesiones suscritas este nuevo estado de las alarmas. Así, tanto el nombre de la alarma como su nuevo estado, son enviados a través de la notificación definida en la figura \ref{lstlisting:notif}, haciendo uso de la \textit{leaf} INFO.
+  Al examinar los valores de las alarmas, las compara con la información antigua que se tenía almacenada sobre las mismas. Si la información es igual, no se envían notificaciones a las sesiones. En cambio, si la información actual es diferente a la información anterior, será necesario notificar a las sesiones suscritas este nuevo estado de las alarmas. Así, tanto el nombre de la alarma como su nuevo estado, son enviados a través de la notificación definida en el código \ref{lstlisting:notif}, haciendo uso de la \textit{leaf} INFO.
   
   Un diagrama de actividad de estas operaciones se puede observar en la figura \ref{fig:actividad_modulo_notif}.
 
@@ -377,7 +379,7 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
   \subsection{Descubrimiento del dispositivo}
   El controlador \textit{ONOS} reconoce la presencia de un nuevo dispositivo a través de un mensaje en formato JSON, el cual contiene información como la dirección IP del equipo, el \textit{driver} que describe sus comportamientos, el protocolo que utiliza, entre otra información de utilidad. 
   
-  Un ejemplo de este mensaje se muestra en la figura \ref{lstlisting:JSON}. Dicho mensaje, es enviado al controlador haciendo uso del comando de \textit{ONOS} 'onos-netcfg' \parencite{onosconfserv}.
+  Un ejemplo de este mensaje se muestra en el código \ref{lstlisting:JSON}. Dicho mensaje, es enviado al controlador haciendo uso del comando de \textit{ONOS} 'onos-netcfg' \parencite{onosconfserv}.
 
   \begin{lstlisting}[language=SHELXL, caption=Mensaje JSON con información del dispositivo., label=lstlisting:JSON]
     {
@@ -427,7 +429,7 @@ El \textit{driver} también debe proveer un mecanismo para indicar al controlado
 
 Así, el controlador llama periódicamente a esta función (cada 30 segundos de forma predeterminada, pudiéndose cambiar este tiempo desde la CLI) para corroborar el estado de los enlaces. 
 
-Con más detalle, lo que realiza esta función es enviar periódicamente a los dispositivos un mensaje \textit{NETCONF} con la operación GET-CONFIG, consultando por los datos “port”, “neighbor” y “port-neighbor” del container mux-config, estos datos pueden verse representados en el módulo \textit{YANG}, en la figura \ref{lstlisting:config_container}. A continuación, se explica de forma breve la función de cada uno de estos datos:
+Con más detalle, lo que realiza esta función es enviar periódicamente a los dispositivos un mensaje \textit{NETCONF} con la operación GET-CONFIG, consultando por los datos “port”, “neighbor” y “port-neighbor” del container mux-config, estos datos pueden verse representados en el módulo \textit{YANG}, en el código \ref{lstlisting:config_container}. A continuación, se explica de forma breve la función de cada uno de estos datos:
 
 \begin{itemize}
 	\item \textbf{port}: indica el puerto del dispositivo local al cual se conectará un vecino.
@@ -450,19 +452,19 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
 
   \subsection{Operaciones definidas en el \textit{driver}}
 
-  El \textit{driver} desarrollado brinda, además de las implementaciones de LinkDiscovery y DeviceDescriptionDiscovery explicadas anteriormente, la posibilidad de ejecutar cualquier operacion admitida por el modulo del dispositivo, entre ellas la \textit{RPC} que se describió en la figura \ref{lstlisting:RPC}. 
-  
-  Además, se especifican comandos \textit{CLI} para que el administrador pueda interactuar con los dispositivos a través del \textit{driver}, haciendo uso de la consola de \textit{ONOS}. 
+  El \textit{driver} desarrollado brinda, además de las implementaciones de LinkDiscovery y DeviceDescriptionDiscovery explicadas anteriormente, la posibilidad de ejecutar cualquier operacion admitida por el modulo del dispositivo, entre ellas la \textit{RPC} que se describió en el código \ref{lstlisting:RPC}. Se explica así el funcionamiento de la interfaz implementada para la operación \textit{RPC} “mux-apply-config”. 
+  \\
 
-  Se explica así el funcionamiento de la interfaz implementada para la operación \textit{RPC} “mux-apply-config”. 
+  Al momento de llamar a la función rpcApplyConfig, la cual describe el comportamiento que tendrá la \textit{RPC} “mux-apply-config” en el \textit{driver}, el mismo envia un mensaje al \textit{muxponder} solicitando que aplique la configuración que tiene el \textit{datastore running} haciendo uso del binario “muxponder“, tal como se mostró en la figura \ref{fig:actividad_modulo_sinc}.
   
-  En el driver, esta función tiene una utilidad más además de indicar al dispositivo que tiene que aplicar la configuración. Dado que se puede indicar la presencia de dispositivos vecinos, es necesario corroborar que la configuración aplicada entre ellos sea la misma para garantizar la conectividad entre los clientes conectados a los \textit{muxponders}. Así, si se aplica una configuración en un \textit{muxponder}, el controlador deberá corroborar que los dispositivos vecinos conectados tengan la misma configuración aplicada, de lo contrario se deberá generar y registrar una alarma en el controlador.
-  
-  Teniendo en cuenta esto, el diagrama de la figura \ref{fig:actividad_driver_rpc_sin_vecinos} muestra el flujo de actividad que sigue el \textit{driver} cuando recibe una llamada a esta \textit{RPC} para el \textit{muxponder} A. Para este primer caso, el \textit{muxponder} A no tiene especificado ningún vecino, por lo que no se generará alguna alarma sobre configuración inconsistente, de hecho, se verifica que no tenga alarmas de este tipo y de tenerlas se eliminan.
+  Luego, dado que se puede indicar la presencia de dispositivos vecinos, es necesario que el \textit{driver} corrobore que la configuración aplicada entre ellos sea la misma para garantizar la conectividad entre los clientes conectados a los \textit{muxponders}. Así, si se aplica una configuración en un \textit{muxponder}, el controlador deberá consultar y comparar la configuración que llevan los dispositivos vecinos. Si la configuración resulta ser la misma, no se genera ninguna alarma, de lo contrario se deberá generar y registrar una alarma en el controlador indicando una configuración inconsistente entre los dispositivos.
+  \\
 
-  En primer lugar, cuando se llama a la función rpcApplyConfig, el \textit{driver} envía un mensaje al dispositivo con la operación \textit{RPC} que define el módulo \textit{YANG}. El agente YUMA123 recibe este mensaje, lo procesa y aplica la configuración en el equipo haciendo uso de los datos de configuración que tenga el datastore running. Por último, se envía un mensaje con la respuesta de esa operación. 
+  Teniendo en cuenta esto, el diagrama de la figura \ref{fig:actividad_driver_rpc_sin_vecinos} muestra el flujo de actividad que sigue el \textit{driver} cuando recibe una llamada a “mux-apply-config” para el \textit{muxponder} A. 
+  En primer lugar, el \textit{driver} envía un mensaje al dispositivo con la operación \textit{RPC} que define el módulo \textit{YANG}. El agente YUMA123 recibe este mensaje, lo procesa y aplica la configuración en el equipo haciendo uso de los datos de configuración que tenga el \textit{datastore running}. Por último, se envía un mensaje con la respuesta de esa operación.  
 
-  Luego, el \textit{driver} consulta al mismo \textit{muxponder} si tiene algún vecino conectado, como en este caso no se tiene ningún vecino conectado, se eliminan las alarmas (si existe alguna) relacionadas al \textit{muxponder} A con configuración inconsistente entre los vecinos.
+  Luego, el \textit{driver} consulta al mismo \textit{muxponder} si tiene algún vecino conectado. Para este primer caso, el \textit{muxponder} A no tiene especificado ningún vecino, por lo que no se generará alguna alarma sobre configuración inconsistente, de hecho, se verifica que no tenga alarmas de este tipo y de tenerlas se eliminan.
+
 
   \begin{figure}[H]
     \centering
@@ -480,6 +482,9 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
     \label{fig:actividad_driver_rpc_con_vecinos}
   \end{figure}
 
+
+  Por último, es importante mencionar que con el fin de cumplir con el requerimiento R-14 de la figura \ref{fig:req_driver}, se implementaron comandos \textit{CLI} para que el administrador pueda interactuar con los dispositivos a través del \textit{driver}, haciendo uso de la consola de \textit{ONOS}. De esta forma, el administrador puede llamar a cualquiera de las funciones explicadas anteriormente, permitiendole así poder gestionar la configuración de los dispositivos a través de la consola.
+
   \section{Diseño de la interfaz \textit{Northbound} e Interfaz de usuario}
   Para cumplir con los requerimientos del sistema, será necesario crear en primera instancia una interfaz \textit{REST API} a las aplicaciones externas, para que las mismas puedan comunicarse con los dispositivos administrados (\textit{muxponders}) por el controlador. Como se estudió en capítulos anteriores, \textit{ONOS} utiliza una interfaz llamada \textit{Northbound} para comunicarse con la capa de aplicación, por lo que la aplicación \textit{REST} estará ubicada en dicha interfaz. 
 
@@ -487,7 +492,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
 
   \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.65]{Figures/arq-rest-gui.pdf}
+    \includegraphics[scale=0.60]{Figures/arq-rest-gui.pdf}
     \caption{Interfaz \textit{REST} e interfaz de usuario.}
     \label{fig:ubicacionapp}
   \end{figure}
@@ -547,7 +552,7 @@ Se muestra en la figura \ref{fig:rest_capt} un ejemplo de la interfaz \textit{RE
 
 
   \subsection{Implementación de la interfaz de usuario}
-  A fin de cumplir con los requerimientos R-18 a R-23, se realizó una aplicación \textit{WEB} basada en Flask \parencite{flask}. La misma, se desarrolla en Python y hace uso de lenguajes como HTML, JavaScript y CSS para presentar la interfaz de usuario. Cada sección listada en los requerimientos de la figura \ref{fig:req_app}, corresponde a un archivo HTML que contiene la estructura de la aplicación y los datos que se presentan en la interfaz. 
+  A fin de cumplir con los requerimientos R-18 a R-21 de la figura \ref{fig:req_app}, se realizó una aplicación \textit{WEB} basada en Flask \parencite{flask}. La misma, se desarrolla en Python y hace uso de lenguajes como HTML, JavaScript y CSS para presentar la interfaz de usuario. Cada sección listada en los requerimientos de la figura \ref{fig:req_app} (B), corresponde a un archivo HTML que contiene la estructura de la aplicación y los datos que se presentan en la interfaz. 
 
 Es importante mencionar que todas las vistas realizan una tarea común. La misma consiste en consultar periódicamente al controlador, las alarmas activas que tiene \textit{ONOS} relativas a los \textit{muxponders}. Se puede observar el diagrama de actividad de la tarea mencionada en la figura \ref{fig:consulta_alarmas}.
 
@@ -564,7 +569,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
   Teniendo en cuenta esta actividad común, el desarrollo de la \textit{GUI} se divide en las siguientes secciones:
 
   \begin{itemize}
-	\item \textbf{Vista principal}: muestra la cantidad de la alarmas presentes, sin entrar en detalles. A su vez, en la parte inferior de esta vista se permite agregar nuevos dispositivos a la topología, indicando la dirección IP y el puerto. Por último, en la zona superior se brinda un campo donde puede seleccionarse un conjunto de equipos para posteriormente aplicar una configuración con un perfil dado. Se puede observar en la figura \ref{fig:captura_web_principal} la interfaz gráfica que presenta esta vista.
+	\item \textbf{Vista principal}: tal como se puede observar en la figura \ref{fig:captura_web_principal}, esta vista muestra la cantidad de la alarmas presentes en el controlador, sin entrar en detalles. A su vez, en la parte inferior se permite agregar nuevos dispositivos a la topología, indicando la dirección IP y el puerto. Por último, en la zona superior se brinda un campo donde puede seleccionarse un conjunto de equipos para posteriormente aplicar una configuración con un perfil dado. 
 
     \begin{figure}[H]
         \centering
@@ -573,7 +578,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_principal}
       \end{figure}
 
-    Por otra parte, en el diagrama de la figura \ref{fig:agregar_disp_web} se muestra como la aplicación \textit{WEB} conforma un mensaje JSON con la información del equipo (dirección IP, puerto) y la envía al controlador a través de la interfaz\textit{ REST}. Luego, el controlador procesa el mensaje dando inicio al descubrimiento del dispositivo. 
+    Por otra parte, en el diagrama de la figura \ref{fig:agregar_disp_web} se muestra cómo la aplicación \textit{WEB} conforma un mensaje JSON con la información del equipo (dirección IP, puerto) y la envía al controlador a través de la interfaz\textit{ REST}. Luego, el controlador procesa el mensaje dando inicio al descubrimiento del dispositivo. 
 
     \begin{figure}[H]
         \centering
@@ -582,7 +587,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:agregar_disp_web}
       \end{figure}
 
-    Por último, la figura \ref{fig:config_disp_web} muestra como es el proceso de configuración de un \textit{muxponder} a través de la GUI. Primeramente, se envia el perfil de configuración, una vez que la información es almacenada en el \textit{datastore running}, se envía la \textit{RPC} \textit{mux-apply-config} para que se apliquen los cambios en el dispositivo.
+    Por último, la figura \ref{fig:config_disp_web} muestra como es el proceso de configuración de un \textit{muxponder} a través de la aplicación WEB. Primeramente, se envia el perfil de configuración, una vez que la información es almacenada en el \textit{datastore running}, se envía la \textit{RPC} \textit{mux-apply-config} para que se apliquen los cambios en el dispositivo.
 
     \begin{figure}[H]
         \centering
@@ -591,7 +596,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:config_disp_web}
       \end{figure}
 
-    \item \textbf{Vista de alarmas}: muestra una información más detallada de las alarmas. El administrador puede identificar el tipo de alarma, el dispositivo que lo originó y la cantidad de alarmas totales que presenta la topología. El diagrama de actividad que refleja el comportamiento que realiza la interfaz \textit{WEB} en esta sección, se mostró en la figura \ref{fig:consulta_alarmas}. Por otra parte, la figura \ref{fig:captura_web_alarmas} detalla el contenido de dicha sección.
+    \item \textbf{Vista de alarmas}:  la figura \ref{fig:captura_web_alarmas} detalla el contenido de dicha sección. Aquí se muestra una información más detallada de las alarmas. El administrador puede identificar el tipo de alarma, el dispositivo que lo originó y la cantidad de alarmas totales que presenta la topología. El diagrama de actividad que refleja el comportamiento que realiza la interfaz \textit{WEB} en esta sección, se mostró en la figura \ref{fig:consulta_alarmas}.
    
     \begin{figure}[H]
         \centering
@@ -600,7 +605,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_alarmas}
       \end{figure}
     
-    \item \textbf{Vista de datos de configuración}: presenta una sección donde se puede observar una lista de los equipos que conforman la topología con sus respectivas configuraciones aplicadas. La figura \ref{fig:captura_web_config} muestra esta sección. 
+    \item \textbf{Vista de datos de configuración}: la interfaz que presenta la misma es la que se observa en la figura \ref{fig:captura_web_config}. Presenta así una sección donde se puede observar una lista de los equipos que conforman la topología con sus respectivas configuraciones aplicadas. 
         
     \begin{figure}[H]
         \centering
@@ -609,7 +614,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_config}
       \end{figure}
 
-    \item \textbf{Vista de datos de estado}: de forma similar a la vista anterior, se muestra en esta sección información relacionada a los datos de estado de los equipos. A continuación, se muestra la figura \ref{fig:captura_web_estado} la interfaz que presenta esta vista, donde se puede observar en la misma los diferentes containers de estado que se implementaron en el modulo \textit{YANG}.
+    \item \textbf{Vista de datos de estado}: a continuación, se muestra la figura \ref{fig:captura_web_estado} la interfaz que presenta esta vista. De forma similar a la anterior, aquí se muestra información relacionada a los datos de estado de los equipos. En la parte superior se puede observar los diferentes \textit{containers} de estado que se implementaron en el modulo \textit{YANG}.  
     
     \begin{figure}[H]
         \centering
@@ -618,7 +623,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_estado}
       \end{figure}
 
-    \item \textbf{Vista de topología}: permite realizar cambios en la topología de la red a través de mensajes \textit{NETCONF} a los dispositivos. Así, se puede especificar una pareja de equipos para que el controlador, mediante la función LinkDiscovery, pueda formar o eliminar los enlaces entre los mismos. Dicha vista se muestra en la figura \ref{fig:captura_web_topo}. 
+    \item \textbf{Vista de topología}: tal como se observa en la figura \ref{fig:captura_web_topo}, aquí se permite realizar cambios en la topología de la red a través de mensajes \textit{NETCONF} a los dispositivos. Así, se puede especificar una pareja de equipos para que el controlador, mediante la función LinkDiscovery, pueda formar o eliminar los enlaces entre los mismos.
     
     \begin{figure}[H]
         \centering
@@ -627,7 +632,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_topo}
       \end{figure}
     
-    \item \textbf{Vista de perfiles}: por último, en esta vista se muestra una sección donde se permite agregar o eliminar perfiles de configuración. La idea básica de los perfiles de configuración, es la de agrupar una serie de parámetros de tal forma que el administrador pueda identificar fácilmente cuál será la configuración que se aplique en el dispositivo. Además, permite guardar dicho perfil con el fin de poder reutilizarlo en un futuro. En la figura \ref{fig:captura_web_topo}, se presenta finalmente la interfaz de esta sección.
+    \item \textbf{Vista de perfiles}: por último, en la figura \ref{fig:captura_web_topo} se presenta una sección donde se permite agregar o eliminar perfiles de configuración. La idea básica de los perfiles de configuración, es la de agrupar una serie de parámetros de tal forma que el administrador pueda identificar fácilmente cuál será la configuración que se aplique en el dispositivo. Además, permite guardar dicho perfil con el fin de poder reutilizarlo en un futuro. 
 
     \begin{figure}[H]
         \centering

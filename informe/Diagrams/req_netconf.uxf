@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
@@ -13,7 +12,7 @@
 *Adaptar NETCONF al equipo*
 --
 id: R-07
-Se debe instalar algún agente 
+Se deberá instalar algún agente 
 del protocolo en el dispositivo.</panel_attributes>
     <additional_attributes/>
   </element>
@@ -64,7 +63,7 @@ el protocolo NETCONF.</panel_attributes>
 --
 id: R-09
 Las alarmas emitidas por el dispositivo
-deberan notificarse mediante el 
+deberán notificarse mediante el 
 protocolo NETCONF.</panel_attributes>
     <additional_attributes/>
   </element>

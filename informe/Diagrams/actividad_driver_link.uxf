@@ -42,7 +42,7 @@
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-m2=no finalizo el intercambio</panel_attributes>
+m2=no finalizó el intercambio</panel_attributes>
     <additional_attributes>90.0;10.0;160.0;10.0;160.0;90.0;10.0;90.0</additional_attributes>
   </element>
   <element>
@@ -55,7 +55,7 @@ m2=no finalizo el intercambio</panel_attributes>
     </coordinates>
     <panel_attributes>Verificar que el intercambio
 de capacidades entre cliente
-y servidor finalizo</panel_attributes>
+y servidor finalizó</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -88,7 +88,7 @@ y servidor finalizo</panel_attributes>
       <w>230</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>Enviar operacion GET-CONFIG
+    <panel_attributes>Enviar operación GET-CONFIG
 a los datos: port, neighbor
 y port_neighbor</panel_attributes>
     <additional_attributes/>
@@ -101,7 +101,7 @@ y port_neighbor</panel_attributes>
       <w>180</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>m2=finalizo el intercambio
+    <panel_attributes>m2=finalizó el intercambio
 lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
@@ -216,7 +216,7 @@ cli-mxp</panel_attributes>
       <w>170</w>
       <h>120</h>
     </coordinates>
-    <panel_attributes>m2=llamada al modulo
+    <panel_attributes>m2=llamada al módulo
 lt=&lt;-</panel_attributes>
     <additional_attributes>60.0;100.0;60.0;10.0;10.0;10.0</additional_attributes>
   </element>

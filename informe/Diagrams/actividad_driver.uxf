@@ -31,7 +31,7 @@
       <h>60</h>
     </coordinates>
     <panel_attributes>Procesar el mensaje 
-JSON con informacion
+JSON con información
 del dispositivo</panel_attributes>
     <additional_attributes/>
   </element>
@@ -54,7 +54,7 @@ del dispositivo</panel_attributes>
       <w>190</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>Iniciar sesion SSH del 
+    <panel_attributes>Iniciar sesión SSH del 
 protocolo NETCONF</panel_attributes>
     <additional_attributes/>
   </element>
@@ -114,7 +114,7 @@ type=decision</panel_attributes>
       <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-m2=no finalizo el intercambio</panel_attributes>
+m2=no finalizó el intercambio</panel_attributes>
     <additional_attributes>70.0;10.0;140.0;10.0;140.0;100.0;10.0;100.0</additional_attributes>
   </element>
   <element>
@@ -127,7 +127,7 @@ m2=no finalizo el intercambio</panel_attributes>
     </coordinates>
     <panel_attributes>Verificar que el intercambio
 de capacidades entre cliente
-y servidor finalizo</panel_attributes>
+y servidor finalizó</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -160,7 +160,7 @@ y servidor finalizo</panel_attributes>
       <w>210</w>
       <h>80</h>
     </coordinates>
-    <panel_attributes>Enviar operacion GET
+    <panel_attributes>Enviar operación GET
 a los datos: fabricante,
 version de hw y sw, alarmas
 presentes e identificador 
@@ -175,7 +175,7 @@ unico del equipo</panel_attributes>
       <w>180</w>
       <h>60</h>
     </coordinates>
-    <panel_attributes>m1=finalizo el intercambio
+    <panel_attributes>m1=finalizó el intercambio
 lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
   </element>
@@ -256,7 +256,7 @@ mensaje</panel_attributes>
       <w>170</w>
       <h>120</h>
     </coordinates>
-    <panel_attributes>m2=llamada al modulo
+    <panel_attributes>m2=llamada al módulo
 lt=&lt;-</panel_attributes>
     <additional_attributes>60.0;100.0;60.0;10.0;10.0;10.0</additional_attributes>
   </element>
@@ -313,7 +313,7 @@ cli-mxp</panel_attributes>
       <w>210</w>
       <h>70</h>
     </coordinates>
-    <panel_attributes>Registrar informacion
+    <panel_attributes>Registrar información
 sobre el dispositivo
 en el controlador</panel_attributes>
     <additional_attributes/>
@@ -371,7 +371,7 @@ en el controlador</panel_attributes>
       <w>80</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>finalizo?
+    <panel_attributes>finalizó?
 style=wordwrap</panel_attributes>
     <additional_attributes/>
   </element>

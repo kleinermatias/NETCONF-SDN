@@ -9,13 +9,13 @@
       <h>150</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Seccion de visualizacion*
+*Sección de visualización*
 *de alarmas en la GUI*
 --
 id: R-18
-Se debera poder visualizar en una 
-seccion de la aplicacion web, las 
-alarmas activadas en los dispositivos</panel_attributes>
+Se deberá poder visualizar en una 
+sección de la aplicacion web, las 
+alarmas activadas en los dispositivos.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -27,14 +27,14 @@ alarmas activadas en los dispositivos</panel_attributes>
       <h>150</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Seccion de visualizacion*
-*de la configuracion en la GUI*
+*Sección de visualización*
+*de la configuración en la GUI*
 --
 id: R-19
-Se debera poder visualizar en una 
-seccion de la aplicacion web, la
-configuracion aplicada en los 
-equipos</panel_attributes>
+Se deberá poder visualizar en una 
+sección de la aplicacion web, la
+configuración aplicada en los 
+equipos.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -46,15 +46,15 @@ equipos</panel_attributes>
       <h>160</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Seccion de cambios*
-*de configuracion en la GUI*
+*Sección de cambios*
+*de configuración en la GUI*
 --
 id: R-20
 La aplicacion web debe contar
-con una seccion donde se pueda
-cambiar la configuracion de los 
+con una sección donde se pueda
+cambiar la configuración de los 
 muxponders mediante perfiles de
-configuracion</panel_attributes>
+configuración.</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -66,14 +66,14 @@ configuracion</panel_attributes>
       <h>160</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Requerimiento&gt;&gt;
-*Seccion de visualizacion*
+*Sección de visualización*
 *de los datos de estado en la GUI*
 --
 id: R-21
 Todos los datos de estado de 
 los equipos se deben poder 
 visualizar en una seccion de 
-la aplicacion web</panel_attributes>
+la aplicacion web.</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
