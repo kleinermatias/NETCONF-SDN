@@ -5,23 +5,51 @@
 \label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
 % cSpell:enable
-% cSpell:words resizebox onosapi usecase Mcast enrutamiento parencite includegraphics pcktprocactiv lstlisting createmcast ssmprotocol
+% cSpell:words resizebox \textit{onosapi} usecase Mcast enrutamiento parencite includegraphics pcktprocactiv lstlisting createmcast ssmprotocol
 
 En el capítulo anterior se explica y caracteriza el diseño de las diferentes aplicaciones que conforman el sistema. A fines de validar su funcionamiento, será necesario poner a prueba los requerimientos de cada una de las aplicaciones desarrolladas. 
 
-De esta forma, este capítulo propone una serie de casos de prueba determinantes para verificar el funcionamiento del proyecto. En primer lugar, se pondrá a prueba la integración del protocolo NETCONF en el dispositivo. Luego, se verifica el funcionamiento del driver desarrollado en el controlador ONOS. Por último, se pone a prueba tanto la interfaz REST como la interfaz gráfica desarrollada.
+De esta forma, este capítulo propone una serie de casos de prueba determinantes para verificar el funcionamiento del proyecto. 
+
+En primer lugar, se pondrá a prueba el agente YUMA123 instalado en el dispositivo. Luego, se verifica el funcionamiento del \textit{driver} desarrollado en el controlador \textit{ONOS}. Por último, se pone a prueba tanto la interfaz \textit{REST} como la interfaz gráfica desarrollada.
 
 %----------------------------------------------------------------------------------------
 %	SECTION 1
 %----------------------------------------------------------------------------------------
 
-\section{Verificación del protocolo NETCONF}
+\section{Verificación del agente \textit{NETCONF}}
 
-En esta sección se pondrá a prueba el agente YUMA123 que se instaló en el dispositivo. Para ello, las evaluaciones realizadas tendrán como objetivo asegurar el cumplimiento de los requerimientos vistos en la figura \ref{fig:req_netconf}.
+En esta sección se pondrá a prueba el agente que se instaló en el dispositivo. Para ello, las evaluaciones realizadas tendrán como objetivo asegurar el cumplimiento de los requerimientos vistos en la figura \ref{fig:req_netconf}.
+
+\subsection{Escenario}
+
+La figura \ref{fig:test_topo_netconf} muestra la topología utilizada para las pruebas. Se tendrá una computadora de propósito general conectada a la interfaz de control del \textit{muxponder}. Por otra parte, el \textit{muxponder} ejecutará el agente 'netconfd' de YUMA123 mientras que el \textit{host} ejecutará el cliente yangcli, también de YUMA123.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.8]{Figures/topologiatestnetconf.pdf}
+	\caption{Topología utilizada para las pruebas relativas a la integración del protocolo \textit{NETCONF}.}
+	\label{fig:test_topo_netconf}
+  \end{figure}
+
+  \newpage
+
+Además, para poder poner a prueba la integración del protocolo con el dispositivo se realizan las siguientes suposiciones y condiciones previas:
+
+\begin{itemize}
+	\item El \textit{host} y el \textit{muxponder} deben tener conectividad entre sí.
+    \item Se debe tener instalado en el \textit{host}, el cliente yangcli.
+    \item Tener instalado en el \textit{muxponder}, el agente 'netconfd'.
+    \item Tanto el módulo \textit{YANG} como la librería desarrollada para el \textit{muxponder}, deben estar instalados en el mismo.
+    \item La aplicación 'monitor' debe estar iniciada en el \textit{muxponder}.
+    \item El equipo no debe tener ninguna configuración previa aplicada.
+\end{itemize}
 
 \subsection{Matriz de trazabilidad}
 
-Se conformarán tres casos de pruebas. El primero tiene como objetivo verificar el inicio de sesión entre el cliente y el servidor NETCONF. Por otra parte, la segunda prueba consiste en obtener el valor de cualquier variable visible en “monitor”. Por último, se pone a prueba realizar un cambio en la configuración del equipo.
+Se conformarán tres casos de pruebas. El primero tiene como objetivo verificar el inicio de sesión entre el cliente y el servidor \textit{NETCONF}. 
+
+Por otra parte, la segunda prueba consiste en obtener el valor de cualquier variable visible en 'monitor'. Por último, se pone a prueba realizar un cambio en la configuración del equipo.
 
 De esta forma, la matriz de trazabilidad resultante es la que se observa en el cuadro \ref{tab:matriz_netconf}.
 
@@ -35,91 +63,67 @@ De esta forma, la matriz de trazabilidad resultante es la que se observa en el c
     \textbf{R-09} & \textit{}       & \textit{}       & \textit{X}      \\ \hline
     \textbf{R-10} & \textit{}       & \textit{}       & \textit{X}      \\ \hline
     \end{tabular}
-    \caption{Matriz de trazabilidad - Verificación del protocolo NETCONF}
+    \caption{Matriz de trazabilidad - Verificación del protocolo \textit{NETCONF}}
     \label{tab:matriz_netconf}
 \end{table}
-
-\subsection{Escenario}
-
-La figura \ref{fig:test_topo_netconf} muestra la topología utilizada para las pruebas. Se tendrá una computadora de propósito general conectada a la interfaz de control del muxponder. Por otra parte, el muxponder ejecutará el agente netconfd de YUMA123 mientras que el host ejecutará el cliente yangcli, también de YUMA123.
-
-\begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.8]{Figures/topologiatest.pdf}
-	\caption{Topología utilizada para las pruebas relativas a la integración del protocolo NETCONF.}
-	\label{fig:test_topo_netconf}
-  \end{figure}
-
-
-Además, para poder poner a prueba la integración del protocolo con el dispositivo se realizan las siguientes suposiciones y condiciones previas:
-
-\begin{itemize}
-	\item El host y el muxponder deben tener conectividad entre sí.
-    \item Se debe tener instalado en el host, el cliente yangcli.
-    \item Tener instalado en el muxponder, el agente netconfd.
-    \item Tanto el módulo YANG como la librería desarrollada para el muxponder, deben estar instalados en el mismo.
-    \item La aplicación “monitor” debe estar iniciada en el muxponder.
-    \item El equipo no tiene ninguna configuración previa aplicada.
-\end{itemize}
 
 
 \subsection{Casos de prueba y resultados}
 
-A continuación, se proponen una serie de cuadros que presentan la descripción de los procedimientos llevados a cabo para probar los requerimientos de esta pieza de software. Algunos de los casos de pruebas pueden estar acompañados por imágenes para esclarecer su funcionamiento.
+A continuación, se describirán los procedimientos llevados a cabo para probar esta pieza de \textit{software}. Algunos de los casos de pruebas pueden estar acompañados por imágenes para esclarecer su funcionamiento.
 
+%----------------------------------------------------------------------------------------
 \subsubsection{Caso de Prueba T-R-01}
-Se pondrá a prueba el inicio de la sesión NETCONF entre el cliente y el servidor. La figura \ref{fig:test1} presenta la descripción, los procedimientos y los resultados del mismo. 
+Se pondrá a prueba el inicio de la sesión \textit{NETCONF} entre el cliente y el servidor. La figura \ref{fig:test1} presenta la descripción, los procedimientos y los resultados del mismo. 
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test_uno.png}
-	\caption{Prueba de inicio de sesión.}
+	\caption{Caso de Prueba T-R-01.}
 	\label{fig:test1}
   \end{figure}
 
 
-
+%----------------------------------------------------------------------------------------
   \subsubsection{Caso de Prueba T-R-02}
-  En este caso, se pone a prueba las consultas por los datos de estado y de configuración del módulo YANG. Los procedimientos para esta prueba y sus resultados se presentan en la figura \ref{fig:test2}. 
-
-
+  En este caso, se pone a prueba las consultas por los datos de estado y de configuración del módulo \textit{YANG}. Los procedimientos para esta prueba y sus resultados se presentan en la figura \ref{fig:test2}. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test2.png}
-	\caption{Prueba de monitoreo de datos.}
+	\caption{Caso de Prueba T-R-02.}
 	\label{fig:test2}
   \end{figure}
 
-  Por otra parte, la figura \ref{fig:test2_consulta} ejemplifica el resultado de una operación de consulta al container mux-state-XFP1, el cual contiene información de estado de dicho módulo XFP.
-
+  Por otra parte, la figura \ref{fig:test2_consulta} ejemplifica el resultado de una operación de consulta al \textit{container} \textit{mux-state-XFP1}, el cual contiene información de estado de dicho módulo XFP.
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test2_consulta.png}
-	\caption{Monitoreo de datos de estado del container mux-state-XFP1.}
+	\caption{Consulta al \textit{container} \textit{mux-state-XFP1}.}
 	\label{fig:test2_consulta}
   \end{figure}
 
 
+  %----------------------------------------------------------------------------------------
   \subsubsection{Caso de Prueba T-R-03}
-  Del mismo modo, la figura \ref{fig:test3} detalla los procedimientos que se siguieron para verificar el funcionamiento de la RPC “mux-apply-config” y las notificaciones. Cabe destacar que como se aclaró en las suposiciones para las pruebas, el equipo no se encuentra configurado, por lo que tendrán alarmas referidas a la transmisión y la recepción, entre otras. 
+  Del mismo modo, la figura \ref{fig:test3} detalla los procedimientos que se siguieron para verificar el funcionamiento de la  \textit{RPC} 'mux-apply-config' y las notificaciones. Cabe destacar que como se aclaró en las suposiciones para las pruebas, el equipo no se encuentra configurado. Por lo tanto se tendrán alarmas referidas a la transmisión y la recepción, entre otras. 
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test3.png}
-	\caption{Prueba de cambio de configuración y notificaciones.}
+	\caption{Caso de Prueba T-R-03.}
 	\label{fig:test3}
   \end{figure}
 
-  La figura \ref{fig:test3_consulta} muestra en primer lugar cómo el cliente se suscribe a las notificaciones mediante la RPC create-suscription. Luego, se puede observar el envío de la RPC mux-apply-config. Seguidamente se muestran las notificaciones entrantes, producto del cambio de estado de las alarmas presentes en el equipo.
+  La figura \ref{fig:test3_consulta} muestra en primer lugar cómo el cliente se suscribe a las notificaciones mediante la  \textit{RPC} create-suscription. Luego, se puede observar el envío de la  \textit{RPC} 'mux-apply-config'. Seguidamente se muestran las notificaciones entrantes, producto del cambio de estado de las alarmas presentes en el equipo.
   
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test3_consulta.png}
-	\caption{Suscripción y RPC mux-apply-config.}
+	\caption{Suscripción y  \textit{RPC} 'mux-apply-config'.}
 	\label{fig:test3_consulta}
   \end{figure}
 
@@ -129,18 +133,40 @@ Se pondrá a prueba el inicio de la sesión NETCONF entre el cliente y el servid
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 
-\section{Verificación del driver}
+\section{Verificación del \textit{driver}}
 
-A continuación, en esta sección se pondrá a prueba el driver desarrollado para el controlador ONOS. Los requerimientos los cuales se deben asegurar su cumplimiento son los que se observan en la figura \ref{fig:req_driver}. 
+A continuación, en esta sección se pondrá a prueba el \textit{driver} desarrollado para el controlador \textit{ONOS}. Los requerimientos los cuales se deben asegurar su cumplimiento son los que se observan en la figura \ref{fig:req_driver}. 
 
+\subsection{Escenario}
+
+En este caso, la topología utilizada para las pruebas es la que se muestra en la figura \ref{fig:test_topo_driver}. Se tendrán dos \textit{muxponders} conectados entre sí a través de las interfaces de línea de los mismos. Por otra parte, el controlador \textit{ONOS} estará conectado a la interfaz de control de ambos dispositivos. 
+
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.8]{Figures/topologiatestdriver.pdf}
+	\caption{Topología utilizada para las pruebas relativas al \textit{driver}.}
+	\label{fig:test_topo_driver}
+  \end{figure}
+
+
+  Además, se realizan las siguientes suposiciones:
+
+\begin{itemize}
+	\item Los agentes 'netconfd' se encuentran iniciados en ambos dispositivos.
+    \item Tanto el módulo \textit{YANG} como la librería en C desarrollada para los \textit{muxponders}, están instaladas en los mismos.
+    \item La aplicación 'monitor' está iniciada en ambos \textit{muxponders}.
+    \item Los dispositivos no tienen una configuración previa instalada. 
+    \item Los equipos no tienen información relacionada a la presencia de vecinos.
+\end{itemize}
 
 \subsection{Matriz de trazabilidad}
 
-A fines de poner a prueba el cumplimiento de los requerimientos para esta pieza de software, se desarrollan dos casos de prueba. 
+A fines de poner a prueba el cumplimiento de los requerimientos para esta pieza de \textit{software}, se desarrollan dos casos de prueba. 
 
-En el primero, se verifica que el controlador sea capaz de descubrir correctamente la información de los dispositivos agregados a la topología. 
+En el primero, se verifica que el controlador sea capaz de descubrir correctamente la información de los dispositivos agregados a la topología, a través de la función \textit{DeviceDescriptionDiscovery}. 
 
-La segunda prueba abarca la verificación tanto de la función LinkDiscovery como la RPC mux-apply-config. Además, para ambas pruebas se utilizan los comandos CLI implementados en el driver.
+La segunda prueba abarca la verificación tanto de la función \textit{LinkDiscovery} como la  \textit{RPC} 'mux-apply-config'. Además, para ambas pruebas se utilizan los comandos \textit{CLI} implementados en el \textit{driver}.
 
 De esta forma, resulta la matriz de trazabilidad que se observa en el cuadro \ref{tab:matriz_driver}.
 
@@ -155,294 +181,280 @@ De esta forma, resulta la matriz de trazabilidad que se observa en el cuadro \re
         \textbf{R-13} & \textit{}       & \textit{X}      \\ \hline
         \textbf{R-14} & \textit{X}      & \textit{X}      \\ \hline
         \end{tabular}
-    \caption{Matriz de trazabilidad - Verificación del driver}
+    \caption{Matriz de trazabilidad - Verificación del \textit{driver}}
     \label{tab:matriz_driver}
 \end{table}
 
-\subsection{Escenario}
-
-En este caso, la topología utilizada para las pruebas es la que se muestra en la figura \ref{fig:test_topo_netconf}. Se tendrán dos muxponders conectados entre sí a través de las interfaces de línea de los mismos. Por otra parte, el controlador ONOS estará conectado a la interfaz de control de ambos dispositivos. 
-
-
-\begin{figure}[!h]
-	\centering
-	\includegraphics[scale=0.8]{Figures/topologiatest.pdf}
-	\caption{Topología utilizada para las pruebas relativas al driver.}
-	\label{fig:test_topo_netconf}
-  \end{figure}
-
-
-  Además, se realizan las siguientes suposiciones:
-
-\begin{itemize}
-	\item Los agentes netconfd se encuentran iniciados en ambos dispositivos.
-    \item Tanto el módulo YANG como la librería en C desarrollada para los muxponders, están instaladas en los mismos.
-    \item La aplicación “monitor” está iniciada en ambos muxponders.
-    \item Los dispositivos no tienen una configuración previa instalada. 
-    \item Los equipos no tienen información relacionada a la presencia de vecinos.
-\end{itemize}
-
-
 \subsection{Casos de prueba y resultados}
 
+  %----------------------------------------------------------------------------------------
 \subsubsection{Caso de Prueba T-R-04}
 
-Se pondrá a prueba la función llamada “DeviceDescriptionDiscovery”, la cual como se explicó en el capítulo anterior, es la encargada de registrar en el controlador información adicional de los equipos. Tanto la descripción como los procedimientos llevados a cabo y los resultados de los mismos se presentan en el cuadro [x]. 
+Se pondrá a prueba la función llamada \textit{DeviceDescriptionDiscovery}, la cual como se explicó en el capítulo anterior, es la encargada de registrar en el controlador información adicional de los equipos. Tanto la descripción como los procedimientos llevados a cabo y los resultados de los mismos se presentan en la figura \ref{fig:test4}. 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test4.png}
-	\caption{Prueba de DeviceDescriptionDiscovery.}
-	\label{fig:test2}
+	\caption{Caso de Prueba T-R-04.}
+	\label{fig:test4}
   \end{figure}
 
-  Se observa en la figura \ref{fig:test4_consulta} los dispositivos agregados a la topología de ONOS. Al hacer click sobre cualquier de ellos, el controlador despliega un cuadro del dispositivo seleccionado mostrando la información mencionada anteriormente.
+  Por otra parte, la figura \ref{fig:test4_consulta} muestra los dispositivos agregados a la topología de \textit{ONOS}. Al hacer click sobre cualquier de ellos, el controlador despliega un cuadro del dispositivo seleccionado mostrando la información mencionada anteriormente.
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Figures/test4_consulta.png}
-	\caption{Dispositivos presentes en la topología de ONOS.}
+	\caption{Información de dispositivos presentes en la topología de \textit{ONOS}.}
 	\label{fig:test4_consulta}
   \end{figure}
 
-
+  %----------------------------------------------------------------------------------------
   \subsubsection{Caso de Prueba T-R-05}
 
-  Este caso pone a prueba tanto la función “LinkDiscovery”, la cual es la encargada de formar los enlaces entre los distintos dispositivos, como la RPC mux-apply-config. 
-  En el cuadro [x] se detalla la descripción del caso de prueba mencionado. Se asumirá que los dispositivos ya se encuentran añadidos al controlador.
+  Este caso pone a prueba tanto la función \textit{LinkDiscovery} la cual es la encargada de formar los enlaces entre los distintos dispositivos, como la  \textit{RPC} 'mux-apply-config'. 
+  En la figura \ref{fig:test5} se detalla la descripción del caso de prueba mencionado. Se asumirá que los dispositivos ya se encuentran añadidos al controlador.
   
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test5.png}
-	\caption{Prueba de LinkDiscovery y mux-apply-config.}
+	\caption{Caso de Prueba T-R-05.}
 	\label{fig:test5}
   \end{figure}
 
-  La figura X muestra la topología presente en el controlador una vez se le indicó a cada dispositivo la presencia de un vecino. Como se puede notar, el controlador no forma los enlaces entre los mismos ya que los dispositivos contienen alarmas debido a que no están configurados. 
+  La figura \ref{fig:test5_1} muestra la topología presente en el controlador una vez se le indicó a cada dispositivo la presencia de un vecino. Como se puede notar, el controlador no forma los enlaces entre los mismos ya que los dispositivos contienen alarmas debido a que no están configurados. 
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Figures/test5_1.png}
-	\caption{Dispositivos presentes en la topología de ONOS.}
-	\label{fig:test4_consulta}
+	\caption{Vista de la topología de \textit{ONOS} - Dispositivos sin configurar.}
+	\label{fig:test5_1}
   \end{figure}
 
-  A su vez, en la figura x se observa que una vez aplicada la configuración en ambos dispositivos, la cantidad de alarmas presentes se reducen, y al no existir alarmas referidas a la transmisión y recepción de los equipos el controlador puede formar correctamente el enlace entre los mismos. 
+  A su vez, en la figura \ref{fig:test5_2} se observa que una vez aplicada la configuración en ambos dispositivos, la cantidad de alarmas presentes se reducen. Luego, al no existir alarmas referidas a la transmisión y recepción de los equipos, el controlador puede formar correctamente el enlace entre los mismos. 
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Figures/test5_2.png}
-	\caption{Dispositivos presentes en la topología de ONOS.}
-	\label{fig:test4_consulta}
+	\caption{Vista de la topología de \textit{ONOS} - Dispositivos configurados.}
+	\label{fig:test5_2}
   \end{figure}
 
-  Por último, la figura X ejemplifica lo que sucede cuando se desconecta el transmisor en alguno de los dispositivos, provocando la caída de un enlace en la topología de ONOS.
+  Por último, la figura \ref{fig:test5_3} ejemplifica lo que sucede cuando se desconecta el transmisor en alguno de los dispositivos, provocando así la caída de un enlace en la topología de \textit{ONOS}.
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Figures/test5_3.png}
-	\caption{Dispositivos presentes en la topología de ONOS.}
-	\label{fig:test4_consulta}
+	\caption{Vista de la topología de \textit{ONOS} - Dispositivos configurados, con un enlace desconectado.}
+	\label{fig:test5_3}
   \end{figure}
 
 
 
-    %----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
 %	SECTION 3
 %----------------------------------------------------------------------------------------
 
-\section{Verificación de la interfaz gráfica y la interfaz REST}
+\section{Verificación de la interfaz gráfica y la interfaz \textit{REST}}
 
-Finalmente, en esta sección se pondrán a prueba ambas interfaces desarrolladas. Para ello, las pruebas realizadas tendrán como objetivo validar el cumplimiento de los requerimientos vistos en la figura [x]. 
+Finalmente, en esta sección se pondrán a prueba ambas interfaces desarrolladas. Para ello, las pruebas realizadas tendrán como objetivo validar el cumplimiento de los requerimientos vistos en la figura \ref{fig:req_app}. 
 
-Además, los casos de prueba presentados a continuación harán uso tanto del driver como de la aplicación C desarrollada para el agente NETCONF.
+Además, los casos de prueba presentados a continuación harán uso tanto del \textit{driver} como de la aplicación C desarrollada para el agente \textit{NETCONF}.
 
-
-\subsection{Matriz de trazabilidad}
-
-Se presenta a continuación en el cuadro [x] la matriz de trazabilidad para las pruebas realizadas. 
-En la primer prueba, se verifica poder agregar dispositivos a través de la interfaz gráfica y configurar ambos como vecinos. 
-Luego, se verifica en la prueba T-R-07 que puedan visualizarse las alarmas en la aplicación WEB.
-Por otra parte, en la prueba T-R-08 se verifica que sea posible visualizar haciendo uso de la interfaz gráfica, cualquier dato de estado de los dispositivos.
-Por último se prueba realizar un cambio en la configuración en los dispositivos de tal forma que se permita la conectividad entre los host.
-
-
-
-\begin{table}[!h]
-    \centering
-    \begin{tabular}{|c|c|c|}
-        \hline
-        \textbf{}     & \textbf{T-R-04} & \textbf{T-R-05} \\ \hline
-        \textbf{R-11} & \textit{X}      & \textit{}       \\ \hline
-        \textbf{R-12} & \textit{}       & \textit{X}      \\ \hline
-        \textbf{R-13} & \textit{}       & \textit{X}      \\ \hline
-        \textbf{R-14} & \textit{X}      & \textit{X}      \\ \hline
-        \end{tabular}
-    \caption{Matriz de trazabilidad - Verificación del driver}
-    \label{tab:matriz_driver}
-\end{table}
 
 \subsection{Escenario}
 
-La topología utilizada para las pruebas mencionadas anteriormente, es la que se muestra en la figura [x]. 
-Se tendrán dos muxponders conectados entre sí a través de las interfaces de línea de los mismos. Además, el controlador ONOS estará conectado a la interfaz de control de ambos dispositivos. Por último, se tienen dos computadoras de propósito general conectadas a los módulos XFP1 de los muxponders.
+La topología utilizada para las pruebas mencionadas anteriormente, es la que se muestra en la figura \ref{fig:test_topo_rest}. 
+Se tendrán dos \textit{muxponders} conectados entre sí a través de las interfaces de línea de los mismos. 
+
+Además, el controlador \textit{ONOS} estará conectado a la interfaz de control de ambos dispositivos. Por último, se tienen dos computadoras de propósito general conectadas a los módulos XFP1 de los \textit{muxponders}.
 
 
 
-\begin{figure}[!h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.8]{Figures/topologiatest.pdf}
-	\caption{Topología utilizada para las pruebas relativas al driver.}
-	\label{fig:test_topo_netconf}
+	\caption{Topología utilizada para las pruebas relativas a la interfaz gráfica e interfaz \textit{REST}.}
+	\label{fig:test_topo_rest}
   \end{figure}
 
 
   Además, se realizan las siguientes suposiciones:
 
 \begin{itemize}
-	\item Los agentes netconfd se encuentran iniciados en ambos dispositivos.
-    \item Tanto el módulo YANG como la librería en C desarrollada para los muxponders, están instaladas en los mismos.
-    \item La aplicación “monitor” está iniciada en ambos muxponders.
+	\item Los agentes 'netconfd' se encuentran iniciados en ambos dispositivos.
+    \item Tanto el módulo \textit{YANG} como la librería en C desarrollada para los \textit{muxponders}, están instaladas en los mismos.
+    \item La aplicación 'monitor' está iniciada en ambos \textit{muxponders}.
     \item Los dispositivos no tienen una configuración previa instalada. 
     \item Los equipos no tienen información relacionada a la presencia de vecinos.
 \end{itemize}
+
+
+\subsection{Matriz de trazabilidad}
+
+Se presenta a continuación en el cuadro \ref{tab:matriz_rest} la matriz de trazabilidad para las pruebas realizadas. 
+
+En la primer prueba, se verifica poder agregar dispositivos a través de la interfaz gráfica y configurar a ambos como vecinos. 
+Luego, se verifica en la prueba T-R-07 que puedan visualizarse las alarmas en la aplicación \textit{WEB}.
+Por otra parte, en la prueba T-R-08 se verifica que sea posible visualizar, a través de la interfaz gráfica, cualquier dato de estado de los dispositivos.
+Por último se prueba realizar un cambio en la configuración en los dispositivos de tal forma que se permita la conectividad entre los \textit{host} A y B.
+\\
+
+
+\begin{table}[!h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \textbf{}     & \textbf{T-R-06} & \textbf{T-R-07}    & \textbf{T-R-08} & \textbf{T-R-09} \\ \hline
+      \textbf{R-15} & \textit{}       & \textit{X}         & \textit{X}      & \textit{X}      \\ \hline
+      \textbf{R-16} & \textit{X}      & \textit{}          & \textit{}       & \textit{X}      \\ \hline
+      \textbf{R-17} & \textit{}       & \textit{\textbf{}} & \textit{}       & \textit{X}      \\ \hline
+      \textbf{R-18} & \textit{}       & \textit{X}         & \textit{}       & \textit{}       \\ \hline
+      \textbf{R-19} & \textit{X}      & \textit{}          & \textit{}       & \textit{X}      \\ \hline
+      \textbf{R-20} & \textit{}       & \textit{}          & \textit{}       & \textit{X}      \\ \hline
+      \textbf{R-21} & \textit{}       & \textit{}          & \textit{X}      & \textit{}       \\ \hline
+      \end{tabular}
+    \caption{Matriz de trazabilidad - Verificación del \textit{driver}}
+    \label{tab:matriz_rest}
+\end{table}
 
 
 \subsection{Casos de prueba y resultados}
 
 \subsubsection{Caso de Prueba T-R-06}
 
-A continuación, se pondrá a prueba agregar nuevos dispositivos a la topología del controlador desde la interfaz gráfica y configurar a los mismos como vecinos. Los procedimientos llevados a cabo para dicha prueba se observan en el cuadro [x].
+A continuación, se pondrá a prueba agregar nuevos dispositivos a la topología del controlador desde la interfaz gráfica y configurarlos como vecinos. Los procedimientos llevados a cabo para dicha prueba se observan en la figura \ref{fig:test6}.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test6.png}
-	\caption{Prueba de DeviceDescriptionDiscovery.}
-	\label{fig:test2}
+	\caption{Caso de Prueba T-R-06.}
+	\label{fig:test6}
   \end{figure}
 
 
 
   \subsubsection{Caso de Prueba T-R-07}
 
-El objetivo del caso de prueba presentado en el cuadro [x], es el de verificar que la interfaz gráfica presente de forma correcta la información relacionada a las alarmas en los dispositivos. 
-Se hará uso tanto de la aplicación “monitor” como de los comandos “alarms” y “alarms-count” de ONOS para validar las alarmas presentes.
+El objetivo del caso de prueba presentado en el cuadro \ref{fig:test7}, es el de verificar que la interfaz gráfica presente de forma correcta la información relacionada a las alarmas en los dispositivos. 
+Se hará uso tanto de la aplicación 'monitor' como de los comandos '\textit{alarms}' y '\textit{alarms-count}' de \textit{ONOS} para validar las alarmas presentes.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Figures/test7.png}
-	\caption{Prueba de DeviceDescriptionDiscovery.}
-	\label{fig:test2}
+	\caption{Caso de Prueba T-R-07.}
+	\label{fig:test7}
   \end{figure}
 
-  Tal y como se puede ver en la figura [x], se tienen 12 alarmas presentes referidas a los módulos XFP2, XFP3 y XFP4 de ambos dispositivos.
+  Tal como se puede ver en la figura \ref{fig:test7_1}, se tienen 12 alarmas presentes referidas a los módulos XFP2, XFP3 y XFP4 de ambos dispositivos.
 
   \begin{figure}[H]
 	\centering
 	\resizebox{\textwidth}{!}{\includegraphics{Figures/test7_1.pdf}}
-	\caption{Prueba de DeviceDescriptionDiscovery.}
-	\label{fig:test2}
+	\caption{Alarmas visualizadas en la interfaz gráfica.}
+	\label{fig:test7_1}
   \end{figure}
 
-  Para comprobar dichas alarmas, se ejecutaron los comandos alarms y alarms-counts los cuales listan las alarmas presentes en el controlador. Se puede ver en la figura [x] la salida del comando alarms-counts, la cual anuncia la misma cantidad de alarmas presentes que lo mostrado por la interfaz.
+  Se puede observar lo mismo al ejecutar los comandos '\textit{alarms}' y '\textit{alarms-counts}', los cuales listan las alarmas presentes en el controlador. De esta forma, se puede ver en la figura \ref{fig:test7_2} la salida del comando '\textit{alarms-counts}', la cual anuncia la misma cantidad de alarmas presentes en el controlador.
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Figures/test7_2.png}
-	\caption{Prueba de DeviceDescriptionDiscovery.}
-	\label{fig:test2}
+	\caption{Alarmas visualizadas en la \textit{CLI} del controlador.}
+	\label{fig:test7_2}
   \end{figure}
 
-  Por último, se muestra en la figura [x] la salida del binario “monitor” de uno de los muxponder. En ella, es posible observar 6 etiquetas “Alarm” en la seccion de modulos XFP. Teniendo en cuenta que se tiene el mismo resultado en el otro dispositivo, se tienen las 12 alarmas en total.
+  Por último, se muestra en la figura \ref{fig:test7_3} la salida del binario 'monitor' de uno de los \textit{muxponder}. En ella, es posible observar 6 etiquetas '\textit{Alarm}' en la sección de modulos XFP. Teniendo en cuenta que se tiene el mismo resultado en el otro dispositivo, se tienen las 12 alarmas en total.
 
   \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Figures/test7_3.png}
-	\caption{Prueba de DeviceDescriptionDiscovery.}
-	\label{fig:test2}
+	\caption{Alarmas visualizadas en 'monitor' en uno de los \textit{muxponders}.}
+	\label{fig:test7_3}
   \end{figure}
 
   \subsubsection{Caso de Prueba T-R-08}
 
-  Se presenta la prueba que se observa en el cuadro [x], la cual tiene como objetivo verificar que es posible observar cualquier dato de estado del dispositivo a través de la interfaz gráfica. Al igual que en la prueba anterior, se hará uso del binario “monitor” para comprobar su funcionamiento.
+  Se presenta la prueba que se observa en el cuadro \ref{fig:test8}, la cual tiene como objetivo verificar que es posible observar cualquier dato de estado del dispositivo a través de la interfaz gráfica. 
+  
+  Al igual que en la prueba anterior, se hará uso del binario 'monitor' para comprobar su funcionamiento.
   
   
   \begin{figure}[H]
       \centering
       \includegraphics[scale=0.6]{Figures/test8.png}
-      \caption{Prueba de DeviceDescriptionDiscovery.}
-      \label{fig:test2}
+      \caption{Caso de Prueba T-R-08.}
+      \label{fig:test8}
     \end{figure}
 
-    A continuación, en la figura [x] se muestran los valores obtenidos referidos al container “misc” de ambos dispositivos. 
+    A continuación, en la figura \ref{fig:test8_1} se muestran los valores obtenidos por la interfaz gráfica referidos al \textit{container} '\textit{misc}' de ambos dispositivos. 
 
     \begin{figure}[H]
         \centering
         \resizebox{\textwidth}{!}{\includegraphics{Figures/test8_1.png}}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Datos de estado, observados desde la interfaz gráfica.}
+        \label{fig:test8_1}
       \end{figure}
 
-      Por otra parte, se observa en la figura [x] la sección referida a misc en monitor, los cuales tal como se pueden ver tienen los mismos valores que los obtenidos por la interfaz gráfica. 
+      Por otra parte, se observa en la figura \ref{fig:test8_2} la sección referida a '\textit{misc}' en 'monitor', los cuales tal como se pueden ver tienen los mismos valores que los obtenidos por la interfaz gráfica. 
       
-      Es importante aclarar que debido a la cantidad de los datos presentes en este container, las figuras nombradas anteriormente solo muestran una porción de los datos.
+      Es importante aclarar que debido a la cantidad de los datos presentes en este \textit{container}, las figuras nombradas anteriormente solo muestran una porción de los datos.
       
-      Así, se observan únicamente los primeros cinco valores.
+      Por lo tanto, se observan únicamente los primeros cinco valores.
 
       \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{Figures/test8_2.png}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Datos de estado, observados desde 'monitor'.}
+        \label{fig:test8_2}
       \end{figure}
 
       \subsubsection{Caso de Prueba T-R-09}
 
-      Por último, el caso de prueba mostrado en el cuadro [x] tiene como objetivo verificar que es posible configurar los muxponders de tal manera que los host A y B tengan conectividad entre sí. 
+      Por último, el caso de prueba mostrado en la figura \ref{fig:test9} tiene como objetivo verificar que es posible configurar los \textit{muxponders} de tal manera que los \textit{host} A y B tengan conectividad entre sí. 
 
       \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{Figures/test9.png}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Caso de Prueba T-R-09.}
+        \label{fig:test9}
       \end{figure}
 
-      La figura [x] muestra la sección principal de la interfaz gráfica. En ella, es posible observar un recuadro en amarillo indicando que se detectó una configuración inconsistente entre los dispositivos (o sea, que los dispositivos vecinos no tienen la misma configuración). 
+      La figura \ref{fig:test9_1} muestra la sección principal de la interfaz gráfica. En ella, es posible observar un recuadro en amarillo indicando que se detectó una configuración inconsistente entre los dispositivos (o sea, que los dispositivos vecinos no tienen la misma configuración). 
 
       \begin{figure}[H]
         \centering
         \resizebox{\textwidth}{!}{\includegraphics{Figures/test9_1.png}}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Detección de configuración inconsistente entre dispositivos vecinos.}
+        \label{fig:test9_1}
       \end{figure}
 
-      En este punto, si los host tratan de realizar un ping entre ellos el resultado es el que se puede ver en la figura [x]. Como se esperaba, los hosts no tienen conectividad entre ellos debido a la configuración inconsistente aplicada a los dispositivos.
+      En este estado, si los \textit{host} A y B tratan de realizar un ping entre ellos el resultado es el que se puede ver en la figura \ref{fig:test9_2}. Como se esperaba, los hosts no tienen conectividad entre ellos debido a la configuración inconsistente aplicada a los dispositivos.
 
       \begin{figure}[H]
         \centering
         \includegraphics[scale=0.7]{Figures/test9_2.png}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Prueba fallida de conectividad entre \textit{host} A y \textit{host} B.}
+        \label{fig:test9_2}
       \end{figure}
 
-      Luego, al configurar ambos dispositivos con el perfil de configuración xge, la interfaz muestra que la alarma debido a configuración inconsistente desapareció, tal y como se muestra en la figura x.
+      Luego, al configurar ambos dispositivos con el perfil de configuración xge, la interfaz muestra que la alarma debido a configuración inconsistente desapareció, tal como se muestra en la figura \ref{fig:test9_3}.
 
 
       \begin{figure}[H]
         \centering
         \resizebox{\textwidth}{!}{\includegraphics{Figures/test9_3.png}}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Detección de configuración consistente entre dispositivos vecinos.}
+        \label{fig:test9_3}
       \end{figure}
 
-      Por último, se realiza nuevamente la prueba de conectividad realizando un ping entre los hosts. Como se puede ver en la figura [x], los clientes ahora tienen conectividad entre ellos.
+      Por último, se realiza nuevamente la prueba de conectividad realizando un ping entre los hosts. Como se puede ver en la figura \ref{fig:test9_4}, los clientes ahora tienen conectividad entre ellos debido a la configuración consistente entre los dispositivos vecinos.
 
       \begin{figure}[H]
         \centering
         \includegraphics[scale=0.7]{Figures/test9_4.png}
-        \caption{Prueba de DeviceDescriptionDiscovery.}
-        \label{fig:test2}
+        \caption{Prueba exitosa de conectividad entre \textit{host} A y \textit{host} B.}
+        \label{fig:test9_4}
       \end{figure}

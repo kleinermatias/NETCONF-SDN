@@ -515,7 +515,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
         \includegraphics[width=\textwidth]{Figures/req_rest.pdf}
         \caption{Requerimientos para la aplicación \textit{WEB}.}
     \end{subfigure}
-    \caption{Requerimientos.}
+    \caption{Requerimientos de las interfaces REST e interfaz gráfica.}
     \label{fig:req_app}
 \end{figure}
 
@@ -531,7 +531,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
   \begin{itemize}
 	\item \textbf{AppComponent}: esta clase resulta del uso de la herramienta \textit{onos-create-app}. Aquí se define el comportamiento que tendrá la aplicación al momento de su activación y desactivación. En este caso, cuando se activa la aplicación en el controlador, la misma inicia un objeto Listener para poder imprimir mensajes de log y \textit{debbug}.
     
-    \item \textbf{AppWebApplication}: también resulta del uso de la aplicación mencionada anteriormente. El objetivo de esta clase, es la de indicar cuáles serán las funciones de la aplicación que se exponerán en la \textit{Northbound} interface de \textit{ONOS}.
+    \item \textbf{AppWebApplication}: también resulta del uso de la aplicación mencionada anteriormente. El objetivo de esta clase, es la de indicar cuáles serán las funciones de la aplicación que serán expuestas en la \textit{Northbound} interface de \textit{ONOS}.
 
     \item \textbf{GetWebResource}: en esta clase se definen las operaciones de consulta que son expuestas, a través de la clase AppWebApplication, a la interfaz \textit{Northbound} del controlador. En ella, se definen funciones que tienen operaciones GET de HTTP, las cuales aceptan ciertos parámetros dependiendo de la operación (por ejemplo, indicar a qué dispositivo se quiere realizar la consulta). Seguidamente, la función llama al \textit{driver} del dispositivo con los parámetros que recibió,  y devuelve una respuesta a las aplicaciones que la llamaron.
     
