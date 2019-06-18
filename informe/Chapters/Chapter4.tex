@@ -155,17 +155,17 @@ Por último, se tiene el diagrama de actividad relacionado a la configuración d
 %-----------------------------------
 
   \subsection{Compilación e instalación del agente}
-Siendo YUMA123 el agente que se eligió para integrar el protocolo en el equipo, en esta sección se detalla el procedimiento que se llevó a cabo para la compilación e instalación del agente en el \textit{muxponder}, con el fin de poder cumplir el requerimiento R-07.
+Siendo Yuma123 el agente que se eligió para integrar el protocolo en el equipo, en esta sección se detalla el procedimiento que se llevó a cabo para la compilación e instalación del agente en el \textit{muxponder}, con el fin de poder cumplir el requerimiento R-07.
 \\
 
   En primer lugar, toda la tarea de compilación se realizó en una computadora de propósito general, debido a los recursos limitados con los que cuenta el dispositivo. Para facilitar la compilación e instalación, se realizaron tres scripts los cuales se describen a continuación:
 
   \begin{itemize}
-	\item \textbf{\texttt{Dockerfile}}: el objetivo de este script, es el de realizar la compilación del proyecto YUMA123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto YUMA123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto YUMA123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta “$/root/usrapp$” de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del script, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
+	\item \textbf{\texttt{Dockerfile}}: el objetivo de este script, es el de realizar la compilación del proyecto Yuma123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto Yuma123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto Yuma123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta '$/root/usrapp$' de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del script, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
     
-    \item \textbf{\texttt{remote\_install\_yuma.sh}}: script bash que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el script realiza la instalación del agente mediante SSH y SCP \parencite{scpman}, copiando el contenido necesario de "$/root/usrapp$" que se generó con la construcción de la imagen Docker, al directorio "$/root/usrapp$" del dispositivo. Es importante mencionar que muchas de las librerías requeridas por YUMA123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
+    \item \textbf{\texttt{remote\_install\_yuma.sh}}: script bash que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el script realiza la instalación del agente mediante SSH y SCP \parencite{scpman}, copiando el contenido necesario de '$/root/usrapp$' que se generó con la construcción de la imagen Docker, al directorio '$/root/usrapp$' del dispositivo. Es importante mencionar que muchas de las librerías requeridas por Yuma123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
     
-    \item \textbf{\texttt{remote\_uninstall\_yuma.sh}}: requiere dos parametros los cuales son el usuario del dispositivo remoto y la dirección ip del mismo. El objetivo de este script es facilitar la desinstalación de todas las librerías relacionadas a YUMA123 del dispositivo.
+    \item \textbf{\texttt{remote\_uninstall\_yuma.sh}}: requiere dos parametros los cuales son el usuario del dispositivo remoto y la dirección ip del mismo. El objetivo de este script es facilitar la desinstalación de todas las librerías relacionadas a Yuma123 del dispositivo.
 
 \end{itemize}
 
@@ -180,19 +180,19 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
   \newpage
     \begin{lstlisting}[language=SHELXL, caption=Cabecera del módulo \textit{YANG}., label=lstlisting:cabecera]
         module cli-mxp {
-            namespace "http://fulgor.com/ns/cli-mxp";
-            prefix "cli-mxp";
+            namespace 'http://fulgor.com/ns/cli-mxp';
+            prefix 'cli-mxp';
             description
-              "CLI para configurar el muxponder de 40G";
-            revision "2018-06-24" {
+              'CLI para configurar el muxponder de 40G';
+            revision '2018-06-24' {
                 description
-                  "Version 0.1.0";
+                  'Version 0.1.0';
             }
 
             typedef restricted-tipo-trafico {
                 type enumeration {
-                    enum "otu2";
-                    enum "xge";
+                    enum 'otu2';
+                    enum 'xge';
                   }
             }
               ...
@@ -205,11 +205,11 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
   
     \begin{lstlisting}[language=SHELXL, caption=Container de configuración., label=lstlisting:config_container]
     container mux-config {
-        description "Parametros de la CLI";
+        description 'Parametros de la CLI';
 
         leaf tipo_trafico {
             description
-              "[otu2|xge] especifica el tipo de tráfico.";
+              '[otu2|xge] especifica el tipo de tráfico.';
             type restricted-tipo-trafico;
         }
       
@@ -218,10 +218,10 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
       ...
         
         list ports {
-            key "port";
+            key 'port';
             leaf port {
                 type int16{
-                    range "0 .. 6";
+                    range '0 .. 6';
                 }
                 mandatory true;
             }
@@ -243,19 +243,19 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
     \begin{lstlisting}[language=SHELXL, caption=Container de estado., label=lstlisting:state_container]
     container mux-state {
-        description "Representa a datos de estado del dispositivo.";
+        description 'Representa a datos de estado del dispositivo.';
         
         config false;
 
         leaf fpga_temperature_state {
-            description "Temperatura de la FPGA";
+            description 'Temperatura de la FPGA';
             type decimal64 {
                 fraction-digits 2;
             }
         }
    
         leaf device_boardId {
-            description "Identificador unico del dispositivo";
+            description 'Identificador unico del dispositivo';
             type string;
         }
         ...
@@ -264,13 +264,13 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     \end{lstlisting}
 
 
-    \item \textbf{Definición de \textit{RPC}}: como se estudió en capítulos anteriores, \textit{NETCONF} permite definir \textit{RPC} propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una \textit{RPC} cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el container 'mux-config' en el dispositivo. El código \ref{lstlisting:RPC} muestra dicha sección del módulo. En ella, se puede notar que la \textit{RPC} admite una respuesta de la operación solicitada, la cual está contenida en el leaf 'respuesta-mux-apply-config' y es de tipo String. En este mensaje se indica el resultado de la operación.
+    \item \textbf{Definición de \textit{RPC}}: como se estudió en capítulos anteriores, \textit{NETCONF} permite definir \textit{RPC} propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una \textit{RPC} cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el container 'mux-config' en el dispositivo. El código \ref{lstlisting:RPC} muestra dicha sección del módulo. En ella, se puede notar que la \textit{RPC} admite una respuesta de la operación solicitada, la cual está contenida en la leaf 'respuesta-mux-apply-config' y es de tipo \textit{String}. En este mensaje se indica el resultado de la operación.
 
     
 
     \begin{lstlisting}[language=SHELXL, caption=Declaración de \textit{RPC}., label=lstlisting:RPC]
     rpc mux-apply-config {        
-        description "RPC que aplica los cambios de configuracion";
+        description 'RPC que aplica los cambios de configuracion';
         output {
             leaf respuesta-mux-apply-config {
                 type string;
@@ -285,39 +285,17 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     notification mux-notify {
         leaf INFO {
             type string;
-            mandatory "true";
+            mandatory 'true';
         }
     }
     \end{lstlisting}
 
 \end{itemize}
 
-\subsection{Diseño de la librería C para el agente \textit{NETCONF}}
-Con el objetivo comprender el funcionamiento de la librería desarrollada, será importante mencionar dos binarios que incorporan los \textit{muxponders} de 40Gb: 'monitor' y 'muxponder'. 
+\subsection{Diseño de la librería \textit{C} para el agente \textit{NETCONF}}
 
-Para permitir que otros procesos conozcan el estado del dispositivo, el equipo utiliza el método de comunicación entre procesos llamado memoria compartida. El mismo, consiste en una región de memoria donde se permite que otras aplicaciones puedan, por ejemplo, leer información. 
 
-Así, la aplicación 'monitor' es utilizada por el equipo para actualizar en dicha zona de memoria los valores de las diferentes variables a monitorear. Además, el binario mencionado también tiene la tarea de mostrar por la \textit{CLI} la información de estas variables. 
-
-La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP que produce en pantalla dicho binario en ejecución.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.75]{Figures/monitorapp.png}
-    \caption{Sección XFP de la aplicación ’monitor’.}
-    \label{fig:monitor}
-  \end{figure}
-
-  Por otra parte, la aplicación 'muxponder' es utilizada por el administrador para poder configurar el dispositivo mediante ciertos parámetros que son especificados haciendo uso de la \textit{CLI} del equipo. Por ejemplo, con esta aplicación, el administrador podría cambiar la configuración de un equipo que tiene un tipo de tráfico $otu2$ por un tipo de tráfico $xge$ a través de la CLI, tal como se muestra en la figura \ref{fig:mxpapp}.
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.6]{Figures/muxponderapp.png}
-    \caption{Configuración mediante la aplicación ’\textit{muxponder}’.}
-    \label{fig:mxpapp}
-  \end{figure}
-
-  Teniendo en cuenta las aplicaciones mencionadas, se procede a explicar el diseño de la librería en el lenguaje C. Para ello, se utilizó la herramienta \textit{yangdump} del proyecto YUMA123, la cual genera un esqueleto de la aplicación a partir de un módulo \textit{YANG} dado. Se forman así dos archivos, uno con extensión '.h' (headers) y otro con extensión '.c' (código fuente). 
+  Teniendo en cuenta las aplicaciones integradas en el \textit{muxponder}, las cuales fueron explicadas en el capítulo anterior, se procede a detallar el diseño de la librería en el lenguaje \textit{C}. Para ello, se utilizó la herramienta \textit{yangdump} del proyecto Yuma123, la cual genera un esqueleto de la aplicación a partir de un módulo \textit{YANG} dado. Se forman así dos archivos, uno con extensión '.h' (headers) y otro con extensión '.c' (código fuente). 
   
 
   En el primero, la herramienta declara todas las variables, funciones y los tipos de datos que va a utilizar la librería. 
@@ -330,13 +308,13 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
   Para el primer grupo, se tiene entonces las operaciones como obtención de un dato de estado o de configuración, modificación de un dato de configuración y ejecución de \textit{RPC}, mientras que el segundo grupo contempla el envío de notificaciones, las cuales son asíncronas a las operaciones del cliente.
   
 
-  Se muestra el comportamiento de este primer grupo en el diagrama de actividad de la figura \ref{fig:actividad_modulo_sinc}. Cada vez que llega un mensaje \textit{NETCONF} al agente YUMA123, el mismo procesa y verifica a qué módulo \textit{YANG} hace referencia el mensaje y qué tipo de operación requiere el cliente. 
+  Se muestra el comportamiento de este primer grupo en el diagrama de actividad de la figura \ref{fig:actividad_modulo_sinc}. Cada vez que llega un mensaje \textit{NETCONF} al agente Yuma123, el mismo procesa y verifica a qué módulo \textit{YANG} hace referencia el mensaje y qué tipo de operación requiere el cliente. 
 
   Si la operación es una consulta por una variable de estado o de configuración, el agente realiza una llamada a una función relacionada a la variable consultada. En dicha función, lo que se hace es tomar el valor de memoria compartida del dispositivo, castear el mismo según indique el modulo \textit{YANG} (string, int, uint, etc) y por último, emitir una respuesta al cliente con el valor del dato consultado.
 
-  Por otra parte, si la operación es la de editar una variable de configuración, el agente llama a una función de la librería C relacionada al módulo en cuestión, donde se actualiza el valor de dicha variable. Además, el agente emite un mensaje con el resultado de la operación. 
+  Por otra parte, si la operación es la de editar una variable de configuración, el agente llama a una función de la librería \textit{C} relacionada al módulo en cuestión, donde se actualiza el valor de dicha variable. Además, el agente emite un mensaje con el resultado de la operación. 
 
-  Por último, si la operación trata de una \textit{RPC} definida en el módulo \textit{YANG}, el agente llama a la función relacionada a la \textit{RPC}, la cual contiene las instrucciones para efectuar la tarea solicitada. En este caso, se tiene una \textit{RPC} que indica cuándo se deberá aplicar la configuración en el dispositivo. Así, al momento de llamar a esta \textit{RPC}, el agente copia los valores de los datos de configuración necesarios (tipo de tráfico, tipo fec de cliente, tipo fec línea, etc) y los aplica haciendo uso del binario 'muxponder' explicado anteriormente.
+  Por último, si la operación trata de una \textit{RPC} definida en el módulo \textit{YANG}, el agente llama a la función relacionada a la \textit{RPC}, la cual contiene las instrucciones para efectuar la tarea solicitada. En este caso, se tiene una \textit{RPC} que indica cuándo se deberá aplicar la configuración en el dispositivo. Así, al momento de llamar a esta \textit{RPC}, el agente copia los valores de los datos de configuración necesarios (tipo de tráfico, tipo fec de cliente, tipo fec línea, etc) y los aplica haciendo uso del binario 'muxponder'.
 
   \begin{figure}[H]
     \centering
@@ -345,7 +323,7 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
     \label{fig:actividad_modulo_sinc}
   \end{figure}
 
-  Por otra parte, el grupo relacionado a las operaciones asíncronas con los mensajes del cliente, no es otra cosa que la operación de envío de notificaciones mediante el protocolo \textit{NETCONF}. Para ello, la librería desarrollada en C crea un hilo que examina periódicamente cada tres segundos la memoria compartida del dispositivo. 
+  Por otra parte, el grupo relacionado a las operaciones asíncronas con los mensajes del cliente, no es otra cosa que la operación de envío de notificaciones mediante el protocolo \textit{NETCONF}. Para ello, la librería desarrollada en \textit{C} crea un hilo que examina periódicamente cada tres segundos la memoria compartida del dispositivo. 
   
   La razón por la cual se examina cada tres segundos, está relacionada con la aplicación 'monitor', la cual actualiza los valores de memoria compartida con esa frecuencia.
 
@@ -361,10 +339,10 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
   \end{figure}
 
 
-  \section{Diseño del \textit{driver}}
+  \section{Diseño del \textit{driver}} 
   Como se vio en capítulos anteriores, \textit{ONOS} se comunica con los dispositivos a través de tres componentes de la interfaz \textit{Southbound}: \textit{Providers}, \textit{Protocols} y \textit{Drivers}.
   
-  Así, para poder indicar al controlador cuáles serán las operaciones y los comportamientos específicos del \textit{muxponder} de 40Gb, será necesario desarrollar un \textit{driver} (Java) en la interfaz \textit{Southbound} del controlador. 
+  Así, para poder indicar al controlador cuáles serán las operaciones y los comportamientos específicos del \textit{muxponder} de 40GB, será necesario desarrollar un \textit{driver} (Java) en la interfaz \textit{Southbound} del controlador. 
 
   \subsection{Requerimientos}
   A fin de cubrir las necesidades del administrador, visto en el caso de uso de la figura \ref{fig:caso_uso_admin}, el \textit{driver} desarrollado deberá cumplir con los requerimientos funcionales de la figura \ref{fig:req_driver}.
@@ -376,30 +354,30 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
     \label{fig:req_driver}
   \end{figure}
 
-  \subsection{Descubrimiento del dispositivo}
+  \subsection{Descubrimiento del dispositivo} \label{driverr}
   El controlador \textit{ONOS} reconoce la presencia de un nuevo dispositivo a través de un mensaje en formato JSON, el cual contiene información como la dirección IP del equipo, el \textit{driver} que describe sus comportamientos, el protocolo que utiliza, entre otra información de utilidad. 
   
   Un ejemplo de este mensaje se muestra en el código \ref{lstlisting:JSON}. Dicho mensaje, es enviado al controlador haciendo uso del comando de \textit{ONOS} 'onos-netcfg' \parencite{onosconfserv}.
 
   \begin{lstlisting}[language=SHELXL, caption=Mensaje JSON con información del dispositivo., label=lstlisting:JSON]
     {
-        "devices": {
-            "netconf:172.16.0.141:830": {
-            "netconf": {
-                "ip": "172.16.0.141",
-                "port": 830,
-                "username": "user",
-                "password": "pass",
+        'devices': {
+            'netconf:172.16.0.141:830': {
+            'netconf': {
+                'ip': '172.16.0.141',
+                'port': 830,
+                'username': 'user',
+                'password': 'pass',
             },
-            "basic": {
-                "driver": "altura-netconf"
+            'basic': {
+                'driver': 'altura-netconf'
            }
         }
     }
     \end{lstlisting}
 
 
-    Al momento de indicar al controlador \textit{ONOS} la presencia de un nuevo dispositivo, el mismo hace una llamada por única vez a la función DeviceDescriptionDiscovery, la cual se encuentra implementada en el \textit{driver} indicado por el archivo JSON. 
+    Al momento de indicar al controlador \textit{ONOS} la presencia de un nuevo dispositivo, el mismo hace una llamada por única vez a la función \textit{DeviceDescriptionDiscovery}, la cual se encuentra implementada en el \textit{driver} indicado por el archivo JSON. 
 
     Esta función, tiene la tarea de descubrir las características más generales del equipo, como ser la versión de \textit{software} y de \textit{hardware} del mismo, el número de puertos disponibles, el identificador único del dispositivo, etc.
 
@@ -419,17 +397,17 @@ La figura \ref{fig:monitor} muestra la sección relacionada a los módulos XFP q
     \begin{figure}[H]
         \centering
         \includegraphics[scale=0.45]{Figures/actividad_driver_descr.pdf}
-        \caption{Diagrama de actividad de la función DeviceDescriptionDiscovery.}
+        \caption{Diagrama de actividad de la función \textit{DeviceDescriptionDiscovery}.}
         \label{fig:actividad_driver_descr}
       \end{figure}
 
-\subsection{Descubrimiento de Enlaces}
+\subsection{Descubrimiento de Enlaces} \label{driverlink}
 
-El \textit{driver} también debe proveer un mecanismo para indicar al controlador cómo se componen los enlaces entre los diferentes dispositivos administrados. Para ello, el controlador \textit{ONOS} brinda una interfaz llamada 'LinkDiscovery', la cual se deberá implementar en el \textit{driver}. 
+El \textit{driver} también debe proveer un mecanismo para indicar al controlador cómo se componen los enlaces entre los diferentes dispositivos administrados. Para ello, el controlador \textit{ONOS} brinda una interfaz llamada \textit{LinkDiscovery}, la cual se deberá implementar en el \textit{driver}. 
 
 Así, el controlador llama periódicamente a esta función (cada 30 segundos de forma predeterminada, pudiéndose cambiar este tiempo desde la CLI) para corroborar el estado de los enlaces. 
 
-Con más detalle, lo que realiza esta función es enviar periódicamente a los dispositivos un mensaje \textit{NETCONF} con la operación GET-CONFIG, consultando por los datos “port”, “neighbor” y “port-neighbor” del container mux-config, estos datos pueden verse representados en el módulo \textit{YANG}, en el código \ref{lstlisting:config_container}. A continuación, se explica de forma breve la función de cada uno de estos datos:
+Con más detalle, lo que realiza esta función es enviar periódicamente a los dispositivos un mensaje \textit{NETCONF} con la operación GET-CONFIG, consultando por los datos 'port', 'neighbor' y 'port-neighbor' del container mux-config, estos datos pueden verse representados en el módulo \textit{YANG}, en el código \ref{lstlisting:config_container}. A continuación, se explica de forma breve la función de cada uno de estos datos:
 
 \begin{itemize}
 	\item \textbf{port}: indica el puerto del dispositivo local al cual se conectará un vecino.
@@ -444,24 +422,24 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.43]{Figures/actividad_link.pdf}
-    \caption{Diagrama de actividad de la función LinkDiscovery.}
+    \caption{Diagrama de actividad de la función \textit{LinkDiscovery}.}
     \label{fig:actividad_link}
   \end{figure}
 
   Es importante mencionar que en esta instancia, no se consulta al dispositivo por sus alarmas con un mensaje \textit{NETCONF}, ya que las mismas son enviadas asíncronamente mediante notificaciones por el dispositivo, y registradas por el controlador como alarmas. Por lo tanto, para verificar el estado de las alarmas de un dispositivo, solo se consulta internamente en el core de \textit{ONOS}.
 
-  \subsection{Operaciones definidas en el \textit{driver}}
+  \subsection{Operaciones definidas en el \textit{driver}} \label{drivermux}
 
-  El \textit{driver} desarrollado brinda, además de las implementaciones de LinkDiscovery y DeviceDescriptionDiscovery explicadas anteriormente, la posibilidad de ejecutar cualquier operacion admitida por el modulo del dispositivo, entre ellas la \textit{RPC} que se describió en el código \ref{lstlisting:RPC}. Se explica así el funcionamiento de la interfaz implementada para la operación \textit{RPC} “mux-apply-config”. 
+  El \textit{driver} desarrollado brinda, además de las implementaciones de \textit{LinkDiscovery} y \textit{DeviceDescriptionDiscovery} explicadas anteriormente, la posibilidad de ejecutar cualquier operacion admitida por el modulo del dispositivo, entre ellas la \textit{RPC} que se describió en el código \ref{lstlisting:RPC}. Se explica así el funcionamiento de la interfaz implementada para la operación \textit{RPC} 'mux-apply-config'. 
   \\
 
-  Al momento de llamar a la función rpcApplyConfig, la cual describe el comportamiento que tendrá la \textit{RPC} “mux-apply-config” en el \textit{driver}, el mismo envia un mensaje al \textit{muxponder} solicitando que aplique la configuración que tiene el \textit{datastore running} haciendo uso del binario “muxponder“, tal como se mostró en la figura \ref{fig:actividad_modulo_sinc}.
+  Al momento de llamar a la función rpcApplyConfig, la cual describe el comportamiento que tendrá la \textit{RPC} 'mux-apply-config' en el \textit{driver}, el mismo envia un mensaje al \textit{muxponder} solicitando que aplique la configuración que tiene el \textit{datastore running} haciendo uso del binario 'muxponder', tal como se mostró en la figura \ref{fig:actividad_modulo_sinc}.
   
   Luego, dado que se puede indicar la presencia de dispositivos vecinos, es necesario que el \textit{driver} corrobore que la configuración aplicada entre ellos sea la misma para garantizar la conectividad entre los clientes conectados a los \textit{muxponders}. Así, si se aplica una configuración en un \textit{muxponder}, el controlador deberá consultar y comparar la configuración que llevan los dispositivos vecinos. Si la configuración resulta ser la misma, no se genera ninguna alarma, de lo contrario se deberá generar y registrar una alarma en el controlador indicando una configuración inconsistente entre los dispositivos.
   \\
 
-  Teniendo en cuenta esto, el diagrama de la figura \ref{fig:actividad_driver_rpc_sin_vecinos} muestra el flujo de actividad que sigue el \textit{driver} cuando recibe una llamada a “mux-apply-config” para el \textit{muxponder} A. 
-  En primer lugar, el \textit{driver} envía un mensaje al dispositivo con la operación \textit{RPC} que define el módulo \textit{YANG}. El agente YUMA123 recibe este mensaje, lo procesa y aplica la configuración en el equipo haciendo uso de los datos de configuración que tenga el \textit{datastore running}. Por último, se envía un mensaje con la respuesta de esa operación.  
+  Teniendo en cuenta esto, el diagrama de la figura \ref{fig:actividad_driver_rpc_sin_vecinos} muestra el flujo de actividad que sigue el \textit{driver} cuando recibe una llamada a 'mux-apply-config' para el \textit{muxponder} A. 
+  En primer lugar, el \textit{driver} envía un mensaje al dispositivo con la operación \textit{RPC} que define el módulo \textit{YANG}. El agente Yuma123 recibe este mensaje, lo procesa y aplica la configuración en el equipo haciendo uso de los datos de configuración que tenga el \textit{datastore running}. Por último, se envía un mensaje con la respuesta de esa operación.  
 
   Luego, el \textit{driver} consulta al mismo \textit{muxponder} si tiene algún vecino conectado. Para este primer caso, el \textit{muxponder} A no tiene especificado ningún vecino, por lo que no se generará alguna alarma sobre configuración inconsistente, de hecho, se verifica que no tenga alarmas de este tipo y de tenerlas se eliminan.
 
@@ -623,7 +601,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_estado}
       \end{figure}
 
-    \item \textbf{Vista de topología}: tal como se observa en la figura \ref{fig:captura_web_topo}, aquí se permite realizar cambios en la topología de la red a través de mensajes \textit{NETCONF} a los dispositivos. Así, se puede especificar una pareja de equipos para que el controlador, mediante la función LinkDiscovery, pueda formar o eliminar los enlaces entre los mismos.
+    \item \textbf{Vista de topología}: tal como se observa en la figura \ref{fig:captura_web_topo}, aquí se permite realizar cambios en la topología de la red a través de mensajes \textit{NETCONF} a los dispositivos. Así, se puede especificar una pareja de equipos para que el controlador, mediante la función \textit{LinkDiscovery}, pueda formar o eliminar los enlaces entre los mismos.
     
     \begin{figure}[H]
         \centering
