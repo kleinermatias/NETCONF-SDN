@@ -4,115 +4,156 @@
 
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-\begin{comment}
-Desde hace algunos años estamos presenciando un crecimiento explosivo de tráfico de datos generado, entre otros, por los dispositivos móviles (LTE, 4G), los servicios en la nube (Amazon, Netflix, iCloud, Microsoft Azure, etc.) y la combinación de ambos en servicios como Siri o Amazon Echo. Hay que incluir además la migración de la infraestructura de servicios de información que están realizando las empresas desde sus propios centros de datos hacia mega centros de datos que condensan las operaciones de múltiples clientes en una plataforma común.
+Las redes de telecomunicaciones crecen a medida que surgen nuevas tecnologías (inalámbricas de cuarta generación \textit{4G}, inalámbricas de quinta generación \textit{5G}, \textit{WiMax}, \textit{LTE}, etc), seguido de la demanda en alza del ancho de banda por parte de los usuarios, requiriendo cada vez mayor velocidad y mejor calidad de servicio. De esta forma, los operadores de red se ven obligados a aumentar la cantidad de dispositivos para satisfacer las necesidades de los usuarios, lo que constituye un desafío y un problema para los administradores de red, donde serán necesarios mecanismos de configuración que se adapten a las nuevas necesidades. 
 
-Estos nuevos centros y servicios requieren una gran flexibilidad tanto en la infraestructura de cómputo como en la infraestructura de comunicación. La respuesta a estos nuevos requerimientos desde el punto de vista de la infraestructura de cómputo está resultando en la virtualización de servidores. Desde el punto de vista de la infraestructura de comunicación, el mejor candidato para resolver este problema son las redes definidas por software o SDN por sus siglas en inglés.
+Diseñado por la \textit{IETF}, \textit{NETCONF} surge como una solución simple y estándar para la gestión de la configuración, donde el mismo proporciona a los operadores y administradores de red un \textit{framework} y un conjunto de métodos \textit{RPC} basados en codificación \textit{XML} para gestionar (instalar, modificar y borrar) la configuración de los elementos de red.
 
-El paradigma actual de implementación de redes resulta difícil de adaptar a estos nuevos cambios en los requerimientos, por ejemplo,
+Por otra parte, el paradigma actual de implementación de redes resulta difícil de adaptar a estos nuevos cambios en los requerimientos, por ejemplo:
 
-a) La complejidad y el tamaño de las redes ha crecido considerablemente, esto genera gran resistencia al cambio en los operadores ya que el riesgo de generar una falla es mayor.
+\begin{itemize}     
+    \item La complejidad y el tamaño de las redes ha crecido considerablemente, esto genera gran resistencia al cambio en los operadores ya que el riesgo de generar una falla es mayor.
 
-b) Dependencia de un fabricante, la falta de compatibilidad entre fabricantes fuerza a los operadores a quedar atados a los ciclos de diseño de un fabricante determinado y no les permite configurar la red de manera óptima dadas sus necesidades particulares.
+    \item Dependencia  de  un  fabricante,  la  falta  de  compatibilidad  entre  fabricantes fuerza a los operadores a quedar atados a los ciclos de diseño de un fabricante determinado y no les permite configurar la red de manera óptima dadas sus necesidades particulares. 
+\end{itemize}
 
-Conceptualmente, SDN consiste en separar el plano de control del plano de datos en toda la infraestructura de la red. Esto se logra utilizando una interfaz abierta entre ambos planos. De esta manera la infraestructura de la red se vuelve intercambiable e independiente de las aplicaciones que se implementan sobre ella.
+Desde el punto de vista de la infraestructura de comunicación, el mejor candidato para resolver este problema son las \textit{SDN} con la propuesta de separar el plano de control del plano de datos de los dispositivos, logrando una interfaz abierta entre ambos. De esta forma, se logra con \textit{SDN} que los equipos puedan ser vistos como una caja blanca, donde los mismos pueden relacionarse con independencia de fabricante. 
 
-En SDN el hardware se convierte en dispositivos del tipo \textit{caja blanca}, significando que equipos de diferentes fabricantes son completamente intercambiables. De esta manera el problema de aprovisionamiento de servicios en la red se vuelve un problema exclusivamente de software, lo que les da libertad a los operadores al momento de implementar estos cambios. Además, les permite seleccionar el proveedor que ofrezca las condiciones más favorables en relación a su propio plan de implementación.
 
-En el transcurso de este capítulo introduciremos los aspectos más significativos del proyecto. Se comienza describiendo las motivaciones principales que han llevado al desarrollo de este trabajo. Luego, en la sección \ref{Estado_Arte}, se expone el estado actual de las tecnologías directamente relacionadas, continuando con los objetivos planteados y finalizando con una descripción de la organización del texto.
+En el transcurso de este capítulo introduciremos los aspectos más significativos del proyecto. Se comienza describiendo las motivaciones principales que han llevado al desarrollo de este trabajo. Luego se expone el estado actual de las tecnologías directamente relacionadas, continuando con los objetivos planteados y finalizando con una descripción de la organización del texto.
 
 \section{Motivación e importancia del proyecto}
 
-Las razones que han incentivado la realización de este trabajo integrador de fin de grado son,
+Se exponen a continuación las razones principales que incentivaron la realización de este trabajo de fin de grado.
 
 \begin{itemize}     
-    \item La oportunidad de poder incursionar en el estudio de sistemas de administración de redes de vanguardia.
-    \item La posibilidad de desarrollar un sistema de administración de redes en su totalidad.
-    \item La aplicación de los conocimientos adquiridos a lo largo de la carrera de Ingeniería en Computación.
-    \item La potencial oportunidad de realizar publicaciones científicas acerca de lo desarrollado en el proyecto.
+    \item Oportunidad de incursionar en el estudio de sistemas de administración de redes de vanguardia.
+    \item La aplicación de los conocimientos adquiridos a lo largo de la carrera de Ingenieria en Computacion.
+    \item Posibilidad de desarrollar un sistema de administración de redes en su totalidad.
+    \item Oportunidad de trabajar en un entorno con diversos dispositivos, presentes en las distintas capas de la red y destacando la presencia de un dispositivo óptico de transporte de red, el \textit{muxponder} de 40GB.
 \end{itemize}
     
 \section{Estado del arte} \label{Estado_Arte} %poner que es lo que hace y que es lo que nosotros agregamos o cambiamos
 
-En la presente sección se hace una revisión del estado de las tecnologías directamente relacionadas al proyecto con el objeto de establecer un marco de comparación con nuestro desarrollo y no trabajar en algo ya creado. Particularmente, se presenta una visión global de las implementaciones existentes más relevantes de servicios de distribución de contenido desplegados usando el esquema de redes definidas por software.   
+En la presente sección se hace un estudio del estado de las tecnologías directamente relacionadas al proyecto, con el objetivo de fijar un marco de comparación y diferenciar el trabajo realizado. Particularmente, se presenta una visión global de las implementaciones existentes más relevantes relacionados a la administración de la configuración y al esquema de redes definidas por software.
+
+
+
+% tesis granada% tesis granada% tesis granada% tesis granada% tesis granada
+\subsubsection*{\textit{Protocol Efficiencies of NETCONF versus SNMP for Configuration Management Functions}}
+
+En \parencite{netconfvssnmp} se presenta una comparación entre el protocolo \textit{NETCONF} y el protocolo \textit{SNMP}. Para ello, conforman la topología que puede verse en la figura \ref{fig:netconfvssnmp1}, utilizando como agente \textit{NETCONF} y agente \textit{SNMP} la implementación ´ConfD´ de Cisco.
+
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.60\textwidth}{!}{\includegraphics{Figures/netconfvssnmp1.png}}%
+	\caption[Topología utilizada en las pruebas de.]{Topología utilizada en las pruebas de \parencite{netconfvssnmp}.}
+	\label{fig:netconfvssnmp1}
+\end{figure}
+
+Las pruebas realizadas por los autores arrojan los resultados observados en la figura \ref{fig:netconfvssnmp2}, donde M representa la cantidad de operaciones a realizar por parte del servidor. Los autores mencionan que en los resultados obtenidos no se tiene en cuenta la carga que tienen los paquetes debido a la seguridad que ofrece el transporte \textit{SSH} por parte de \textit{NETCONF}, tampoco la carga que presenta \textit{TCP} (\textit{NETCONF}) frente a \textit{UDP} (\textit{SNMP}), entre otros.
+
+\begin{figure}[th]
+	\centering 
+	\resizebox{1\textwidth}{!}{\includegraphics{Figures/netconfvssnmp2.png}}%
+	\caption[Resultados obtenidos en.]{Resultados obtenidos en \parencite{netconfvssnmp}.}
+	\label{fig:netconfvssnmp2}
+\end{figure}
+
+En las conclusiones obtenidas en este artículo mencionan que \textit{NETCONF} es una clara alternativa a \textit{SNMP} en ámbitos de gestión de la configuración de la red. Además, destacan las bondades que presenta el protocolo \textit{NETCONF} frente a \textit{SNMP} para los proveedores de servicio como ser la seguridad de los mensajes mediante \textit{SSH}, la capacidad de revertir una configuración, el transporte de los mensajes mediante un protocolo orientado a la conexión, etc.
+
+
 
 % tesis granada
-\subsubsection*{\textit{Protocolos Multicast en redes SDN}}
+\subsubsection*{\textit{Evaluating the Network Management Capabilities of YANG and NETCONF}}
 
-El documento \parencite{tesis_granada} propone un nuevo protocolo \textit{multicast} para usar bajo el esquema de SDN. El autor realiza una caracterización del funcionamiento de un protocolo \textit{multicast} existente (PIM-SSM) en un escenario de red actual. Luego, utilizando el controlador OpenDaylight, implementa un nuevo protocolo \textit{multicast} en una red SDN. 
+En el artículo \parencite{netconfvstodos} se realiza un estudio de las diferentes alternativas existentes en el ámbito de la configuración y gestión de la red. A su vez, el autor desarrolla un prototipo de servidor \textit{NETCONF}. Los experimentos realizados por el autor tienen como objetivo determinar la capacidad que tienen los diferentes protocolos de gestión de configuración y monitoreo para adaptarse a entornos de \textit{SDN} y \textit{NFV}. 
 
-Finalmente, la figura \ref{fig:tesis_granada} indica los resultados de la evaluación entre los dos esquemas de red planteados en \parencite{tesis_granada}, donde la columna de la izquierda representa el tráfico en el esquema SDN y la columna de la derecha utilizando PIM-SSM en una red tradicional. De esta forma, se comprueba cómo se produce una reducción en la cantidad de tráfico necesario para la transmisión de datos \textit{multicast} a través de la red. 
+Así, separa las pruebas realizadas en dos partes. En primer lugar, evalúa alternativas que permiten la configuración de un dispositivo de red. Luego, realiza un análisis de las alternativas relacionadas al monitoreo en dispositivos de red.
 
-\begin{figure}[th]
+La figura \ref{fig:netconfvstodos1} muestra una gráfica de los resultados obtenidos para el primer caso, donde concluye que \textit{NETCONF} se adapta bien a los entornos \textit{NFV} ya que se encuentra específicamente diseñado para la configuración de los equipos. Sin embargo, menciona que puede presentar dificultades adaptar el protocolo \textit{NETCONF} a entornos \textit{SDN} ya que no cumple estrictamente con el paradigma de las \textit{SDN}, donde el plano de control y el plano de datos se encuentran desacoplados íntegramente.
+
+Por otra parte, la figura \ref{fig:netconfvstodos2} muestra el análisis para el segundo caso, en donde se evalúan protocolos y alternativas para el monitoreo de la red. En este caso, el autor menciona que si bien \textit{NETCONF} permite monitoreo en entornos \textit{NFV} y \textit{SDN}, el uso enfocado explícitamente a esta tarea no presenta mejores resultados que, por ejemplo, \textit{SNMP}.
+
+
+\begin{figure}[H]
 	\centering 
-	\resizebox{1\textwidth}{!}{\includegraphics{Figures/tesis_granada.png}}%
-	\caption[Análisis de los escenarios.]{Análisis de los escenarios \parencite{tesis_granada}.}
-	\label{fig:tesis_granada}
+	\resizebox{0.8\textwidth}{!}{\includegraphics{Figures/netconfvstodos1.png}}%
+	\caption[\textit{NETCONF} como protocolo para la administración.]{\textit{NETCONF} como protocolo para la administración \parencite{netconfvstodos}.}
+	\label{fig:netconfvstodos1}
 \end{figure}
 
-% paper de números raros 1
-\subsubsection*{\textit{Design and Implementation Multicast Video Streaming On Openflow Network}}
-
-En el artículo \parencite{paper_desing_and_implementation}, se logra agregar soporte \textit{multicast} a un \textit{switch} utilizando SDN y OpenFlow. Estos experimentos consisten en desarrollar una aplicación que corre en un controlador SDN y le brinda las funcionalidades de IGMP \textit{snooping} a un \textit{switch} a través de instalación de flujos OpenFlow. Sin embargo, esta implementación funciona en una topología con un solo \textit{switch} y cinco \textit{hosts}, donde el servidor de contenido y los clientes son fijos.
-
-% paper de números raros 2
-\subsubsection*{\textit{Streaming Multicast Video over Software-Defined Networks}}
-
-En \parencite{paper_streaming_multicast}, se desarrolla un marco de trabajo basado en SDN donde el controlador SDN es capaz de administrar el tráfico \textit{multicast} en una red. A su vez, utilizando \textit{Multiple description coding} (MDC) se brinda la capacidad de ofrecer dos calidades de servicio de \textit{video streaming} a los clientes. En la figura \ref{fig:paper_streaming_multicast}, se da una noción general del funcionamiento de esta implementación.
-
-\begin{figure}[th]
+\begin{figure}[H]
 	\centering 
-	\resizebox{.7\textwidth}{!}{\includegraphics{Figures/paper_streaming_multicast.png}}%
-	\caption[Perspectiva general.]{Perspectiva general \parencite{paper_streaming_multicast}.}
-	\label{fig:paper_streaming_multicast}
+	\resizebox{0.8\textwidth}{!}{\includegraphics{Figures/netconfvstodos2.png}}%
+	\caption[\textit{NETCONF} como protocolo para el monitoreo.]{\textit{NETCONF} como protocolo para el monitoreo \parencite{netconfvstodos}.}
+	\label{fig:netconfvstodos2}
 \end{figure}
 
-El artículo \parencite{paper_streaming_multicast}, concluye formulando que, en redes mediana a fuertemente congestionadas, la solución \textit{multicast} en SDN comparada con las soluciones de hoy en día mejora significativamente la relación señal ruido pico (PSNR) del video transmitido, desde un nivel que es prácticamente indistinguible a uno de buena calidad.   
 
-% % multicast use case
-\subsubsection*{\textit{Multicast Use Case}}
 
-En el caso de uso descripto en \parencite{mcast_ONOS_use_case}, se propone desplegar SDN en una red \textit{multicast} en producción. En la figura \ref{fig:mcast_ONOS_use_case} se observa la topología de la red planteada, la cual puede dividirse en una red central con un extremo generador de tráfico \textit{multicast} y otro extremo consumidor de tráfico \textit{multicast}.
+% tesis granada% tesis granada% tesis granada% tesis granada% tesis granada
+\subsubsection*{\textit{Control and Management of Transponders With NETCONF and YANG}}
 
-\begin{figure}[th]
+El documento \parencite{netconfsddn} propone la utilización del protocolo de administración \textit{NETCONF} en un ambiente \textit{SDN} para administrar la configuración de un \textit{transponder}, sugiriendo un entorno como el que se puede ver en la figura \ref{fig:netconfsddn1}.
+
+
+\begin{figure}[H]
 	\centering 
-	\resizebox{.7\textwidth}{!}{\includegraphics{Figures/mcast_ONOS_use_case.png}}%
-	\caption[Topología de la red en producción.]{Topología de la red en producción \parencite{mcast_ONOS_use_case}.}
-	\label{fig:mcast_ONOS_use_case}
+	\resizebox{1\textwidth}{!}{\includegraphics{Figures/netconfsddn1.png}}%
+	\caption[Topología propuesta en.]{Topología propuesta en \parencite{netconfsddn}.}
+	\label{fig:netconfsddn1}
 \end{figure}
 
-El objetivo de la implementación \parencite{mcast_ONOS_use_case} es en una primera fase desplegar SDN en el extremo generador de la red y en una segunda fase desplegar SDN en el extremo consumidor de la red. Sin embargo, el proyecto aún se encuentra en la fase uno.
+Sin embargo, finalmente realizan una demostración compuesta por dos \textit{transponders} y un \textit{switch}, los tres virtuales y sin utilización de algún controlador \textit{SDN}. Esta última topología se muestra en la figura \ref{fig:netconfsddn2}.
 
-\section{Objetivos}
 
-El objetivo general de este Proyecto Integrador es adquirir los conocimientos relacionados con administración de redes de datos, particularmente el esquema conocido como \textit{Software Defined Networking}. Para esto, se propone usar como vehículo de prueba una aplicación de distribución de contenido. Implementar la misma utilizando exclusivamente las facilidades que brinda un sistema SDN. Se prestará particular atención al estudio y comparación de las diferentes opciones abiertas disponibles para la implementación del controlador.
+\begin{figure}[H]
+	\centering 
+	\resizebox{0.55\textwidth}{!}{\includegraphics{Figures/netconfsddn2.png}}%
+	\caption[Escenario propuesto para las pruebas en.]{Escenario propuesto para las pruebas en \parencite{netconfsddn}.}
+	\label{fig:netconfsddn2}
+\end{figure}
+
+Los autores concluyen que \textit{NETCONF} como protocolo de gestión y \textit{YANG} como modelado de datos, son estándares viables para la configuración, gestión y monitoreo de los datos en dispositivos de red como los \textit{transponders}. 
+Además, resaltan el alto rendimiento obtenido en sus pruebas para la configuración y monitoreo de los \textit{transponders} haciendo uso de estos protocolos. 
+
+
+\section{Objetivos propuestos}
+
+El objetivo general de este proyecto integrador es adquirir los conocimientos relacionados con administración de redes, particularmente con el esquema conocido como Software Defined Networking y el protocolo de administración de la configuración \textit{NETCONF}. Para esto, se propone usar como vehículo de prueba un entorno constituido por ambas tecnologías para lograr la administración y monitoreo del estado de un \textit{muxponder}. Se prestará particular atención al estudio y comparación de las diferentes opciones abiertas disponibles para la implementación del protocolo \textit{NETCONF}.
 
 \subsection{Objetivos particulares}
 
-Las tareas de este proyecto van a llevarnos a,
-\begin{itemize}     
-    \item Tener un conocimiento acabado de las tecnologías existentes en SDN.
-    \item Generar un ambiente de emulación de red.
-    \item Desarrollar una aplicación de distribución de contenido para utilizar como vehículo de prueba.
-    \item Integrar esta aplicación con un controlador SDN.
-    \item Desarrollar una aplicación de interfaz de usuario para administrar de manera simple la distribución de contenido.
-    \item Implementar al menos un nodo de red en hardware conectado con el ambiente de simulación.
-\end{itemize}
+Las tareas a realizar en este trabajo de fin de grado llevarán a:
 
-\section{Estructura del texto}
-
-Aquí se listan los distintos capítulos que conforman el proyecto, presentando una breve descripción de su contenido. El escrito está compuesto por 8 capítulos, los apéndices y la bibliografía.
 
 \begin{itemize}
-    \item \textbf{Capítulo 1 - Introducción:} En este capítulo, se presentan los aspectos más significativos del proyecto, incluyendo las motivaciones que llevaron a la realización del trabajo, una revisión del estado actual del arte relacionado y los objetivos que se plantearon para este proyecto.   
-    \item \textbf{Capítulo 2 - Marco teórico:} Aquí, se abordan todos los conceptos necesarios para la comprensión y fundamentación de las posteriores implementaciones prácticas.
-    \item \textbf{Capítulo 3 - Análisis de las tecnologías:} Este capítulo aborda las herramientas más representativas que permiten la implementación de los conceptos desarrollados en el marco teórico.
-    \item \textbf{Capítulo 4 - Entorno de trabajo:} En este capítulo, se describe la construcción del ambiente donde se desenvolverán y evaluarán las aplicaciones diseñadas en este proyecto.
-    \item \textbf{Capítulo 5 - Diseño de la aplicación de distribución de contenido:} En este capítulo, se explican los procedimientos relacionados al diseño y la implementación de una aplicación, dentro de un controlador SDN, que permita la administración de la distribución de contenido en una red.
-    \item \textbf{Capítulo 6 - Diseño de la aplicación de interfaz de usuario:} En este capítulo, se aborda el proceso de diseño e implementación de una interfaz gráfica de usuario, cuyo objeto principal es exponer de manera sencilla las capacidades de la aplicación desarrollada en el capítulo anterior.
-    \item \textbf{Capítulo 7 - Conclusiones:} Aquí, se presentan las conclusiones obtenidas tras la realización del trabajo, posibles vías de trabajos futuros y una apreciación personal del proceso abordado.
-    \item \textbf{Apéndices:} En los apéndices se presenta un ejemplo sencillo e ilustrativo del flujo de trabajo de un entrono SDN. Asimismo, se proporciona al lector un tutorial de como desplegar el entorno de trabajo y las aplicaciones desarrolladas en este proyecto.    
-    \item \textbf{Bibliografía:} En esta parte final del documento, se muestran todas las referencias que se han consultado para el desarrollo de este proyecto.   
+    \item Adquirir un amplio conocimiento de las tecnologías existentes en \textit{SDN}.   
+    \item Tener un conocimiento acabado en el protocolo de administración de red \textit{NETCONF}.   
+    \item Desarrollar una librería en el controlador \textit{SDN} que permita la comunicación, a través de \textit{NETCONF}, con un dispositivo óptico.   
+    \item Compilar e instalar en un dispositivo óptico un agente del protocolo \textit{NETCONF} y una librería que relacione las variables de configuración y estado del dispositivo con dicho agente.   
+    \item Desarrollar una aplicación de interfaz de usuario para administrar de manera simple los dispositivos de red.
+\end{itemize}  
+    
+\section{Estructura del texto}
+
+Aquí se listan los distintos capítulos que conforman el proyecto, presentando una breve descripción de su contenido. El escrito está compuesto por 6 capítulos, los apéndices y la bibliografía.
+
+
+\begin{itemize}   
+    \item \textbf{Capítulo 1 - Introducción:} Se exponen en este capítulo los aspectos más significativos del proyecto, donde se incluye las motivaciones que llevaron a realizar el mismo junto con una revisión del estado del arte relacionado y los objetivos propuestos para el trabajo de fin de grado.
+
+    \item \textbf{Capítulo 2 - Marco teórico:} Aquí se abordan los conceptos necesarios para comprender las tecnologías utilizadas por el proyecto, además los mismos presentan una fundamentación para las posteriores implementaciones prácticas.
+
+    \item \textbf{Capítulo 3 - Análisis de las tecnologías:} Se estudia y analiza en este capítulo todas las herramientas que permiten el desarrollo de las aplicaciones desarrolladas en este proyecto, abarcando tanto herramientas de software como de hardware.
+
+    \item \textbf{Capítulo 4 - Diseño e implementación:} En este capítulo se aborda el proceso de diseño e implementación de todas las aplicaciones realizadas. Se presentan los requerimientos de las mismas y los diferentes diagramas realizados, que explican el funcionamiento de cada pieza de software. 
+
+    \item \textbf{Capítulo 5 - Validación y verificación:} Aquí, se exponen los diferentes casos de prueba desarrollados con el objetivo de validar y verificar que se cumplan los requerimientos de las diferentes aplicaciones.
+
+    \item \textbf{Capítulo 6 - Conclusión:} Se presenta en este capítulo las conclusiones obtenidas tras la realización del trabajo, posibles vías de trabajos futuros y una apreciación personal del proceso abordado.
+    
+    
+    \item \textbf{Bibliografía:} En esta parte final del documento, se muestran todas las referencias que se han consultado para el desarrollo del proyecto.   
 \end{itemize}
 
-\end{comment}
