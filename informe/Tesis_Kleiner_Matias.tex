@@ -44,6 +44,8 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{mathpazo} % Use the Palatino font by default
 \usepackage{graphicx}
 \usepackage[backend=bibtex,bibencoding=ascii,style=numeric,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+\usepackage{longtable}
+\usepackage[table]{xcolor} 
 
 \addbibresource{example.bib} % The filename of the bibliography
 
@@ -75,7 +77,7 @@ headsepline, % Uncomment to get a line under the header
 \supervisor{Ing. Hugo \textsc{Carrer}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{Matthew \textsc{Aguerreberry}} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 % \degree{Doctor of Philosophy} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
-\authorA{Matias \textsc{Kleiner}}
+\authorA{Matías \textsc{Kleiner}}
 \matriculaA{37590431}
 \emailA{\texttt{kleiner.matias@gmail.com}}
 \authorB{ " }
@@ -206,7 +208,7 @@ headsepline, % Uncomment to get a line under the header
 	\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 	En respuesta al continuo incremento de los requerimientos en las redes de transporte, surgen no sólo avances en las capacidades de los dispositivos ópticos, sino también en los métodos de configuración en los mismos. La flexibilidad y la estandarización de las configuraciones pasan de ser una característica deseable, a ser un requerimiento funcional en los equipos. En las empresas de telecomunicaciones, donde dispositivos de diferentes características y fabricantes interactúan a la hora de brindar servicios, es crucial que  exista un protocolo estándar y un ente centralizado de administración. Históricamente esta comunicación se llevó a cabo a través del protocolo \textit{SNMP}, sin embargo las necesidades de las redes actuales involucran capacidades que exceden a este protocolo. 
 	
-	Este contexto da lugar al protocolo de configuraciones de red, también llamado \textit{NETCONF}, que se establece como un protocolo estandarizado por la \textit{Internet Engineering Task Force} (\textit{IETF}), que provee tanto funciones de control (ej configuración del plano de datos) como así también funciones de administración (ej. acceso a información de monitoreo). Depende de \textit{Yet Another Next Generation} (\textit{YANG}), para describir las configuraciones de los dispositivos de manera estándar. Tanto \textit{NETCONF} como \textit{YANG}, se volvieron foco de interés de los operadores de red en busca de un estándar de configuración abierto.
+	Este contexto da lugar al protocolo de configuraciones de red, también llamado \textit{NETCONF}, que se establece como un protocolo estandarizado por la \textit{Internet Engineering Task Force} (\textit{IETF}), que provee tanto funciones de control (ej. configuración del plano de datos) como así también funciones de administración (ej. acceso a información de monitoreo). Depende de \textit{Yet Another Next Generation} (\textit{YANG}), para describir las configuraciones de los dispositivos de manera estándar. Tanto \textit{NETCONF} como \textit{YANG}, se volvieron foco de interés de los operadores de red en busca de un estándar de configuración abierto.
 	
 	Al mismo tiempo, surge un nuevo paradigma de arquitectura de redes: Las Redes Definidas por Software (\textit{SDN} por sus siglas en inglés), una propuesta para solucionar la creciente complejidad en la administración de las redes. \textit{SDN} propone la separación del plano de datos y el plano de control, logrando de este modo un plano de control centralizado  facilitando no solo el control sino también la administración de las redes.
 
@@ -229,7 +231,7 @@ headsepline, % Uncomment to get a line under the header
 	\bigskip
 			
 	% 	{\normalsize Hugo y Matt \par}
-	Este proyecto no hubiera sido posible sin el soporte, la confianza, la supervisión y el duro empeño de nuestros directores, Hugo Carrer y Matthew Aguerreberry.
+	Este proyecto no hubiera sido posible sin el soporte, la confianza, la supervisión y el duro empeño de mis directores, Hugo Carrer y Matthew Aguerreberry.
 	\bigskip
 			
 	% 	{\normalsize amigos \par}
@@ -272,7 +274,7 @@ headsepline, % Uncomment to get a line under the header
 	\textbf{API} & \textbf{A}pplication \textbf{P}rogramming \textbf{I}nterface\\
 	\textbf{CLI} & \textbf{C}ommand \textbf{L}ine \textbf{I}nterface\\
 	\textbf{SNMP} & \textbf{S}imple \textbf{N}etwork \textbf{M}anagement \textbf{P}rotocol\\
-	%\textbf{FIB} & \textbf{F}orwarding \textbf{I}nformation \textbf{B}ase\\
+	\textbf{FIB} & \textbf{F}orwarding \textbf{I}nformation \textbf{B}ase\\
 	\textbf{GUI} & \textbf{G}raphical \textbf{U}ser \textbf{I}nterface\\
 	%\textbf{IGMP} & \textbf{I}nternet \textbf{G}roup \textbf{M}anagement \textbf{P}rotocol\\
 	%\textbf{NFV} & \textbf{N}etwork \textbf{F}unction \textbf{V}irtualization\\
@@ -282,7 +284,7 @@ headsepline, % Uncomment to get a line under the header
 	%\textbf{ONOS} & \textbf{O}pen \textbf{N}etworking \textbf{O}perating \textbf{S}ystem\\
 	%\textbf{OVS} & \textbf{O}pen \textbf{V} \textbf{S}witch\\
 	%\textbf{PIM} & \textbf{P}rotocol \textbf{I}ndependent \textbf{M}ulticast\\
-	%\textbf{RIB} & \textbf{R}outing \textbf{I}nformation \textbf{B}ase\\
+	\textbf{RIB} & \textbf{R}outing \textbf{I}nformation \textbf{B}ase\\
 	%\textbf{REST} & \textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer\\
 	\textbf{SDN} & \textbf{S}oftware \textbf{D}efined \textbf{N}etwork\\
 	%\textbf{SSM} & \textbf{S}ource \textbf{S}pecific \textbf{M}ulticast\\
@@ -306,6 +308,10 @@ headsepline, % Uncomment to get a line under the header
 	\textbf{REST} & \textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer\\
 	\textbf{BSD} & \textbf{B}erkeley \textbf{S}oftware \textbf{D}istribution\\
 	\textbf{MIT} & \textbf{M}assachusetts \textbf{I}nstitute \textbf{T}echnology\\
+	\textbf{MB} & \textbf{M}ega \textbf{B}ytes\\
+	\textbf{TB} & \textbf{T}era \textbf{B}ytes\\
+	\textbf{ASIC} & \textbf{M}assachusetts \textbf{I}nstitute \textbf{T}echnology\\
+	\textbf{NFV} & \textbf{N}etwork \textbf{F}unction \textbf{V}irtualization\\
 	
 	%\textbf{VNF} & \textbf{V}irtual \textbf{N}etwork \textbf{F}unction\\
 				 
@@ -338,7 +344,7 @@ headsepline, % Uncomment to get a line under the header
 % Include the appendices of the thesis as separate files from the Appendices folder
 % Uncomment the lines as you write the Appendices
 
-% \include{Appendices/AppendixA}
+\include{Appendices/AppendixA}
 % \include{Appendices/AppendixB}
 %\include{Appendices/AppendixC}
 

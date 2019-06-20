@@ -14,7 +14,7 @@ También, se introducirán conceptos de lenguajes de modelado y se abordará la 
 %----------------------------------------------------------------------------------------
 \section{Redes tradicionales} \label{sec:rdtr}
 
-La infraestructura actual de las redes tradicionales basan su funcionamiento íntegramente en los dispositivos de red \parencite{ISACA}. Cada dispositivo lleva su propia gestión sobre el plano de datos y el plano de control de manera local y comunica a los demás dicha información de ser necesario. 
+La infraestructura actual de las redes tradicionales basa su funcionamiento íntegramente en los dispositivos de red \parencite{ISACA}. Cada dispositivo lleva su propia gestión sobre el plano de datos y el plano de control de manera local y comunica a los demás dicha información de ser necesario. 
 
 Un ejemplo de esto se puede observar en la figura \ref{fig:dev_tradicional}, donde dos dispositivos intercambian información referente al plano de control.
 
@@ -102,7 +102,7 @@ En la figura \ref{fig:arquitectura_sdn}, se expone la anatomía de un controlado
 %	SECTION 3
 %----------------------------------------------------------------------------------------
 \section{Gestión de la Red} \label{sec:gestionred}
-En la actualidad se puede encontrar una gran variedad de redes, desde pequeñas redes domésticas de intranet hasta redes empresariales o de proveedores de servicios. Cada una de estas redes tienen diversos requerimientos de gestión.  Las pequeñas redes domésticas, que consisten en unos pocos dispositivos conectados, requieren una sobrecarga de administración baja, y con frecuencia, pueden gestionarse manualmente de forma eficiente. No así las redes más grandes, que podrían contener cientos dispositivos conectados requiriendo un enfoque más sistemático para hacer frente a las complejidades que surgen debido al tamaño de la red. A medida que la red crece en estructura y complejidad, se hace evidente la necesidad de una solución eficiente para la gestión de la misma \parencite{gestionderedes}.
+En la actualidad se puede encontrar una gran variedad de redes, desde pequeñas redes domésticas de intranet hasta redes empresariales o de proveedores de servicios. Cada una de estas redes tiene diversos requerimientos de gestión.  Las pequeñas redes domésticas, que consisten en unos pocos dispositivos conectados, requieren una sobrecarga de administración baja, y con frecuencia, pueden gestionarse manualmente de forma eficiente. No así las redes más grandes, que podrían contener cientos dispositivos conectados requiriendo un enfoque más sistemático para hacer frente a las complejidades que surgen debido al tamaño de la red. A medida que la red crece en estructura y complejidad, se hace evidente la necesidad de una solución eficiente para la gestión de la misma \parencite{gestionderedes}.
 
 \subsection{Protocolos de Gestión}
 Existen múltiples formas de llevar a cabo la administración de la configuración en los diversos dispositivos que conforman la red. En esta sección, se analizarán dos alternativas: \textit{CLI} y \textit{SNMP}.
@@ -112,9 +112,9 @@ Existen múltiples formas de llevar a cabo la administración de la configuraci�
 \textit{CLI} es el enfoque más común en el ámbito de gestión de la configuración, adoptado por múltiples empresas. Consiste en un método para comunicarse con las aplicaciones que la subyacen, a través de una interfaz de usuario simple basada en texto. De esta forma, permite que el administrador pueda ingresar instrucciones en una línea de comandos a través de una terminal y recibir las respuestas en la misma. La aplicación subyacente es la encargada de procesar la instrucción y devolver alguna respuesta al usuario. Generalmente, las respuestas están orientadas a que resulten fácil de entender para las personas, sin embargo, no se encuentran orientadas a las API’s, ya que no existe un formato o un estándar de cómo representar dichas respuestas. Además, las implementaciones internas podrían ser diferentes entre los distintos dispositivos, incluso entre dispositivos del mismo fabricante, de modo que, tanto los comandos como las respuestas podrían variar significativamente entre los equipos.
 \\
 
-Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{lstlisting:cli}. La primer línea ingresada, hace referencia a un acceso al modo de configuración de un dispositivo cualquiera. En la segunda, se agrega una entrada estática a la tabla de ruteo y en la tercera se abandona el modo de configuración.
+Un ejemplo de una operación en \textit{CLI} puede verse en la figura \ref{lstlisting:cli}. La primera línea ingresada, hace referencia a un acceso al modo de configuración de un dispositivo cualquiera. En la segunda, se agrega una entrada estática a la tabla de ruteo y en la tercera se abandona el modo de configuración.
 
-\begin{lstlisting}[language=SHELXL, caption=Interacción tipica con un dispositivo mediante \textit{CLI}., label=lstlisting:cli]
+\begin{lstlisting}[language=SHELXL, caption=Interacción típica con un dispositivo mediante \textit{CLI}., label=lstlisting:cli]
 	> configure terminal
 	#> ip route 192.0.2.0/8 ethernet 1/2 192.0.2.4
 	#> !
@@ -145,7 +145,7 @@ La figura \ref{fig:snmpfig} muestra las operaciones más comunes de \textit{SNMP
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.8]{Figures/snmp_ejemplo.pdf}
-	\caption{Operaciones tipicas en \textit{SNMP}.}
+	\caption{Operaciones típicas en \textit{SNMP}.}
 	\label{fig:snmpfig}
   \end{figure}
 
@@ -160,7 +160,7 @@ Esta sección repasa brevemente los conceptos y características principales que
 \textit{NETCONF} fue estandarizado por la \textit{IETF} por primera vez en el 2006, en el \textit{RFC 4741} \parencite{netconfrfc}. Actualmente está siendo adoptado por los principales proveedores de dispositivos de red y ha ganado el apoyo de la industria. Según detalla Carl Moberg \parencite{netconfusos}, podemos encontrar que fabricantes como Juniper, Huawei, Cisco, entre otros, brindan soporte desde hace tiempo del protocolo \textit{NETCONF}. 
 \\
 
-La \textit{IETF} definde a \textit{NETCONF} como un protocolo estándar para Instalar, manipular y borrar configuraciones en un dispositivo \parencite{netconfrfcnuevo}. Permite implementar una \textit{API} formal utilizando el lenguaje de modelado \textit{YANG} para administrar y monitorear las funcionalidades de la red. \textit{NETCONF} utiliza el paradigma de las \textit{RPC}, donde construye los mensajes que intercambian información como un flujo con codificación \textit{XML}. Funciona con una arquitectura cliente-servidor, donde los mensajes son transportados utilizando algún protocolo orientado a la conexión. El \textit{RFC 6241}, en la sección 1.2, menciona una partición conceptual del protocolo en cuatro capas, dicha partición se refleja en la figura \ref{fig:netconf}. 
+La \textit{IETF} define a \textit{NETCONF} como un protocolo estándar para Instalar, manipular y borrar configuraciones en un dispositivo \parencite{netconfrfcnuevo}. Permite implementar una \textit{API} formal utilizando el lenguaje de modelado \textit{YANG} para administrar y monitorear las funcionalidades de la red. \textit{NETCONF} utiliza el paradigma de las \textit{RPC}, donde construye los mensajes que intercambian información como un flujo con codificación \textit{XML}. Funciona con una arquitectura cliente-servidor, donde los mensajes son transportados utilizando algún protocolo orientado a la conexión. El \textit{RFC 6241}, en la sección 1.2, menciona una partición conceptual del protocolo en cuatro capas, dicha partición se refleja en la figura \ref{fig:netconf}. 
 \\
 
 A continuación, se explica qué función cumple cada una de estas capas.
@@ -190,7 +190,7 @@ A continuación, se explica qué función cumple cada una de estas capas.
 	\item Posibilidad de gestionar la configuración en un dispositivo de manera reactiva mediante notificaciones del mismo.
 \end{itemize}
 
-\textit{NETCONF} separa los datos de configuración de los datos de estado de un dispositivo. Según lo detallado en la sección 1.1. y 1.4 del \textit{RFC 6242}, se define a cada uno como:
+\textit{NETCONF} separa los datos de configuración de los datos de estado de un dispositivo. Según lo detallado en la sección 1.1 y 1.4 del \textit{RFC 6242}, se define a cada uno como:
 
 \begin{itemize}
 	\item \textbf{Datos de configuración:} información que se puede leer o escribir y que se utiliza para llevar al dispositivo de un estado inicial a un estado deseado. Un ejemplo es la velocidad del ventilador del cpu del dispositivo.  
@@ -215,7 +215,7 @@ Como se mencionó anteriormente, \textit{NETCONF} define un protocolo de adminis
 
 
   \subsubsection{Sesión orientada a la conexión}
-  La sección dos del \textit{RFC 6242}, referida a protocolos de transporte, detalla que \textit{NETCONF} no esta vinculado a ningún protocolo de transporte específico. El requisito necesario de \textit{NETCONF} para el protocolo de transporte subyacente es que el mismo sea orientado a la conexión. 
+  La sección dos del \textit{RFC 6242}, referida a protocolos de transporte, detalla que \textit{NETCONF} no está vinculado a ningún protocolo de transporte específico. El requisito necesario de \textit{NETCONF} para el protocolo de transporte subyacente es que el mismo sea orientado a la conexión. 
   \\
 
   Esta es una de las principales ventajas frente a \textit{SNMP}, donde los mensajes en este último eran transportados a través del protocolo no orientado a la conexión, \textit{UDP}. Además, el hecho de que \textit{NETCONF} no especifique el uso de un único protocolo de transporte orientado a la conexión, se traduce a una mayor flexibilidad y personalización para el administrador, pudiendo optar por aquella que mejor se ajuste a las necesidades de los equipos involucrados.
@@ -224,7 +224,7 @@ Como se mencionó anteriormente, \textit{NETCONF} define un protocolo de adminis
   \subsubsection{Sesión orientada a la autenticación}
   El protocolo \textit{NETCONF} es orientado a la sesión con autenticación, utilizando una arquitectura cliente-servidor donde el servidor escucha un puerto asignado para recibir las conexiones con los clientes. 
 
-  Según la sección dos del \textit{RFC 6242} referida a seguridad, el protocolo mínimamente debe ofrecer autenticación, confidencialidad e integridad. Cualquier mensaje \textit{NETCONF}, incluido el mensaje \textit{HELLO}, se envian unicamente si el cliente y servidor se han autenticado de forma correcta. No se especifica un protocolo en particular, pudiendo utilizarse alguno de los múltiples protocolos de transporte seguros existentes en la actualidad como \textit{TLS}, \textit{SSH}, \textit{BEEP}, etc. Cualquier implementación de \textit{NETCONF} debe, al menos, soportar \textit{SSH} como protocolo de transporte seguro.
+  Según la sección dos del \textit{RFC 6242} referida a seguridad, el protocolo mínimamente debe ofrecer autenticación, confidencialidad e integridad. Cualquier mensaje \textit{NETCONF}, incluido el mensaje \textit{HELLO}, se envían únicamente si el cliente y servidor se han autenticado de forma correcta. No se especifica un protocolo en particular, pudiendo utilizarse alguno de los múltiples protocolos de transporte seguros existentes en la actualidad como \textit{TLS}, \textit{SSH}, \textit{BEEP}, etc. Cualquier implementación de \textit{NETCONF} debe, al menos, soportar \textit{SSH} como protocolo de transporte seguro.
 
   Además, según el \textit{RFC 6536} relacionado al control de acceso de usuarios, \textit{NETCONF} admite una jerarquía de niveles de usuarios. Por ejemplo, tener dos grupos de usuarios donde uno tenga permisos de configuración más limitados que el otro.
 
@@ -232,7 +232,7 @@ Como se mencionó anteriormente, \textit{NETCONF} define un protocolo de adminis
   \textit{NETCONF} define en la sección cinco del \textit{RFC 6242}, la existencia de uno o más \textit{datastores}, los cuales cumplen el papel de una base de datos conceptual que puede ser utilizada para almacenar y acceder tanto a los datos de configuración como a los datos de estado. El protocolo especifica y define tres tipos de base de datos: \textit{running}, \textit{startup} y \textit{candidate}, de las cuales únicamente es obligatorio que se implemente la primera. Si la implementación admite otras bases de datos, como por ejemplo \textit{startup} o \textit{candidate}, el servidor informará al cliente esta capacidad en el mensaje \textit{HELLO}. Cada operación en \textit{NETCONF} debe especificar la base de datos a la cual se realizará la consulta o modificación.
   \\
 
-  A continuación, se detalla cada uno de los almacenes de datos mencionadas.
+  A continuación, se detalla cada uno de los almacenes de datos mencionados.
 \begin{itemize}
 	\item \textbf{\textit{startup}:} según lo especificado en la sección 8.7 del \textit{RFC 6242}, dicha base de datos se utiliza para almacenar de forma persistente la información de configuración del dispositivo. El contenido de esta es copiado de manera automática a la base de datos conocida como \textit{running} en el inicio del servidor \textit{NETCONF}. De esta forma, el protocolo brinda una herramienta al dispositivo para poder aplicar una configuración dado al inicio del equipo. 
 	\item \textbf{\textit{running}:} refleja la configuración actualmente en uso por el dispositivo. Es la única base de datos conceptual que admite la presencia tanto de datos de estado como datos de configuración. A alto nivel, esta base de datos diferencia del estado de \textit{startup}, puesto que no es una configuración que será aplicada al inicio sino que refleja la configuración actual del dispositivo.
@@ -315,9 +315,9 @@ La tabla \ref{Tab:netconf_operaciones} resume las diferentes operaciones disponi
 
   Para finalizar, la figura \ref{fig:netconf_ejemplo} refleja una interacción típica entre cliente y servidor donde se observa el intercambio de capacidades en los mensajes \textit{HELLO}, el uso de diferentes operaciones con respuestas \textit{RPC} y las notificaciones.
 
-  \begin{figure}[!h]
+  \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.8]{Figures/netconf_ejemplo.pdf}
+	\includegraphics[scale=0.75]{Figures/netconf_ejemplo.pdf}
 	\caption{Ejemplo de comunicación entre cliente y servidor NETCONF.}
 	\label{fig:netconf_ejemplo}
   \end{figure}
@@ -334,9 +334,9 @@ La tabla \ref{Tab:netconf_operaciones} resume las diferentes operaciones disponi
 
   Se define el nombre del módulo, un prefijo para identificarlo, las dependencias, información de contacto al autor, descripción y revisiones. La declaración \textit{'include'} permite referenciar material que se describe en un submódulo, mientras que la declaración \textit{'import'} permite referenciar material que se encuentra descrito en un módulo externo. La estructura básica de un módulo puede verse en la figura \ref{fig:estructura_modulo}.
 
-  \begin{figure}[htbp]
+  \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.4]{Figures/estructura_modulo.pdf}
+	\includegraphics[scale=0.5]{Figures/estructura_modulo.pdf}
 	\caption{Estructura de un módulo \textit{YANG}.}
 	\label{fig:estructura_modulo}
   \end{figure}
@@ -349,7 +349,7 @@ La tabla \ref{Tab:netconf_operaciones} resume las diferentes operaciones disponi
 	\item \textbf{\textit{leaf-list}:} describe una secuencia de datos tipo \textit{leaf}. Cada \textit{leaf} admitirá un solo valor para el tipo de dato que especifique el \textit{leaf-list}.
 	\item \textbf{\textit{container}:} es utilizado para agrupar datos lógicamente relacionados. Un \textit{container} no admite un valor, pero sí admite cualquier número de tipos de datos como \textit{leaf}, \textit{leaf-list}, \textit{container} o \textit{list}.
 	\item \textbf{\textit{list}:} define una secuencia de tipo de datos donde cada tipo de dato es única, identificado por la sentencia \textit{key}. Puede contener múltiples identificadores \textit{key} y cualquier cantidad de tipo de datos \textit{leaf}, \textit{leaf-list}, \textit{container}, etc.
-	\item \textbf{\textit{choices - cases}:} no describen algún tipo de dato, más bien ofrecen ramificaciones condicionales en la estructura del módulo. La sentencia \textit{choice} es una condición que asegura que, como máximo, se cumplira una de las declaraciones dadas por case.
+	\item \textbf{\textit{choices - cases}:} no describen algún tipo de dato, más bien ofrecen ramificaciones condicionales en la estructura del módulo. La sentencia \textit{choice} es una condición que asegura que, como máximo, se cumplirá una de las declaraciones dadas por case.
 \end{itemize}
 
 Las declaraciones y sentencias descritas anteriormente pueden ser utilizadas en conjunto para poder formar una estructura de datos tipo árbol más compleja.
@@ -363,7 +363,7 @@ Por ejemplo, Bjorklund \parencite{yangsystem}, definió un módulo \textit{YANG}
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.9]{Figures/interface-yang.pdf}
+	\includegraphics[scale=0.7]{Figures/interface-yang.pdf}
 	\caption{Ejemplo de identificador de instancia en \textit{YANG}.}
 	\label{fig:interfaceyang}
   \end{figure}
@@ -372,8 +372,8 @@ Por ejemplo, Bjorklund \parencite{yangsystem}, definió un módulo \textit{YANG}
   \textit{YANG} ofrece características especiales que lo distinguen de un documento \textit{JSON}, permitiéndole describir de forma eficiente las funcionalidades de la red. Estas características incluyen la validación de modelos, una forma estandarizada de extender a los módulos y compatibilidad entre las diferentes revisiones de los mismos. En esta sección, se analizaron las principales funcionalidades ofrecidas por \textit{YANG}.
 
   \begin{itemize}
-	\item \textbf{Validación:} una de las características más importantes de \textit{YANG} es la posibilidad de validar automáticamente todos los datos descritos en el modelo. Resulta importante ya que la validación de los datos es una tarea difícil. Dicha afirmación está respaldada por el hecho de que introducir datos erróneos y tomarlos como válidos, está catalogada como la principal amenaza de seguridad según \textit{OWASP} \parencite{owasp}, organización sin ánimo de lucro a nivel mundial dedicada a mejorar la seguridad de las aplicaciones y del software en general. Cada dato introducido en el modelo \textit{YANG} puede ser validado semánticamente y sintácticamente. La validación de sintaxis es automática y garantiza que el dato contenga una secuencia de bytes válido, puesto que cada dato en el modelo tiene asociado un \textit{type} (string, int, uint, etc). Por otra parte, la validación semántica resulta más compleja y puede ser usada para describir dependencias entre datos. \textit{YANG} también admite sentencias como \textit{'when'} o \textit{'must'} que pueden ser usadas para evaluar condicionalmente un dato.  
-	\item \textbf{Compatibilidad:} cada módulo admite la indicación de una revisión, esto permite a \textit{YANG} distinguir las versiones soportadas y adaptarse a la situación cuando la misma no es soportada. También, se describen reglas de actualización en los módulos que deben respetarse para mantener compatibilidad entre los modelos de datos anteriores. Por ejemplo, cualquier cambio en un módulo debe indicar una revisión en la cabecera, tanto el nombre del mismo como el namespace debe mantenerse, como así también las definiciones de datos obsoletas, lo que permite compatibilidad con modelos de datos anteriores. Esta característica permite a los módulos evolucionar con el paso del tiempo, sin romper aplicaciones existentes con versiones anteriores.
+	\item \textbf{Validación:} una de las características más importantes de \textit{YANG} es la posibilidad de validar automáticamente todos los datos descritos en el modelo. Resulta importante ya que la validación de los datos es una tarea difícil. Dicha afirmación está respaldada por el hecho de que introducir datos erróneos y tomarlos como válidos, está catalogada como la principal amenaza de seguridad según \textit{OWASP} \parencite{owasp}, organización sin ánimo de lucro a nivel mundial dedicada a mejorar la seguridad de las aplicaciones y del software en general. Cada dato introducido en el modelo \textit{YANG} puede ser validado semánticamente y sintácticamente. La validación de sintaxis es automática y garantiza que el dato contenga una secuencia de bytes válido, puesto que cada dato en el modelo tiene asociado un \textit{type} (\textit{string, int, uint,} etc). Por otra parte, la validación semántica resulta más compleja y puede ser usada para describir dependencias entre datos. \textit{YANG} también admite sentencias como \textit{'when'} o \textit{'must'} que pueden ser usadas para evaluar condicionalmente un dato.  
+	\item \textbf{Compatibilidad:} cada módulo admite la indicación de una revisión, esto permite a \textit{YANG} distinguir las versiones soportadas y adaptarse a la situación cuando la misma no es soportada. También, se describen reglas de actualización en los módulos que deben respetarse para mantener compatibilidad entre los modelos de datos anteriores. Por ejemplo, cualquier cambio en un módulo debe indicar una revisión en la cabecera, tanto el nombre del mismo como el \textit{namespace} debe mantenerse, como así también las definiciones de datos obsoletas, lo que permite compatibilidad con modelos de datos anteriores. Esta característica permite a los módulos evolucionar con el paso del tiempo, sin romper aplicaciones existentes con versiones anteriores.
 	\item \textbf{Extensión:} permite extender las funcionalidades de los módulos con nuevas definiciones de datos. Existen muchas razones por las cuales utilizar la extensión en \textit{YANG}, como por ejemplo, desarrollar un nuevo módulo a partir de uno existente o con el fin de reducir errores reutilizando un módulo funcional. Una ventaja importante que tiene utilizar la extensión, es que al agregar nueva información en un módulo, se mantiene compatibilidad con el heredado.
 \end{itemize}
 
@@ -382,7 +382,6 @@ La explosión del tráfico digital provocado por los nuevos enfoques como \texti
 \\
 
 Una red de transporte óptica, es un tipo de red de comunicaciones de datos que utiliza la luz como medio de transporte para la información \parencite{redesopticasdef}. A diferencia de las redes basadas en cobre, los pulsos de luz de una red óptica pueden transportarse a una distancia considerable e incluso regenerarse a través de un dispositivo repetidor óptico. Después de que una señal óptica es recibida en su red de destino, la misma se convierte en una señal eléctrica a través de un receptor óptico, para luego ser enviado al nodo de la capa de paquetes. 
-\\
 
 Un sistema de comunicaciones ópticas puede incluir diversos dispositivos, como ser:
 
@@ -396,13 +395,13 @@ Un sistema de comunicaciones ópticas puede incluir diversos dispositivos, como 
 
 \subsubsection{\textit{Transponders} y \textit{Muxponders}}
 El \textit{transponder}, es un dispositivo que recibe múltiples señales ópticas a través de sus puertos clientes, dichas señales ópticas pueden tratarse de servicios diferentes como por ejemplo, \textit{Ethernet}, \textit{SONET}, \textit{OTN}, entre otros. Luego, transforma estas señales en flujos de datos eléctricos, las procesa y regenera las mismas para nuevamente convertirlas en señales ópticas compatibles con el estándar \textit{ITU}. De esta forma, realiza la función de recepción, amplificación y reemisión de una señal óptica en un proceso que comúnmente se denomina \textit{optical electrical optical} (OEO) \parencite{transpondermux}.
-\\
+
 
 La figura \ref{fig:transponder} ejemplifica el proceso \textit{OEO} típico de un \textit{transponder}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.9]{Figures/transponder.pdf}
+	\includegraphics[scale=0.8]{Figures/transponder.pdf}
 	\caption{Funcionamiento básico de un \textit{transponder}.}
 	\label{fig:transponder}
   \end{figure}
@@ -411,7 +410,7 @@ La figura \ref{fig:transponder} ejemplifica el proceso \textit{OEO} típico de u
 
   \begin{figure}[htbp]
 	\centering
-	\includegraphics[scale=0.9]{Figures/muxponder.pdf}
+	\includegraphics[scale=0.8]{Figures/muxponder.pdf}
 	\caption{Funcionamiento básico de un \textit{muxponder}.}
 	\label{fig:muxponder}
   \end{figure}

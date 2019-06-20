@@ -60,15 +60,37 @@ Además, debido a las capacidades de la memoria primaria y secundaria del equipo
 
 \newpage
 
-\subsection{Diagrama en bloques del \textit{muxponder}}
+\subsection{Componentes del \textit{muxponder}}
 
-A continuación, se presenta en la figura \ref{fig:diagramabloque} un diagrama en bloques del \textit{muxponder} donde se observan los principales componentes que conforman el mismo.
+Los componentes más significativos del dispositivo se listan a continuación:
+
+\begin{itemize}
+	\item Módulo de 40GB.
+	\item Los 4 puertos clientes (XFP).
+	\item Unidad de ventilación.
+	\item Chip cortina.
+	\item Unidad de alimentación.
+	\item Interfaces de control.
+	\item \textit{FPGA}, con el procesador \textit{NIOS II} instanciado.
+\end{itemize}
+
+
+Además, se presenta en la figura \ref{fig:diagramabloque} un diagrama en bloques del \textit{muxponder}, donde se pueden observar los principales componentes que conforman el mismo.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.77]{Figures/monitorapp.png}
-	\caption{Diagrama en bloques del \textit{muxponder} 40GB.}
+	\includegraphics[scale=0.60]{Figures/diagramabloquesmxp.pdf}
+	\caption{Diagrama en bloques del \textit{muxponder} de 40GB.}
 	\label{fig:diagramabloque}
+  \end{figure}
+
+Por otra parte, una vista de la circuitería del equipo se puede observar en la figura \ref{fig:diagramabloquemxp}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.060]{Figures/bloquemxpfisico.pdf}
+	\caption{Vista de la circuitería del \textit{muxponder} de 40GB.}
+	\label{fig:diagramabloquemxp}
   \end{figure}
 
 \subsection{Aplicaciones integradas en el dispositivo}
@@ -107,7 +129,7 @@ Será importante explicar la utilidad de dos binarios que incorporan los \textit
 %	SECTION 2
 %----------------------------------------------------------------------------------------
 
-\newpage
+
 
 \section{Herramientas de Software}
 
@@ -133,12 +155,12 @@ Debido al crecimiento del consumo de tráfico en las redes y la demanda del anch
 Las características más importantes de la arquitectura presentada por \textit{ONOS} \parencite{onffwhite} se detallan a continuación:
 
 \begin{itemize}
-	\item \textbf{Núcleo distribuido}: la solución que propone \textit{ONOS} para proveer escalabilidad, alto rendimiento y disponibilidad, se basa en un núcleo distribuido por los diferentes nodos que conforman un \textit{cluster}, lo que implica la posibilidad de soportar enormes cantidades de dispositivos de red. Esto último es así ya que \textit{ONOS} permite la incorporación dinamica de nuevos nodos, con lo que la carga del controlador podría distribuirse entre ellos de forma adaptativa.
+	\item \textbf{Núcleo distribuido}: la solución que propone \textit{ONOS} para proveer escalabilidad, alto rendimiento y disponibilidad, se basa en un núcleo distribuido por los diferentes nodos que conforman un \textit{cluster}, lo que implica la posibilidad de soportar enormes cantidades de dispositivos de red. Esto último es así ya que \textit{ONOS} permite la incorporación dinámica de nuevos nodos, con lo que la carga del controlador podría distribuirse entre ellos de forma adaptativa.
 	
 	La figura \ref{fig:onosdistribuido} ejemplifica dicha distribución. El hecho de agregar esta redundancia implica una mayor disponibilidad del controlador. A su vez, permite realizar un balanceo de carga, lo que implica mayor rendimiento y escalabilidad.
 
 
-	\item \textbf{Abstracción \textit{Northbound}}: el plano aplicación, explicado en el capítulo anterior, se comunica con \textit{ONOS} a través de una interfaz brindada por el controlador. El mismo, brinda a las aplicaciones gráficos y estadísticas de la red como así también aplicaciones basadas en intents para facilitar el control, administración y configuración de los equipos.
+	\item \textbf{Abstracción \textit{Northbound}}: el plano aplicación, explicado en el capítulo anterior, se comunica con \textit{ONOS} a través de una interfaz brindada por el controlador. El mismo, brinda a las aplicaciones gráficos y estadísticas de la red como así también aplicaciones basadas en \textit{intents} para facilitar el control, administración y configuración de los equipos.
 	\item \textbf{Abstracción \textit{Southbound}}: de forma similar, el controlador ofrece una interfaz para comunicarse con el plano de datos. Cabe destacar que si bien \textit{ONOS} basa su funcionamiento en el protocolo \textit{OpenFlow}, también brinda soporte a otros como \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc, con el fin de mantener compatibilidad con dispositivos más antiguos.
 	
 	Una aproximación más detallada de la arquitectura que presenta \textit{ONOS} puede verse en la figura \ref{fig:onosarch}. En la misma, se observan las interfaces mencionadas anteriormente junto a una serie de componentes que pertenecen a la interfaz \textit{Southbound}. Estos componentes se analizarán más adelante. 
@@ -162,7 +184,7 @@ Las características más importantes de la arquitectura presentada por \textit{
 	\label{fig:onosarch}
   \end{figure}
 
-  \subsubsection{Interfaz Southbound en ONOS}
+  \subsubsection{Interfaz \textit{Southbound} en \textit{ONOS}}
   Tal como se explicó anteriormente, el objetivo del proyecto es gestionar la configuración de un \textit{muxponder} de 40GB a través del protocolo \textit{NETCONF}. 
   
   Para ello, se procede a explicar con más detalle la interfaz \textit{Southbound} de \textit{ONOS}. La misma, se encuentra dividida en una serie de componentes que se detallan a continuación:
@@ -204,7 +226,7 @@ El proyecto Sysrepo proporciona las funcionalidades de una base de datos lógica
 A su vez, Sysrepo integra \textit{Netopeer2} \parencite{netopeergit} como agente \textit{NETCONF}. \textit{Netopeer2} es la evolución del proyecto Netopeer \parencite{netopeergit1} (discontinuado) y ofrece tanto un cliente como un servidor \textit{NETCONF}.
 \\
 
-Sysrepo fue la primer implementación del protocolo instalada y manipulada en una máquina de propósito general. Tiene la ventaja de contar con una gran documentación, como así también una variedad de ejemplos y casos de usos. Además, otra ventaja que presenta es que el hecho de que Sysrepo exponga \textit{API’s} implica una posibilidad de adaptar cualquier aplicación Unix existente al protocolo \textit{NETCONF}, sin mayores cambios.  
+Sysrepo fue la primera implementación del protocolo instalada y manipulada en una máquina de propósito general. Tiene la ventaja de contar con una gran documentación, como así también una variedad de ejemplos y casos de usos. Además, otra ventaja que presenta es que el hecho de que Sysrepo exponga \textit{API’s} implica una posibilidad de adaptar cualquier aplicación Unix existente al protocolo \textit{NETCONF}, sin mayores cambios.  
 
 \subsubsection{Yuma123}
 En el 2011, el proyecto \textit{open-source} YUMA, también conocido como OpenYUMA, sufrió un cambio en su licencia donde esta dejó de ser \textit{BSD}. A partir de entonces, el proyecto tuvo dos ramificaciones: YumaPro \parencite{yumapro}, ahora perteneciente a YumaWorks, y Yuma123, su versión \textit{open-source}. 
@@ -235,11 +257,12 @@ A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cue
 	Para finalizar, cabe destacar que ambos proyectos soportan las bases de datos \textit{startup} y \textit{candidate}.
 
 	\item \textbf{Herramientas y características extras al protocolo}: Ambas implementaciones integran tanto un cliente como un servidor \textit{NETCONF}. Sin embargo, cada una incorpora una serie de herramientas que resulta de importancia mencionarlas. 
+	\newpage
 	\begin{itemize}
 		\item \textbf{Sysrepo}
 		\begin{itemize}
 			\item sysrepoctl: aplicación que permite administrar los módulos \textit{YANG} desde una \textit{CLI}. Brinda opciones para instalar, eliminar y listar los módulos que tiene activo el servidor.
-			\item sysrepocfg: utilidad para exportar o importar datos de configuración de las diferentes bases de datos. De esta forma se podría editar, por ejemplo, el contenido de la base de datos startup desde un navegador web o editor de texto cualquiera, sin que sea necesario utilizar el protocolo \textit{NETCONF} para dicho propósito.
+			\item sysrepocfg: utilidad para exportar o importar datos de configuración de las diferentes bases de datos. De esta forma se podría editar, por ejemplo, el contenido de la base de datos \textit{startup} desde un navegador \textit{WEB} o editor de texto cualquiera, sin que sea necesario utilizar el protocolo \textit{NETCONF} para dicho propósito.
 		\end{itemize}
 		\item \textbf{Yuma123}
 		\begin{itemize}
@@ -279,7 +302,7 @@ A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cue
 	Presentado el análisis y las diferencias entre ambos proyectos, en esta sección se justificará la elección de Yuma123 como servidor que se instalará en el \textit{muxponder} de 40GB.
 	\\
 	
-	Como se mencionó anteriormente, Sysrepo fue la primer implementación con la que se tuvo contacto y manipulación del protocolo \textit{NETCONF}. La razón por la que se optó empezar a familiarizarse con este, fue porque se encontró una gran cantidad de ejemplos y casos de uso a la hora de realizar los módulos \textit{YANG} y relacionarlos con la instrumentación y las aplicaciones Unix. Además, la instalación del proyecto en una computadora de escritorio fue sencilla (debido a la extensa documentación y las diferentes alternativas de instalación que brinda como ser \textit{dockers}, \textit{scripts} de instalación, etc).
+	Como se mencionó anteriormente, Sysrepo fue la primera implementación con la que se tuvo contacto y manipulación del protocolo \textit{NETCONF}. La razón por la que se optó empezar a familiarizarse con este, fue porque se encontró una gran cantidad de ejemplos y casos de uso a la hora de realizar los módulos \textit{YANG} y relacionarlos con la instrumentación y las aplicaciones Unix. Además, la instalación del proyecto en una computadora de escritorio fue sencilla (debido a la extensa documentación y las diferentes alternativas de instalación que brinda como ser \textit{dockers}, \textit{scripts} de instalación, etc).
 
 	Sin embargo, no resultó de igual forma a la hora de realizar la compilación cruzada. La razón se debe a que Sysrepo tiene gran cantidad de dependencias como ser \textit{libyang, Google Protocol Buffers, protobuf-c, libev,} entre otros. Específicamente, se tuvo problemas para compilar la librería \textit{'protobuf-c'} para la arquitectura \textit{NIOS}, por lo que se abandonó el uso de esta herramienta. Además, como se vio anteriormente, la demanda de memoria principal y secundaria en Sysrepo excede a los recursos disponibles en el muxponder.
 	\\

@@ -4,11 +4,9 @@
 
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-Las redes de telecomunicaciones crecen a medida que surgen nuevas tecnologías (inalámbricas de cuarta generación \textit{4G}, inalámbricas de quinta generación \textit{5G}, \textit{WiMax}, \textit{LTE}, etc), seguido de la demanda en alza del ancho de banda por parte de los usuarios, requiriendo cada vez mayor velocidad y mejor calidad de servicio. De esta forma, los operadores de red se ven obligados a aumentar la cantidad de dispositivos para satisfacer las necesidades de los usuarios, lo que constituye un desafío y un problema para los administradores de red, donde serán necesarios mecanismos de configuración que se adapten a las nuevas necesidades. 
+Las redes de telecomunicaciones crecen a medida que surgen nuevas tecnologías (redes inalámbricas \textit{4G} y \textit{5G}, \textit{WiMax}, \textit{LTE}, etc), seguido de la demanda en alza del ancho de banda por parte de los usuarios, requiriendo cada vez mayor velocidad y mejor calidad de servicio. De esta forma, los operadores de red se ven obligados a aumentar la cantidad de dispositivos para satisfacer las necesidades de los usuarios, lo que constituye un desafío y un problema para los administradores de red, donde serán necesarios mecanismos de configuración que se adapten a las nuevas necesidades. 
 
-Diseñado por la \textit{IETF}, \textit{NETCONF} surge como una solución simple y estándar para la gestión de la configuración, donde el mismo proporciona a los operadores y administradores de red un \textit{framework} y un conjunto de métodos \textit{RPC} basados en codificación \textit{XML} para gestionar (instalar, modificar y borrar) la configuración de los elementos de red.
-
-Por otra parte, el paradigma actual de implementación de redes resulta difícil de adaptar a estos nuevos cambios en los requerimientos, por ejemplo:
+Así, el paradigma actual de implementación de redes resulta difícil de adaptar a estos nuevos cambios en los requerimientos, por ejemplo:
 
 \begin{itemize}     
     \item La complejidad y el tamaño de las redes ha crecido considerablemente, esto genera gran resistencia al cambio en los operadores ya que el riesgo de generar una falla es mayor.
@@ -18,8 +16,9 @@ Por otra parte, el paradigma actual de implementación de redes resulta difícil
 
 Desde el punto de vista de la infraestructura de comunicación, el mejor candidato para resolver este problema son las \textit{SDN} con la propuesta de separar el plano de control del plano de datos de los dispositivos, logrando una interfaz abierta entre ambos. De esta forma, se logra con \textit{SDN} que los equipos puedan ser vistos como una caja blanca, donde los mismos pueden relacionarse con independencia de fabricante. 
 
+Por otra parte y desde el punto de vista de la gestión de la configuración, \textit{NETCONF} surge como una solución simple y estándar para la gestión de la configuración, donde el mismo proporciona a los operadores y administradores de red un \textit{framework} y un conjunto de métodos \textit{RPC} basados en codificación \textit{XML} para gestionar (instalar, modificar y borrar) la configuración de los elementos de red.
 
-En el transcurso de este capítulo introduciremos los aspectos más significativos del proyecto. Se comienza describiendo las motivaciones principales que han llevado al desarrollo de este trabajo. Luego se expone el estado actual de las tecnologías directamente relacionadas, continuando con los objetivos planteados y finalizando con una descripción de la organización del texto.
+En el transcurso de este capítulo se introducen los aspectos más significativos del proyecto. Se comienza describiendo las motivaciones principales que han llevado al desarrollo de este trabajo. Luego, se expone el estado actual de las tecnologías directamente relacionadas, continuando con los objetivos planteados y finalizando con una descripción de la organización del texto.
 
 \section{Motivación e importancia del proyecto}
 
@@ -27,21 +26,21 @@ Se exponen a continuación las razones principales que incentivaron la realizaci
 
 \begin{itemize}     
     \item Oportunidad de incursionar en el estudio de sistemas de administración de redes de vanguardia.
-    \item La aplicación de los conocimientos adquiridos a lo largo de la carrera de Ingenieria en Computacion.
+    \item La aplicación de los conocimientos adquiridos a lo largo de la carrera de Ingeniería en Computación.
     \item Posibilidad de desarrollar un sistema de administración de redes en su totalidad.
     \item Oportunidad de trabajar en un entorno con diversos dispositivos, presentes en las distintas capas de la red y destacando la presencia de un dispositivo óptico de transporte de red, el \textit{muxponder} de 40GB.
 \end{itemize}
     
 \section{Estado del arte} \label{Estado_Arte} %poner que es lo que hace y que es lo que nosotros agregamos o cambiamos
 
-En la presente sección se hace un estudio del estado de las tecnologías directamente relacionadas al proyecto, con el objetivo de fijar un marco de comparación y diferenciar el trabajo realizado. Particularmente, se presenta una visión global de las implementaciones existentes más relevantes relacionados a la administración de la configuración y al esquema de redes definidas por software.
+En la presente sección se hace un estudio del estado de las tecnologías directamente relacionadas al proyecto, con el objetivo de fijar un marco de comparación y diferenciar el trabajo realizado. Particularmente, se presenta una visión global de las implementaciones existentes más relevantes relacionadas a la administración de la configuración y al esquema de redes definidas por software.
 
 
 
 % tesis granada% tesis granada% tesis granada% tesis granada% tesis granada
 \subsubsection*{\textit{Protocol Efficiencies of NETCONF versus SNMP for Configuration Management Functions}}
 
-En \parencite{netconfvssnmp} se presenta una comparación entre el protocolo \textit{NETCONF} y el protocolo \textit{SNMP}. Para ello, conforman la topología que puede verse en la figura \ref{fig:netconfvssnmp1}, utilizando como agente \textit{NETCONF} y agente \textit{SNMP} la implementación ´ConfD´ de Cisco.
+En \parencite{netconfvssnmp} se presenta una comparación entre el protocolo \textit{NETCONF} y el protocolo \textit{SNMP}. Para ello, se conforma la topología que puede verse en la figura \ref{fig:netconfvssnmp1}, utilizando como agente \textit{NETCONF} y agente \textit{SNMP} la implementación 'ConfD' de Cisco.
 
 \begin{figure}[H]
 	\centering 
@@ -59,7 +58,7 @@ Las pruebas realizadas por los autores arrojan los resultados observados en la f
 	\label{fig:netconfvssnmp2}
 \end{figure}
 
-En las conclusiones obtenidas en este artículo mencionan que \textit{NETCONF} es una clara alternativa a \textit{SNMP} en ámbitos de gestión de la configuración de la red. Además, destacan las bondades que presenta el protocolo \textit{NETCONF} frente a \textit{SNMP} para los proveedores de servicio como ser la seguridad de los mensajes mediante \textit{SSH}, la capacidad de revertir una configuración, el transporte de los mensajes mediante un protocolo orientado a la conexión, etc.
+En las conclusiones de este artículo mencionan que \textit{NETCONF} es una clara alternativa a \textit{SNMP} en ámbitos de gestión de la configuración de la red. Además, destacan las bondades que presenta el protocolo \textit{NETCONF} frente a \textit{SNMP} para los proveedores de servicio como ser la seguridad de los mensajes mediante \textit{SSH}, la capacidad de revertir una configuración, el transporte de los mensajes mediante un protocolo orientado a la conexión, etc.
 
 
 
@@ -68,7 +67,7 @@ En las conclusiones obtenidas en este artículo mencionan que \textit{NETCONF} e
 
 En el artículo \parencite{netconfvstodos} se realiza un estudio de las diferentes alternativas existentes en el ámbito de la configuración y gestión de la red. A su vez, el autor desarrolla un prototipo de servidor \textit{NETCONF}. Los experimentos realizados por el autor tienen como objetivo determinar la capacidad que tienen los diferentes protocolos de gestión de configuración y monitoreo para adaptarse a entornos de \textit{SDN} y \textit{NFV}. 
 
-Así, separa las pruebas realizadas en dos partes. En primer lugar, evalúa alternativas que permiten la configuración de un dispositivo de red. Luego, realiza un análisis de las alternativas relacionadas al monitoreo en dispositivos de red.
+Así, separa las pruebas realizadas en dos partes. En primer lugar, evalúa alternativas que permiten la configuración de un dispositivo de red. Luego, realiza un análisis de las alternativas relacionadas al monitoreo de un dispositivos de red.
 
 La figura \ref{fig:netconfvstodos1} muestra una gráfica de los resultados obtenidos para el primer caso, donde concluye que \textit{NETCONF} se adapta bien a los entornos \textit{NFV} ya que se encuentra específicamente diseñado para la configuración de los equipos. Sin embargo, menciona que puede presentar dificultades adaptar el protocolo \textit{NETCONF} a entornos \textit{SDN} ya que no cumple estrictamente con el paradigma de las \textit{SDN}, donde el plano de control y el plano de datos se encuentran desacoplados íntegramente.
 
@@ -120,7 +119,7 @@ Además, resaltan el alto rendimiento obtenido en sus pruebas para la configurac
 
 \section{Objetivos propuestos}
 
-El objetivo general de este proyecto integrador es adquirir los conocimientos relacionados con administración de redes, particularmente con el esquema conocido como Software Defined Networking y el protocolo de administración de la configuración \textit{NETCONF}. Para esto, se propone usar como vehículo de prueba un entorno constituido por ambas tecnologías para lograr la administración y monitoreo del estado de un \textit{muxponder}. Se prestará particular atención al estudio y comparación de las diferentes opciones abiertas disponibles para la implementación del protocolo \textit{NETCONF}.
+El objetivo general de este proyecto integrador es adquirir los conocimientos relacionados con administración de redes, particularmente con el esquema conocido como Redes Definidas por Software y el protocolo de administración de la configuración \textit{NETCONF}. Para esto, se propone usar como vehículo de prueba un entorno constituido por ambas tecnologías para lograr la administración y monitoreo del estado de un \textit{muxponder}. Se prestará particular atención al estudio y comparación de las diferentes opciones abiertas disponibles para la implementación del protocolo \textit{NETCONF}.
 
 \subsection{Objetivos particulares}
 
@@ -152,7 +151,8 @@ Aquí se listan los distintos capítulos que conforman el proyecto, presentando 
     \item \textbf{Capítulo 5 - Validación y verificación:} Aquí, se exponen los diferentes casos de prueba desarrollados con el objetivo de validar y verificar que se cumplan los requerimientos de las diferentes aplicaciones.
 
     \item \textbf{Capítulo 6 - Conclusión:} Se presenta en este capítulo las conclusiones obtenidas tras la realización del trabajo, posibles vías de trabajos futuros y una apreciación personal del proceso abordado.
-    
+	
+	\item \textbf{Apéndices:} En los apéndices se proporciona al lector un tutorial de como desplegar el entorno de trabajo y las aplicaciones desarrolladas en este proyecto.
     
     \item \textbf{Bibliografía:} En esta parte final del documento, se muestran todas las referencias que se han consultado para el desarrollo del proyecto.   
 \end{itemize}

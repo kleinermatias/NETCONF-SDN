@@ -40,7 +40,7 @@ Por otra parte, el controlador tiene una conexión con los \textit{muxponder} a 
   \end{figure}
 
 
-En la figura \ref{fig:topologiafis} se presenta cómo está dispuesta la conexión física de los equipos. En ella, se puede observar la alimentación de los equipos, los puertos clientes los cuáles estarán conectados a los \textit{host} A y B antes mencionados. También, se observa las interfaces de línea conectadas entre sí, de tal manera que se permita una comunicación bidireccional entre los clientes. Por otro lado, las interfaces de control se conectan al controlador \textit{ONOS} tal cómo se mencionó anteriormente. 
+En la figura \ref{fig:topologiafis} se presenta cómo está dispuesta la conexión física de los equipos. En ella, se puede observar la alimentación de los equipos, los puertos clientes los cuales estarán conectados a los \textit{host} A y B antes mencionados. También, se observa las interfaces de línea conectadas entre sí, de tal manera que se permita una comunicación bidireccional entre los clientes. Por otro lado, las interfaces de control se conectan al controlador \textit{ONOS} tal cómo se mencionó anteriormente. 
 
 \begin{comment}
 A continuación, en la figura \ref{fig:topologiafis} se muestra como está dispuesta la conexión físicamente en los dispositivos. A la izquierda se tiene el \textit{muxponder} C, y a la derecha se encuentra el \textit{muxponder} D. Las interfaces de control de ambos dispositivos están conectadas al controlador \textit{ONOS}, mientras que los puertos clientes se encuentran conectados a los clientes A y B respectivamente. Por otra parte, las interfaces de línea se encuentran conectados entre los \textit{muxponder}, como se explicó anteriormente, con el fin de poder tener una comunicación bidireccional.
@@ -85,9 +85,9 @@ Para establecer los requerimientos funcionales del sistema, se presentará en pr
   
   Para la actividad relacionada al monitoreo \ref{fig:actividad_config} (A), la aplicación \textit{WEB} realiza consultas periódicas al controlador con el fin de obtener información sobre los dispositivos. Así, se envía un mensaje HTTP con la operación GET desde la aplicación, el controlador procesa la petición y responde dicha consulta.
 
-Por otra parte, para el flujo de actividad relacionado a las notificiaciones que puede verse en la figura \ref{fig:actividad_config} (B), es el dispositivo quien emite inicialmente el mensaje mediante una notificación \textit{NETCONF}. El controlador, se procesa la notificación y se la registra como alarma.
+Por otra parte, para el flujo de actividad relacionado a las notificaciones que puede verse en la figura \ref{fig:actividad_config} (B), es el dispositivo quien emite inicialmente el mensaje mediante una notificación \textit{NETCONF}. El controlador, se procesa la notificación y se la registra como alarma.
 
-Por último, se tiene el diagrama de actividad relacionado a la configuración del equipo \ref{fig:actividad_config} (C). El evento inicial para este caso, es la adición de una configuración desde la aplicación \textit{WEB}. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la \textit{Northbound} interface del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración \textit{NETCONF} a los dispositivos involucrados a través de la \textit{Southbound} interface.
+Por último, se tiene el diagrama de actividad relacionado a la configuración del equipo \ref{fig:actividad_config} (C). El evento inicial para este caso, es la adición de una configuración desde la aplicación \textit{WEB}. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la \textit{Northbound interface} del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración \textit{NETCONF} a los dispositivos involucrados a través de la \textit{Southbound} interface.
 
 
   
@@ -161,11 +161,11 @@ Siendo Yuma123 el agente que se eligió para integrar el protocolo en el equipo,
   En primer lugar, toda la tarea de compilación se realizó en una computadora de propósito general, debido a los recursos limitados con los que cuenta el dispositivo. Para facilitar la compilación e instalación, se realizaron tres scripts los cuales se describen a continuación:
 
   \begin{itemize}
-	\item \textbf{\texttt{Dockerfile}}: el objetivo de este script, es el de realizar la compilación del proyecto Yuma123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto Yuma123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto Yuma123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta '$/root/usrapp$' de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del script, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
+	\item \textbf{\texttt{Dockerfile}}: el objetivo de este \textit{script}, es el de realizar la compilación del proyecto Yuma123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto Yuma123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto Yuma123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta '$/root/usrapp$' de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del script, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
     
-    \item \textbf{\texttt{remote\_install\_yuma.sh}}: script bash que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el script realiza la instalación del agente mediante SSH y SCP \parencite{scpman}, copiando el contenido necesario de '$/root/usrapp$' que se generó con la construcción de la imagen Docker, al directorio '$/root/usrapp$' del dispositivo. Es importante mencionar que muchas de las librerías requeridas por Yuma123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
+    \item \textbf{\texttt{remote\_install\_yuma.sh}}: \textit{script bash} que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el \textit{script} realiza la instalación del agente mediante \textit{SSH} y \textit{SCP} \parencite{scpman}, copiando el contenido necesario de '$/root/usrapp$' que se generó con la construcción de la imagen Docker, al directorio '$/root/usrapp$' del dispositivo. Es importante mencionar que muchas de las librerías requeridas por Yuma123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
     
-    \item \textbf{\texttt{remote\_uninstall\_yuma.sh}}: requiere dos parametros los cuales son el usuario del dispositivo remoto y la dirección ip del mismo. El objetivo de este script es facilitar la desinstalación de todas las librerías relacionadas a Yuma123 del dispositivo.
+    \item \textbf{\texttt{remote\_uninstall\_yuma.sh}}: requiere dos parámetros los cuales son el usuario del dispositivo remoto y la dirección IP del mismo. El objetivo de este \textit{script} es facilitar la desinstalación de todas las librerías relacionadas a Yuma123 del dispositivo.
 
 \end{itemize}
 
@@ -175,7 +175,7 @@ Siendo Yuma123 el agente que se eligió para integrar el protocolo en el equipo,
 Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la figura \ref{fig:req_netconf}, se diseñó un módulo \textit{YANG} que contiene cinco secciones bien definidas, las cuales se describen a continuación: 
 
 \begin{itemize}
-	\item \textbf{Cabecera del módulo y declaraciones}: aqui se declara la estructura inicial del módulo \textit{YANG}. Se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: restricted-tipo-trafico, restricted-tipo-fec-linea y restricted-tipo-fec-cliente. En ellos, se especifica a través de la directiva ‘enum’ cuales seran los valores aceptados que pueden tomar dichos tipos de datos. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (otu2 y xge), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar una porción de esta sección en el código \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
+	\item \textbf{Cabecera del módulo y declaraciones}: aquí se declara la estructura inicial del módulo \textit{YANG}. Se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: ‘restricted-tipo-trafico‘, ‘restricted-tipo-fec-linea‘ y ‘restricted-tipo-fec-cliente‘. En ellos, se especifica a través de la directiva ‘enum’ cuales serán los valores aceptados que pueden tomar dichos tipos de datos. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (‘otu2‘ y ‘xge‘), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar una porción de esta sección en el código \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
 
   \newpage
     \begin{lstlisting}[language=SHELXL, caption=Cabecera del módulo \textit{YANG}., label=lstlisting:cabecera]
@@ -201,9 +201,9 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
     \end{lstlisting}
 
-    \item \textbf{Container \textit{YANG} de configuración}: en esta sección se declara un container llamado ‘mux-config’. Aquí se describen todos los parámetros que admiten una configuración (por ejemplo, el tipo de fec de línea), a través de las declaraciones ‘leaf’. Un fragmento de esta sección puede observarse en el código \ref{lstlisting:config_container}, donde además se puede ver el uso de los tipos de datos definidos en la cabecera del módulo.
+    \item \textbf{\textit{Container} \textit{YANG} de configuración}: en esta sección se declara un \textit{container} llamado ‘mux-config’. Aquí se describen todos los parámetros que admiten una configuración (por ejemplo, el tipo de fec de línea), a través de las declaraciones ‘leaf’. Un fragmento de esta sección puede observarse en el código \ref{lstlisting:config_container}, donde además se puede ver el uso de los tipos de datos definidos en la cabecera del módulo.
   
-    \begin{lstlisting}[language=SHELXL, caption=Container de configuración., label=lstlisting:config_container]
+    \begin{lstlisting}[language=SHELXL, caption=\textit{Container} de configuración., label=lstlisting:config_container]
     container mux-config {
         description 'Parametros de la CLI';
 
@@ -239,9 +239,9 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{Container \textit{YANG} de estado}: de igual forma, se realizaron containers para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. El código \ref{lstlisting:state_container} presenta una parte de esta sección del módulo, donde puede apreciarse la directiva ’config false’, la cual indica que el \textit{container} no admitirá datos de configuración.  
+    \item \textbf{\textit{Container} \textit{YANG} de estado}: de igual forma, se realizaron \textit{containers} para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. El código \ref{lstlisting:state_container} presenta una parte de esta sección del módulo, donde puede apreciarse la directiva ’config false’, la cual indica que el \textit{container} no admitirá datos de configuración.  
 
-    \begin{lstlisting}[language=SHELXL, caption=Container de estado., label=lstlisting:state_container]
+    \begin{lstlisting}[language=SHELXL, caption=\textit{Container} de estado., label=lstlisting:state_container]
     container mux-state {
         description 'Representa a datos de estado del dispositivo.';
         
@@ -264,7 +264,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     \end{lstlisting}
 
 
-    \item \textbf{Definición de \textit{RPC}}: como se estudió en capítulos anteriores, \textit{NETCONF} permite definir \textit{RPC} propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una \textit{RPC} cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el container 'mux-config' en el dispositivo. El código \ref{lstlisting:RPC} muestra dicha sección del módulo. En ella, se puede notar que la \textit{RPC} admite una respuesta de la operación solicitada, la cual está contenida en la leaf 'respuesta-mux-apply-config' y es de tipo \textit{String}. En este mensaje se indica el resultado de la operación.
+    \item \textbf{Definición de \textit{RPC}}: como se estudió en capítulos anteriores, \textit{NETCONF} permite definir \textit{RPC} propias de un módulo con el fin de extender la funcionalidad de los dispositivos. Se define así una \textit{RPC} cuya utilidad será la de poder indicar al agente cuándo debe aplicar la configuración que contiene el \textit{container} 'mux-config' en el dispositivo. El código \ref{lstlisting:RPC} muestra dicha sección del módulo. En ella, se puede notar que la \textit{RPC} admite una respuesta de la operación solicitada, la cual está contenida en la \textit{leaf} 'respuesta-mux-apply-config' y es de tipo \textit{String}. En este mensaje se indica el resultado de la operación.
 
     
 
@@ -295,7 +295,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 \subsection{Diseño de la librería \textit{C} para el agente \textit{NETCONF}}
 
 
-  Teniendo en cuenta las aplicaciones integradas en el \textit{muxponder}, las cuales fueron explicadas en el capítulo anterior, se procede a detallar el diseño de la librería en el lenguaje \textit{C}. Para ello, se utilizó la herramienta \textit{yangdump} del proyecto Yuma123, la cual genera un esqueleto de la aplicación a partir de un módulo \textit{YANG} dado. Se forman así dos archivos, uno con extensión '.h' (headers) y otro con extensión '.c' (código fuente). 
+  Teniendo en cuenta las aplicaciones integradas en el \textit{muxponder}, las cuales fueron explicadas en el capítulo anterior, se procede a detallar el diseño de la librería en el lenguaje \textit{C}. Para ello, se utilizó la herramienta \textit{yangdump} del proyecto Yuma123, la cual genera un esqueleto de la aplicación a partir de un módulo \textit{YANG} dado. Se forman así dos archivos, uno con extensión '.h' (\textit{headers}) y otro con extensión '.c' (código fuente). 
   
 
   En el primero, la herramienta declara todas las variables, funciones y los tipos de datos que va a utilizar la librería. 
@@ -310,7 +310,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
   Se muestra el comportamiento de este primer grupo en el diagrama de actividad de la figura \ref{fig:actividad_modulo_sinc}. Cada vez que llega un mensaje \textit{NETCONF} al agente Yuma123, el mismo procesa y verifica a qué módulo \textit{YANG} hace referencia el mensaje y qué tipo de operación requiere el cliente. 
 
-  Si la operación es una consulta por una variable de estado o de configuración, el agente realiza una llamada a una función relacionada a la variable consultada. En dicha función, lo que se hace es tomar el valor de memoria compartida del dispositivo, castear el mismo según indique el modulo \textit{YANG} (string, int, uint, etc) y por último, emitir una respuesta al cliente con el valor del dato consultado.
+  Si la operación es una consulta por una variable de estado o de configuración, el agente realiza una llamada a una función relacionada a la variable consultada. En dicha función, lo que se hace es tomar el valor de memoria compartida del dispositivo, castear el mismo según indique el modulo \textit{YANG} (\textit{string, int, uint,} etc) y por último, emitir una respuesta al cliente con el valor del dato consultado.
 
   Por otra parte, si la operación es la de editar una variable de configuración, el agente llama a una función de la librería \textit{C} relacionada al módulo en cuestión, donde se actualiza el valor de dicha variable. Además, el agente emite un mensaje con el resultado de la operación. 
 
@@ -319,7 +319,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
   \begin{figure}[H]
     \centering
     \includegraphics[scale=0.45]{Figures/actividad_modulo_sinc.pdf}
-    \caption{Diagrama de actividad de las operaciones sincronas con el cliente.}
+    \caption{Diagrama de actividad de las operaciones síncronas con el cliente.}
     \label{fig:actividad_modulo_sinc}
   \end{figure}
 
@@ -381,7 +381,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
     Esta función, tiene la tarea de descubrir las características más generales del equipo, como ser la versión de \textit{software} y de \textit{hardware} del mismo, el número de puertos disponibles, el identificador único del dispositivo, etc.
 
-    Con más detalle, la función inicia la sesión SSH del protocolo \textit{NETCONF}, espera a que termine el intercambio de capacidades entre cliente y servidor y por último envia un mensaje \textit{NETCONF} al servidor, solicitando con la operación 'GET' los siguientes datos de estado:  
+    Con más detalle, la función inicia la sesión SSH del protocolo \textit{NETCONF}, espera a que termine el intercambio de capacidades entre cliente y servidor y por último envía un mensaje \textit{NETCONF} al servidor, solicitando con la operación 'GET' los siguientes datos de estado:  
     
     \begin{itemize}
         \item información del fabricante.
@@ -405,9 +405,9 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
 El \textit{driver} también debe proveer un mecanismo para indicar al controlador cómo se componen los enlaces entre los diferentes dispositivos administrados. Para ello, el controlador \textit{ONOS} brinda una interfaz llamada \textit{LinkDiscovery}, la cual se deberá implementar en el \textit{driver}. 
 
-Así, el controlador llama periódicamente a esta función (cada 30 segundos de forma predeterminada, pudiéndose cambiar este tiempo desde la CLI) para corroborar el estado de los enlaces. 
+Así, el controlador llama periódicamente a esta función (cada 30 segundos de forma predeterminada, pudiéndose cambiar este tiempo desde la \textit{CLI}) para corroborar el estado de los enlaces. 
 
-Con más detalle, lo que realiza esta función es enviar periódicamente a los dispositivos un mensaje \textit{NETCONF} con la operación GET-CONFIG, consultando por los datos 'port', 'neighbor' y 'port-neighbor' del container mux-config, estos datos pueden verse representados en el módulo \textit{YANG}, en el código \ref{lstlisting:config_container}. A continuación, se explica de forma breve la función de cada uno de estos datos:
+Con más detalle, lo que realiza esta función es enviar periódicamente a los dispositivos un mensaje \textit{NETCONF} con la operación GET-CONFIG, consultando por los datos 'port', 'neighbor' y 'port-neighbor' del \textit{container} 'mux-config', estos datos pueden verse representados en el módulo \textit{YANG}, en el código \ref{lstlisting:config_container}. A continuación, se explica de forma breve la función de cada uno de estos datos:
 
 \begin{itemize}
 	\item \textbf{port}: indica el puerto del dispositivo local al cual se conectará un vecino.
@@ -426,14 +426,14 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
     \label{fig:actividad_link}
   \end{figure}
 
-  Es importante mencionar que en esta instancia, no se consulta al dispositivo por sus alarmas con un mensaje \textit{NETCONF}, ya que las mismas son enviadas asíncronamente mediante notificaciones por el dispositivo, y registradas por el controlador como alarmas. Por lo tanto, para verificar el estado de las alarmas de un dispositivo, solo se consulta internamente en el core de \textit{ONOS}.
+  Es importante mencionar que en esta instancia, no se consulta al dispositivo por sus alarmas con un mensaje \textit{NETCONF}, ya que las mismas son enviadas asíncronamente mediante notificaciones por el dispositivo, y registradas por el controlador como alarmas. Por lo tanto, para verificar el estado de las alarmas de un dispositivo, solo se consulta internamente en el \textit{core} de \textit{ONOS}.
 
   \subsection{Operaciones definidas en el \textit{driver}} \label{drivermux}
 
-  El \textit{driver} desarrollado brinda, además de las implementaciones de \textit{LinkDiscovery} y \textit{DeviceDescriptionDiscovery} explicadas anteriormente, la posibilidad de ejecutar cualquier operacion admitida por el modulo del dispositivo, entre ellas la \textit{RPC} que se describió en el código \ref{lstlisting:RPC}. Se explica así el funcionamiento de la interfaz implementada para la operación \textit{RPC} 'mux-apply-config'. 
+  El \textit{driver} desarrollado brinda, además de las implementaciones de \textit{LinkDiscovery} y \textit{DeviceDescriptionDiscovery} explicadas anteriormente, la posibilidad de ejecutar cualquier operación admitida por el módulo del dispositivo, entre ellas la \textit{RPC} que se describió en el código \ref{lstlisting:RPC}. Se explica así el funcionamiento de la interfaz implementada para la operación \textit{RPC} 'mux-apply-config'. 
   \\
 
-  Al momento de llamar a la función rpcApplyConfig, la cual describe el comportamiento que tendrá la \textit{RPC} 'mux-apply-config' en el \textit{driver}, el mismo envia un mensaje al \textit{muxponder} solicitando que aplique la configuración que tiene el \textit{datastore running} haciendo uso del binario 'muxponder', tal como se mostró en la figura \ref{fig:actividad_modulo_sinc}.
+  Al momento de llamar a la función \textit{rpcApplyConfig}, la cual describe el comportamiento que tendrá la \textit{RPC} 'mux-apply-config' en el \textit{driver}, el mismo envía un mensaje al \textit{muxponder} solicitando que aplique la configuración que tiene el \textit{datastore running} haciendo uso del binario 'muxponder', tal como se mostró en la figura \ref{fig:actividad_modulo_sinc}.
   
   Luego, dado que se puede indicar la presencia de dispositivos vecinos, es necesario que el \textit{driver} corrobore que la configuración aplicada entre ellos sea la misma para garantizar la conectividad entre los clientes conectados a los \textit{muxponders}. Así, si se aplica una configuración en un \textit{muxponder}, el controlador deberá consultar y comparar la configuración que llevan los dispositivos vecinos. Si la configuración resulta ser la misma, no se genera ninguna alarma, de lo contrario se deberá generar y registrar una alarma en el controlador indicando una configuración inconsistente entre los dispositivos.
   \\
@@ -447,7 +447,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
   \begin{figure}[H]
     \centering
     \includegraphics[scale=0.45]{Figures/actividad_driver_rpc_sin_vecinos.pdf}
-    \caption{Diagrama de actividad para la \textit{RPC} mux-apply-config, sin vecinos.}
+    \caption{Diagrama de actividad para la \textit{RPC} 'mux-apply-config', sin vecinos.}
     \label{fig:actividad_driver_rpc_sin_vecinos}
   \end{figure}
 
@@ -456,12 +456,12 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
   \begin{figure}[H]
     \centering
     \includegraphics[scale=0.44]{Figures/actividad_driver_rpc_con_vecinos.pdf}
-    \caption{Diagrama de actividad para la \textit{RPC} mux-apply-config, con vecinos.}
+    \caption{Diagrama de actividad para la \textit{RPC} 'mux-apply-config', con vecinos.}
     \label{fig:actividad_driver_rpc_con_vecinos}
   \end{figure}
 
 
-  Por último, es importante mencionar que con el fin de cumplir con el requerimiento R-14 de la figura \ref{fig:req_driver}, se implementaron comandos \textit{CLI} para que el administrador pueda interactuar con los dispositivos a través del \textit{driver}, haciendo uso de la consola de \textit{ONOS}. De esta forma, el administrador puede llamar a cualquiera de las funciones explicadas anteriormente, permitiendole así poder gestionar la configuración de los dispositivos a través de la consola.
+  Por último, es importante mencionar que con el fin de cumplir con el requerimiento R-14 de la figura \ref{fig:req_driver}, se implementaron comandos \textit{CLI} para que el administrador pueda interactuar con los dispositivos a través del \textit{driver}, haciendo uso de la consola de \textit{ONOS}. De esta forma, el administrador puede llamar a cualquiera de las funciones explicadas anteriormente, permitiéndole así poder gestionar la configuración de los dispositivos a través de la consola.
 
   \section{Diseño de la interfaz \textit{Northbound} e Interfaz de usuario}
   Para cumplir con los requerimientos del sistema, será necesario crear en primera instancia una interfaz \textit{REST API} a las aplicaciones externas, para que las mismas puedan comunicarse con los dispositivos administrados (\textit{muxponders}) por el controlador. Como se estudió en capítulos anteriores, \textit{ONOS} utiliza una interfaz llamada \textit{Northbound} para comunicarse con la capa de aplicación, por lo que la aplicación \textit{REST} estará ubicada en dicha interfaz. 
@@ -507,15 +507,15 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
 
 
   \begin{itemize}
-	\item \textbf{AppComponent}: esta clase resulta del uso de la herramienta \textit{onos-create-app}. Aquí se define el comportamiento que tendrá la aplicación al momento de su activación y desactivación. En este caso, cuando se activa la aplicación en el controlador, la misma inicia un objeto Listener para poder imprimir mensajes de log y \textit{debbug}.
+	\item \textbf{AppComponent}: esta clase resulta del uso de la herramienta \textit{onos-create-app}. Aquí se define el comportamiento que tendrá la aplicación al momento de su activación y desactivación. En este caso, cuando se activa la aplicación en el controlador, la misma inicia un objeto \textit{Listener} para poder imprimir mensajes de log y \textit{debbug}.
     
     \item \textbf{AppWebApplication}: también resulta del uso de la aplicación mencionada anteriormente. El objetivo de esta clase, es la de indicar cuáles serán las funciones de la aplicación que serán expuestas en la \textit{Northbound} interface de \textit{ONOS}.
 
-    \item \textbf{GetWebResource}: en esta clase se definen las operaciones de consulta que son expuestas, a través de la clase AppWebApplication, a la interfaz \textit{Northbound} del controlador. En ella, se definen funciones que tienen operaciones GET de HTTP, las cuales aceptan ciertos parámetros dependiendo de la operación (por ejemplo, indicar a qué dispositivo se quiere realizar la consulta). Seguidamente, la función llama al \textit{driver} del dispositivo con los parámetros que recibió,  y devuelve una respuesta a las aplicaciones que la llamaron.
+    \item \textbf{GetWebResource}: en esta clase se definen las operaciones de consulta que son expuestas, a través de la clase \textit{AppWebApplication}, a la interfaz \textit{Northbound} del controlador. En ella, se definen funciones que tienen operaciones GET de HTTP, las cuales aceptan ciertos parámetros dependiendo de la operación (por ejemplo, indicar a qué dispositivo se quiere realizar la consulta). Seguidamente, la función llama al \textit{driver} del dispositivo con los parámetros que recibió,  y devuelve una respuesta a las aplicaciones que la llamaron.
     
-    \item \textbf{RpcWebResource}: de forma similar, esta clase expone una interfaz \textit{REST API} a la \textit{RPC} mux-apply-config definida en el módulo \textit{YANG}. Así, las aplicaciones externas especifican el id de un dispositivo, para que luego la interfaz \textit{REST} se comunique con el mismo mediante el \textit{driver} desarrollado. 
+    \item \textbf{RpcWebResource}: de forma similar, esta clase expone una interfaz \textit{REST API} a la \textit{RPC} 'mux-apply-config' definida en el módulo \textit{YANG}. Así, las aplicaciones externas especifican el id de un dispositivo, para que luego la interfaz \textit{REST} se comunique con el mismo mediante el \textit{driver} desarrollado. 
     
-    \item \textbf{SetWebResource}: por último, se expone una interfaz con operaciones PUT de HTTP, con las cuales se posibilita que las aplicaciones externas puedan realizar cambios en las bases de datos running, candidate o startup de los dispositivos.
+    \item \textbf{SetWebResource}: por último, se expone una interfaz con operaciones PUT de HTTP, con las cuales se posibilita que las aplicaciones externas puedan realizar cambios en las bases de datos \textit{running}, \textit{candidate} o \textit{startup} de los dispositivos.
 
 \end{itemize}
 
@@ -565,7 +565,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:agregar_disp_web}
       \end{figure}
 
-    Por último, la figura \ref{fig:config_disp_web} muestra como es el proceso de configuración de un \textit{muxponder} a través de la aplicación WEB. Primeramente, se envia el perfil de configuración, una vez que la información es almacenada en el \textit{datastore running}, se envía la \textit{RPC} \textit{mux-apply-config} para que se apliquen los cambios en el dispositivo.
+    Por último, la figura \ref{fig:config_disp_web} muestra como es el proceso de configuración de un \textit{muxponder} a través de la aplicación WEB. Primeramente, se envía el perfil de configuración, una vez que la información es almacenada en el \textit{datastore running}, se envía la \textit{RPC} 'mux-apply-config' para que se apliquen los cambios en el dispositivo.
 
     \begin{figure}[H]
         \centering
@@ -592,7 +592,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_config}
       \end{figure}
 
-    \item \textbf{Vista de datos de estado}: a continuación, se muestra la figura \ref{fig:captura_web_estado} la interfaz que presenta esta vista. De forma similar a la anterior, aquí se muestra información relacionada a los datos de estado de los equipos. En la parte superior se puede observar los diferentes \textit{containers} de estado que se implementaron en el modulo \textit{YANG}.  
+    \item \textbf{Vista de datos de estado}: a continuación, se muestra la figura \ref{fig:captura_web_estado} la interfaz que presenta esta vista. De forma similar a la anterior, aquí se muestra información relacionada a los datos de estado de los equipos. En la parte superior se puede observar los diferentes \textit{containers} de estado que se implementaron en el módulo \textit{YANG}.  
     
     \begin{figure}[H]
         \centering

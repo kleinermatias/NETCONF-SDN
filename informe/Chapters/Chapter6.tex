@@ -3,7 +3,7 @@
 \chapter{Conclusión} % Main chapter title
 
 \label{Chapter6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-En este proyecto, se ha realizado una vasta investigación para adquirir conocimientos relacionados particularmente con la gestión de la configuración de los equipos de red y también con el esquema denominado \textit{Software Defined Networking}. Así, se realizó una comparación entre dos implementaciones abiertas del protocolo \textit{NETCONF} y un estudio del controlador \textit{ONOS}. Luego, se propuso utilizar ambas tecnologías con el fin de poder monitorear y configurar un dispositivo óptico, precisamente un \textit{muxponder} de 40GB. Para materializar esto, se construyó un ambiente de trabajo conformado por el controlador \textit{SDN ONOS}, \textit{switchs} virtuales, computadoras de propósito general e integrando el agente \textit{NETCONF} denominado \textit{Yuma123} al \textit{muxponder} de 40GB.
+En este proyecto, se ha realizado una vasta investigación para adquirir conocimientos relacionados particularmente con la gestión de la configuración de los equipos de red y también con el esquema denominado Redes Definidas por Software. Así, se realizó una comparación entre dos implementaciones abiertas del protocolo \textit{NETCONF} y un estudio del controlador \textit{ONOS}. Luego, se propuso utilizar ambas tecnologías con el fin de poder monitorear y configurar un dispositivo óptico, precisamente un \textit{muxponder} de 40GB. Para materializar esto, se construyó un ambiente de trabajo conformado por el controlador \textit{SDN ONOS}, \textit{switchs} virtuales, computadoras de propósito general e integrando el agente \textit{NETCONF} \textit{Yuma123} en el \textit{muxponder} de 40GB.
 
 A continuación, se listan las principales reflexiones finales obtenidas tras el desarrollo de este proyecto.
 
@@ -11,22 +11,22 @@ A continuación, se listan las principales reflexiones finales obtenidas tras el
 
     % investigación sobre SDN, creamos un documento
     \item Al finalizar este trabajo, se adquirió un conocimiento acabado del nuevo esquema de red que plantea  \textit{SDN}. Se ha generado un documento donde se recopilan todas las características, el principio de funcionamiento y beneficios de este innovador y prometedor enfoque. A su vez, este escrito contiene un análisis del controlador \textit{ONOS}, mostrando su diseño y como implementa este las diversas cualidades de un controlador  \textit{SDN}.
-    
-    % uso del controlador ONOS
-    \item Para lograr una comunicación entre los dispositivos y el controlador, se desarrolló un \textit{driver} en la interfaz \textit{southbound} de \textit{ONOS}. Además, se realizó también una aplicación que reside en la interfaz \textit{northbound} del mismo, con el fin de exponer interfaces a las aplicaciones externas para que estas puedan comunicarse con los dispositivos. 
 
     % uso de netconf
     \item En el proyecto integrador se ha realizado un estudio sobre la gestión de la configuración de los equipos de red. Se logró integrar y adaptar al \textit{muxponder} una implementación de código abierto del protocolo \textit{NETCONF} llamada Yuma123. 
     
-    \item Con el fin de poder administrar la configuración del equipo, se realizó un módulo \textit{YANG} que describe y modela los datos del dispositivo. También fue necesario realizar una libreria en \textit{C} que relacione los comportamientos típicos y las variables del equipo con el agente Yuma123.
+    \item Con el fin de poder administrar la configuración del equipo, se realizó un módulo \textit{YANG} que describe y modela los datos del dispositivo. También fue necesario realizar una librería en \textit{C} que relacione los comportamientos típicos y las variables del equipo con el agente Yuma123.
+        
+    % uso del controlador ONOS
+    \item Para lograr una comunicación entre los dispositivos y el controlador, se desarrolló un \textit{driver} en la interfaz \textit{southbound} de \textit{ONOS}. Además, se realizó también una aplicación que reside en la interfaz \textit{northbound} del mismo, con el fin de exponer interfaces a las aplicaciones externas para que estas puedan comunicarse con los dispositivos. 
 
     % nodo físico
-    \item Finalmente, haciendo uso de lenguajes como \textit{Python}, \textit{HTML}, \textit{JavaScript} y \textit{CSS}, se desarrolló una aplicación que presenta una interfaz gráfica al administrador. En la misma, se muestra informacion de los dispositivos y permite al administrador realizar cambios en la configuración. Para ello, dicha aplicación se comunica a través de las interfaces \textit{southbound} y \textit{northbound} del controlador. 
+    \item Finalmente, haciendo uso de lenguajes como \textit{Python}, \textit{HTML}, \textit{JavaScript} y \textit{CSS}, se desarrolló una aplicación que presenta una interfaz gráfica al administrador. En la misma, se muestra información de los dispositivos y permite al administrador realizar cambios en la configuración. Para ello, dicha aplicación se comunica a través de la interfaz \textit{northbound} del controlador. 
 
 \end{itemize}
 
 
-\section{Problemas y limitaciones detectadas} \label{problemasylimi}
+\section{Problemas y limitaciones} \label{problemasylimi}
 
 A continuación, se presentan algunos de los problemas y limitaciones del proyecto:
 
@@ -36,13 +36,13 @@ A continuación, se presentan algunos de los problemas y limitaciones del proyec
     \item Al ser una tecnología nueva, el controlador \textit{ONOS} recibe modificaciones constantemente. Desde su primera entrega en diciembre de 2014, existen diecisiete versiones distintas del controlador. Así, a la hora de desarrollar una aplicación interna al controlador, esto presenta un problema ya uno debe prestar atención a la versión del mismo que está utilizando porque por el momento, ejecutar una misma aplicación en otra versión del controlador requiere modificaciones no despreciables.     
     
     % limitaciones del dispositivi.
-    \item Sin duda uno de los problemas que más ralentizó el avance del proyecto fueron las limitaciones en cuanto a recursos disponibles del dispositivo utilizado, el \textit{muxponder} de 40GB. Se tuvo dificultades a la hora de integrar algún agente del protocolo \textit{NETCONF} debido a las capacidades del equipo y las diferentes librerias necesarias por las implementaciones. Precisamente, se tuvieron problemas con la utilización de la memoria principal y secundaria del \textit{muxponder}, como así también la arquitectura que presenta el procesador \textit{NIOS}.
+    \item Sin duda uno de los problemas que más ralentizó el avance del proyecto fueron las limitaciones en cuanto a recursos disponibles del dispositivo utilizado, el \textit{muxponder} de 40GB. Se tuvo dificultades a la hora de integrar algún agente del protocolo \textit{NETCONF} debido a las capacidades del equipo y las diferentes librerías necesarias por las implementaciones. Precisamente, se tuvieron problemas con la utilización de la memoria principal y secundaria del \textit{muxponder}, como así también la arquitectura que presenta el procesador \textit{NIOS II}.
 
     % la GUI del controlador necesitas recargarla a veces.
     \item Otro problema menor encontrado fue la interfaz gráfica que brinda el controlador \textit{ONOS}, donde se puede ver que la topología controlada ante sucesivos cambios abruptos en ella queda desactualizada y es necesario recargarla. Sin embargo, al ser una interfaz web, no representa gran inconveniente.
     
     % problema inicio sesion controlador.
-    \item Por último, se detectó un problema a la hora de establecer el inicio de sesión y el intercambio de capacidades entre el controlador y el agente \textit{NETCONF} del dispositivo. Sucede que el inicio de sesión entre ambos demora unos segundos debido a las capacidades del \textit{muxponder}, y durante ese momento el controlador no bloquea otras operaciones \textit{NETCONF} con el dispositivo. Esto provocaba que el servidor del dispositivo cierre inmediatamente la sesión \textit{SSH} con el controlador, por lo que para solucionar el inconveniente se tuvo que realizar una espera en la funcion \textit{DeviceDescriptionDiscovery} hasta que el intercambio finalice correctamente antes de llamar cualquier otra operacion \textit{NETCONF}.
+    \item Por último, se detectó un problema a la hora de establecer el inicio de sesión y el intercambio de capacidades entre el controlador y el agente \textit{NETCONF} del dispositivo. Sucede que el inicio de sesión entre ambos demora unos segundos debido a las capacidades del \textit{muxponder}, y durante ese momento el controlador no bloquea otras operaciones \textit{NETCONF} con el dispositivo. Esto provocaba que el servidor del dispositivo cierre inmediatamente la sesión \textit{SSH} con el controlador, por lo que para solucionar el inconveniente se tuvo que realizar una espera en la funcion \textit{DeviceDescriptionDiscovery} hasta que el intercambio finalice correctamente antes de llamar cualquier otra operación \textit{NETCONF}.
     
 \end{itemize}
 
@@ -52,12 +52,14 @@ En el transcurso del trabajo han surgido propuestas para mejorar y continuar en 
 
 \begin{itemize}
 
-    \item \textbf{Adaptación al \textit{muxponder} de 100GB.} Se propuso en primer lugar integrar la nueva versión del dispositivo al proyecto, el \textit{muxponder} de 100GB. Para ello, se deberían realizar cambios en el \textit{driver} desarrollado con el fin de soportar este nuevo hardware y sus comportamientos.
+    \item \textbf{Adaptación al \textit{muxponder} de 1,6TB.} Se propuso en primer lugar integrar la nueva versión del dispositivo al proyecto, el \textit{muxponder} de 1,6TB. Para ello, se deberían realizar cambios en el \textit{driver} desarrollado con el fin de soportar este nuevo hardware y sus comportamientos.
 
     
     \item \textbf{Optimizaciones en el \textit{driver}.} Observando el resto de las aplicaciones y \textit{drivers} que provee ONOS, se detectó que todas poseen una estructura de directorios y archivos común. En el desarrollo del \textit{driver} no se siguió estrictamente esta estructura, lo cual es una posible mejora para la implementación.
 
     \item \textbf{Adaptación del módulo \textit{YANG} a \textit{OpenConfig}.} \textit{OpenConfig} propone un modelo que busca ser estandarizado por la \textit{IETF} para homogeneizar los datos de configuración y estado de los dispositivos de red, entre ellos dispositivos ópticos como el \textit{muxponder}. De esta forma, adaptar el esquema que propone \textit{OpenConfig} al módulo \textit{YANG} desarrollado supondría una ventaja a los proveedores de servicios que requieren una comunicación con diversos dispositivos de diferentes fabricantes.
+    
+    \item \textbf{Auto descubrimiento de los vecinos.} El procedimiento que el controlador lleva para formar los enlaces de los dispositivos dependen de la información y la configuración de los mismos (es decir, el equipo debe contar con información de número de serie del vecino, puerto vecino y puerto local para formar un enlace). Una posible mejora podría ser mejorar este proceso para hacerlo independiente de la configuración y por lo tanto independiente del administrador, haciendo que los dispositivos auto descubran sus vecinos. 
 
 \end{itemize}
 
