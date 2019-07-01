@@ -80,9 +80,7 @@ headsepline, % Uncomment to get a line under the header
 \authorA{Matías \textsc{Kleiner}}
 \matriculaA{37590431}
 \emailA{\texttt{kleiner.matias@gmail.com}}
-\authorB{ " }
-\matriculaB{ " }
-\emailB{ " }
+
 % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
 % \addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
 
@@ -208,11 +206,11 @@ headsepline, % Uncomment to get a line under the header
 	\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
 	En respuesta al continuo incremento de los requerimientos en las redes de transporte, surgen no sólo avances en las capacidades de los dispositivos ópticos, sino también en los métodos de configuración en los mismos. La flexibilidad y la estandarización de las configuraciones pasan de ser una característica deseable, a ser un requerimiento funcional en los equipos. En las empresas de telecomunicaciones, donde dispositivos de diferentes características y fabricantes interactúan a la hora de brindar servicios, es crucial que  exista un protocolo estándar y un ente centralizado de administración. Históricamente esta comunicación se llevó a cabo a través del protocolo \textit{SNMP}, sin embargo las necesidades de las redes actuales involucran capacidades que exceden a este protocolo. 
 	
-	Este contexto da lugar al protocolo de configuraciones de red, también llamado \textit{NETCONF}, que se establece como un protocolo estandarizado por la \textit{Internet Engineering Task Force} (\textit{IETF}), que provee tanto funciones de control (ej. configuración del plano de datos) como así también funciones de administración (ej. acceso a información de monitoreo). Depende de \textit{Yet Another Next Generation} (\textit{YANG}), para describir las configuraciones de los dispositivos de manera estándar. Tanto \textit{NETCONF} como \textit{YANG}, se volvieron foco de interés de los operadores de red en busca de un estándar de configuración abierto.
+	Este contexto da lugar al protocolo de configuraciones de red, también llamado \textit{NETCONF}, que se establece como un protocolo estandarizado por la \textit{Internet Engineering Task Force} (\textit{IETF}), que provee tanto funciones de control (ej. configuración del plano de datos) como así también funciones de administración (ej. acceso a información de monitoreo). Depende de \textit{Yet Another Next Generation} (\textit{YANG}) para describir las configuraciones de los dispositivos de manera estándar. Tanto \textit{NETCONF} como \textit{YANG}, se volvieron foco de interés de los operadores de red en busca de un estándar de configuración abierto.
 	
 	Al mismo tiempo, surge un nuevo paradigma de arquitectura de redes: Las Redes Definidas por Software (\textit{SDN} por sus siglas en inglés), una propuesta para solucionar la creciente complejidad en la administración de las redes. \textit{SDN} propone la separación del plano de datos y el plano de control, logrando de este modo un plano de control centralizado  facilitando no solo el control sino también la administración de las redes.
 
-	En este proyecto integrador se busca, en primer lugar, adquirir en su totalidad los conocimientos involucrados con \textit{SDN} y administración de la configuración de los dispositivos de red. El objetivo será configurar un dispositivo óptico llamado muxponder, para ello se deberá adaptar el protocolo \textit{NETCONF} al dispositivo. Además, será necesario implementar un \textit{driver} en la interfaz \textit{southbound} del controlador \textit{SDN}. Así mismo, se genera una interfaz de usuario para la administración sencilla de los dispositivos presentes en la topología. Además, se desarrolla un ambiente para la verificación y validación de las aplicaciones. Finalmente, se brindan distintas ideas para mejorar lo aquí implementado y posibles vías para continuar trabajando en el ámbito de las redes definidas por software.
+	En este proyecto integrador se busca, en primer lugar, adquirir en su totalidad los conocimientos involucrados con \textit{SDN} y administración de la configuración de los dispositivos de red. El objetivo será configurar un dispositivo óptico llamado muxponder, para ello se deberá adaptar el protocolo \textit{NETCONF} al equipo. Además, será necesario implementar un \textit{driver} en la interfaz \textit{southbound} del controlador \textit{SDN}. Así mismo, se genera una interfaz de usuario para la administración sencilla de los dispositivos presentes en la topología. Además, se desarrolla un ambiente para la verificación y validación de las aplicaciones. Finalmente, se brindan distintas ideas para mejorar lo aquí implementado y posibles vías para continuar trabajando en el ámbito de las redes definidas por software.
 
 \end{abstract}
 
@@ -227,7 +225,7 @@ headsepline, % Uncomment to get a line under the header
 	\addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
 
 	% 	{\normalsize padres y hermanos \par}
-	Muchas gracias a mi familia, por su apoyo incondicional a lo largo de todos estos años de estudio.  
+	Muchas gracias a mi familia, por el apoyo incondicional a lo largo de todos estos años de estudio.  
 	\bigskip
 			
 	% 	{\normalsize Hugo y Matt \par}
@@ -243,7 +241,7 @@ headsepline, % Uncomment to get a line under the header
 	\bigskip
 			
 	% 	{\normalsize universisdad / profes de la facu \par}
-	Finalmente, agradecemos a la Facultad de Ciencias Exactas Físicas y Naturales de la Universidad Nacional de Córdoba por la oportunidad de realizar esta carrera de grado.
+	Finalmente, agradezco a la Facultad de Ciencias Exactas Físicas y Naturales de la Universidad Nacional de Córdoba por la oportunidad de realizar esta carrera de grado.
 
 	\vspace*{\fill}
 		
@@ -310,7 +308,6 @@ headsepline, % Uncomment to get a line under the header
 	\textbf{MIT} & \textbf{M}assachusetts \textbf{I}nstitute \textbf{T}echnology\\
 	\textbf{MB} & \textbf{M}ega \textbf{B}ytes\\
 	\textbf{TB} & \textbf{T}era \textbf{B}ytes\\
-	\textbf{ASIC} & \textbf{M}assachusetts \textbf{I}nstitute \textbf{T}echnology\\
 	\textbf{NFV} & \textbf{N}etwork \textbf{F}unction \textbf{V}irtualization\\
 	
 	%\textbf{VNF} & \textbf{V}irtual \textbf{N}etwork \textbf{F}unction\\

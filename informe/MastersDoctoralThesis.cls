@@ -227,7 +227,7 @@
  \def\ttitle{#2}%
 }
 \DeclareDocumentCommand{\authorA}{m}{\newcommand{\authornameA}{#1}\renewcommand{\@author}{#1}}
-\DeclareDocumentCommand{\authorB}{m}{\newcommand{\authornameB}{#1}\renewcommand{\@author}{#1}}
+
 \NewDocumentCommand{\emailA}{m}{\newcommand{\emailnameA}{#1}}
 \NewDocumentCommand{\emailB}{m}{\newcommand{\emailnameB}{#1}}
 \NewDocumentCommand{\matriculaA}{m}{\newcommand{\matriculanameA}{#1}}
@@ -388,7 +388,6 @@ KOMA-script documentation for details.}]{fancyhdr}
 			{\normalsize\bfseries \@title \par}% Thesis title
 			\medskip
 			{\normalsize \authornameA \par}% Author name
-			{\normalsize \authornameB \par}% Author name
 			\bigskip
 			\begin{center}{\huge\textit{\abstractname}\par}\end{center}
 			\bigskip

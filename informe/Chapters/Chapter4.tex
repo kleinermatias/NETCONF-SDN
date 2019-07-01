@@ -7,7 +7,7 @@
 % \ref{ChapterX} 
 Para el desarrollo del proyecto será necesario implementar un sistema donde se puedan realizar pruebas y evaluar la correctitud del mismo. 
 
-De esta forma, la primera sección de este capítulo comprende tanto el análisis del sistema, como la topología utilizada. Específicamente, se estudiará su estructura, su comportamiento y sus requerimientos. 
+De esta forma, la primera sección de este capítulo comprende tanto el análisis del sistema como la topología utilizada. Específicamente, se estudiará su estructura, su comportamiento y sus requerimientos. 
 
 En las secciones siguientes, se detallarán las aplicaciones desarrolladas que permiten cumplir con el objetivo del proyecto. En primer lugar, se hará un estudio del módulo \textit{YANG} implementado, el cual caracteriza y modela los datos del equipo. A continuación, se detallará el \textit{driver} implementado para lograr la comunicación entre el controlador y el dispositivo. Por último, se analizará la interfaz \textit{REST} y la \textit{GUI} desarrollada.
 
@@ -85,9 +85,9 @@ Para establecer los requerimientos funcionales del sistema, se presentará en pr
   
   Para la actividad relacionada al monitoreo \ref{fig:actividad_config} (A), la aplicación \textit{WEB} realiza consultas periódicas al controlador con el fin de obtener información sobre los dispositivos. Así, se envía un mensaje HTTP con la operación GET desde la aplicación, el controlador procesa la petición y responde dicha consulta.
 
-Por otra parte, para el flujo de actividad relacionado a las notificaciones que puede verse en la figura \ref{fig:actividad_config} (B), es el dispositivo quien emite inicialmente el mensaje mediante una notificación \textit{NETCONF}. El controlador, se procesa la notificación y se la registra como alarma.
+Por otra parte, para el flujo de actividad relacionado a las notificaciones que puede verse en la figura \ref{fig:actividad_config} (B), es el dispositivo quien emite inicialmente el mensaje mediante una notificación \textit{NETCONF}. En el controlador se procesa la notificación y se la registra como alarma.
 
-Por último, se tiene el diagrama de actividad relacionado a la configuración del equipo \ref{fig:actividad_config} (C). El evento inicial para este caso, es la adición de una configuración desde la aplicación \textit{WEB}. Esta configuración, una vez procesada, se traduce en una solicitud POST HTTP que se envían hacia la \textit{Northbound interface} del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración \textit{NETCONF} a los dispositivos involucrados a través de la \textit{Southbound} interface.
+Por último, se tiene el diagrama de actividad relacionado a la configuración del equipo \ref{fig:actividad_config} (C). El evento inicial para este caso, es la adición de una configuración desde la aplicación \textit{WEB}. Dicha configuración, una vez procesada se traduce en una solicitud POST HTTP que se envían hacia la \textit{Northbound interface} del controlador. Una vez recibida la solicitud, se realiza su procesamiento y se envía el mensaje de configuración \textit{NETCONF} a los dispositivos involucrados a través de la \textit{Southbound interface}.
 
 
   
@@ -131,9 +131,9 @@ Por último, se tiene el diagrama de actividad relacionado a la configuración d
 %----------------------------------------------------------------------------------------
 
   \section{Integración del protocolo \textit{NETCONF} al \textit{muxponder}}
-  La sección anterior deja claro que uno de los requerimientos de sistema será que tanto el controlador \textit{ONOS} como los dispositivos a monitorear, soporten \textit{NETCONF} como protocolo de gestión de la configuración. 
+  La sección anterior deja claro que uno de los requerimientos de sistema será que tanto el controlador \textit{ONOS} como los dispositivos a monitorear soporten \textit{NETCONF} como protocolo de gestión de la configuración. 
   
-  Como se vio en el capítulo anterior, el controlador soporta dicho protocolo, por lo que para cumplir con este requerimiento de sistema, únicamente será necesario adaptar \textit{NETCONF} al dispositivo. 
+  Como se vio en el capítulo anterior, el controlador soporta dicho protocolo, por lo que para cumplir con este requerimiento de sistema únicamente será necesario adaptar \textit{NETCONF} al dispositivo. 
   
   %-----------------------------------
 %	SUBSECTION 1
@@ -158,12 +158,12 @@ Por último, se tiene el diagrama de actividad relacionado a la configuración d
 Siendo Yuma123 el agente que se eligió para integrar el protocolo en el equipo, en esta sección se detalla el procedimiento que se llevó a cabo para la compilación e instalación del agente en el \textit{muxponder}, con el fin de poder cumplir el requerimiento R-07.
 \\
 
-  En primer lugar, toda la tarea de compilación se realizó en una computadora de propósito general, debido a los recursos limitados con los que cuenta el dispositivo. Para facilitar la compilación e instalación, se realizaron tres scripts los cuales se describen a continuación:
+  En primer lugar, toda la tarea de compilación se realizó en una computadora de propósito general debido a los recursos limitados con los que cuenta el dispositivo. Para facilitar la compilación e instalación, se realizaron tres scripts los cuales se describen a continuación:
 
   \begin{itemize}
-	\item \textbf{\texttt{Dockerfile}}: el objetivo de este \textit{script}, es el de realizar la compilación del proyecto Yuma123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto Yuma123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto Yuma123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta '$/root/usrapp$' de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del script, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
+	\item \textbf{\texttt{Dockerfile}}: el objetivo de este \textit{script}, es el de realizar la compilación del proyecto Yuma123, dejando todas las librerías y los binarios en una carpeta que luego deberá copiarse en el dispositivo. Dockerfile \parencite{dockerfile}, es un archivo de texto que contiene los pasos e instrucciones que la herramienta Docker deberá seguir para construir una imagen. En el mismo, se indica una imagen de referencia (ubuntu:16.04) que servirá como base para la construcción. Luego, se descargan todas las librerías requeridas por el proyecto Yuma123 junto con los compiladores necesarios para realizar la compilación cruzada. A partir de aquí, se compila cada una de las librerías para la arquitectura objetivo (por ejemplo, NIOS II) y finalmente se compila también el proyecto Yuma123. Todos los binarios, librerías y cabeceras resultantes se encuentran en la carpeta '$/root/usrapp$' de la imagen Docker construida. Cabe destacar que se realizaron tres versiones del \textit{script}, de esta forma compilar para las arquitecturas NIOS II, ARM y \texttt{x86\_64}.
     
-    \item \textbf{\texttt{remote\_install\_yuma.sh}}: \textit{script bash} que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el \textit{script} realiza la instalación del agente mediante \textit{SSH} y \textit{SCP} \parencite{scpman}, copiando el contenido necesario de '$/root/usrapp$' que se generó con la construcción de la imagen Docker, al directorio '$/root/usrapp$' del dispositivo. Es importante mencionar que muchas de las librerías requeridas por Yuma123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este script omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
+    \item \textbf{\texttt{remote\_install\_yuma.sh}}: \textit{script bash} que tiene la tarea de realizar la instalación del protocolo, compilado previamente con Docker y Dockerfile. Para ello, requiere de tres parámetros: usuario del dispositivo remoto, dirección IP del dispositivo remoto y la arquitectura deseada. Con estos parámetros, el \textit{script} realiza la instalación del agente mediante \textit{SSH} y \textit{SCP} \parencite{scpman}, copiando el contenido necesario de '$/root/usrapp$' que se generó con la construcción de la imagen Docker, al directorio '$/root/usrapp$' del dispositivo. Es importante mencionar que muchas de las librerías requeridas por Yuma123 son necesarias únicamente para la compilación y no para el funcionamiento del protocolo, por lo que este \textit{script} omitirá dichas librerías con el fin de reducir el tamaño que ocupa el agente en memoria.
     
     \item \textbf{\texttt{remote\_uninstall\_yuma.sh}}: requiere dos parámetros los cuales son el usuario del dispositivo remoto y la dirección IP del mismo. El objetivo de este \textit{script} es facilitar la desinstalación de todas las librerías relacionadas a Yuma123 del dispositivo.
 
@@ -239,7 +239,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{\textit{Container} \textit{YANG} de estado}: de igual forma, se realizaron \textit{containers} para los datos de estado, los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. El código \ref{lstlisting:state_container} presenta una parte de esta sección del módulo, donde puede apreciarse la directiva ’config false’, la cual indica que el \textit{container} no admitirá datos de configuración.  
+    \item \textbf{\textit{Container} \textit{YANG} de estado}: de igual forma, se realizaron \textit{containers} para los datos de estado los cuales no admiten una escritura de valores y son necesarios para monitorear el dispositivo. El código \ref{lstlisting:state_container} presenta una parte de esta sección del módulo, donde puede apreciarse la directiva ’config false’, la cual indica que el \textit{container} no admitirá datos de configuración.  
 
     \begin{lstlisting}[language=SHELXL, caption=\textit{Container} de estado., label=lstlisting:state_container]
     container mux-state {
@@ -279,7 +279,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
     }
     \end{lstlisting}
 
-    \item \textbf{Definición de notificación}: por último, el módulo tiene una sección donde se declara una notificación. Dicho mensaje será utilizado para indicar a las sesiones conectadas y suscritas, las diferentes alarmas que produzca el dispositivo. Estos mensajes se transportan mediante notificaciones del protocolo \textit{NETCONF}. El propósito de estos mensajes es el de, por ejemplo, reportar mediante una alarma si un enlace con un dispositivo vecino se cayó, si el dispositivo supera la temperatura umbral, etc. Se puede observar en el código \ref{lstlisting:notif}, la declaración de la notificación en el módulo. El mensaje estará contenido dentro de la \textit{leaf} ’INFO’, en la cual se especifica de forma obligatoria con la directiva ’mandatory’ cuál será el mensaje que se enviará como notificación.
+    \item \textbf{Definición de notificación}: por último, el módulo tiene una sección donde se declara una notificación. Dicho mensaje será utilizado para indicar a las sesiones conectadas y suscritas las diferentes alarmas que produzca el dispositivo. Estos mensajes se transportan mediante notificaciones del protocolo \textit{NETCONF}. El propósito de estos mensajes es el de, por ejemplo, reportar mediante una alarma si un enlace con un dispositivo vecino se cayó, si el dispositivo supera la temperatura umbral, etc. Se puede observar en el código \ref{lstlisting:notif} la declaración de la notificación en el módulo. El mensaje estará contenido dentro de la \textit{leaf} ’INFO’, en la cual se especifica de forma obligatoria con la directiva ’mandatory’ cuál será el mensaje que se enviará como notificación.
 
     \begin{lstlisting}[language=SHELXL, caption=Declaración de notificación., label=lstlisting:notif]
     notification mux-notify {
@@ -295,12 +295,12 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 \subsection{Diseño de la librería \textit{C} para el agente \textit{NETCONF}}
 
 
-  Teniendo en cuenta las aplicaciones integradas en el \textit{muxponder}, las cuales fueron explicadas en el capítulo anterior, se procede a detallar el diseño de la librería en el lenguaje \textit{C}. Para ello, se utilizó la herramienta \textit{yangdump} del proyecto Yuma123, la cual genera un esqueleto de la aplicación a partir de un módulo \textit{YANG} dado. Se forman así dos archivos, uno con extensión '.h' (\textit{headers}) y otro con extensión '.c' (código fuente). 
+  Teniendo en cuenta las aplicaciones integradas en el \textit{muxponder} las cuales fueron explicadas en el capítulo anterior, se procede a detallar el diseño de la librería en el lenguaje \textit{C}. Para ello, se utilizó la herramienta \textit{yangdump} del proyecto Yuma123, la cual genera un esqueleto de la aplicación a partir de un módulo \textit{YANG} dado. Se forman así dos archivos, uno con extensión '.h' (\textit{headers}) y otro con extensión '.c' (código fuente). 
   
 
   En el primero, la herramienta declara todas las variables, funciones y los tipos de datos que va a utilizar la librería. 
 
-  Por otra parte, el segundo archivo contiene la estructura de la aplicación en sí. En ella, se encuentran implementadas todas las funciones declaradas en el archivo con extensión '.h', las cuales llamará el agente en caso de que ingrese un mensaje referido al módulo \textit{YANG} en cuestión. Todo el desarrollo de la aplicación y la relación entre la instrumentación del dispositivo con el módulo \textit{YANG}, se encuentra en este archivo. 
+  Por otra parte, el segundo archivo contiene la estructura de la aplicación en sí. En el, se encuentran implementadas todas las funciones declaradas en el archivo con extensión '.h', las cuales llamará el agente en caso de que ingrese un mensaje referido al módulo \textit{YANG} en cuestión. Todo el desarrollo de la aplicación y la relación entre la instrumentación del dispositivo con el módulo \textit{YANG} se encuentra en este archivo. 
 
 
   Con el fin de explicar cómo se desarrolló esta aplicación, se distinguen dos flujos de actividades bien definidos, uno para las operaciones que son sincrónicas con los mensajes que envía el cliente, y otro para aquellas que sean asíncronas a los mensajes del mismo. 
@@ -314,7 +314,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
   Por otra parte, si la operación es la de editar una variable de configuración, el agente llama a una función de la librería \textit{C} relacionada al módulo en cuestión, donde se actualiza el valor de dicha variable. Además, el agente emite un mensaje con el resultado de la operación. 
 
-  Por último, si la operación trata de una \textit{RPC} definida en el módulo \textit{YANG}, el agente llama a la función relacionada a la \textit{RPC}, la cual contiene las instrucciones para efectuar la tarea solicitada. En este caso, se tiene una \textit{RPC} que indica cuándo se deberá aplicar la configuración en el dispositivo. Así, al momento de llamar a esta \textit{RPC}, el agente copia los valores de los datos de configuración necesarios (tipo de tráfico, tipo fec de cliente, tipo fec línea, etc) y los aplica haciendo uso del binario 'muxponder'.
+  Por último, si la operación trata de una \textit{RPC} definida en el módulo \textit{YANG}, el agente llama a la función relacionada a la \textit{RPC} la cual contiene las instrucciones para efectuar la tarea solicitada. En este caso, se tiene una \textit{RPC} que indica cuándo se deberá aplicar la configuración en el dispositivo. Así, al momento de llamar a esta \textit{RPC} el agente copia los valores de los datos de configuración necesarios (tipo de tráfico, tipo fec de cliente, tipo fec línea, etc) y los aplica haciendo uso del binario 'muxponder'.
 
   \begin{figure}[H]
     \centering
@@ -325,9 +325,9 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
   Por otra parte, el grupo relacionado a las operaciones asíncronas con los mensajes del cliente, no es otra cosa que la operación de envío de notificaciones mediante el protocolo \textit{NETCONF}. Para ello, la librería desarrollada en \textit{C} crea un hilo que examina periódicamente cada tres segundos la memoria compartida del dispositivo. 
   
-  La razón por la cual se examina cada tres segundos, está relacionada con la aplicación 'monitor', la cual actualiza los valores de memoria compartida con esa frecuencia.
+  La razón por la cual se examina cada tres segundos está relacionada con la aplicación 'monitor', la cual actualiza los valores de memoria compartida con esa frecuencia.
 
-  Al examinar los valores de las alarmas, las compara con la información antigua que se tenía almacenada sobre las mismas. Si la información es igual, no se envían notificaciones a las sesiones. En cambio, si la información actual es diferente a la información anterior, será necesario notificar a las sesiones suscritas este nuevo estado de las alarmas. Así, tanto el nombre de la alarma como su nuevo estado, son enviados a través de la notificación definida en el código \ref{lstlisting:notif}, haciendo uso de la \textit{leaf} INFO.
+  Al examinar los valores de las alarmas, las compara con la información antigua que se tenía almacenada sobre las mismas. Si la información es igual, no se envían notificaciones a las sesiones. En cambio, si la información actual es diferente a la información anterior, será necesario notificar a las sesiones suscritas este nuevo estado de las alarmas. Así, tanto el nombre de la alarma como su nuevo estado son enviados a través de la notificación definida en el código \ref{lstlisting:notif}, haciendo uso de la \textit{leaf} INFO.
   
   Un diagrama de actividad de estas operaciones se puede observar en la figura \ref{fig:actividad_modulo_notif}.
 
@@ -381,7 +381,7 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 
     Esta función, tiene la tarea de descubrir las características más generales del equipo, como ser la versión de \textit{software} y de \textit{hardware} del mismo, el número de puertos disponibles, el identificador único del dispositivo, etc.
 
-    Con más detalle, la función inicia la sesión SSH del protocolo \textit{NETCONF}, espera a que termine el intercambio de capacidades entre cliente y servidor y por último envía un mensaje \textit{NETCONF} al servidor, solicitando con la operación 'GET' los siguientes datos de estado:  
+    Con más detalle, la función inicia la sesión \textit{SSH} del protocolo \textit{NETCONF}, espera a que termine el intercambio de capacidades entre cliente y servidor y por último envía un mensaje \textit{NETCONF} al servidor solicitando con la operación 'GET' los siguientes datos de estado:  
     
     \begin{itemize}
         \item información del fabricante.
@@ -417,7 +417,7 @@ Con más detalle, lo que realiza esta función es enviar periódicamente a los d
     \item \textbf{port-neighbor}: indica el puerto del dispositivo vecino que se conectará en 'port' y con el que deberá formar el enlace.
 \end{itemize}
 
-Con esta información, el \textit{driver} informa al controlador que forme un enlace óptico entre ambos dispositivos. Si alguno de los dispositivos involucrados contiene alarmas registradas respecto al enlace de línea del muxponder, concretamente alarmas relativas al receptor, el enlace no se forma. El diagrama de actividad de la figura \ref{fig:actividad_link} muestra lo explicado anteriormente.
+Con esta información, el \textit{driver} informa al controlador que forme un enlace óptico entre ambos dispositivos. Si alguno de los dispositivos involucrados contiene alarmas registradas respecto al enlace de línea del \textit{muxponder}, concretamente alarmas relativas al receptor, el enlace no se forma. El diagrama de actividad de la figura \ref{fig:actividad_link} muestra lo explicado anteriormente.
 
 \begin{figure}[!h]
     \centering
@@ -441,7 +441,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
   Teniendo en cuenta esto, el diagrama de la figura \ref{fig:actividad_driver_rpc_sin_vecinos} muestra el flujo de actividad que sigue el \textit{driver} cuando recibe una llamada a 'mux-apply-config' para el \textit{muxponder} A. 
   En primer lugar, el \textit{driver} envía un mensaje al dispositivo con la operación \textit{RPC} que define el módulo \textit{YANG}. El agente Yuma123 recibe este mensaje, lo procesa y aplica la configuración en el equipo haciendo uso de los datos de configuración que tenga el \textit{datastore running}. Por último, se envía un mensaje con la respuesta de esa operación.  
 
-  Luego, el \textit{driver} consulta al mismo \textit{muxponder} si tiene algún vecino conectado. Para este primer caso, el \textit{muxponder} A no tiene especificado ningún vecino, por lo que no se generará alguna alarma sobre configuración inconsistente, de hecho, se verifica que no tenga alarmas de este tipo y de tenerlas se eliminan.
+  Luego, el \textit{driver} consulta al mismo \textit{muxponder} si tiene algún vecino conectado. Para este primer caso, el \textit{muxponder} A no tiene especificado ningún vecino, por lo que no se generará alguna alarma sobre configuración inconsistente, de hecho se verifica que no tenga alarmas de este tipo y de tenerlas se eliminan.
 
 
   \begin{figure}[H]

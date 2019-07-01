@@ -51,7 +51,7 @@ En la figura \ref{fig:mux40} se puede observar en el panel frontal del equipo co
 
   Por otra parte, el \textit{muxponder} de 40GB integra un total de 128MB de memoria \textit{RAM} y 512MB de almacenamiento, con capacidad de extender esta última mediante una tarjeta \textit{SD}. Además, cuenta con un sistema operativo Linux \textit{'Buildroot'}, el cual ocupa gran parte de estos recursos mencionados, dejando libre para las aplicaciones de usuario un total de 100MB de \textit{RAM} y 270MB de almacenamiento.
 
-El hecho de que presente dicho sistema operativo resulta en una ventaja por varios motivos, en primer lugar porque el mismo es un entorno conocido por el alumno, donde además podrán ejecutarse en él la mayoría de las aplicaciones \textit{UNIX} típicas. En segundo lugar, el sistema operativo integra librerías y herramientas que facilitaran el desarrollo del proyecto, como por ejemplo la librería \textit{SSH}, necesaria por el protocolo \textit{NETCONF}.
+El hecho de que presente dicho sistema operativo resulta en una ventaja por varios motivos, en primer lugar porque el mismo es un entorno conocido por el alumno, donde además podrán ejecutarse en él la mayoría de las aplicaciones \textit{UNIX} típicas. En segundo lugar, el sistema operativo integra librerías y herramientas que facilitarán el desarrollo del proyecto, como por ejemplo la librería \textit{SSH}, necesaria por el protocolo \textit{NETCONF}.
 \\
 
 Por último, el procesador que incorpora es un \textit{NIOS II} de primera generación fabricado por \textit{Intel} \parencite{intelaltera}. El mismo funciona a 125 Mhz y se encuentra integrado en una \textit{FPGA}. Es importante destacar que la arquitectura de este procesador no es una arquitectura típica de una máquina de propósito general (por ejemplo \texttt{x86\_64}), por lo tanto, las distintas aplicaciones que se ejecuten en esta plataforma deberán estar compiladas específicamente para la arquitectura \textit{NIOS}. 
@@ -157,41 +157,45 @@ Las características más importantes de la arquitectura presentada por \textit{
 \begin{itemize}
 	\item \textbf{Núcleo distribuido}: la solución que propone \textit{ONOS} para proveer escalabilidad, alto rendimiento y disponibilidad, se basa en un núcleo distribuido por los diferentes nodos que conforman un \textit{cluster}, lo que implica la posibilidad de soportar enormes cantidades de dispositivos de red. Esto último es así ya que \textit{ONOS} permite la incorporación dinámica de nuevos nodos, con lo que la carga del controlador podría distribuirse entre ellos de forma adaptativa.
 	
-	La figura \ref{fig:onosdistribuido} ejemplifica dicha distribución. El hecho de agregar esta redundancia implica una mayor disponibilidad del controlador. A su vez, permite realizar un balanceo de carga, lo que implica mayor rendimiento y escalabilidad.
+	La figura \ref{fig:onosdistribuido} ejemplifica dicha distribución. El hecho de agregar esta redundancia implica una mayor disponibilidad del controlador. A su vez, permite realizar un balanceo de carga, lo que se traduce en mayor rendimiento y escalabilidad.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{Figures/onosarch.pdf}
+		\caption{Arquitectura distribuida de \textit{ONOS}.}
+		\label{fig:onosdistribuido}
+	  \end{figure}
 
 
-	\item \textbf{Abstracción \textit{Northbound}}: el plano aplicación, explicado en el capítulo anterior, se comunica con \textit{ONOS} a través de una interfaz brindada por el controlador. El mismo, brinda a las aplicaciones gráficos y estadísticas de la red como así también aplicaciones basadas en \textit{intents} para facilitar el control, administración y configuración de los equipos.
+	\item \textbf{Abstracción \textit{Northbound}}: el plano aplicación explicado en el capítulo anterior, se comunica con \textit{ONOS} a través de una interfaz brindada por el controlador. El mismo, brinda a las aplicaciones gráficos y estadísticas de la red como así también aplicaciones basadas en \textit{intents} para facilitar el control, administración y configuración de los equipos.
 	\item \textbf{Abstracción \textit{Southbound}}: de forma similar, el controlador ofrece una interfaz para comunicarse con el plano de datos. Cabe destacar que si bien \textit{ONOS} basa su funcionamiento en el protocolo \textit{OpenFlow}, también brinda soporte a otros como \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc, con el fin de mantener compatibilidad con dispositivos más antiguos.
 	
 	Una aproximación más detallada de la arquitectura que presenta \textit{ONOS} puede verse en la figura \ref{fig:onosarch}. En la misma, se observan las interfaces mencionadas anteriormente junto a una serie de componentes que pertenecen a la interfaz \textit{Southbound}. Estos componentes se analizarán más adelante. 
 
-	\item \textbf{Modularidad}: el controlador se encuentra desarrollado en \textit{Java}, y mediante el \textit{framework} OSGi, obtiene las características de una arquitectura modular. De esta forma, se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.40]{Figures/corecompleto.pdf}
+		\caption{Arquitectura completa del controlador \textit{ONOS}.}
+		\label{fig:onosarch}
+	  \end{figure}
+
+	\item \textbf{Modularidad}: el controlador se encuentra desarrollado en \textit{Java}, y mediante el \textit{framework} OSGi obtiene las características de una arquitectura modular. De esta forma, se provee a los desarrolladores facilidad para brindar actualizaciones a sus aplicaciones, poder monitorearlas, realizar depuración y mantenimiento.  
 \end{itemize}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{Figures/onosarch.pdf}
-	\caption{Arquitectura distribuida de \textit{ONOS}.}
-	\label{fig:onosdistribuido}
-  \end{figure}
+
 
   
 
-  \begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.40]{Figures/corecompleto.pdf}
-	\caption{Arquitectura completa del controlador \textit{ONOS}.}
-	\label{fig:onosarch}
-  \end{figure}
+
 
   \subsubsection{Interfaz \textit{Southbound} en \textit{ONOS}}
   Tal como se explicó anteriormente, el objetivo del proyecto es gestionar la configuración de un \textit{muxponder} de 40GB a través del protocolo \textit{NETCONF}. 
   
-  Para ello, se procede a explicar con más detalle la interfaz \textit{Southbound} de \textit{ONOS}. La misma, se encuentra dividida en una serie de componentes que se detallan a continuación:
+  Para ello, será necesario explicar con más detalle la interfaz \textit{Southbound} de \textit{ONOS}. La misma se encuentra dividida en una serie de componentes que se detallan a continuación:
 
   \begin{itemize}
 	\item \textbf{\textit{Providers}}: son aplicaciones independientes que residen en el núcleo de \textit{ONOS} y que pueden activarse o desactivarse dinámicamente en tiempo de ejecución. El propósito principal de esta capa es abstraer al \textit{core} las complejidades de los protocolos, brindando interfaces de las operaciones típicas y generales de los mismos. Un ejemplo de un \textit{provider} en \textit{ONOS} es el llamado \textit{'NetconfAlarmProvider'}, encargado de transformar cada notificación de los dispositivos en una alarma registrada en \textit{ONOS}.
-	\item \textbf{\textit{Protocols}}: es la capa de más bajo nivel en la interfaz \textit{Southbound} y es la única que tiene contacto directo con los dispositivos conectados al controlador. Aquí se implementan los diferentes protocolos necesarios para la comunicación como ser \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc. Comúnmente se utilizan librerías de terceros como \textit{openflowj, snmp4j, thrift}, entre otras.
+	\item \textbf{\textit{Protocols}}: es la capa de más bajo nivel en la interfaz \textit{Southbound} y es la única que tiene contacto directo con los dispositivos conectados al controlador. Aquí se implementan los diferentes protocolos necesarios para la comunicación como ser \textit{NETCONF}, \textit{REST}, \textit{SNMP}, etc. Comúnmente en esta capa se utilizan librerías de terceros como \textit{openflowj, snmp4j, thrift}, entre otras.
 	\item \textbf{\textit{Drivers}}: al igual que los \textit{providers}, los \textit{drivers} pueden cargarse dinámicamente al núcleo del controlador y proveen mecanismos para comunicarse con los diferentes dispositivos a través de algún protocolo. La diferencia principal con los \textit{providers}, es que aquí no se implementan generalidades de los protocolos, sino comportamientos específicos de los dispositivos. Además, sirve de interfaz entre las aplicaciones que se encuentran en la capa \textit{Northbound} y los diferentes equipos de red. El propósito principal de este subsistema es el de aislar el código específico del dispositivo, de tal manera de que el mismo no se extienda por el resto del núcleo de \textit{ONOS}. Dado que dicho código será necesario para cualquier futuro previsible, este subsistema proporciona medios para contenerlo y permitir que otros subsistemas (por ejemplo, la capa de aplicación) interactúen con él a través de abstracciones independientes del protocolo y del dispositivo. Por último, presenta una ventaja para los desarrolladores de hardware dado que al ser un componente modular, permite la herencia de funcionalidades de otros \textit{drivers} con el fin de compartir características con una familia de dispositivos en común.
 \end{itemize}
 
@@ -212,7 +216,7 @@ Se destaca \textit{OpenDaylight} (\textit{Java}), un controlador abierto que sop
 
 La razón determinante por la cual se optó por \textit{ONOS} como controlador \textit{SDN} radica en que el mismo cuenta con una documentación más clara y organizada. Además, se poseía experiencia previa trabajando con dicho controlador. Todo esto facilitó la curva de aprendizaje de las distintas herramientas, donde se pudo tener una rápida interacción con el controlador dada su facilidad de instalación y puesta en marcha.
 
-Otro motivo reside en que las redes de los proveedores de servicio son complejas y multicapas, donde se requiere una separación clara de la capa de paquetes y de la capa de transporte, tal como se vió en el capítulo anterior. \textit{ONOS}, ha logrado brindar soporte a las redes ópticas según lo demuestra el caso de uso aquí descripto \parencite{onffwhite}.
+Otro motivo reside en que las redes de los proveedores de servicio son complejas y multicapas, donde se requiere una separación clara de la capa de paquetes y de la capa de transporte, tal como se vió en el capítulo anterior. \textit{ONOS} ha logrado brindar soporte a las redes ópticas según lo demuestra el caso de uso aquí descripto \parencite{onffwhite}.
 
 \subsection{Análisis de agentes \textit{NETCONF}}
 
@@ -226,7 +230,7 @@ El proyecto Sysrepo proporciona las funcionalidades de una base de datos lógica
 A su vez, Sysrepo integra \textit{Netopeer2} \parencite{netopeergit} como agente \textit{NETCONF}. \textit{Netopeer2} es la evolución del proyecto Netopeer \parencite{netopeergit1} (discontinuado) y ofrece tanto un cliente como un servidor \textit{NETCONF}.
 \\
 
-Sysrepo fue la primera implementación del protocolo instalada y manipulada en una máquina de propósito general. Tiene la ventaja de contar con una gran documentación, como así también una variedad de ejemplos y casos de usos. Además, otra ventaja que presenta es que el hecho de que Sysrepo exponga \textit{API’s} implica una posibilidad de adaptar cualquier aplicación Unix existente al protocolo \textit{NETCONF}, sin mayores cambios.  
+Sysrepo fue la primera implementación del protocolo instalada y manipulada en una máquina de propósito general por el alumno. Tiene la ventaja de contar con una gran documentación, como así también una variedad de ejemplos y casos de usos. Además, otra ventaja que presenta es que el hecho de que Sysrepo exponga \textit{API’s} implica una posibilidad de adaptar cualquier aplicación Unix existente al protocolo \textit{NETCONF} sin mayores cambios.  
 
 \subsubsection{Yuma123}
 En el 2011, el proyecto \textit{open-source} YUMA, también conocido como OpenYUMA, sufrió un cambio en su licencia donde esta dejó de ser \textit{BSD}. A partir de entonces, el proyecto tuvo dos ramificaciones: YumaPro \parencite{yumapro}, ahora perteneciente a YumaWorks, y Yuma123, su versión \textit{open-source}. 
@@ -310,4 +314,4 @@ A la hora de efectuar una comparación entre ambos proyectos, se tendrán en cue
 	En el caso de Yuma123 se logró compilar e instalar de manera correcta todas las librerías requeridas. Además, se realizaron scripts que facilitan dicha tarea para las siguientes arquitecturas: \textit{ARM, NIOS y \texttt{x86\_64}}. Cabe destacar que si bien los recursos que demanda Yuma123 son menores frente a Sysrepo, los mismos siguen siendo excesivos para el muxponder. Por lo tanto, se realizaron optimizaciones en la compilación del proyecto. Por ejemplo, se ha omitido la compilación de la librería \textit{SSH}, ya que el \textit{muxponder} ya la integra. Además, el proyecto incorpora una gran cantidad de módulos \textit{YANG} a modo de ejemplo, estos no son necesarios para el funcionamiento del mismo, por lo que también fueron omitidos. Por último, se destaca la herramienta yangdump brindada por Yuma123, la cual facilita de forma significativa el desarrollo de las librerías \textit{SIL} en \textit{C}.
 	\\
 
-	De esta forma, el factor determinante a la hora de elegir entre las distintas implementaciones \textit{NETCONF}, fue tener en cuenta las limitaciones técnicas del equipo, siendo Yuma123 el agente que mejor se adaptó a las mismas. 
+	De esta forma, el factor determinante a la hora de elegir entre las distintas implementaciones \textit{NETCONF} fue tener en cuenta las limitaciones técnicas del equipo, siendo Yuma123 el agente que mejor se adaptó a las mismas. 

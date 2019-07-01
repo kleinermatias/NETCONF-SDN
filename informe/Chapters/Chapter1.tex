@@ -4,12 +4,12 @@
 
 \label{Chapter1} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
 
-Las redes de telecomunicaciones crecen a medida que surgen nuevas tecnologías (redes inalámbricas \textit{4G} y \textit{5G}, \textit{WiMax}, \textit{LTE}, etc), seguido de la demanda en alza del ancho de banda por parte de los usuarios, requiriendo cada vez mayor velocidad y mejor calidad de servicio. De esta forma, los operadores de red se ven obligados a aumentar la cantidad de dispositivos para satisfacer las necesidades de los usuarios, lo que constituye un desafío y un problema para los administradores de red, donde serán necesarios mecanismos de configuración que se adapten a las nuevas necesidades. 
+Las redes de telecomunicaciones crecen a medida que surgen nuevas tecnologías (redes inalámbricas \textit{4G} y \textit{5G}, \textit{WiMax}, \textit{LTE}, etc), seguido de la demanda en alza del ancho de banda por parte de los usuarios, requiriendo así cada vez mayor velocidad y mejor calidad de servicio. De esta forma, los operadores de red se ven obligados a aumentar la cantidad de dispositivos para satisfacer las necesidades de los usuarios, lo que constituye un desafío y un problema para los administradores de red, donde serán necesarios mecanismos de configuración que se adapten a las nuevas necesidades. 
 
 Así, el paradigma actual de implementación de redes resulta difícil de adaptar a estos nuevos cambios en los requerimientos, por ejemplo:
 
 \begin{itemize}     
-    \item La complejidad y el tamaño de las redes ha crecido considerablemente, esto genera gran resistencia al cambio en los operadores ya que el riesgo de generar una falla es mayor.
+    \item La complejidad y el tamaño de las redes ha crecido considerablemente, esto genera gran resistencia al cambio en los operadores ya que el riesgo de provocar una falla es mayor.
 
     \item Dependencia  de  un  fabricante,  la  falta  de  compatibilidad  entre  fabricantes fuerza a los operadores a quedar atados a los ciclos de diseño de un fabricante determinado y no les permite configurar la red de manera óptima dadas sus necesidades particulares. 
 \end{itemize}
@@ -67,7 +67,7 @@ En las conclusiones de este artículo mencionan que \textit{NETCONF} es una clar
 
 En el artículo \parencite{netconfvstodos} se realiza un estudio de las diferentes alternativas existentes en el ámbito de la configuración y gestión de la red. A su vez, el autor desarrolla un prototipo de servidor \textit{NETCONF}. Los experimentos realizados por el autor tienen como objetivo determinar la capacidad que tienen los diferentes protocolos de gestión de configuración y monitoreo para adaptarse a entornos de \textit{SDN} y \textit{NFV}. 
 
-Así, separa las pruebas realizadas en dos partes. En primer lugar, evalúa alternativas que permiten la configuración de un dispositivo de red. Luego, realiza un análisis de las alternativas relacionadas al monitoreo de un dispositivos de red.
+Así, separa las pruebas realizadas en dos partes. En primer lugar, evalúa alternativas que permiten la configuración de un dispositivo de red. Luego, realiza un análisis de las alternativas relacionadas al monitoreo de un equipo de red.
 
 La figura \ref{fig:netconfvstodos1} muestra una gráfica de los resultados obtenidos para el primer caso, donde concluye que \textit{NETCONF} se adapta bien a los entornos \textit{NFV} ya que se encuentra específicamente diseñado para la configuración de los equipos. Sin embargo, menciona que puede presentar dificultades adaptar el protocolo \textit{NETCONF} a entornos \textit{SDN} ya que no cumple estrictamente con el paradigma de las \textit{SDN}, donde el plano de control y el plano de datos se encuentran desacoplados íntegramente.
 
@@ -144,9 +144,9 @@ Aquí se listan los distintos capítulos que conforman el proyecto, presentando 
 
     \item \textbf{Capítulo 2 - Marco teórico:} Aquí se abordan los conceptos necesarios para comprender las tecnologías utilizadas por el proyecto, además los mismos presentan una fundamentación para las posteriores implementaciones prácticas.
 
-    \item \textbf{Capítulo 3 - Análisis de las tecnologías:} Se estudia y analiza en este capítulo todas las herramientas que permiten el desarrollo de las aplicaciones desarrolladas en este proyecto, abarcando tanto herramientas de software como de hardware.
+    \item \textbf{Capítulo 3 - Análisis de las tecnologías:} Se estudia y analiza en este capítulo todas las herramientas que permiten la implementación de las aplicaciones desarrolladas en este proyecto, abarcando tanto herramientas de software como de hardware.
 
-    \item \textbf{Capítulo 4 - Diseño e implementación:} En este capítulo se aborda el proceso de diseño e implementación de todas las aplicaciones realizadas. Se presentan los requerimientos de las mismas y los diferentes diagramas realizados, que explican el funcionamiento de cada pieza de software. 
+    \item \textbf{Capítulo 4 - Diseño e implementación:} En este capítulo se abordan los procesos de diseño e implementación de todas las aplicaciones realizadas. Se presentan los requerimientos de las mismas y los diferentes diagramas realizados que explican el funcionamiento de cada pieza de software. 
 
     \item \textbf{Capítulo 5 - Validación y verificación:} Aquí, se exponen los diferentes casos de prueba desarrollados con el objetivo de validar y verificar que se cumplan los requerimientos de las diferentes aplicaciones.
 
