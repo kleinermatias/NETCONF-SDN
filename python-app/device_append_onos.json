@@ -1,1 +1,1 @@
-{"devices": {"netconf:172.16.0.141:830": {"netconf": {"username": "root", "connect-timeout": 120, "ssh-client": "ethz-ssh2", "ip": "172.16.0.141", "reply-timeout": 120, "password": "123", "port": 830}, "basic": {"driver": "altura-netconf"}}}}
+{"devices": {"netconf:172.16.0.142:830": {"netconf": {"username": "root", "connect-timeout": 120, "ssh-client": "ethz-ssh2", "ip": "172.16.0.142", "reply-timeout": 120, "password": "123", "port": 830}, "basic": {"driver": "altura-netconf"}}}}

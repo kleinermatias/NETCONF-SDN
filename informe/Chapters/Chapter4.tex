@@ -49,7 +49,7 @@ A continuación, en la figura \ref{fig:topologiafis} se muestra como está dispu
 
 \begin{figure}[H]
     \centering
-    \resizebox{\textwidth}{!}{\includegraphics[scale=0.1]{Figures/mxpfisicos.pdf}}
+    \resizebox{\textwidth}{!}{\includegraphics[scale=0.1]{Figures/mxpfisicos-min.pdf}}
     \caption{Conexión física de la topología.}
     \label{fig:topologiafis}
   \end{figure}
@@ -426,7 +426,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
     \label{fig:actividad_link}
   \end{figure}
 
-  Es importante mencionar que en esta instancia, no se consulta al dispositivo por sus alarmas con un mensaje \textit{NETCONF}, ya que las mismas son enviadas asíncronamente mediante notificaciones por el dispositivo, y registradas por el controlador como alarmas. Por lo tanto, para verificar el estado de las alarmas de un dispositivo, solo se consulta internamente en el \textit{core} de \textit{ONOS}.
+  Es importante mencionar que en esta instancia, no se consulta al dispositivo por sus alarmas con un mensaje \textit{NETCONF} ya que las mismas son enviadas asíncronamente mediante notificaciones por el dispositivo, y registradas por el controlador como alarmas. Por lo tanto, para verificar el estado de las alarmas de un dispositivo solo se consulta internamente en el \textit{core} de \textit{ONOS}.
 
   \subsection{Operaciones definidas en el \textit{driver}} \label{drivermux}
 
@@ -464,9 +464,9 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
   Por último, es importante mencionar que con el fin de cumplir con el requerimiento R-14 de la figura \ref{fig:req_driver}, se implementaron comandos \textit{CLI} para que el administrador pueda interactuar con los dispositivos a través del \textit{driver}, haciendo uso de la consola de \textit{ONOS}. De esta forma, el administrador puede llamar a cualquiera de las funciones explicadas anteriormente, permitiéndole así poder gestionar la configuración de los dispositivos a través de la consola.
 
   \section{Diseño de la interfaz \textit{Northbound} e Interfaz de usuario}
-  Para cumplir con los requerimientos del sistema, será necesario crear en primera instancia una interfaz \textit{REST API} a las aplicaciones externas, para que las mismas puedan comunicarse con los dispositivos administrados (\textit{muxponders}) por el controlador. Como se estudió en capítulos anteriores, \textit{ONOS} utiliza una interfaz llamada \textit{Northbound} para comunicarse con la capa de aplicación, por lo que la aplicación \textit{REST} estará ubicada en dicha interfaz. 
+  Para cumplir con los requerimientos del sistema, será necesario crear en primera instancia una interfaz \textit{REST API} a las aplicaciones externas, para que las mismas puedan comunicarse con los dispositivos administrados (\textit{muxponders}) por el controlador. Como se estudió en capítulos anteriores, \textit{ONOS} utiliza una interfaz llamada \textit{Northbound} para comunicarse con la capa de aplicación, y es aquí donde se encuentra implementada la aplicación \textit{REST}. 
 
-  También, se deberá diseñar y crear una aplicación \textit{WEB} que sirva como interfaz de usuario al administrador. A diferencia de la aplicación \textit{REST}, la \textit{GUI} desarrollada residirá en la capa de aplicación. La figura \ref{fig:ubicacionapp} esclarece la ubicación de las aplicaciones mencionadas anteriormente. 
+  También, se deberá diseñar y crear una aplicación \textit{WEB} que sirva como interfaz de usuario al administrador, y a diferencia de la aplicación \textit{REST}, la \textit{GUI} desarrollada residirá en la capa de aplicación. La figura \ref{fig:ubicacionapp} esclarece la ubicación de las aplicaciones mencionadas anteriormente. 
 
   \begin{figure}[H]
     \centering
@@ -530,9 +530,9 @@ Se muestra en la figura \ref{fig:rest_capt} un ejemplo de la interfaz \textit{RE
 
 
   \subsection{Implementación de la interfaz de usuario}
-  A fin de cumplir con los requerimientos R-18 a R-21 de la figura \ref{fig:req_app}, se realizó una aplicación \textit{WEB} basada en Flask \parencite{flask}. La misma, se desarrolla en Python y hace uso de lenguajes como HTML, JavaScript y CSS para presentar la interfaz de usuario. Cada sección listada en los requerimientos de la figura \ref{fig:req_app} (B), corresponde a un archivo HTML que contiene la estructura de la aplicación y los datos que se presentan en la interfaz. 
+  A fin de cumplir con los requerimientos R-18 a R-21 de la figura \ref{fig:req_app}, se realizó una aplicación \textit{WEB} basada en el \textit{microframework} Flask \parencite{flask}. La misma, se desarrolla en Python y hace uso de lenguajes como HTML, JavaScript y CSS para presentar la interfaz de usuario. Cada sección listada en los requerimientos de la figura \ref{fig:req_app} (B), corresponde a un archivo HTML que contiene la estructura de la aplicación y los datos que se presentan en la interfaz. 
 
-Es importante mencionar que todas las vistas realizan una tarea común. La misma consiste en consultar periódicamente al controlador, las alarmas activas que tiene \textit{ONOS} relativas a los \textit{muxponders}. Se puede observar el diagrama de actividad de la tarea mencionada en la figura \ref{fig:consulta_alarmas}.
+Es importante mencionar que todas las vistas realizan una tarea común. Dicha tarea consiste en consultar periódicamente al controlador las alarmas activas que tiene \textit{ONOS} relativas a los \textit{muxponders}. Se puede observar el diagrama de actividad de la tarea mencionada en la figura \ref{fig:consulta_alarmas}.
 
 \begin{figure}[H]
     \centering
@@ -556,7 +556,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_principal}
       \end{figure}
 
-    Por otra parte, en el diagrama de la figura \ref{fig:agregar_disp_web} se muestra cómo la aplicación \textit{WEB} conforma un mensaje JSON con la información del equipo (dirección IP, puerto) y la envía al controlador a través de la interfaz\textit{ REST}. Luego, el controlador procesa el mensaje dando inicio al descubrimiento del dispositivo. 
+    Por otra parte, en el diagrama de la figura \ref{fig:agregar_disp_web} se muestra cómo la aplicación \textit{WEB} conforma un mensaje JSON con la información del equipo (dirección IP, puerto) y la envía al controlador a través de la interfaz\textit{ REST}. Finalmente, el controlador procesa el mensaje dando inicio al descubrimiento del dispositivo. 
 
     \begin{figure}[H]
         \centering
@@ -565,7 +565,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:agregar_disp_web}
       \end{figure}
 
-    Por último, la figura \ref{fig:config_disp_web} muestra como es el proceso de configuración de un \textit{muxponder} a través de la aplicación WEB. Primeramente, se envía el perfil de configuración, una vez que la información es almacenada en el \textit{datastore running}, se envía la \textit{RPC} 'mux-apply-config' para que se apliquen los cambios en el dispositivo.
+    Por último, la figura \ref{fig:config_disp_web} muestra como es el proceso de configuración de un \textit{muxponder} a través de la aplicación WEB. Primeramente, se envía el perfil de configuración. Una vez que la información es almacenada en el \textit{datastore running}, se envía la \textit{RPC} 'mux-apply-config' para que se apliquen los cambios en el dispositivo.
 
     \begin{figure}[H]
         \centering
@@ -583,7 +583,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_alarmas}
       \end{figure}
     
-    \item \textbf{Vista de datos de configuración}: la interfaz que presenta la misma es la que se observa en la figura \ref{fig:captura_web_config}. Presenta así una sección donde se puede observar una lista de los equipos que conforman la topología con sus respectivas configuraciones aplicadas. 
+    \item \textbf{Vista de datos de configuración}: la interfaz que muestra la misma es la que se observa en la figura \ref{fig:captura_web_config}. Presenta así una sección donde se puede observar una lista de los equipos que conforman la topología con sus respectivas configuraciones aplicadas. 
         
     \begin{figure}[H]
         \centering
@@ -592,7 +592,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_config}
       \end{figure}
 
-    \item \textbf{Vista de datos de estado}: a continuación, se muestra la figura \ref{fig:captura_web_estado} la interfaz que presenta esta vista. De forma similar a la anterior, aquí se muestra información relacionada a los datos de estado de los equipos. En la parte superior se puede observar los diferentes \textit{containers} de estado que se implementaron en el módulo \textit{YANG}.  
+    \item \textbf{Vista de datos de estado}: a continuación, se muestra la figura \ref{fig:captura_web_estado} la interfaz que presenta dicha vista. De forma similar a la anterior, aquí se muestra información relacionada a los datos de estado de los equipos. En la parte superior se puede observar los diferentes \textit{containers} de estado que se implementaron en el módulo \textit{YANG}.  
     
     \begin{figure}[H]
         \centering
@@ -610,7 +610,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. La misma
         \label{fig:captura_web_topo}
       \end{figure}
     
-    \item \textbf{Vista de perfiles}: por último, en la figura \ref{fig:captura_web_topo} se presenta una sección donde se permite agregar o eliminar perfiles de configuración. La idea básica de los perfiles de configuración, es la de agrupar una serie de parámetros de tal forma que el administrador pueda identificar fácilmente cuál será la configuración que se aplique en el dispositivo. Además, permite guardar dicho perfil con el fin de poder reutilizarlo en un futuro. 
+    \item \textbf{Vista de perfiles}: por último, en la figura \ref{fig:captura_web_topo} se presenta una sección donde se permite agregar o eliminar perfiles de configuración. La idea básica de los perfiles de configuración es la de agrupar una serie de parámetros de tal forma que el administrador pueda identificar fácilmente cuál será la configuración que se aplique en el dispositivo. Además, permite guardar dicho perfil con el fin de poder reutilizarlo en un futuro. 
 
     \begin{figure}[H]
         \centering
