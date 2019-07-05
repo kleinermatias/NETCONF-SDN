@@ -1327,11 +1327,12 @@ def boton_agregar_vecinos_mxp_switch():
         dispositivo_1 = request.form['disp1']
         port = request.form['port_mxp']
         dispositivo_2 = request.form['disp2']
+        print dispositivo_2
         headers = {'Accept': 'application/json', }
 
         try:
             response = requests.put('http://localhost:8181/onos/altura/SET/Neighbor/'+str(
-                dispositivo_1)+","+str(port)+","+str(dispositivo_2)[-1]+",1", headers=headers, auth=('karaf', 'karaf'))
+                dispositivo_1)+","+str(port)+","+str(dispositivo_2)+",1", headers=headers, auth=('karaf', 'karaf'))
 
         except:
             print(
