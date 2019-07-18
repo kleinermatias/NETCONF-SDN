@@ -11601,11 +11601,14 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
   if (pid == 0)
   {
     // proceso hijo
-    system("cd /mxp/app/cli && ./monitor");
+    char *args[]={"/mxp/app/cli/monitor",NULL}; 
+    execv(args[0],args);
+
   }
 
   else
   {
+    signal(SIGCHLD,SIG_IGN); 
     printf("\n SIGUE EL PADRE");
   }
 
