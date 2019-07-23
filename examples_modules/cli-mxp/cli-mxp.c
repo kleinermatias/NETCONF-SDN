@@ -96,6 +96,38 @@ alarmas_thread(void *arg)
   int rc;
   rc = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 
+
+  if (rpc_in_progress)
+    {
+      printf("\n Duermo el hilo :\n");
+      sleep(95);
+      printf("\n Abro mem compartida :\n");
+      
+      shmfd = shm_open(SHMOBJ_PATH, O_CREAT | O_RDWR, S_IRWXU | S_IRWXG);
+      if (shmfd < 0)
+      {
+        printf("\n ERROR POR ACA :\n");
+        printf("Error in SHM_OPEN () \n");
+        perror("In shm_open()");
+        exit(1);
+      }
+
+      ftruncate(shmfd, SHM_SIZE);
+
+      pt_monitor_struct = (Monitor *)mmap(NULL, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shmfd, 0);
+      if (pt_monitor_struct == NULL)
+      {
+        printf("\n ERROR POR ACA2 :\n");
+        printf("Error in mmap() \n");
+        perror("In mmap()");
+        exit(1);
+      }
+      
+      initial_polling_alarms = 1;
+      rpc_in_progress = 0;
+      //pt_monitor_struct_anterior = {0};
+  }
+
   while (alarma_tid)
   {
     sem_wait(&mutex);
@@ -1060,36 +1092,7 @@ alarmas_thread(void *arg)
     initial_polling_alarms = 0;
     memcpy(&pt_monitor_struct_anterior, pt_monitor_struct, sizeof(Monitor));
 
-    if (rpc_in_progress)
-    {
-      printf("\n Duermo el hilo :\n");
-      sleep(95);
-      printf("\n Abro mem compartida :\n");
-      
-      shmfd = shm_open(SHMOBJ_PATH, O_CREAT | O_RDWR, S_IRWXU | S_IRWXG);
-      if (shmfd < 0)
-      {
-        printf("\n ERROR POR ACA :\n");
-        printf("Error in SHM_OPEN () \n");
-        perror("In shm_open()");
-        exit(1);
-      }
 
-      ftruncate(shmfd, SHM_SIZE);
-
-      pt_monitor_struct = (Monitor *)mmap(NULL, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shmfd, 0);
-      if (pt_monitor_struct == NULL)
-      {
-        printf("\n ERROR POR ACA2 :\n");
-        printf("Error in mmap() \n");
-        perror("In mmap()");
-        exit(1);
-      }
-      
-      initial_polling_alarms = 1;
-      rpc_in_progress = 0;
-      pt_monitor_struct_anterior = {0};
-    }
 
     if ((warning_config_actual != warning_config_anterior) && (warning_config_actual != 0))
     {
@@ -11746,10 +11749,21 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
     printf("\n OK cerrando mem compartida \n");
   }
 
-  rpc_in_progress = 1;
+  
 
   //kill monitor, debido al error de no poder leer mientras escribe en memoria compartida.
   system("killall monitor");
+
+  if (alarma_tid != 0) {
+    void *resp;
+    int rc = pthread_cancel(alarma_tid);
+    rc = pthread_join(alarma_tid, &resp);
+    if (resp == PTHREAD_CANCELED){
+      printf("Thread was canceled\n");
+      alarma_tid=0;
+      log_debug("\n******ALARMA DESCTIVADA******");
+  }
+
   //system_status = system(str);
 
   int pid = fork();
@@ -11774,7 +11788,18 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
   else
   {
     signal(SIGCHLD,SIG_IGN); 
+    rpc_in_progress = 1;
+    sleep(1);
+
     printf("\n SIGUE EL PADRE");
+    if (alarma_tid == 0)
+    {
+      pthread_create((pthread_t *)&alarma_tid, NULL, alarmas_thread, NULL);
+      log_debug("\n******ALARMA ACTIVADA******");
+    }
+
+
+  }
     //initial_polling_alarms = 1;
   }
 
