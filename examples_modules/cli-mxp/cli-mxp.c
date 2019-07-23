@@ -550,7 +550,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -575,7 +575,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -599,7 +599,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -624,7 +624,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -649,7 +649,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -674,7 +674,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -699,7 +699,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -725,7 +725,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -751,7 +751,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -778,7 +778,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -803,7 +803,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -828,7 +828,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -854,7 +854,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -879,7 +879,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -904,7 +904,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -930,7 +930,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -957,7 +957,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -982,7 +982,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1009,7 +1009,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1034,7 +1034,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1061,7 +1061,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1088,7 +1088,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1113,7 +1113,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1138,7 +1138,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1163,7 +1163,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1189,7 +1189,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1214,7 +1214,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
@@ -1225,7 +1225,7 @@ alarmas_thread(void *arg)
       int prueba_xfp_int = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
       prueba_xfp = (const xmlChar *)alarms[!prueba_xfp_int];
 
-      printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+      printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
 
       if (((flag_xfp[3][6] == 1) && (initial_polling_alarms == 1)) || (  (char *)prueba_xfp==(char *)"Alarm") )
       {
@@ -1242,7 +1242,7 @@ alarmas_thread(void *arg)
       else
       {
         printf("\n ERROR :\n");
-        printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+        printf("\n \n \n Esto esssssssss %s juaz", (char *) prueba_xfp);
       }
     }
 
