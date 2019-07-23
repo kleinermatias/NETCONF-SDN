@@ -64,6 +64,7 @@ Monitor pt_monitor_struct_anterior = {0};
 
 int shmfd;
 int rpc_in_progress = 0;
+int contador_rpc = 0;
 float edfa_output_power_conf;
 static pthread_t alarma_tid;
 const xmlChar *tipo_trafico_var;
@@ -122,9 +123,8 @@ alarmas_thread(void *arg)
         perror("In mmap()");
         exit(1);
       }
-      
+      contador_rpc = 0;
       initial_polling_alarms = 1;
-      rpc_in_progress = 0;
       //pt_monitor_struct_anterior = {0};
   }
 
@@ -1104,7 +1104,13 @@ alarmas_thread(void *arg)
       warning_config_anterior = 0;
     }
 
-    
+    if (rpc_in_progress)
+    {
+      contador_rpc++;
+      if (contador_rpc==2) {
+        rpc_in_progress=0;
+      }
+    }
     warning_config_anterior = warning_config_actual;
     sem_post(&mutex);
     sleep(1);
