@@ -63,6 +63,7 @@ Monitor *pt_monitor_struct;
 Monitor pt_monitor_struct_anterior = {0};
 
 int shmfd;
+int rpc_in_progress = 0;
 float edfa_output_power_conf;
 static pthread_t alarma_tid;
 const xmlChar *tipo_trafico_var;
@@ -99,15 +100,19 @@ alarmas_thread(void *arg)
   {
     sem_wait(&mutex);
 
+    sleep(1);
+    
     if ((initial_polling_alarms == 1) || (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm != pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.eolalm))
     {
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.eolalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.eolalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] EOL ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] EOL ALM");
       }
     }
@@ -117,10 +122,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.modtempalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modtempalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod TEMP ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Mod TEMP ALM");
       }
     }
@@ -130,10 +137,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txooa = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txooa == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] TxOOA");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] TxOOA");
       }
     }
@@ -143,10 +152,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txlofalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlofalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOF ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx LOF ALM");
       }
     }
@@ -156,10 +167,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txdscerr = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txdscerr == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx DSC ERR");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx DSC ERR");
       }
     }
@@ -169,10 +182,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lswavalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lswavalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls WAV ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls WAV ALM");
       }
     }
@@ -182,10 +197,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txalmint = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txalmint == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx ALM INT");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx ALM INT");
       }
     }
@@ -195,10 +212,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lsbiasalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lsbiasalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls BIAS ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls BIAS ALM");
       }
     }
@@ -208,10 +227,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lstempalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lstempalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls TEMP ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls TEMP ALM");
       }
     }
@@ -221,10 +242,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.txlockerr = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.txlockerr == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx LOCK ERR");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx LOCK ERR");
       }
     }
@@ -234,10 +257,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.lspowalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.lspowalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Ls POW ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Ls POW ALM");
       }
     }
@@ -247,10 +272,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.modbiasalm = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.modbiasalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Mod BIAS ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Mod BIAS ALM");
       }
     }
@@ -260,10 +287,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_tx_alarm.fields.latchedtxfifoerr = pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr;
       if (pt_monitor_struct->txp_struct.txp_tx_alarm.fields.latchedtxfifoerr == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LATCHED TxFIFO ERR");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] LATCHED TxFIFO ERR");
       }
     }
@@ -273,23 +302,29 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxalmint = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint;
       if (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxalmint == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RxALM INT");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] RxALM INT");
       }
     }
+
+    sleep(1); //duermo por alarmas
 
     if ((initial_polling_alarms == 1) || (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm != pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxpowalm))
     {
       pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxpowalm = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm;
       if (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxpowalm == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx POW ALM");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx POW ALM");
       }
     }
@@ -299,10 +334,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxlos = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos;
       if (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlos == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOS");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx LOS");
       }
     }
@@ -312,10 +349,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxlockerr = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr;
       if (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxlockerr == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx LOCK ERR");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx LOCK ERR");
       }
     }
@@ -325,10 +364,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.rxs = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs;
       if (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.rxs == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] RXS");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] RXS");
       }
     }
@@ -338,10 +379,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_rx_alarm.fields.prbserrdet = pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet;
       if (pt_monitor_struct->txp_struct.txp_rx_alarm.fields.prbserrdet == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PRBS ERR DET");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] PRBS ERR DET");
       }
     }
@@ -351,10 +394,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.psummary = pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.psummary == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] PSUMMARY");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] PSUMMARY");
       }
     }
@@ -364,10 +409,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p5vanalog = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.p5vanalog == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P5VANALOG");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P5VANALOG");
       }
     }
@@ -377,10 +424,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.n5v2analog = pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5v2analog == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5V2ANALOG");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] N5V2ANALOG");
       }
     }
@@ -390,10 +439,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p3p3vanalog = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vanalog == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VANALOG");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P3P3VANALOG");
       }
     }
@@ -403,10 +454,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.p3p3vdigital = pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.p3p3vdigital == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] P3P3VDIGITAL");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] P3P3VDIGITAL");
       }
     }
@@ -416,10 +469,12 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.lvdigital = pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.lvdigital == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] LVDIGITAL");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] LVDIGITAL");
       }
     }
@@ -429,23 +484,30 @@ alarmas_thread(void *arg)
       pt_monitor_struct_anterior.txp_struct.txp_power_alarm.fields.n5p2vdigital = pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital;
       if (pt_monitor_struct->txp_struct.txp_power_alarm.fields.n5p2vdigital == 0)
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] N5P2VDIGITAL");
       }
       else
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] N5P2VDIGITAL");
       }
     }
+
+
+    sleep(1); //duermo por alarmas
 
     if ((initial_polling_alarms == 1) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] != pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][0]))
     {
       if (((flag_xfp[0][0] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP1");
         flag_xfp[0][0] = 1;
       }
       else if (((flag_xfp[0][0] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][0] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP1");
         flag_xfp[0][0] = 0;
       }
@@ -459,11 +521,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[0][1] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP1");
         flag_xfp[0][1] = 1;
       }
       else if (((flag_xfp[0][1] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][1] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP1");
         flag_xfp[0][1] = 0;
       }
@@ -477,11 +541,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[0][2] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP1");
         flag_xfp[0][2] = 1;
       }
       else if (((flag_xfp[0][2] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][2] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP1");
         flag_xfp[0][2] = 0;
       }
@@ -495,11 +561,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[0][3] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP1");
         flag_xfp[0][3] = 1;
       }
       else if (((flag_xfp[0][3] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][3] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP1");
         flag_xfp[0][3] = 0;
       }
@@ -513,11 +581,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[0][4] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP1");
         flag_xfp[0][4] = 1;
       }
       else if (((flag_xfp[0][4] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][4] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP1");
         flag_xfp[0][4] = 0;
       }
@@ -531,11 +601,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[0][5] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP1");
         flag_xfp[0][5] = 1;
       }
       else if (((flag_xfp[0][5] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][5] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP1");
         flag_xfp[0][5] = 0;
       }
@@ -549,11 +621,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[0][6] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP1");
         flag_xfp[0][6] = 1;
       }
       else if (((flag_xfp[0][6] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[0][6] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[0][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP1");
         flag_xfp[0][6] = 0;
       }
@@ -567,11 +641,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][0] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP2");
         flag_xfp[1][0] = 1;
       }
       else if (((flag_xfp[1][0] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][0] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP2");
         flag_xfp[1][0] = 0;
       }
@@ -585,11 +661,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][1] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP2");
         flag_xfp[1][1] = 1;
       }
       else if (((flag_xfp[1][1] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][1] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP2");
         flag_xfp[1][1] = 0;
       }
@@ -603,11 +681,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][2] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP2");
         flag_xfp[1][2] = 1;
       }
       else if (((flag_xfp[1][2] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][2] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP2");
         flag_xfp[1][2] = 0;
       }
@@ -621,11 +701,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][3] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP2");
         flag_xfp[1][3] = 1;
       }
       else if (((flag_xfp[1][3] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][3] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP2");
         flag_xfp[1][3] = 0;
       }
@@ -639,11 +721,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][4] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP2");
         flag_xfp[1][4] = 1;
       }
       else if (((flag_xfp[1][4] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][4] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP2");
         flag_xfp[1][4] = 0;
       }
@@ -657,11 +741,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][5] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP2");
         flag_xfp[1][5] = 1;
       }
       else if (((flag_xfp[1][5] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][5] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP2");
         flag_xfp[1][5] = 0;
       }
@@ -675,11 +761,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[1][6] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP2");
         flag_xfp[1][6] = 1;
       }
       else if (((flag_xfp[1][6] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[1][6] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[1][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP2");
         flag_xfp[1][6] = 0;
       }
@@ -693,11 +781,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][0] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP3");
         flag_xfp[2][0] = 1;
       }
       else if (((flag_xfp[2][0] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][0] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP3");
         flag_xfp[2][0] = 0;
       }
@@ -711,11 +801,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][1] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP3");
         flag_xfp[2][1] = 1;
       }
       else if (((flag_xfp[2][1] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][1] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP3");
         flag_xfp[2][1] = 0;
       }
@@ -729,11 +821,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][2] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP3");
         flag_xfp[2][2] = 1;
       }
       else if (((flag_xfp[2][2] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][2] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP3");
         flag_xfp[2][2] = 0;
       }
@@ -747,11 +841,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][3] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP3");
         flag_xfp[2][3] = 1;
       }
       else if (((flag_xfp[2][3] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][3] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP3");
         flag_xfp[2][3] = 0;
       }
@@ -765,11 +861,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][4] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP3");
         flag_xfp[2][4] = 1;
       }
       else if (((flag_xfp[2][4] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][4] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP3");
         flag_xfp[2][4] = 0;
       }
@@ -783,11 +881,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][5] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP3");
         flag_xfp[2][5] = 1;
       }
       else if (((flag_xfp[2][5] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][5] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP3");
         flag_xfp[2][5] = 0;
       }
@@ -801,11 +901,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[2][6] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP3");
         flag_xfp[2][6] = 1;
       }
       else if (((flag_xfp[2][6] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[2][6] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[2][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP3");
         flag_xfp[2][6] = 0;
       }
@@ -819,11 +921,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][0] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Tx Power Alarm XFP4");
         flag_xfp[3][0] = 1;
       }
       else if (((flag_xfp[3][0] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][0] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][0]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Tx Power Alarm XFP4");
         flag_xfp[3][0] = 0;
       }
@@ -837,11 +941,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][1] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Tx Power Alarm XFP4");
         flag_xfp[3][1] = 1;
       }
       else if (((flag_xfp[3][1] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][1] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][1]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Tx Power Alarm XFP4");
         flag_xfp[3][1] = 0;
       }
@@ -855,11 +961,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][2] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Low Rx Power Alarm XFP4");
         flag_xfp[3][2] = 1;
       }
       else if (((flag_xfp[3][2] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][2] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][2]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Low Rx Power Alarm XFP4");
         flag_xfp[3][2] = 0;
       }
@@ -873,11 +981,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][3] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] High Rx Power Alarm XFP4");
         flag_xfp[3][3] = 1;
       }
       else if (((flag_xfp[3][3] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][3] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][3]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] High Rx Power Alarm XFP4");
         flag_xfp[3][3] = 0;
       }
@@ -891,11 +1001,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][4] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Rx CDR Loss of Lock XFP4");
         flag_xfp[3][4] = 1;
       }
       else if (((flag_xfp[3][4] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][4] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][4]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Rx CDR Loss of Lock XFP4");
         flag_xfp[3][4] = 0;
       }
@@ -909,11 +1021,13 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][5] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Tx CDR Loss of Lock XFP4");
         flag_xfp[3][5] = 1;
       }
       else if (((flag_xfp[3][5] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][5] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][5]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Tx CDR Loss of Lock XFP4");
         flag_xfp[3][5] = 0;
       }
@@ -927,18 +1041,38 @@ alarmas_thread(void *arg)
     {
       if (((flag_xfp[3][6] == 1) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6] > pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP4");
         flag_xfp[3][6] = 1;
       }
       else if (((flag_xfp[3][6] == 0) && (initial_polling_alarms == 1)) || (pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6] < pt_monitor_struct_anterior.xfp_struct.xfp_interruption_flags[3][6]))
       {
+        usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP4");
         flag_xfp[3][6] = 0;
       }
       else
       {
-        printf("ERROR");
+        printf("\n ERROR :\n");
       }
+    }
+
+    initial_polling_alarms = 0;
+    
+    if (rpc_in_progress)
+    {
+      printf("\n Duermo el hilo :\n");
+      sleep(95);
+      printf("\n Abro mem compartida :\n");
+      shmfd = shm_open(SHMOBJ_PATH, O_CREAT | O_RDWR, S_IRWXU | S_IRWXG);
+      if (shmfd < 0)
+      {
+        printf("Error in SHM_OPEN () \n");
+        perror("In shm_open()");
+        exit(1);
+      }
+      initial_polling_alarms = 1;
+      rpc_in_progress = 0;
     }
 
     if ((warning_config_actual != warning_config_anterior) && (warning_config_actual != 0))
@@ -953,10 +1087,10 @@ alarmas_thread(void *arg)
 
     memcpy(&pt_monitor_struct_anterior, pt_monitor_struct, sizeof(Monitor));
     warning_config_anterior = warning_config_actual;
-    initial_polling_alarms = 0;
     sem_post(&mutex);
-    sleep(3);
+    sleep(1);
   }
+  
   return NULL;
 }
 
@@ -1081,6 +1215,7 @@ static void y_cli_mxp_init_static_vars(void)
   strcpy(device_info.device_boardId, aux_buf);
 
   fclose(fp);
+  rpc_in_progress = 0;
   /* PRUEBA */
 
 } /* y_cli_mxp_init_static_vars */
@@ -11572,9 +11707,6 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
 
 
 
-  //kill monitor, debido al error de no poder leer mientras escribe en memoria compartida.
-  system("killall monitor");
-
   char str[80];
   char buff[80];
   int system_status;
@@ -11589,7 +11721,20 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
   printf("\n COMANDO : %s\n", str);
 
   sem_wait(&mutex);
-  system_status = system(str);
+  
+  if (close(shmfd) != 0)
+  {
+    printf("\n ERROR cerrando mem compartida \n");
+  }
+  else{
+    printf("\n OK cerrando mem compartida \n");
+  }
+
+  rpc_in_progress = 1;
+
+  //kill monitor, debido al error de no poder leer mientras escribe en memoria compartida.
+  system("killall monitor");
+  //system_status = system(str);
 
   int pid = fork();
   if (pid < 0)
@@ -11601,15 +11746,27 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
   if (pid == 0)
   {
     // proceso hijo
+    sleep(4);
+    system_status = system(str);
+    
+    int contador = 0;
+    while(contador<90){
+      printf("\n Configurando... \n");
+      sleep(1);
+      contador++;
+    }
+    printf("\n Listo... \n");
+    sleep(1);
     char *args[]={"/mxp/app/cli/monitor",NULL}; 
     execv(args[0],args);
-
+    exit(0);
   }
 
   else
   {
     signal(SIGCHLD,SIG_IGN); 
     printf("\n SIGUE EL PADRE");
+    //initial_polling_alarms = 1;
   }
 
   sem_post(&mutex);
