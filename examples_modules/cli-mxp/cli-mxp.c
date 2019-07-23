@@ -1200,13 +1200,13 @@ alarmas_thread(void *arg)
 
       printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
 
-      if (((flag_xfp[3][6] == 1) && (initial_polling_alarms == 1)) || ((char *)prueba_xfp==(char *)"Alarm") )
+      if (((flag_xfp[3][6] == 1) && (initial_polling_alarms == 1)) || ( (char *)prueba_xfp==(char *)"Alarm") )
       {
         usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP4");
         flag_xfp[3][6] = 1;
       }
-      else if (((flag_xfp[3][6] == 0) && (initial_polling_alarms == 1)) || (prueba_xfp==(char *)"--") )
+      else if (((flag_xfp[3][6] == 0) && (initial_polling_alarms == 1)) || ( (char *)prueba_xfp==(char *)"--") )
       {
         usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP4");
