@@ -11764,13 +11764,6 @@ static status_t y_cli_mxp_mux_apply_config_invoke(
     // proceso hijo
     sleep(4);
     system_status = system(str);
-    
-    int contador = 0;
-    while(contador<90){
-      printf("\n Configurando... \n");
-      sleep(1);
-      contador++;
-    }
     printf("\n Listo... \n");
     sleep(1);
     char *args[]={"/mxp/app/cli/monitor",NULL}; 
