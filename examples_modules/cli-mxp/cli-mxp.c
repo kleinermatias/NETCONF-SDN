@@ -1198,13 +1198,15 @@ alarmas_thread(void *arg)
       int prueba_xfp_int = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
       prueba_xfp = (const xmlChar *)alarms[!prueba_xfp_int];
 
-      if (((flag_xfp[3][6] == 1) && (initial_polling_alarms == 1)) || (prueba_xfp==(const xmlChar *)"Alarm") )
+      printf("\n \n \n Esto esssssssss %s", (char *) prueba_xfp);
+
+      if (((flag_xfp[3][6] == 1) && (initial_polling_alarms == 1)) || ((char *)prueba_xfp==(char *)"Alarm") )
       {
         usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[ALARM] Laser Fault XFP4");
         flag_xfp[3][6] = 1;
       }
-      else if (((flag_xfp[3][6] == 0) && (initial_polling_alarms == 1)) || (prueba_xfp==(const xmlChar *)"--") )
+      else if (((flag_xfp[3][6] == 0) && (initial_polling_alarms == 1)) || (prueba_xfp==(char *)"--") )
       {
         usleep(100000);
         y_cli_mxp_mux_notify_send((const xmlChar *)"[--] Laser Fault XFP4");
@@ -1235,7 +1237,7 @@ alarmas_thread(void *arg)
     {
       printf("\n CONTADOR :\n");
       contador_rpc++;
-      if (contador_rpc==2) {
+      if (contador_rpc==6) {
         rpc_in_progress=0;
         initial_polling_alarms = 0;
       }
