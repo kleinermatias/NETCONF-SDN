@@ -1089,7 +1089,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    initial_polling_alarms = 0;
+    
     memcpy(&pt_monitor_struct_anterior, pt_monitor_struct, sizeof(Monitor));
 
 
@@ -1106,10 +1106,15 @@ alarmas_thread(void *arg)
 
     if (rpc_in_progress)
     {
+      printf("\n CONTADOR :\n");
       contador_rpc++;
       if (contador_rpc==2) {
         rpc_in_progress=0;
+        initial_polling_alarms = 0;
       }
+    }
+    else {
+      initial_polling_alarms = 0;
     }
     warning_config_anterior = warning_config_actual;
     sem_post(&mutex);
