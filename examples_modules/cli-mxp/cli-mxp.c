@@ -127,7 +127,7 @@ alarmas_thread(void *arg)
         exit(1);
       }
       contador_rpc = 0;
-      initial_polling_alarms = 1;
+      initial_polling_alarms_prueba = 1;
   }
 
   //ACA TODAS LAS VARIABLES
@@ -1203,7 +1203,7 @@ alarmas_thread(void *arg)
     {
       printf("\n CONTADOR :\n");
       contador_rpc++;
-      if (contador_rpc==5) {
+      if (contador_rpc==2) {
         rpc_in_progress=0;
         initial_polling_alarms = 0;
       }
@@ -1272,8 +1272,17 @@ alarmas_thread(void *arg)
     Laser_Fault_3_6_int = pt_monitor_struct->xfp_struct.xfp_interruption_flags[3][6];
 
     warning_config_anterior = warning_config_actual;
+
+    if (initial_polling_alarms_prueba) {
+      initial_polling_alarms = 1;
+      initial_polling_alarms_prueba = 0;
+    } 
+    else {
+      initial_polling_alarms = 0;
+    }
     sem_post(&mutex);
     sleep(1);
+
   }
   
   return NULL;
@@ -11700,7 +11709,7 @@ static status_t y_cli_mxp_mux_notify_activate_invoke(
 
   /* invoke your device instrumentation code here */
 
-  initial_polling_alarms = 1;
+  initial_polling_alarms_prueba = 1;
   /*
   if (alarma_tid == 0) {
     log_debug("\n******ALARMA ACTIVADA******");
