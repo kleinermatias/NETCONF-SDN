@@ -677,7 +677,7 @@ alarmas_thread(void *arg)
 
     sleep(1); //duermo por alarmas
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_0_0, alarms[Low_Tx_Power_Alarm_0_0_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_0_0, alarms[!Low_Tx_Power_Alarm_0_0_int]) != 0) )
     {    
       if ( (strcmp(Alarm_si, alarms[!Low_Tx_Power_Alarm_0_0_int]) == 0) )
       {
@@ -695,7 +695,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_0_1, alarms[High_Tx_Power_Alarm_0_1_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_0_1, alarms[!High_Tx_Power_Alarm_0_1_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Tx_Power_Alarm_0_1_int]) == 0) )
       {
@@ -713,7 +713,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_0_2, alarms[Low_Rx_Power_Alarm_0_2_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_0_2, alarms[!Low_Rx_Power_Alarm_0_2_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Low_Rx_Power_Alarm_0_2_int]) == 0) )
       {
@@ -731,7 +731,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_0_3, alarms[High_Rx_Power_Alarm_0_3_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_0_3, alarms[!High_Rx_Power_Alarm_0_3_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Rx_Power_Alarm_0_3_int]) == 0) )
       {
@@ -749,7 +749,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_0_4, alarms[Rx_CDR_Loss_of_Lock_0_4_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_0_4, alarms[!Rx_CDR_Loss_of_Lock_0_4_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Rx_CDR_Loss_of_Lock_0_4_int]) == 0) )
       {
@@ -767,7 +767,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_0_5, alarms[Tx_CDR_Loss_of_Lock_0_5_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_0_5, alarms[!Tx_CDR_Loss_of_Lock_0_5_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Tx_CDR_Loss_of_Lock_0_5_int]) == 0) )
       {
@@ -785,7 +785,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_0_6, alarms[Laser_Fault_0_6_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_0_6, alarms[!Laser_Fault_0_6_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Laser_Fault_0_6_int]) == 0) )
       {
@@ -805,7 +805,7 @@ alarmas_thread(void *arg)
 
 
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_1_0, alarms[Low_Tx_Power_Alarm_1_0_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_1_0, alarms[!Low_Tx_Power_Alarm_1_0_int]) != 0) )
     {    
       if ( (strcmp(Alarm_si, alarms[!Low_Tx_Power_Alarm_1_0_int]) == 0) )
       {
@@ -823,7 +823,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_1_1, alarms[High_Tx_Power_Alarm_1_1_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_1_1, alarms[!High_Tx_Power_Alarm_1_1_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Tx_Power_Alarm_1_1_int]) == 0) )
       {
@@ -841,7 +841,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_1_2, alarms[Low_Rx_Power_Alarm_1_2_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_1_2, alarms[!Low_Rx_Power_Alarm_1_2_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Low_Rx_Power_Alarm_1_2_int]) == 0) )
       {
@@ -859,7 +859,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_1_3, alarms[High_Rx_Power_Alarm_1_3_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_1_3, alarms[!High_Rx_Power_Alarm_1_3_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Rx_Power_Alarm_1_3_int]) == 0) )
       {
@@ -877,7 +877,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_1_4, alarms[Rx_CDR_Loss_of_Lock_1_4_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_1_4, alarms[!Rx_CDR_Loss_of_Lock_1_4_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Rx_CDR_Loss_of_Lock_1_4_int]) == 0) )
       {
@@ -895,7 +895,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_1_5, alarms[Tx_CDR_Loss_of_Lock_1_5_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_1_5, alarms[!Tx_CDR_Loss_of_Lock_1_5_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Tx_CDR_Loss_of_Lock_1_5_int]) == 0) )
       {
@@ -913,7 +913,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_1_6, alarms[Laser_Fault_1_6_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_1_6, alarms[!Laser_Fault_1_6_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Laser_Fault_1_6_int]) == 0) )
       {
@@ -933,7 +933,7 @@ alarmas_thread(void *arg)
 
 
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_2_0, alarms[Low_Tx_Power_Alarm_2_0_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_2_0, alarms[!Low_Tx_Power_Alarm_2_0_int]) != 0) )
     {    
       if ( (strcmp(Alarm_si, alarms[!Low_Tx_Power_Alarm_2_0_int]) == 0) )
       {
@@ -951,7 +951,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_2_1, alarms[High_Tx_Power_Alarm_2_1_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_2_1, alarms[!High_Tx_Power_Alarm_2_1_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Tx_Power_Alarm_2_1_int]) == 0) )
       {
@@ -969,7 +969,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_2_2, alarms[Low_Rx_Power_Alarm_2_2_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_2_2, alarms[!Low_Rx_Power_Alarm_2_2_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Low_Rx_Power_Alarm_2_2_int]) == 0) )
       {
@@ -987,7 +987,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_2_3, alarms[High_Rx_Power_Alarm_2_3_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_2_3, alarms[!High_Rx_Power_Alarm_2_3_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Rx_Power_Alarm_2_3_int]) == 0) )
       {
@@ -1005,7 +1005,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_2_4, alarms[Rx_CDR_Loss_of_Lock_2_4_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_2_4, alarms[!Rx_CDR_Loss_of_Lock_2_4_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Rx_CDR_Loss_of_Lock_2_4_int]) == 0) )
       {
@@ -1023,7 +1023,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_2_5, alarms[Tx_CDR_Loss_of_Lock_2_5_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_2_5, alarms[!Tx_CDR_Loss_of_Lock_2_5_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Tx_CDR_Loss_of_Lock_2_5_int]) == 0) )
       {
@@ -1041,7 +1041,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_2_6, alarms[Laser_Fault_2_6_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_2_6, alarms[!Laser_Fault_2_6_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Laser_Fault_2_6_int]) == 0) )
       {
@@ -1061,7 +1061,7 @@ alarmas_thread(void *arg)
 
 
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_3_0, alarms[Low_Tx_Power_Alarm_3_0_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Tx_Power_Alarm_3_0, alarms[!Low_Tx_Power_Alarm_3_0_int]) != 0) )
     {    
       if ( (strcmp(Alarm_si, alarms[!Low_Tx_Power_Alarm_3_0_int]) == 0) )
       {
@@ -1079,7 +1079,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_3_1, alarms[High_Tx_Power_Alarm_3_1_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Tx_Power_Alarm_3_1, alarms[!High_Tx_Power_Alarm_3_1_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Tx_Power_Alarm_3_1_int]) == 0) )
       {
@@ -1097,7 +1097,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_3_2, alarms[Low_Rx_Power_Alarm_3_2_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Low_Rx_Power_Alarm_3_2, alarms[!Low_Rx_Power_Alarm_3_2_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Low_Rx_Power_Alarm_3_2_int]) == 0) )
       {
@@ -1115,7 +1115,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_3_3, alarms[High_Rx_Power_Alarm_3_3_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_High_Rx_Power_Alarm_3_3, alarms[!High_Rx_Power_Alarm_3_3_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!High_Rx_Power_Alarm_3_3_int]) == 0) )
       {
@@ -1133,7 +1133,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_3_4, alarms[Rx_CDR_Loss_of_Lock_3_4_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Rx_CDR_Loss_of_Lock_3_4, alarms[!Rx_CDR_Loss_of_Lock_3_4_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Rx_CDR_Loss_of_Lock_3_4_int]) == 0) )
       {
@@ -1151,7 +1151,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_3_5, alarms[Tx_CDR_Loss_of_Lock_3_5_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Tx_CDR_Loss_of_Lock_3_5, alarms[!Tx_CDR_Loss_of_Lock_3_5_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Tx_CDR_Loss_of_Lock_3_5_int]) == 0) )
       {
@@ -1169,7 +1169,7 @@ alarmas_thread(void *arg)
       }
     }
 
-    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_3_6, alarms[Laser_Fault_3_6_int]) != 0) )
+    if ((initial_polling_alarms == 1) || (strcmp(enviado_Laser_Fault_3_6, alarms[!Laser_Fault_3_6_int]) != 0) )
     {
       if ( (strcmp(Alarm_si, alarms[!Laser_Fault_3_6_int]) == 0) )
       {
