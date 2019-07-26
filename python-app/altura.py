@@ -13,6 +13,13 @@ from flask_socketio import SocketIO, emit
 from random import random
 from time import sleep
 from threading import Thread, Event, Lock
+import os
+import signal
+import sys
+from random import randint
+from time import sleep
+
+signal.signal(signal.SIGCHLD, signal.SIG_IGN)
 
 # Config Flask APP recipes,name,etc
 recipes_blueprint = Blueprint('index', __name__, template_folder='templates')
@@ -194,37 +201,19 @@ class RPCThread(Thread):
         
         try:
             config_in_progress = 1
-            cantidad = ""+str(len(rpc_selected_device))
-            
             sleep(0.3)
             socketio.emit('configurando_socket', {
-                        'cantidad_dispositivos_completados': "(0/"+cantidad+")"}, namespace='/test')
+                        'cantidad_dispositivos_completados': "..."}, namespace='/test')
             sleep(0.3)
             
-            # En todos los dispositivos seleccionados, seteo la configuracion del perfil en NETCONF.
-            for x in rpc_selected_device:
-                funciones.config_tipo_trafico(tipo_trafico, str(x))
-                funciones.config_tipo_linea(tipo_fec_linea, str(x))
-                funciones.config_tipo_cliente(tipo_fec_cliente, str(x))
-                
-            # Mando el RPC NETCONF de aplicar esa configuracion en todos los dispositivos seleccionados.
-            i=0
-            for x in rpc_selected_device:
-                i=i+1    
-                funciones.rpc_apply_config(str(x))
-                sleep(0.3)
-                socketio.emit('configurando_socket', {
-                            'cantidad_dispositivos_completados': "("+str(i)+"/"+cantidad+")"}, namespace='/test')
-                sleep(13)
-            
         finally:    
+            sleep(100)
             mutex_in_use = 0
             mutex_rpc.release()
             config_in_progress = 0
-            sleep(0.3)
             socketio.emit('configurando_socket', {
                             'cantidad_dispositivos_completados': "LISTO"}, namespace='/test')
-            sleep(0.3)
+            sleep(0.4)
             print("Se termino de aplicar la config")
 
 
@@ -332,6 +321,8 @@ def boton_config():
     global all_devices
     global rpc_selected_device
     global actualizo_lista_alarmas
+    global config_in_progress
+    global mutex_in_use
     actualizo_lista_alarmas = False
     selected_device = ""
     mutex.release()
@@ -386,14 +377,45 @@ def boton_config():
     # Inicio el thread rpc si no esta vivo.
     if not thread3.isAlive():
         print("Iniciando hilo de rpc..")
+        config_in_progress = 1
+        cantidad = ""+str(len(rpc_selected_device))
+
+        
+        pid = os.fork()
+        if pid == 0:
+            # We are in the child process.
+            try:
+                for x in rpc_selected_device:
+                    pid = os.fork()
+                    if pid == 0:
+
+                        print("EJECUTO YO")
+                        funciones.config_tipo_trafico(tipo_trafico, str(x))
+                        sleep(0.1)
+                        funciones.config_tipo_linea(tipo_fec_linea, str(x))
+                        sleep(0.2)
+                        funciones.config_tipo_cliente(tipo_fec_cliente, str(x))
+                        sleep(0.1)
+                        funciones.rpc_apply_config(str(x))
+                        os._exit(1)
+                    else:
+                        # We are in the parent process.
+                        sleep(5)
+            finally:
+                os._exit(1)
+        else:
+            # We are in the parent process.
+            print ("%d (parent) just created %d.") % (os.getpid(), pid)
+
         thread3 = RPCThread()
         thread3.start()
+
     else:
         print("Hilo de rpc en uso")
 
     return render_template('index.html',
                            warning_alarm_event=warning_alarm_event, devices=all_devices, cantidad_alarmas=cantidad_de_alarmas,
-                           linklogico=2, perfiles=perfiles_de_configuracion)
+                           linklogico=2, perfiles=perfiles_de_configuracion, config_in_progress=config_in_progress)
 
 
 @app.route('/boton_agregar_dispositivo', methods=['GET', 'POST'])
@@ -424,7 +446,7 @@ def boton_agregar_dispositivo():
                         "password": "123",
                         "connect-timeout": 120,
                         "reply-timeout": 120,
-                        "ssh-client": "ethz-ssh2"
+                        "ssh-client": "apache-mina"
                     },
                     "basic": {
                         "driver": "altura-netconf"
