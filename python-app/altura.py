@@ -207,7 +207,7 @@ class RPCThread(Thread):
             sleep(0.3)
             
         finally:    
-            sleep(190)
+            sleep(100)
             mutex_in_use = 0
             mutex_rpc.release()
             config_in_progress = 0
@@ -397,8 +397,8 @@ def boton_config():
                         funciones.config_tipo_cliente(tipo_fec_cliente, str(x))
                         sleep(0.1)
                         funciones.rpc_apply_config(str(x))
-                        sleep(97)
-                        funciones.rpc_apply_config(str(x))
+                        #sleep(97)
+                        #funciones.rpc_apply_config(str(x))
                         os._exit(1)
                     else:
                         # We are in the parent process.
