@@ -86,6 +86,7 @@ char buffa[100];
 char buffb[100];
 
 static int initial_polling_alarms = 0;
+static int initial_polling_alarms_prueba = 0;
 
 struct Device_info
 {

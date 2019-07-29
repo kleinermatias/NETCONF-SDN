@@ -1,7 +1,10 @@
 FROM ubuntu:16.04
 
 RUN \
-  apt-get update && apt-get install -y \
+  apt-get update
+
+RUN \
+  apt-get install -y \
   git \
   cmake \
   build-essential \
@@ -16,7 +19,10 @@ RUN \
   libreadline-dev \
   libncurses5-dev \
   gcc-multilib \
-  libxml2-dev
+  libxml2-dev \
+  libssh2-1-dev \
+  zlib1g-dev \ 
+  libssl-dev
 
 RUN \
   mkdir ~/usrapp && \
