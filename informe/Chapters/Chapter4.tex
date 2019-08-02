@@ -83,38 +83,177 @@ Por lo tanto, el proceso de gestión de riesgos está compuesto por los siguient
 \subsection{Criterio}
 A continuación se explica el criterio utilizado para el análisis de riesgos. Los riesgos deben ser clasificados según su probabilidad de ocurrencia y los efectos que produzcan en función a los retrasos en los plazos del proyecto. 
 
-De esta forma, se tiene la figura \ref{fig:probabilidad_riesgo} la cual describe el criterio utilizado para la probabilidad de ocurrencia de los riesgos.
+De esta forma, se tiene el cuadro \ref{tab:probabilidad_riesgo} el cual describe el criterio utilizado para la probabilidad de ocurrencia de los riesgos.
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
-  \includegraphics[scale=0.53]{Figures/caso_uso_admin.pdf}
+  \begin{tabular}{|c|c|}
+  \hline
+                    & \textbf{Probabilidad} \\ \hline
+  \textbf{Muy baja} & \textless 10\%        \\ \hline
+  \textbf{Baja}     & 10\% - 30\%           \\ \hline
+  \textbf{Moderada} & 30\% - 70\%           \\ \hline
+  \textbf{Alta}     & 70\% - 90\%           \\ \hline
+  \textbf{Muy alta} & \textgreater 90\%     \\ \hline
+  \end{tabular}
   \caption{Probabilidad de ocurrencia del riesgo.}
-  \label{fig:probabilidad_riesgo}
-\end{figure}
+  \label{tab:probabilidad_riesgo}
+  \end{table}
 
-Mientras que la figura \ref{fig:efectos_riesgo} describe el criterio que se utilizó para definir el impacto de los efectos del riesgo. 
+Mientras que el cuadro \ref{tab:efectos_riesgo} describe el criterio que se utilizó para definir el impacto de los efectos del riesgo. 
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
-  \includegraphics[scale=0.53]{Figures/caso_uso_admin.pdf}
+  \begin{tabular}{|c|c|}
+  \hline
+                        & \textbf{Retraso}                        \\ \hline
+  \textbf{Despreciable} & Menos de 8 horas de trabajo.            \\ \hline
+  \textbf{Moderado}     & Entre 8 y 48 horas de trabajo.          \\ \hline
+  \textbf{Grave}        & Mayores a 48 horas de trabajo.          \\ \hline
+  \textbf{Crítico}      & Puede soponer el abandono del proyecto. \\ \hline
+  \end{tabular}
   \caption{Impacto de los efectos del riesgo.}
-  \label{fig:efectos_riesgo}
-\end{figure}
+  \label{tab:efectos_riesgo}
+  \end{table}
 
-Al combinar la probabilidad de aparición y los efectos del riesgo, se obtiene un nivel de exposición del riesgo. Esta última se puede ver de forma gráfica en la figura \ref{fig:niveles_riesgo}. 
+Al combinar la probabilidad de aparición y los efectos del riesgo, se obtiene un nivel de exposición del riesgo. Esta última se puede ver de forma gráfica en la figura \ref{tab:niveles_riesgo}. 
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
-  \includegraphics[scale=0.53]{Figures/caso_uso_admin.pdf}
+  \begin{tabular}{|c|l|c|l|l|}
+  \hline
+  \textbf{Probabilidad/Efecto} & \textbf{Despreciable}                           & \textbf{Moderado}        & \textbf{Grave}           & \textbf{Crítico}         \\ \hline
+  \textbf{Muy baja}            & \cellcolor[HTML]{9AFF99}{\color[HTML]{FFFFFF} } & \cellcolor[HTML]{9AFF99} & \cellcolor[HTML]{9AFF99} & \cellcolor[HTML]{FFCC67} \\ \hline
+  \textbf{Baja}                & \cellcolor[HTML]{9AFF99}                        & \cellcolor[HTML]{9AFF99} & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{FFCC67} \\ \hline
+  \textbf{Moderada}            & \cellcolor[HTML]{9AFF99}                        & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{CB0000} \\ \hline
+  \textbf{Alta}                & \cellcolor[HTML]{FFCC67}                        & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{CB0000} & \cellcolor[HTML]{CB0000} \\ \hline
+  \textbf{Muy alta}            & \cellcolor[HTML]{FFCC67}                        & \cellcolor[HTML]{CB0000} & \cellcolor[HTML]{CB0000} & \cellcolor[HTML]{CB0000} \\ \hline
+  \end{tabular}
   \caption{Impacto de los efectos del riesgo.}
-  \label{fig:niveles_riesgo}
-\end{figure}
+  \label{tab:niveles_riesgo}
+  \end{table}
 
-Por otra parte, la figura \ref{fig:expo_riesgo} es utilizada como referencia para interpretar la exposición del riesgo.
+\subsection{Identificación y análisis de los riesgos}
 
-\begin{figure}[H]
+Según \parencite{ingsoftian} se puede clasificar a los riesgos en los siguientes tipos:
+
+\begin{itemize}
+  \item \textbf{Riesgos de personal.} Aquellos riesgos relacionados con el equipo que conforma el proyecto.
+	\item \textbf{Riesgos de tecnología.} Son aquellos riesgos los cuáles están asociados a las herramientas de hardware utilizadas.
+  \item \textbf{Riesgos organizacionales.} Todo riesgo relacionado al entorno organizacional del proyecto.
+  \item \textbf{Riesgos de requerimientos.} Son todos los riesgos asociados con los cambios de requerimientos del cliente.
+  \item \textbf{Riesgos de estimación.} Riesgos vinculados a estimaciones administrativas del proyecto.
+  \item \textbf{Riesgos de herramientas.} Aquellos riesgos vinculados a las herramientas de software.
+\end{itemize}
+
+A continuación, se muestra en la tabla \ref{tab:riesgos_identificados} los distintos riesgos identificados.
+
+\begin{table}[H]
+  \rowcolors{2}{white!10!gray!80}{white!80!gray!40}
   \centering
-  \includegraphics[scale=0.53]{Figures/caso_uso_admin.pdf}
-  \caption{Referencia exposición del riesgo.}
-  \label{fig:expo_riesgo}
-\end{figure}
+  \begin{tabular}{ |m{2.5cm}|m{7.5cm}|m{2.5cm}|  }
+  
+  \hline
+  \centering
+  \textbf{Identificador} & \textbf{Descripción} & \textbf{Clasificación} \\
+  \hline
+  \centering
+  Riesgo 1 & Se subestima el tamaño del proyecto. & Estimación  \\
+  \hline
+  \centering
+  Riesgo 2 & Cambios en los requerimientos. & Requerimiento  \\
+  \hline
+  \centering
+  Riesgo 3 & La versión del controlador no es compatible con alguna herramienta utilizada en el proyecto. & Herramientas \\
+  \hline
+  \centering
+  Riesgo 4 & La versión del agente no es compatible con las herramientas utilizadas en el proyecto. & Herramientas  \\
+  \hline
+
+  \centering
+  Riesgo 5 & Alguno de los módulos XFP que comunican los clientes con los \textit{muxponder} se dañan.  & Tecnológico  \\
+  \hline
+
+  \centering
+  Riesgo 6 & Las librerías instaladas en el equipo no son compatibles con el agente. & Herramientas  \\
+  \hline
+
+  \centering
+  Riesgo 7 & Las fibras del equipo se dañan. & Tecnológico  \\
+  \hline
+
+  \centering
+  Riesgo 8 & Se daña fisicamente algún chip del equipo. & Tecnológico  \\
+  \hline
+  
+  \end{tabular}
+  \caption{Identificación de los riesgos}
+  \label{tab:riesgos_identificados}
+  \end{table}
+
+  Luego, una vez identificados los riesgos se procede a analizarlos, esto es, identificar la severidad y la probabilidad de ocurrencia para definir finalmente un grado de importancia. La tabla \ref{tab:analis_identificados} muestra el resultado de combinar la severidad con la probabilidad de ocurrencia para cada riesgo.
+
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Identificador} & \textbf{Probabilidad de ocurrencia} & \textbf{Efecto} & \textbf{Grado de importancia}                                       \\ \hline
+    \textbf{Riesgo 1}      & Alta                                & Grave           & \cellcolor[HTML]{CB0000}\textbf{Severidad 8}                        \\ \hline
+    \textbf{Riesgo 2}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
+    \textbf{Riesgo 3}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
+    \textbf{Riesgo 4}      & Baja                                & Moderada        & \cellcolor[HTML]{9AFF99}{\color[HTML]{000000} \textbf{Severidad 3}} \\ \hline
+    \textbf{Riesgo 5}      & Baja                                & Grave           & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
+    \textbf{Riesgo 6}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
+    \textbf{Riesgo 7}      & Baja                                & Grave           & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
+    \textbf{Riesgo 8}      & Muy baja                            & Crítico         & \cellcolor[HTML]{9AFF99}{\color[HTML]{000000} \textbf{Severidad 3}} \\ \hline
+    \end{tabular}
+    \caption{Análisis de los riesgos}
+    \label{tab:analis_identificados}
+    \end{table}
+
+\subsection{Estrategias de gestión de los riesgos}
+
+Por último, una vez identificada la severidad de cada riesgo, se procede a realizar un plan que contenga posibles soluciones a los riesgos analizados en las secciones anteriores. De esta forma resulta la tabla \ref{tab:riesgos_solucion}.
+
+\begin{table}[H]
+  \rowcolors{2}{white!10!gray!80}{white!80!gray!40}
+  \centering
+  \begin{tabular}{ |m{2.2cm}|m{5.5cm}|m{5.5cm}|  }
+
+\hline
+\centering
+\textbf{Identificador} & \textbf{Consecuencia} & \textbf{Estrategia de mitigación} \\
+\hline
+\centering
+Riesgo 1 & Se extienden los tiempos de desarrollo. & Estimar los tiempos de desarrollo para el caso más desfavorable.  \\
+\hline
+\centering
+Riesgo 2 & Desperdicio de tiempos de desarrollo y extensión de fecha de entrega del proyecto. & Control y revisión de requerimiento en cada iteración y en etapas tempranas de desarrollo.  \\
+\hline
+\centering
+Riesgo 3 & Se presenta un problema para cumplir con los requerimientos funcionales del proyecto. & Mantener actualizadas las versiones de las herramientas y del controlador, utilizando siempre versiones estables. \\
+\hline
+\centering
+Riesgo 4 & Se presenta un problema para cumplir con los requerimientos funcionales del proyecto. & Mantener actualizadas las versiones de las herramientas y del agente, utilizando siempre versiones estables.  \\
+\hline
+
+\centering
+Riesgo 5 & Se extienden los tiempos de desarrollo, ya que no se podran realizar pruebas de conectividad entre clientes.  & En caso de daño, reemplazar el módulo XFP adquiriendo uno nuevo.  \\
+\hline
+
+\centering
+Riesgo 6 & Se extienden los tiempos de desarrollo del proyecto, ya que el agente responderá de forma incorrecta o impredecible. & Actualizar las librerías utilizadas por el agente en el dispositivo.  \\
+\hline
+
+\centering
+Riesgo 7 & Se extienden los tiempos de desarrollo, ya que no se podran realizar pruebas de conectividad entre clientes. & En caso de daño, reemplazar la fibra defectuosa por una nueva.  \\
+\hline
+
+\centering
+Riesgo 8 & Impide la utilización parcial o completa del equipo. & Mantener apagados los equipos en caso de que no se esté usando. Consultar al equipo que desarrolló el dispositivo ante cualquier duda de utilización del mismo.  \\
+\hline
+
+\end{tabular}
+\caption{Estrategias de solución para los riesgos}
+\label{tab:riesgos_solucion}
+\end{table}
