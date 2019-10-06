@@ -60,7 +60,7 @@ A continuación, en la figura \ref{fig:topologiafis} se muestra como está dispu
 %-----------------------------------
 \subsection{Requerimientos del sistema}
 
-Para establecer los requerimientos funcionales del sistema, se presentará en primer lugar un diagrama de caso de uso. Como se puede observar en la figura \ref{fig:caso_uso_admin}, el objeto principal del sistema es poder brindar al administrador un entorno donde pueda gestionar la configuración de los \textit{muxponders} mediante sus aplicaciones.
+Para establecer los requerimientos funcionales del sistema, se presentará en primer lugar un diagrama de caso de uso. Como se puede observar en la figura \ref{fig:caso_uso_admin}, el objetivo principal del sistema es poder brindar al administrador un entorno donde pueda gestionar la configuración de los \textit{muxponders} mediante sus aplicaciones.
 
 \begin{figure}[H]
     \centering
@@ -134,8 +134,18 @@ Por último, se tiene el diagrama de actividad relacionado a la configuración d
   La sección anterior deja claro que uno de los requerimientos de sistema será que tanto el controlador \textit{ONOS} como los dispositivos a monitorear soporten \textit{NETCONF} como protocolo de gestión de la configuración. 
   
   Como se vio en el capítulo anterior, el controlador soporta dicho protocolo, por lo que para cumplir con este requerimiento de sistema únicamente será necesario adaptar \textit{NETCONF} al dispositivo. 
-  
-  %-----------------------------------
+
+  De esta forma, se confeccionó el diagrama de caso de uso de la figura \ref{fig:diaguso_netconf} con el fin de entender las necesidades desde el punto de vista del administrador del sistema. 
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{Figures/caso_uso_netconf.pdf}
+    \caption{Diagrama de caso de uso para la integración del protocolo \textit{NETCONF} en el dispositivo.}
+    \label{fig:diaguso_netconf}
+  \end{figure}
+
+
+%-----------------------------------
 %	SUBSECTION 1
 %-----------------------------------
 
@@ -177,7 +187,6 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
 \begin{itemize}
 	\item \textbf{Cabecera del módulo y declaraciones}: aquí se declara la estructura inicial del módulo \textit{YANG}. Se define un nombre y un prefijo, se realiza una descripción del mismo y por último se realiza la definición de los datos utilizados por el módulo. Cabe destacar que se definieron tres tipos de datos: ‘restricted-tipo-trafico‘, ‘restricted-tipo-fec-linea‘ y ‘restricted-tipo-fec-cliente‘. En ellos, se especifica a través de la directiva ‘enum’ cuales serán los valores aceptados que pueden tomar dichos tipos de datos. Por ejemplo, dado que la configuración del tipo de tráfico para este dispositivo únicamente admite dos valores (‘otu2‘ y ‘xge‘), es importante restringir el ingreso de algún otro valor ya que podría ocasionar errores en la configuración. Se puede observar una porción de esta sección en el código \ref{lstlisting:cabecera}, donde se detalla la cabecera del módulo y sus declaraciones.  
 
-  \newpage
     \begin{lstlisting}[language=SHELXL, caption=Cabecera del módulo \textit{YANG}., label=lstlisting:cabecera]
         module cli-mxp {
             namespace 'http://fulgor.com/ns/cli-mxp';
@@ -344,6 +353,15 @@ Para poder cumplir con los requerimientos R-08, R-09 y R-10 que se muestra en la
   
   Así, para poder indicar al controlador cuáles serán las operaciones y los comportamientos específicos del \textit{muxponder} de 40GB, será necesario desarrollar un \textit{driver} (Java) en la interfaz \textit{Southbound} del controlador. 
 
+  Un diagrama de caso de uso que representa las necesidades del administrador de red con respecto al diseño del \textit{driver}, se puede ver en la figura \ref{fig:diaguso_driver}. 
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{Figures/caso_uso_driver.pdf}
+    \caption{Diagrama de caso de uso para el diseño del \textit{driver}.}
+    \label{fig:diaguso_driver}
+  \end{figure}
+
   \subsection{Requerimientos}
   A fin de cubrir las necesidades del administrador, visto en el caso de uso de la figura \ref{fig:caso_uso_admin}, el \textit{driver} desarrollado deberá cumplir con los requerimientos funcionales de la figura \ref{fig:req_driver}.
   
@@ -475,13 +493,22 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
     \label{fig:ubicacionapp}
   \end{figure}
 
+  De esta forma, se confeccionó el diagrama de caso de uso de la figura \ref{fig:diaguso_gui}, la cual refleja las necesidades del administrador para el diseño de la interfaz gráfica. 
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.55]{Figures/caso_uso_gui.pdf}
+    \caption{Diagrama de caso de uso para el diseño de la interfaz gráfica.}
+    \label{fig:diaguso_gui}
+  \end{figure}
+
   \subsection{Requerimientos}
 
   A continuación, se listan en la figura \ref{fig:req_app} los diferentes requerimientos que deberán cumplir la interfaz \textit{REST} y la GUI. Los requerimientos R-15, R-16 y R-17 corresponden a la interfaz \textit{REST}, mientras que los requerimientos R-18 a R-21 pertenecen a la \textit{GUI} desarrollada.  
 
   \begin{figure}[!h]
     \centering
-    \begin{subfigure}[b]{1\textwidth}
+    \begin{subfigure}[b]{1.1\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Figures/req_rest_rest.pdf}
         \caption{Requerimientos para la aplicación \textit{REST}.}
@@ -493,7 +520,7 @@ Con esta información, el \textit{driver} informa al controlador que forme un en
         \includegraphics[width=\textwidth]{Figures/req_rest.pdf}
         \caption{Requerimientos para la aplicación \textit{WEB}.}
     \end{subfigure}
-    \caption{Requerimientos de las interfaces REST e interfaz gráfica.}
+    \caption{Requerimientos de las interfaces \textit{REST} e interfaz gráfica.}
     \label{fig:req_app}
 \end{figure}
 
@@ -556,7 +583,7 @@ Es importante mencionar que todas las vistas realizan una tarea común. Dicha ta
         \label{fig:captura_web_principal}
       \end{figure}
 
-    Por otra parte, en el diagrama de la figura \ref{fig:agregar_disp_web} se muestra cómo la aplicación \textit{WEB} conforma un mensaje JSON con la información del equipo (dirección IP, puerto) y la envía al controlador a través de la interfaz\textit{ REST}. Finalmente, el controlador procesa el mensaje dando inicio al descubrimiento del dispositivo. 
+    Por otra parte, en el diagrama de la figura \ref{fig:agregar_disp_web} se muestra cómo la aplicación \textit{WEB} conforma un mensaje JSON con la información del equipo (dirección IP, puerto) y la envía al controlador a través de la interfaz\textit{REST}. Finalmente, el controlador procesa el mensaje dando inicio al descubrimiento del dispositivo. 
 
     \begin{figure}[H]
         \centering

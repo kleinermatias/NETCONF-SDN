@@ -1,6 +1,6 @@
 % Chapter Template
 
-\chapter{Medologías y Herramientas de Trabajo} % Main chapter title
+\chapter{Metodologías y Herramientas de Trabajo} % Main chapter title
 % cSpell:words resizebox \textit{onosapi} usecase Mcast enrutamiento parencite includegraphics pcktprocactiv lstlisting iperf
 
 \label{Chapter5} % Change X to a consecutive number; for referencing this chapter elsewhere, use 
@@ -36,24 +36,27 @@ Una vez definida la metodología para la gestión del proyecto, se definieron en
 	\item \textbf{Iteración 4: Realización de la librería en el \textit{muxponder}.} Independientemente del agente utilizado en el equipo, se deberá realizar una aplicación que relacione el agente \textit{NETCONF} con la instrumentación del \textit{muxponder}.
 	\item \textbf{Iteración 5: Desarrollo del \textit{driver} en el controlador.} El objetivo de esta iteración será la de realizar un \textit{driver} en el controlador para que el mismo pueda comunicarse con los diferentes \textit{muxponders} presentes en la topología.
 	\item \textbf{Iteración 6: Realización de la aplicación API REST en el controlador.} En esta etapa, se desarrolla la aplicación \textit{REST} que expone las distintas funcionalidades implementadas en el \textit{driver} del controlador, para que aplicaciones externas puedan hacer uso del mismo.
-	\item \textbf{Iteración 7: Desarrollo de la interfaz gráfica.} Finalmente en esta iteración se desarrolla la interfaz gráfica, la cual a través de la API REST desarrollada, se comunica con los diferentes equipos haciendo uso del controlador y las bondades de \textit{SDN}.
+	\item \textbf{Iteración 7: Desarrollo de la interfaz gráfica.} Finalmente, en esta iteración se desarrolla la interfaz gráfica, la cual a través de la API REST desarrollada, se comunica con los diferentes equipos haciendo uso del controlador y las bondades de \textit{SDN}.
 \end{itemize}
 
-\section{Lenguajes de programación}
+\section{Lenguajes de desarrollo}
 En el presente trabajo de fin de grado, se utilizaron diversos lenguajes de programación. Se presenta a continuación una lista de los lenguajes empleados como así también la etapa en la cual fueron aplicados. 
 
 \begin{itemize}
 	\item \textbf{C}. El agente Yuma123 y la librería en C que comunica la instrumentación del dispositivo con el agente, se encuentran desarrollados en dicho lenguaje.  
+	\item \textbf{YANG}. La librería mencionada en el punto anterior, hará uso del lenguaje de modelado conocido como YANG para describir los objetos presentes en \textit{NETCONF}. 
 	\item \textbf{Java}. Tanto el controlador \textit{ONOS}, como el \textit{driver} y la \textit{API REST} que se desarrolló, se encuentran escritos en dicho lenguaje. 
 	\item \textbf{Python}. Durante el diseño de la interfaz gráfica, se optó por \textit{Flask} como \textit{web server}, el cual consiste en un \textit{framework} minimalista escrito en \textit{Python} que permite crear aplicaciones \textit{web} de forma rápida y sencilla. 
+	\item \textbf{HTML}. La interfaz gráfica además del \textit{web server} escrito en \textit{Python}, utiliza \textit{HTML} como lenguaje de marcado.  
+	\item \textbf{LaTeX}. Utilizado para la documentación del proyecto y la generación del informe del trabajo de fin de grado. 
 \end{itemize}
 
 \section{Herramientas de desarrollo}
-Las herramientas que conforman el entorno de desarrollo se listan a continuación.
+Las herramientas que conformarán el entorno de desarrollo se listan a continuación.
 
 \begin{itemize}
 	\item \textbf{IntelliJ IDEA} como entorno de desarrollo utilizado para proyectos \textit{Java} y \textit{Python}.  
-	\item \textbf{Mavenen} para la gestión de proyectos \textit{Java}, empleado especificamente en la construcción del controlador \textit{ONOS}.
+	\item \textbf{Maven} para la gestión de proyectos \textit{Java}, empleado especificamente en la construcción del controlador \textit{ONOS}.
 	\item \textbf{Visual Studio Code} como editor de código fuente, utilizado en multiples etapas del proyecto.
 \end{itemize}
 
@@ -107,27 +110,27 @@ Mientras que el cuadro \ref{tab:efectos_riesgo} describe el criterio que se util
   \begin{tabular}{|c|c|}
   \hline
                         & \textbf{Retraso}                        \\ \hline
-  \textbf{Despreciable} & Menos de 8 horas de trabajo.            \\ \hline
+  \textbf{Insignificante} & Menos de 8 horas de trabajo.            \\ \hline
   \textbf{Moderado}     & Entre 8 y 48 horas de trabajo.          \\ \hline
-  \textbf{Grave}        & Mayores a 48 horas de trabajo.          \\ \hline
-  \textbf{Crítico}      & Puede soponer el abandono del proyecto. \\ \hline
+  \textbf{Mayor}        & Mayores a 48 horas de trabajo.          \\ \hline
+  \textbf{Catastrófico}      & Puede soponer el abandono del proyecto. \\ \hline
   \end{tabular}
   \caption{Impacto de los efectos del riesgo.}
   \label{tab:efectos_riesgo}
   \end{table}
 
-Al combinar la probabilidad de aparición y los efectos del riesgo, se obtiene un nivel de exposición del riesgo. Esta última se puede ver de forma gráfica en la figura \ref{tab:niveles_riesgo}. 
+Al combinar la probabilidad de aparición y los efectos del riesgo, se obtiene un nivel de importancia del riesgo. Esto último se puede ver de forma gráfica en la figura \ref{tab:niveles_riesgo}. 
 
 \begin{table}[H]
   \centering
   \begin{tabular}{|c|l|c|l|l|}
   \hline
-  \textbf{Probabilidad/Efecto} & \textbf{Despreciable}                           & \textbf{Moderado}        & \textbf{Grave}           & \textbf{Crítico}         \\ \hline
-  \textbf{Muy baja}            & \cellcolor[HTML]{9AFF99}{\color[HTML]{FFFFFF} } & \cellcolor[HTML]{9AFF99} & \cellcolor[HTML]{9AFF99} & \cellcolor[HTML]{FFCC67} \\ \hline
-  \textbf{Baja}                & \cellcolor[HTML]{9AFF99}                        & \cellcolor[HTML]{9AFF99} & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{FFCC67} \\ \hline
-  \textbf{Moderada}            & \cellcolor[HTML]{9AFF99}                        & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{CB0000} \\ \hline
-  \textbf{Alta}                & \cellcolor[HTML]{FFCC67}                        & \cellcolor[HTML]{FFCC67} & \cellcolor[HTML]{CB0000} & \cellcolor[HTML]{CB0000} \\ \hline
-  \textbf{Muy alta}            & \cellcolor[HTML]{FFCC67}                        & \cellcolor[HTML]{CB0000} & \cellcolor[HTML]{CB0000} & \cellcolor[HTML]{CB0000} \\ \hline
+  \textbf{Probabilidad/Efecto} & \textbf{Insignificante}                           & \textbf{Moderado}        & \textbf{Mayor}           & \textbf{Catastrófico}         \\ \hline
+  \textbf{Muy baja}            & \cellcolor[HTML]{9AFF99}{\color[HTML]{FFFFFF} }\textbf{Importancia 1} & \cellcolor[HTML]{9AFF99} \textbf{Importancia 1} & \cellcolor[HTML]{9AFF99} \textbf{Importancia 2} & \cellcolor[HTML]{FFCC67} \textbf{Importancia 3} \\ \hline
+  \textbf{Baja}                & \cellcolor[HTML]{9AFF99} \textbf{Importancia 1}                        & \cellcolor[HTML]{9AFF99} \textbf{Importancia 2} & \cellcolor[HTML]{FFCC67} \textbf{Importancia 3} & \cellcolor[HTML]{FFCC67} \textbf{Importancia 4} \\ \hline
+  \textbf{Moderada}            & \cellcolor[HTML]{9AFF99}  \textbf{Importancia 2}  & \cellcolor[HTML]{FFCC67} \textbf{Importancia 3} & \cellcolor[HTML]{FFCC67} \textbf{Importancia 4} & \cellcolor[HTML]{CB0000} \textbf{Importancia 5} \\ \hline
+  \textbf{Alta}                & \cellcolor[HTML]{FFCC67} \textbf{Importancia 3} & \cellcolor[HTML]{FFCC67} \textbf{Importancia 4} & \cellcolor[HTML]{CB0000} \textbf{Importancia 5} & \cellcolor[HTML]{CB0000} \textbf{Importancia 6} \\ \hline
+  \textbf{Muy alta}            & \cellcolor[HTML]{FFCC67} \textbf{Importancia 4} & \cellcolor[HTML]{CB0000} \textbf{Importancia 5} & \cellcolor[HTML]{CB0000} \textbf{Importancia 6} & \cellcolor[HTML]{CB0000} \textbf{Importancia 6} \\ \hline
   \end{tabular}
   \caption{Impacto de los efectos del riesgo.}
   \label{tab:niveles_riesgo}
@@ -146,7 +149,7 @@ Según \parencite{ingsoftian} se puede clasificar a los riesgos en los siguiente
   \item \textbf{Riesgos de herramientas.} Aquellos riesgos vinculados a las herramientas de software.
 \end{itemize}
 
-A continuación, se muestra en la tabla \ref{tab:riesgos_identificados} los distintos riesgos identificados.
+A continuación, se muestra en la tabla \ref{tab:riesgos_identificados} los distintos riesgos identificados que podrían presentarse durante el desarrollo del proyecto.
 
 \begin{table}[H]
   \rowcolors{2}{white!10!gray!80}{white!80!gray!40}
@@ -164,14 +167,14 @@ A continuación, se muestra en la tabla \ref{tab:riesgos_identificados} los dist
   Riesgo 2 & Cambios en los requerimientos. & Requerimiento  \\
   \hline
   \centering
-  Riesgo 3 & La versión del controlador no es compatible con alguna herramienta utilizada en el proyecto. & Herramientas \\
+  Riesgo 3 & La versión del controlador \textit{SDN} no es compatible con alguna herramienta utilizada en el proyecto. & Herramientas \\
   \hline
   \centering
-  Riesgo 4 & La versión del agente no es compatible con las herramientas utilizadas en el proyecto. & Herramientas  \\
+  Riesgo 4 & La versión del agente \textit{NETCONF} no es compatible con las herramientas utilizadas en el proyecto. & Herramientas  \\
   \hline
 
   \centering
-  Riesgo 5 & Alguno de los módulos XFP que comunican los clientes con los \textit{muxponder} se dañan.  & Tecnológico  \\
+  Riesgo 5 & Alguno de los módulos \textit{XFP} que comunican los clientes con los \textit{muxponder} se dañan.  & Tecnológico  \\
   \hline
 
   \centering
@@ -191,21 +194,21 @@ A continuación, se muestra en la tabla \ref{tab:riesgos_identificados} los dist
   \label{tab:riesgos_identificados}
   \end{table}
 
-  Luego, una vez identificados los riesgos se procede a analizarlos, esto es, identificar la severidad y la probabilidad de ocurrencia para definir finalmente un grado de importancia. La tabla \ref{tab:analis_identificados} muestra el resultado de combinar la severidad con la probabilidad de ocurrencia para cada riesgo.
+  Luego, una vez identificados los riesgos se procede a analizarlos, esto es, estimar tanto la probabilidad de ocurrencia del riesgo como el efecto del mismo, para definir finalmente un grado de importancia. La tabla \ref{tab:analis_identificados} muestra el resultado de combinar ambas estimaciones haciendo uso del cuadro presentado en \ref{tab:niveles_riesgo}.
 
   \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|}
     \hline
     \textbf{Identificador} & \textbf{Probabilidad de ocurrencia} & \textbf{Efecto} & \textbf{Grado de importancia}                                       \\ \hline
-    \textbf{Riesgo 1}      & Alta                                & Grave           & \cellcolor[HTML]{CB0000}\textbf{Severidad 8}                        \\ \hline
-    \textbf{Riesgo 2}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
-    \textbf{Riesgo 3}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
-    \textbf{Riesgo 4}      & Baja                                & Moderada        & \cellcolor[HTML]{9AFF99}{\color[HTML]{000000} \textbf{Severidad 3}} \\ \hline
-    \textbf{Riesgo 5}      & Baja                                & Grave           & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
-    \textbf{Riesgo 6}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
-    \textbf{Riesgo 7}      & Baja                                & Grave           & \cellcolor[HTML]{F8A102}\textbf{Severidad 4}                        \\ \hline
-    \textbf{Riesgo 8}      & Muy baja                            & Crítico         & \cellcolor[HTML]{9AFF99}{\color[HTML]{000000} \textbf{Severidad 3}} \\ \hline
+    \textbf{Riesgo 1}      & Alta                                & Mayor           & \cellcolor[HTML]{CB0000}\textbf{Importancia 5}                        \\ \hline
+    \textbf{Riesgo 2}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Importancia 3}                        \\ \hline
+    \textbf{Riesgo 3}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Importancia 3}                        \\ \hline
+    \textbf{Riesgo 4}      & Baja                                & Moderada        & \cellcolor[HTML]{9AFF99}{\color[HTML]{000000} \textbf{Importancia 2}} \\ \hline
+    \textbf{Riesgo 5}      & Baja                                & Mayor           & \cellcolor[HTML]{F8A102}\textbf{Importancia 3}                        \\ \hline
+    \textbf{Riesgo 6}      & Moderada                            & Moderada        & \cellcolor[HTML]{F8A102}\textbf{Importancia 3}                        \\ \hline
+    \textbf{Riesgo 7}      & Baja                                & Mayor           & \cellcolor[HTML]{F8A102}\textbf{Importancia 3}                        \\ \hline
+    \textbf{Riesgo 8}      & Muy baja                            & Mayor         & \cellcolor[HTML]{9AFF99}{\color[HTML]{000000} \textbf{Importancia 2}} \\ \hline
     \end{tabular}
     \caption{Análisis de los riesgos}
     \label{tab:analis_identificados}
@@ -213,7 +216,7 @@ A continuación, se muestra en la tabla \ref{tab:riesgos_identificados} los dist
 
 \subsection{Estrategias de gestión de los riesgos}
 
-Por último, una vez identificada la severidad de cada riesgo, se procede a realizar un plan que contenga posibles soluciones a los riesgos analizados en las secciones anteriores. De esta forma resulta la tabla \ref{tab:riesgos_solucion}.
+Por último, se procede a realizar un plan que contenga posibles soluciones a los riesgos analizados en las secciones anteriores. De esta forma resulta el cuadro \ref{tab:riesgos_solucion}.
 
 \begin{table}[H]
   \rowcolors{2}{white!10!gray!80}{white!80!gray!40}
@@ -238,7 +241,7 @@ Riesgo 4 & Se presenta un problema para cumplir con los requerimientos funcional
 \hline
 
 \centering
-Riesgo 5 & Se extienden los tiempos de desarrollo, ya que no se podran realizar pruebas de conectividad entre clientes.  & En caso de daño, reemplazar el módulo XFP adquiriendo uno nuevo.  \\
+Riesgo 5 & Se extienden los tiempos de desarrollo, ya que no se podran realizar pruebas de conectividad entre clientes.  & En caso de daño, reemplazar el módulo \textit{XFP} adquiriendo uno nuevo.  \\
 \hline
 
 \centering
@@ -250,7 +253,7 @@ Riesgo 7 & Se extienden los tiempos de desarrollo, ya que no se podran realizar 
 \hline
 
 \centering
-Riesgo 8 & Impide la utilización parcial o completa del equipo. & Mantener apagados los equipos en caso de que no se esté usando. Consultar al equipo que desarrolló el dispositivo ante cualquier duda de utilización del mismo.  \\
+Riesgo 8 & Impide la utilización parcial o completa del equipo. & Mantener apagados los equipos en caso de que no se esté usando. Ante cualquier duda sobre la utilización del mismo, buscar soporte técnico.  \\
 \hline
 
 \end{tabular}
