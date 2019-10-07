@@ -2,8 +2,8 @@
 
 \chapter{Conclusión} % Main chapter title
 
-\label{Chapter6} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
-En este proyecto, se ha realizado una vasta investigación para adquirir conocimientos relacionados particularmente con la gestión de la configuración de los equipos de red y también con el esquema denominado Redes Definidas por Software. Así, se realizó una comparación entre dos implementaciones abiertas del protocolo \textit{NETCONF} y un estudio del controlador \textit{ONOS}. Luego, se propuso utilizar ambas tecnologías con el fin de poder monitorear y configurar un dispositivo óptico, precisamente un \textit{muxponder} de 40GB. Para materializar esto, se construyó un ambiente de trabajo conformado por el controlador \textit{SDN ONOS}, \textit{switchs} virtuales, computadoras de propósito general e integrando el agente \textit{NETCONF} \textit{Yuma123} en el \textit{muxponder} de 40GB.
+\label{Chapter7} % Change X to a consecutive number; for referencing this chapter elsewhere, use \ref{ChapterX}
+En este proyecto, se ha realizado una vasta investigación para adquirir conocimientos relacionados particularmente con la gestión de la configuración de los equipos de red y también con el esquema denominado Redes Definidas por Software. Así, se realizó una comparación entre dos implementaciones abiertas del protocolo \textit{NETCONF} y un estudio del controlador \textit{ONOS}. Luego, se propuso utilizar ambas tecnologías con el fin de poder monitorear y configurar un dispositivo óptico, precisamente un \textit{muxponder} de 40GB. Para materializar esto, se construyó un ambiente de trabajo conformado por el controlador \textit{ONOS}, \textit{switchs} virtuales, computadoras de propósito general e integrando el agente \textit{NETCONF} \textit{Yuma123} en el \textit{muxponder} de 40GB.
 
 A continuación, se listan las principales reflexiones finales obtenidas tras el desarrollo de este proyecto.
 
@@ -21,7 +21,19 @@ A continuación, se listan las principales reflexiones finales obtenidas tras el
     \item Para lograr una comunicación entre los dispositivos y el controlador, se desarrolló un \textit{driver} en la interfaz \textit{southbound} de \textit{ONOS}. Además, se realizó también una aplicación que reside en la interfaz \textit{northbound} del mismo, con el fin de exponer interfaces a las aplicaciones externas para que estas puedan comunicarse con los dispositivos. 
 
     % nodo físico
-    \item Finalmente, haciendo uso de lenguajes como \textit{Python}, \textit{HTML}, \textit{JavaScript} y \textit{CSS}, se desarrolló una aplicación que presenta una interfaz gráfica al administrador. En la misma, se muestra información de los dispositivos y permite al administrador realizar cambios en la configuración. Para ello, dicha aplicación se comunica a través de la interfaz \textit{northbound} del controlador. 
+    \item Haciendo uso de lenguajes como \textit{Python}, \textit{HTML}, \textit{JavaScript} y \textit{CSS}, se desarrolló una aplicación que presenta una interfaz gráfica al administrador. En la misma, se muestra información de los dispositivos y permite al administrador realizar cambios en la configuración. Para ello, dicha aplicación se comunica a través de la interfaz \textit{northbound} del controlador. 
+
+\end{itemize}
+
+ Finalmente al concluir el presente proyecto de fin de grado, el \textit{muxponder} obtuvo las siguientes ventajas:
+
+ \begin{itemize}
+
+    \item Poder realizar cambios en la configuración del dispositivo de forma remota, segura y orientada a la conexión a través del protocolo \textit{NETCONF}. 
+    \item El equipo ahora es capaz de integrarse correctamente a un ambiente \textit{SDN}, obteniendo así las ventajas de escalabilidad, programabilidad, monitoreo y seguridad que ofrecen las redes \textit{SDN}.
+    \item Por otro lado, el controlador utilizado en el proyecto permirte visualizar de forma gráfica el estado de los enlaces entre los diferentes equipos conectados, lo que permite al administrador conocer e identificar de forma sencilla el estado de los mismos.
+    \item Además, el soporte de un entorno \textit{SDN} por parte del \textit{muxponder}, permite al proveedor de servicios diseñar y adaptar nuevas aplicaciones que interactúen con los dispositivos a través de la capa \textit{northbound} del controlador, evitando la necesidad de introducir mayores cambios en los equipos e impactando en la disponibilidad de los servicios que ofrece.
+    \item Por último, el soporte de \textit{SDN} ofrece un valor agregado al equipo para los operadores de red, permitiendo que el mismo pueda operar junto a otros dispositivos de diferentes fabricantes. De esta manera, el problema de aprovisionamiento de servicios en la red se vuelve un problema exclusivamente de software, lo que les da libertad a los operadores al momento de implementar cambios en la red.
 
 \end{itemize}
 

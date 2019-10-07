@@ -16,7 +16,7 @@ Así, el paradigma actual de implementación de redes resulta difícil de adapta
 
 Desde el punto de vista de la infraestructura de comunicación, el mejor candidato para resolver este problema son las \textit{SDN} con la propuesta de separar el plano de control del plano de datos de los dispositivos, logrando una interfaz abierta entre ambos. De esta forma, se logra con \textit{SDN} que los equipos puedan ser vistos como una caja blanca, donde los mismos pueden relacionarse con independencia de fabricante. 
 
-Por otra parte y desde el punto de vista de la gestión de la configuración, \textit{NETCONF} surge como una solución simple y estándar para la gestión de la configuración, donde el mismo proporciona a los operadores y administradores de red un \textit{framework} y un conjunto de métodos \textit{RPC} basados en codificación \textit{XML} para gestionar (instalar, modificar y borrar) la configuración de los elementos de red.
+Por otra parte, \textit{NETCONF} surge como una solución simple y estándar para la gestión de la configuración, donde el mismo proporciona a los operadores y administradores de red un \textit{framework} y un conjunto de métodos \textit{RPC} basados en codificación \textit{XML} para gestionar (instalar, modificar y borrar) la configuración de los elementos de red.
 
 En el transcurso de este capítulo se introducen los aspectos más significativos del proyecto. Se comienza describiendo las motivaciones principales que han llevado al desarrollo de este trabajo. Luego, se expone el estado actual de las tecnologías directamente relacionadas, continuando con los objetivos planteados y finalizando con una descripción de la organización del texto.
 
@@ -38,7 +38,7 @@ En la presente sección se hace un estudio del estado de las tecnologías direct
 
 
 % tesis granada% tesis granada% tesis granada% tesis granada% tesis granada
-\subsubsection*{\textit{Protocol Efficiencies of NETCONF versus SNMP for Configuration Management Functions}}
+\subsubsection*{\textit{Eficiencias del protocolo NETCONF ante SNMP para la gestión de la configuración}}
 
 En \parencite{netconfvssnmp} se presenta una comparación entre el protocolo \textit{NETCONF} y el protocolo \textit{SNMP}. Para ello, se conforma la topología que puede verse en la figura \ref{fig:netconfvssnmp1}, utilizando como agente \textit{NETCONF} y agente \textit{SNMP} la implementación 'ConfD' de Cisco.
 
@@ -63,7 +63,7 @@ En las conclusiones de este artículo mencionan que \textit{NETCONF} es una clar
 
 
 % tesis granada
-\subsubsection*{\textit{Evaluating the Network Management Capabilities of YANG and NETCONF}}
+\subsubsection*{\textit{Evaluación de las capacidades en la gestión de la red de YANG y NETCONF}}
 
 En el artículo \parencite{netconfvstodos} se realiza un estudio de las diferentes alternativas existentes en el ámbito de la configuración y gestión de la red. A su vez, el autor desarrolla un prototipo de servidor \textit{NETCONF}. Los experimentos realizados por el autor tienen como objetivo determinar la capacidad que tienen los diferentes protocolos de gestión de configuración y monitoreo para adaptarse a entornos de \textit{SDN} y \textit{NFV}. 
 
@@ -91,7 +91,7 @@ Por otra parte, la figura \ref{fig:netconfvstodos2} muestra el análisis para el
 
 
 % tesis granada% tesis granada% tesis granada% tesis granada% tesis granada
-\subsubsection*{\textit{Control and Management of Transponders With NETCONF and YANG}}
+\subsubsection*{\textit{Control y gestión de transponders con NETCONF y YANG}}
 
 El documento \parencite{netconfsddn} propone la utilización del protocolo de administración \textit{NETCONF} en un ambiente \textit{SDN} para administrar la configuración de un \textit{transponder}, sugiriendo un entorno como el que se puede ver en la figura \ref{fig:netconfsddn1}.
 
